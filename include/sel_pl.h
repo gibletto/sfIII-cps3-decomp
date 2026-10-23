@@ -1,0 +1,50 @@
+#ifndef SEL_PL_H
+#define SEL_PL_H
+
+#include "structs.h"
+
+void Basic_Sub_Ex(void);
+void Correct_Control_Time();
+void Sel_PL_4th(void);
+void Sel_PL_Cont_2nd(void);
+void Initialize_BG(void);
+void Setup_Face_Sub(void);
+void PL_Sel_2nd(void);
+void Basic_Sub(void);
+void Setup_BG_Layer2(void);
+void Setup_BG_Layer3(void);
+void Setup_Cursor_Y(void);
+void Setup_Face_ID(void);
+void Face_1st(void);
+void Face_2nd(void);
+void Face_3rd(void);
+void Face_4th(void);
+void PL_Sel_3rd(void);
+void PL_Sel_4th(void);
+void Sel_Arts_Sub();
+void Sel_PL(void);
+void Sel_PL_1st(void);
+void Sel_PL_2nd(void);
+void Sel_PL_3rd(void);
+void Sel_PL_5th(void);
+void Sel_PL_6th(void);
+void Sel_PL_Cont_1st(void);
+void Sel_PL_Cont_3rd(void);
+void Sel_PL_Cont_4th(void);
+void Sel_PL_Control(void);
+void Sel_PL_Sub();
+s16 Select_Player(void);
+void Setup_EFF69(void);
+void Setup_ID(void);
+void Setup_Select_Status(void);
+void PL_Sel_Begin(void);
+void sel_pl_disp_char_effect_trio();
+void PL_Sel_5th(void);
+void sel_pl_face_control(void);
+void Move_Face_BG(void);
+void Player_Select_Control(void);
+s32 PL_Sel_Mode_2(void);
+void Check_Exit(void);
+void Setup_BG_General(void);
+
+#endif

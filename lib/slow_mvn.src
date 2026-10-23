@@ -1,0 +1,314 @@
+; slow_mvn.src  Compiler run-time helpers: block move, string copy and variable shifts
+;
+; Support routines called by compiled C code with arguments in registers.
+; __slow_mvn copies R0 bytes from R2 to R1 one byte at a time (unrolled four per loop), for
+; structure copies that may be unaligned. __slow_strcpy copies a string byte by byte, but when
+; source and destination are both word aligned it hands over to the fast word copy in
+; quick_strcpy.src. __sftrl performs a logical right shift by a variable count by jumping into
+; an unrolled run of SHLR instructions through an offset table; the rest of the module is the
+; matching run of shift sequences (SHLL, SHLL2/8/16 and friends) used by the other variable
+; shift entry points.
+
+          .CPU        SH2
+          .IMPORT     quick_strcpy_1
+          .EXPORT     sftrl_in_range
+          .EXPORT     _slow_mvn
+          .EXPORT     _slow_strcpy
+          .EXPORT     __sftrl
+          .EXPORT     __slow_mvn
+          .EXPORT     __slow_strcpy
+          .EXPORT     _sftrl
+          .SECTION    PSYS,CODE,ALIGN=4
+__slow_mvn:
+_slow_mvn:
+          MOV.L       R2,@-R15
+          MOV.L       R3,@-R15
+          MOV.L       R4,@-R15
+          CMP/EQ      #0,R0
+          BT          slow_mvn_2
+          MOV         R2,R4
+          ADD         R0,R4
+slow_mvn_1:
+          MOV.B       @R2+,R0
+          MOV.B       R0,@R1
+          CMP/HI      R2,R4
+          BF          slow_mvn_2
+          MOV.B       @R2+,R0
+          MOV.B       R0,@(1,R1)
+          CMP/HI      R2,R4
+          BF          slow_mvn_2
+          MOV.B       @R2+,R0
+          MOV.B       R0,@(2,R1)
+          CMP/HI      R2,R4
+          BF          slow_mvn_2
+          MOV.B       @R2+,R0
+          MOV.B       R0,@(3,R1)
+          CMP/HI      R2,R4
+          ADD         #4,R1
+          BT          slow_mvn_1
+slow_mvn_2:
+          MOV.L       @R15+,R4
+          MOV.L       @R15+,R3
+          RTS
+          MOV.L       @R15+,R2
+__slow_strcpy:
+_slow_strcpy:
+          MOV.L       R3,@-R15
+          MOV.L       R4,@-R15
+          MOV         #3,R3
+          MOV         R0,R4
+          AND         R3,R4
+          AND         R1,R3
+          OR          R4,R3
+          TST         R3,R3
+          BT          slow_strcpy_3
+          MOV         R0,R4
+          MOV.B       @R1+,R0
+          MOV         R4,R3
+slow_strcpy_1:
+          CMP/EQ      #0,R0
+          MOV.B       R0,@R3
+          BT          slow_strcpy_2
+          MOV.B       @R1+,R0
+          CMP/EQ      #0,R0
+          MOV.B       R0,@(1,R3)
+          BT          slow_strcpy_2
+          MOV.B       @R1+,R0
+          CMP/EQ      #0,R0
+          MOV.B       R0,@(2,R3)
+          BT          slow_strcpy_2
+          MOV.B       @R1+,R0
+          CMP/EQ      #0,R0
+          MOV.B       R0,@(3,R3)
+          BT          slow_strcpy_2
+          MOV.B       @R1+,R0
+          BRA         slow_strcpy_1
+          ADD         #4,R3
+slow_strcpy_2:
+          MOV         R4,R0
+          MOV.L       @R15+,R4
+          RTS
+          MOV.L       @R15+,R3
+slow_strcpy_3:
+          MOV.L       p_quick_strcpy_1,R3
+          JMP         @R3
+          NOP
+          .DATA.W     H'0009
+          .ALIGN      4
+p_quick_strcpy_1:
+          .DATA.L     quick_strcpy_1
+slow_strcpy_4:
+          .DATA.W     H'0E0C
+          .DATA.W     H'0A08
+          .DATA.W     H'0604
+          .DATA.W     H'0200
+          .DATA.W     H'201E
+          .DATA.W     H'1C1A
+          .DATA.W     H'1816
+          .DATA.W     H'1412
+          .DATA.W     H'3432
+          .DATA.W     H'302E
+          .DATA.W     H'2C2A
+          .DATA.W     H'2826
+          .DATA.W     H'403E
+          .DATA.W     H'3C3A
+          .DATA.W     H'4856
+          .DATA.W     H'626C
+__sftrl:
+_sftrl:
+          MOV.L       R2,@-R15
+          CMP/PZ      R1
+          BF/S        sftrl_in_range_3
+          MOV         #32,R2
+          CMP/GE      R2,R1
+          BT          sftrl_in_range_1
+sftrl_in_range:
+          MOV.L       p_slow_strcpy_4,R2
+          ADD         R1,R2
+          MOV.B       @R2,R2
+          MOV.L       p_sftrl_in_range_2,R1
+          ADD         R2,R1
+          JMP         @R1
+          NOP
+          .DATA.W     H'0009
+          .ALIGN      4
+p_sftrl_in_range_2:
+          .DATA.L     sftrl_in_range_2
+p_slow_strcpy_4:
+          .DATA.L     slow_strcpy_4
+sftrl_in_range_1:
+          MOV         #0,R0
+          RTS
+          MOV.L       @R15+,R2
+sftrl_in_range_2:
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+sftrl_in_range_3:
+          RTS
+          MOV.L       @R15+,R2
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4019
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4029
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4001
+          .DATA.W     H'4019
+          .DATA.W     H'4029
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .DATA.W     H'4004
+          .DATA.W     H'4004
+          .DATA.W     H'4004
+          .DATA.W     H'4004
+          .DATA.W     H'C90F
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .DATA.W     H'4004
+          .DATA.W     H'4004
+          .DATA.W     H'4004
+          .DATA.W     H'C907
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .DATA.W     H'4004
+          .DATA.W     H'4004
+          .DATA.W     H'C903
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .DATA.W     H'4004
+          .DATA.W     H'C901
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .RES.W      1         ; fill (FFFF)
+          .DATA.W     H'000B
+          .DATA.W     H'0009
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'000B
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'000B
+          .DATA.W     H'4000
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'000B
+          .DATA.W     H'4018
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'4000
+          .DATA.W     H'000B
+          .DATA.W     H'4018
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'000B
+          .DATA.W     H'4028
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'4000
+          .DATA.W     H'000B
+          .DATA.W     H'4028
+          .DATA.W     H'4008
+          .DATA.W     H'4000
+          .DATA.W     H'4018
+          .DATA.W     H'000B
+          .DATA.W     H'4028
+          .DATA.W     H'4008
+          .DATA.W     H'4008
+          .DATA.W     H'4018
+          .DATA.W     H'000B
+          .DATA.W     H'4028
+          .DATA.W     H'C907
+          .DATA.W     H'4005
+          .DATA.W     H'4005
+          .DATA.W     H'000B
+          .DATA.W     H'4005
+          .DATA.W     H'C903
+          .DATA.W     H'4005
+          .DATA.W     H'000B
+          .DATA.W     H'4005
+          .DATA.W     H'C901
+          .DATA.W     H'000B
+          .DATA.W     H'4005
+          .DATA.W     H'4009
+          .DATA.W     H'4009
+          .DATA.W     H'000B
+          .DATA.W     H'4009
+          .DATA.W     H'4009
+          .DATA.W     H'4009
+          .DATA.W     H'4009
+          .DATA.W     H'000B
+          .DATA.W     H'4001
+          .DATA.W     H'4009
+          .DATA.W     H'4009
+          .DATA.W     H'4009
+          .DATA.W     H'000B
+          .DATA.W     H'4019
+          .DATA.W     H'4009
+          .DATA.W     H'4009
+          .DATA.W     H'4009
+          .DATA.W     H'4001
+          .DATA.W     H'000B
+          .DATA.W     H'4019
+          .DATA.W     H'4009
+          .DATA.W     H'4009
+          .DATA.W     H'4009
+          RTS
+          SHLR16      R0
+          SHLR2       R0
+          SHLR2       R0
+          SHLR2       R0
+          SHLR        R0
+          RTS
+          SHLR16      R0
+          SHLR2       R0
+          SHLR2       R0
+          SHLR8       R0
+          RTS
+          SHLR16      R0
+          SHLR2       R0
+          SHLR        R0
+          SHLR8       R0
+          RTS
+          SHLR16      R0
+          ROTL        R0
+          ROTL        R0
+          ROTL        R0
+          RTS
+          AND         #7,R0
+          ROTL        R0
+          ROTL        R0
+          RTS
+          AND         #3,R0
+          ROTL        R0
+          RTS
+          AND         #1,R0
+          SHAR        R0
+          SHAR        R0
+          .END

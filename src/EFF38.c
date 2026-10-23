@@ -1,0 +1,119 @@
+/*
+ * EFF38.C  Effect 38: the player's portrait on the character select screen
+ *
+ * effect_38_init(player, wait) (from sel_pl.c) makes the portrait (sel_pl_char_table) facing in. After
+ * the wait it slides 168 dots in from the player's side (faster with the cut button) and counts down
+ * Select_Start; for a playing player it then shows the face under the cursor (ID_of_Face) as the
+ * cursor moves. A negative wait puts it straight in place.
+ */
+
+#include "structs.h"
+#include "work.h"
+#include "romdata.h"
+#include "extern.h"
+#include "SYS_sub.h"
+#include "aboutspr.h"
+#include "EFFECT.h"
+#include "effect_2.h"
+#include "CHARMOVE.h"
+#include "charmove_2.h"
+#include "EFF38.h"
+
+void effect_38_move(WORK_Other* ewk) {
+    u16 cut;
+    cut = Cut_Cut_Sub(3);
+    switch (ewk->wu.routine_no[0]) {
+    case 0:
+        if (--ewk->wu.dir_timer != 0) {
+            return;
+        }
+        ewk->wu.routine_no[0]++;
+        ewk->wu.disp_flag = 1;
+        set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
+        break;
+    case 1:
+        ewk->wu.xyz[0].cal += ewk->wu.mvxy.a[0].sp * cut;
+        if (ewk->wu.mvxy.a[0].sp > 0) {
+            if (ewk->wu.hit_quake < ewk->wu.xyz[0].disp.pos) {
+                if (plw[ewk->master_id].wu.operator) {
+                    ewk->wu.routine_no[0]++;
+                } else {
+                    ewk->wu.routine_no[0] = 99;
+                }
+                ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
+                Select_Start[ewk->master_id]--;
+            }
+        } else if (ewk->wu.hit_quake > ewk->wu.xyz[0].disp.pos) {
+            if (plw[ewk->master_id].wu.operator) {
+                ewk->wu.routine_no[0]++;
+            } else {
+                ewk->wu.routine_no[0] = 99;
+            }
+            ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
+            Select_Start[ewk->master_id]--;
+        }
+        break;
+    case 2:
+        if (ewk->wu.dir_step != ID_of_Face[ewk->master_id][Cursor_Y[ewk->master_id]][Cursor_X[ewk->master_id]]) {
+            ewk->wu.dir_step = ID_of_Face[ewk->master_id][Cursor_Y[ewk->master_id]][Cursor_X[ewk->master_id]];
+            set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
+        }
+        break;
+    default:
+        break;
+    }
+    ewk->wu.position_x = ewk->wu.xyz[0].disp.pos & 0x3FF;
+    ewk->wu.position_y = ewk->wu.xyz[1].disp.pos & 0x3FF;
+    sort_push_request4(&ewk->wu);
+}
+
+s32 effect_38_init(s16 PL_id, s16 Wait) {
+    WORK_Other* ewk;
+    s16 ix;
+    if ((ix = pull_effect_work(4)) == -1) {
+        return -1;
+    }
+    ewk = (WORK_Other*)frw[ix];
+    ewk->wu.be_flag = 1;
+    ewk->wu.id = 38;
+    ewk->wu.work_id = 16;
+    ewk->wu.cgromtype = 1;
+    ewk->wu.sync_suzi = 0;
+    ewk->wu.my_col_mode = 0x4200;
+    ewk->wu.my_col_code = 0x2040;
+    ewk->wu.my_family = 3;
+    ewk->wu.xyz[1].disp.pos = 16;
+    ewk->wu.position_z = 76;
+    ewk->wu.char_index = 2;
+    *ewk->wu.char_table = sel_pl_char_table;
+    ewk->master_id = PL_id;
+    if (plw[PL_id].wu.operator == 0 && EM_id == 0) {
+        ewk->wu.dir_step = 0;
+        ewk->wu.rl_flag = PL_id ^ 1;
+        if (PL_id == 1) {
+            ewk->wu.my_col_code = 0x2030;
+        }
+    } else {
+        ewk->wu.dir_step = ID_of_Face[ewk->master_id][Cursor_Y[ewk->master_id]][Cursor_X[ewk->master_id]];
+        ewk->wu.rl_flag = PL_id ^ 1;
+    }
+    if (PL_id) {
+        ewk->wu.xyz[0].disp.pos = DE_X[5] + 0x3D0;
+        ewk->wu.hit_quake = ewk->wu.xyz[0].disp.pos - 168;
+        ewk->wu.mvxy.a[0].sp = -0xF0000;
+    } else {
+        ewk->wu.xyz[0].disp.pos = 0x1B0;
+        ewk->wu.hit_quake = ewk->wu.xyz[0].disp.pos + 168;
+        ewk->wu.mvxy.a[0].sp = 0xF0000;
+    }
+    if ((ewk->wu.dir_timer = Wait) < 0) {
+        ewk->wu.routine_no[0] = 99;
+        ewk->wu.disp_flag = 1;
+        ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
+        if ((My_char[ewk->master_id] & 0x7F) == 10) {
+            ewk->wu.dir_step = 10;
+        }
+        set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
+    }
+    return 0;
+}

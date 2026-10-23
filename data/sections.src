@@ -1,0 +1,21 @@
+; SECTIONS.SRC  where the boot code finds the initialised work RAM image and the work RAM it clears
+;
+; reset_entry (tasksw.src) copies D_END - D_BGN bytes from D_ROM to D_BGN and clears B_BGN-B_END. The
+; image is section D, kept in ROM after the game tables by the linker's ROM (D,R) option; the variables run
+; in work RAM from D_BGN (section R, 02000000, frt_tick_count first). B is placed right after R.
+
+          .EXPORT     _D_ROM
+          .EXPORT     _D_BGN
+          .EXPORT     _D_END
+          .EXPORT     _B_BGN
+          .EXPORT     _B_END
+          .IMPORT     _frt_tick_count
+          .SECTION    D,DATA,ALIGN=4
+          .SECTION    B,DATA,ALIGN=4
+          .SECTION    CTBL,DATA,ALIGN=4
+_D_ROM:   .DATA.L     STARTOF D
+_D_BGN:   .DATA.L     _frt_tick_count             ; the first variable of the D section
+_D_END:   .DATA.L     _frt_tick_count+SIZEOF D
+_B_BGN:   .DATA.L     STARTOF B
+_B_END:   .DATA.L     STARTOF B+SIZEOF B
+          .END

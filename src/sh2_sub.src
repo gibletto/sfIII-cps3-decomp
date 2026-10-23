@@ -1,0 +1,100 @@
+; sh2_sub.src  Small CPU helpers
+;
+; Written in assembler. _rotate_right and _rotate_left turn R4 by one bit, _rotate_right_n and
+; _rotate_left_n by R5 bits. _delay_cycles counts R4 down to zero. _jump_to enters the routine
+; whose address is in R4. _dma0_transfer_wait copies R6 units of size R7 (0 bytes, 1 words,
+; 2 longs) from R4 to R5 with the on-chip DMA channel 0 and waits until the transfer has ended.
+
+          .CPU        SH2
+          .INCLUDE    "include\cps3.inc"
+          .EXPORT     _rotate_right
+          .EXPORT     _rotate_left
+          .EXPORT     _rotate_right_n
+          .EXPORT     _rotate_left_n
+          .EXPORT     _delay_cycles
+          .EXPORT     _jump_to
+          .EXPORT     _dma0_transfer_wait
+          .SECTION    PSYS,CODE,ALIGN=4
+_rotate_right:
+          ROTR        R4
+          MOV         R4,R0
+          RTS
+          NOP
+_rotate_left:
+          ROTL        R4
+          MOV         R4,R0
+          RTS
+          NOP
+_rotate_right_n:
+          ROTR        R4
+          ADD         #-1,R5
+          TST         R5,R5
+          BF          _rotate_right_n
+          NOP
+          MOV         R4,R0
+          RTS
+          NOP
+_rotate_left_n:
+          ROTL        R4
+          ADD         #-1,R5
+          TST         R5,R5
+          BF          _rotate_left_n
+          NOP
+          MOV         R4,R0
+          RTS
+          NOP
+_delay_cycles:
+          ADD         #-1,R4
+          TST         R4,R4
+          BF          _delay_cycles
+          NOP
+          RTS
+          NOP
+_jump_to:
+          JMP         @R4
+          NOP
+_dma0_transfer_wait:
+          MOV.L       #SH2_DMAOR,R0
+          MOV.L       @R0,R1
+          MOV.L       #0,R1
+          MOV.L       R1,@R0
+          MOV.L       #SH2_CHCR1,R0
+          MOV.L       @R0,R1
+          MOV.L       #0,R1
+          MOV.L       R1,@R0
+          MOV.L       #SH2_SAR0,R0
+          MOV.L       R4,@R0
+          MOV.L       #SH2_DAR0,R0
+          MOV.L       R5,@R0
+          MOV.L       #H'00FFFFFF,R0
+          AND         R0,R6
+          MOV.L       #SH2_TCR0,R0
+          MOV.L       R6,@R0
+          MOV.L       #SH2_DRCR0,R0
+          MOV.B       R1,@R0
+          MOV.L       #SH2_CHCR0,R0
+          MOV.L       @R0,R1
+          MOV.L       #H'5241,R1
+          MOV.L       #3,R2
+          AND         R2,R7
+          SHLL8       R7
+          SHLL2       R7
+          OR          R7,R1
+          MOV.L       R1,@R0
+          MOV.L       #SH2_DMAOR,R0
+          MOV.L       #1,R1
+          MOV.L       R1,@R0
+dma0_wait:
+          MOV.L       #SH2_CHCR0,R1
+          MOV.L       @R1,R0
+          MOV.L       #2,R1
+          AND         R1,R0
+          CMP/EQ      #0,R0
+          BT          dma0_wait
+          MOV.L       #SH2_DMAOR,R0
+          MOV.L       @R0,R1
+          MOV.L       #0,R1
+          MOV.L       R1,@R0
+          RTS
+          NOP
+          .END

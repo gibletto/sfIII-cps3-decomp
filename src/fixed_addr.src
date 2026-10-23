@@ -1,0 +1,20 @@
+; FIXED_ADDR.SRC  addresses the program does not place: the BIOS and the sound chip
+;
+; Everything else has its address from the link: code and tables (P, CTBL), the initialised work RAM (section R
+; at 02000000) and the work RAM cleared at boot (section B after it).
+
+          .CPU        SH2
+          .EXPORT     _bios_region_code
+          .EXPORT     _bios_cd_flags
+          .EXPORT     _bios_area_code
+          .EXPORT     _snd_key_on_reg
+
+; the BIOS's settings area (it reads the region from the board)
+_bios_region_code                         .EQU H'0001FECB
+_bios_cd_flags                            .EQU H'0001FECC
+_bios_area_code                           .EQU H'0001FEDB    ; region byte reset_entry turns into Area_Type (provisional name)
+
+; the sound chip: the key-on register (starts and stops voices)
+_snd_key_on_reg                           .EQU H'240E0200
+
+          .END

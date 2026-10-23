@@ -1,0 +1,8 @@
+/obj/
+/build/
+/sfn.abs
+/sfn.map
+/sfn.bin
+/rom/*
+!/rom/README
+__pycache__/

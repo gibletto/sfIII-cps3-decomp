@@ -1,0 +1,550 @@
+; tasksw.src  Task switcher and reset entry
+;
+; The cooperative task kernel. _task_dispatch saves the scheduler's registers and switches to the
+; current task's stack, GBR, SR and resume address. _task_sleep (R4 frames), _task_wait and
+; _task_yield save the running task's registers, set its state in the task record and return to the
+; scheduler through _task_exit_to_system, which reloads the scheduler's stack, SR and GBR and pops
+; its registers (destroy_current_task also leaves a task this way). _main_thunk loads the stack
+; pointer from the vector table and jumps to Game_Task, the scheduler loop. _vector_restart and
+; _bios_vector_restart restart execution from a given vector table with all registers cleared.
+; _reset_entry is the program start: it clears the uninitialised data area, copies the initialised
+; data into RAM, sets up the CPU control registers, sets the sound bank, animation context and task
+; stacks, creates the boot task, and resets the coin lock, game mode, scroll and family work, coins
+; and render lists before entering the kernel.
+
+          .CPU        SH2
+          .INCLUDE    "include\cps3.inc"
+          .IMPORT     _Scrn_Pos_Init
+          .IMPORT     _coin_work_init
+          .IMPORT     _coin_lock_set
+          .IMPORT     _Game_Task
+          .IMPORT     _sound_init
+          .IMPORT     _boot_task
+          .IMPORT     _clear_scroll_layer_state_and_mask
+          .IMPORT     _Family_Init
+          .IMPORT     _create_task
+          .IMPORT     _init_render_lists
+          .IMPORT     _init_task_stacks
+          .IMPORT     _Zoomf_Init
+          .IMPORT     _set_screen_mode
+          .IMPORT     _sound_sample_bank_set
+          .EXPORT     _bios_vector_restart
+          .EXPORT     _vector_restart
+          .EXPORT     _main_thunk
+          .EXPORT     _reset_entry
+          .EXPORT     _task_dispatch
+          .EXPORT     _task_exit_to_system
+          .EXPORT     _task_sleep
+          .EXPORT     _task_wait
+          .EXPORT     _task_yield
+          .IMPORT     _B_BGN
+          .IMPORT     _B_END
+          .IMPORT     _D_BGN
+          .IMPORT     _D_ROM
+          .IMPORT     _D_END
+          .IMPORT     _boot_setting_defaults
+          .IMPORT     _region_area_tbl
+          .IMPORT     _task_sched_context
+          .IMPORT     _current_task
+          .IMPORT     _Free_Play_Enable
+          .IMPORT     _Area_Type
+          .IMPORT     _Area_Alt_Flag
+          .IMPORT     _snd_bank_rom_tbl
+          .IMPORT     _snd_sample_rom_tbl
+          .IMPORT     _snd_seq_rom_data
+          .IMPORT     _task_tbl
+          .IMPORT     _Cd_Error_Flag
+          .IMPORT     _Cabinet_Type
+          .IMPORT     _system_ctrl_flag
+          .IMPORT     _bios_area_code
+          .SECTION    P,CODE,ALIGN=4
+_main_thunk:
+          STC         VBR,R10
+          ADD         #4,R10
+          MOV.L       @R10,R15
+          MOV.L       p_Game_Task,R10
+          JMP         @R10
+          NOP
+          .ALIGN      4
+p_Game_Task:
+          .DATA.L     _Game_Task
+_task_dispatch:
+          MOV.L       R0,@-R15
+          MOV.L       R1,@-R15
+          MOV.L       R2,@-R15
+          MOV.L       R3,@-R15
+          MOV.L       R4,@-R15
+          MOV.L       R5,@-R15
+          MOV.L       R6,@-R15
+          MOV.L       R7,@-R15
+          MOV.L       R8,@-R15
+          MOV.L       R9,@-R15
+          MOV.L       R10,@-R15
+          MOV.L       R11,@-R15
+          MOV.L       R12,@-R15
+          MOV.L       R13,@-R15
+          MOV.L       R14,@-R15
+          STS.L       PR,@-R15
+          MOV.L       p_task_sched_context,R0
+          MOV.L       R15,@R0
+          ADD         #4,R0
+          STC         SR,R1
+          MOV.L       R1,@R0
+          ADD         #4,R0
+          STC         GBR,R1
+          MOV.L       R1,@R0
+          MOV.L       p_current_task,R0
+          MOV.L       @R0,R14
+          MOV.L       @(16,R14),R0
+          MOV         R0,R15
+          MOV.L       @(28,R14),R0
+          LDC         R0,GBR
+          MOV.L       @(8,R14),R1
+          MOV.L       @(24,R14),R0
+          JMP         @R1
+          LDC         R0,SR
+          .ALIGN      4
+p_task_sched_context:
+          .DATA.L     _task_sched_context
+p_current_task:
+          .DATA.L     _current_task
+_task_sleep:
+          MOV.L       R0,@-R15
+          MOV.L       R1,@-R15
+          MOV.L       R2,@-R15
+          MOV.L       R3,@-R15
+          MOV.L       R4,@-R15
+          MOV.L       R5,@-R15
+          MOV.L       R6,@-R15
+          MOV.L       R7,@-R15
+          MOV.L       R8,@-R15
+          MOV.L       R9,@-R15
+          MOV.L       R10,@-R15
+          MOV.L       R11,@-R15
+          MOV.L       R12,@-R15
+          MOV.L       R13,@-R15
+          MOV.L       R14,@-R15
+          MOV         #-16,R0
+          STC         SR,R1
+          LDC         R0,SR
+          STS.L       PR,@-R15
+          MOV.L       p_current_task_2,R0
+          MOV.L       @R0,R14
+          MOV         #1,R0
+          TST         R4,R4
+          BF          task_sleep_set
+          MOV         #5,R0
+task_sleep_set:
+          MOV.B       R0,@(0,R14)
+          MOV         R4,R0
+          MOV.B       R0,@(1,R14)
+          BSR         task_yield_save
+          NOP
+          LDS.L       @R15+,PR
+          MOV.L       @R15+,R14
+          MOV.L       @R15+,R13
+          MOV.L       @R15+,R12
+          MOV.L       @R15+,R11
+          MOV.L       @R15+,R10
+          MOV.L       @R15+,R9
+          MOV.L       @R15+,R8
+          MOV.L       @R15+,R7
+          MOV.L       @R15+,R6
+          MOV.L       @R15+,R5
+          MOV.L       @R15+,R4
+          MOV.L       @R15+,R3
+          MOV.L       @R15+,R2
+          MOV.L       @R15+,R1
+          MOV.L       @R15+,R0
+          RTS
+          NOP
+          .ALIGN      4
+p_current_task_2:
+          .DATA.L     _current_task
+_task_wait:
+          MOV.L       R0,@-R15
+          MOV.L       R1,@-R15
+          MOV.L       R2,@-R15
+          MOV.L       R3,@-R15
+          MOV.L       R4,@-R15
+          MOV.L       R5,@-R15
+          MOV.L       R6,@-R15
+          MOV.L       R7,@-R15
+          MOV.L       R8,@-R15
+          MOV.L       R9,@-R15
+          MOV.L       R10,@-R15
+          MOV.L       R11,@-R15
+          MOV.L       R12,@-R15
+          MOV.L       R13,@-R15
+          MOV.L       R14,@-R15
+          MOV         #-16,R0
+          STC         SR,R1
+          LDC         R0,SR
+          STS.L       PR,@-R15
+          MOV.L       p_current_task_3,R0
+          MOV.L       @R0,R14
+          MOV.L       k_0,R0
+          MOV.L       R0,@(40,R14)
+          MOV         #2,R0
+          MOV.B       R0,@(0,R14)
+          BSR         task_yield_save
+          NOP
+          LDS.L       @R15+,PR
+          MOV.L       @R15+,R14
+          MOV.L       @R15+,R13
+          MOV.L       @R15+,R12
+          MOV.L       @R15+,R11
+          MOV.L       @R15+,R10
+          MOV.L       @R15+,R9
+          MOV.L       @R15+,R8
+          MOV.L       @R15+,R7
+          MOV.L       @R15+,R6
+          MOV.L       @R15+,R5
+          MOV.L       @R15+,R4
+          MOV.L       @R15+,R3
+          MOV.L       @R15+,R2
+          MOV.L       @R15+,R1
+          MOV.L       @R15+,R0
+          RTS
+          NOP
+          .DATA.W     H'0000
+          .ALIGN      4
+p_current_task_3:
+          .DATA.L     _current_task
+k_0:
+          .DATA.L     H'00000000
+_task_yield:
+task_yield_save:
+          MOV         R15,R0
+          MOV.L       R0,@(16,R14)
+          STS         PR,R0
+          MOV.L       R0,@(8,R14)
+          MOV         R1,R0
+          MOV.L       R0,@(24,R14)
+          STC         GBR,R0
+          MOV.L       R0,@(28,R14)
+_task_exit_to_system:
+          MOV.L       p_task_sched_context_2,R0
+          MOV.L       @R0+,R15
+          LDC.L       @R0+,SR
+          LDC.L       @R0+,GBR
+          LDS.L       @R15+,PR
+          MOV.L       @R15+,R14
+          MOV.L       @R15+,R13
+          MOV.L       @R15+,R12
+          MOV.L       @R15+,R11
+          MOV.L       @R15+,R10
+          MOV.L       @R15+,R9
+          MOV.L       @R15+,R8
+          MOV.L       @R15+,R7
+          MOV.L       @R15+,R6
+          MOV.L       @R15+,R5
+          MOV.L       @R15+,R4
+          MOV.L       @R15+,R3
+          MOV.L       @R15+,R2
+          MOV.L       @R15+,R1
+          MOV.L       @R15+,R0
+          RTS
+          NOP
+          .ALIGN      4
+p_task_sched_context_2:
+          .DATA.L     _task_sched_context
+_vector_restart:
+          MOV.L       k_F0,R1
+          LDC         R1,SR
+          MOV         R4,R1
+          LDC         R1,VBR
+          MOV.L       @R1,R0
+          LDS         R0,PR
+          MOV.L       @(4,R1),R15
+          MOV         #0,R0
+          MOV         #0,R1
+          MOV         #0,R2
+          MOV         #0,R3
+          MOV         #0,R4
+          MOV         #0,R5
+          MOV         #0,R6
+          MOV         #0,R7
+          MOV         #0,R8
+          MOV         #0,R9
+          MOV         #0,R10
+          MOV         #0,R11
+          MOV         #0,R12
+          MOV         #0,R13
+          MOV         #0,R14
+          LDS         R0,MACH
+          LDS         R0,MACL
+          RTS
+          NOP
+          .ALIGN      4
+k_F0:
+          .DATA.L     H'000000F0
+_bios_vector_restart:
+          MOV.L       k_F0_2,R1
+          LDC         R1,SR
+          LDC         R5,VBR
+          MOV.L       @R4,R0
+          LDS         R0,PR
+          MOV.L       @(4,R4),R15
+          MOV         #0,R0
+          MOV         #0,R1
+          MOV         #0,R2
+          MOV         #0,R3
+          MOV         #0,R4
+          MOV         #0,R5
+          MOV         #0,R6
+          MOV         #0,R7
+          MOV         #0,R8
+          MOV         #0,R9
+          MOV         #0,R10
+          MOV         #0,R11
+          MOV         #0,R12
+          MOV         #0,R13
+          MOV         #0,R14
+          LDS         R0,MACH
+          LDS         R0,MACL
+          RTS
+          NOP
+          .DATA.W     H'0000
+          .ALIGN      4
+k_F0_2:
+          .DATA.L     H'000000F0
+_reset_entry:
+          MOV.L       R14,@-R15
+          MOV.L       R13,@-R15
+          STS.L       PR,@-R15
+          MOV.L       p_B_BGN,R3
+          MOV.L       p_B_END,R5
+          MOV.L       @R3,R4
+          BRA         clear_b_test
+          MOV         #0,R14
+clear_b_loop:
+          MOV.L       R14,@R4
+          ADD         #4,R4
+clear_b_test:
+          MOV.L       @R5,R3
+          CMP/HS      R3,R4
+          BF          clear_b_loop
+          MOV.L       p_D_BGN,R1
+          MOV.L       p_D_ROM,R3
+          MOV.L       @R1,R4
+          MOV.L       p_D_END,R6
+          BRA         copy_d_test
+          MOV.L       @R3,R5
+          .RES.W      1         ; fill
+          .ALIGN      4
+p_B_BGN:
+          .DATA.L     _B_BGN
+p_B_END:
+          .DATA.L     _B_END
+p_D_BGN:
+          .DATA.L     _D_BGN
+p_D_ROM:
+          .DATA.L     _D_ROM
+p_D_END:
+          .DATA.L     _D_END
+copy_d_loop:
+          MOV.L       @R5,R3
+          ADD         #4,R5
+          MOV.L       R3,@R4
+          ADD         #4,R4
+copy_d_test:
+          MOV.L       @R6,R2
+          CMP/HS      R2,R4
+          BF          copy_d_loop
+          MOV         #81,R3
+          MOV.L       k_F000,R1
+          MOV         #1,R13
+          MOV.W       k_sh2_vcrd,R5
+          MOV.W       @R5,R4
+          MOV.W       k_7F00,R2
+          AND         R2,R4
+          MOV.W       k_F00,R2
+          OR          R3,R4
+          MOV.W       R4,@R5
+          ADD         #-6,R5
+          MOV.W       k_FC,R3
+          MOV.W       @R5,R4
+          AND         R1,R4
+          OR          R2,R4
+          MOV.W       k_sh2_ocrh,R1
+          MOV.W       R4,@R5
+          MOV.W       k_sh2_ocrl,R2
+          ADD         #-74,R5
+          MOV.B       @R5,R4
+          EXTU.B      R4,R4
+          AND         R3,R4
+          MOV.B       R4,@R5
+          MOV.W       k_sh2_ftcsr,R3
+          MOV         #51,R4
+          MOV.B       R4,@R1
+          ADD         #-4,R1
+          MOV.B       R4,@R2
+          MOV         #9,R4
+          MOV.L       k_video_reg_82,R2
+          MOV.B       R13,@R3
+          MOV.B       R4,@R1
+          MOV.W       R4,@R2
+          MOV.L       p_boot_setting_defaults,R4
+          MOV.B       @R4,R3
+          MOV.L       p_Free_Play_Enable,R0
+          MOV.B       R3,@R0
+          MOV.L       p_Area_Type,R5
+          MOV.B       @(1,R4),R0
+          MOV.L       p_Area_Alt_Flag,R3
+          MOV.B       R0,@R5
+          MOV.B       @(2,R4),R0
+          MOV.B       R0,@R3
+          MOV.L       p_bios_area_code,R1
+          MOV.B       @R1,R4
+          MOV.L       p_region_area_tbl,R2
+          EXTU.B      R4,R4
+          MOV.L       p_sound_sample_bank_set,R3
+          EXTS.W      R4,R0
+          AND         #7,R0
+          SHLL2       R0
+          MOV.L       @(R0,R2),R2
+          MOV.B       R2,@R5
+          JSR         @R3
+          MOV         #0,R4
+          MOV.L       R13,@-R15
+          MOV.L       R14,@-R15
+          MOV.L       p_snd_bank_rom_tbl,R6
+          MOV.L       p_snd_sample_rom_tbl,R5
+          MOV.L       p_snd_seq_rom_data,R4
+          MOV.L       p_sound_init,R2
+          JSR         @R2
+          MOV         R13,R7
+          MOV.L       p_sound_sample_bank_set,R3
+          JSR         @R3
+          MOV         #64,R4
+          MOV.L       R13,@-R15
+          MOV.L       R14,@-R15
+          MOV.L       p_snd_bank_rom_tbl,R6
+          MOV.L       p_snd_sample_rom_tbl,R5
+          MOV.L       p_snd_seq_rom_data,R4
+          MOV.L       p_sound_init,R2
+          JSR         @R2
+          MOV         R13,R7
+          MOV.L       p_init_task_stacks,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_task_tbl_140,R6
+          MOV         #0,R2
+          MOV.L       p_boot_task,R4
+          MOV         R2,R7
+          MOV.L       p_create_task,R3
+          MOV.L       R2,@-R15
+          JSR         @R3
+          MOV         R2,R5
+          MOV.L       p_coin_lock_set,R2
+          ADD         #20,R15
+          JSR         @R2
+          MOV         #-1,R4
+          MOV.L       p_set_game_mode,R3
+          JSR         @R3
+          MOV         #3,R4
+          MOV.L       p_clear_scroll_layer_state_and_mask,R2
+          JSR         @R2
+          NOP
+          MOV.L       p_Scrn_Pos_Init,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_clear_sprite_slot_tables_8,R2
+          JSR         @R2
+          NOP
+          MOV.L       p_reset_bg_scroll_state,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_coin_work_init,R2
+          JSR         @R2
+          NOP
+          MOV.L       p_init_render_lists,R3
+          JSR         @R3
+          NOP
+          MOV         #-128,R1
+          MOV.L       p_system_ctrl_flag,R0
+          MOV.L       p_Cd_Error_Flag,R2
+          MOV.L       p_Cabinet_Type,R3
+          MOV.B       R13,@R2
+          MOV.B       R14,@R3
+          MOV.B       R1,@R0
+          LDS.L       @R15+,PR
+          MOV.L       @R15+,R13
+          MOV.L       p_main_thunk,R2
+          JMP         @R2
+          MOV.L       @R15+,R14
+k_sh2_vcrd:
+          .DATA.W     SH2_VCRD
+k_7F00:
+          .DATA.W     H'7F00
+k_F00:
+          .DATA.W     H'0F00
+k_FC:
+          .DATA.W     H'00FC
+k_sh2_ocrh:
+          .DATA.W     SH2_OCRH
+k_sh2_ocrl:
+          .DATA.W     SH2_OCRL
+k_sh2_ftcsr:
+          .DATA.W     SH2_FTCSR
+          .ALIGN      4
+k_F000:
+          .DATA.L     H'0000F000
+k_video_reg_82:
+          .DATA.L     VIDEO_REG+H'82
+p_boot_setting_defaults:
+          .DATA.L     _boot_setting_defaults
+p_Free_Play_Enable:
+          .DATA.L     _Free_Play_Enable
+p_Area_Type:
+          .DATA.L     _Area_Type
+p_Area_Alt_Flag:
+          .DATA.L     _Area_Alt_Flag
+p_bios_area_code:
+          .DATA.L     _bios_area_code
+p_region_area_tbl:
+          .DATA.L     _region_area_tbl
+p_sound_sample_bank_set:
+          .DATA.L     _sound_sample_bank_set
+p_snd_bank_rom_tbl:
+          .DATA.L     _snd_bank_rom_tbl
+p_snd_sample_rom_tbl:
+          .DATA.L     _snd_sample_rom_tbl
+p_snd_seq_rom_data:
+          .DATA.L     _snd_seq_rom_data
+p_sound_init:
+          .DATA.L     _sound_init
+p_init_task_stacks:
+          .DATA.L     _init_task_stacks
+p_task_tbl_140:
+          .DATA.L     _task_tbl+H'140    ; &task_tbl[5]
+p_boot_task:
+          .DATA.L     _boot_task
+p_create_task:
+          .DATA.L     _create_task
+p_coin_lock_set:
+          .DATA.L     _coin_lock_set
+p_set_game_mode:
+          .DATA.L     _set_screen_mode
+p_clear_scroll_layer_state_and_mask:
+          .DATA.L     _clear_scroll_layer_state_and_mask
+p_Scrn_Pos_Init:
+          .DATA.L     _Scrn_Pos_Init
+p_clear_sprite_slot_tables_8:
+          .DATA.L     _Family_Init
+p_reset_bg_scroll_state:
+          .DATA.L     _Zoomf_Init
+p_coin_work_init:
+          .DATA.L     _coin_work_init
+p_init_render_lists:
+          .DATA.L     _init_render_lists
+p_Cd_Error_Flag:
+          .DATA.L     _Cd_Error_Flag
+p_Cabinet_Type:
+          .DATA.L     _Cabinet_Type
+p_system_ctrl_flag:
+          .DATA.L     _system_ctrl_flag
+p_main_thunk:
+          .DATA.L     _main_thunk
+          .END

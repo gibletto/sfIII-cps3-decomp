@@ -1,0 +1,10 @@
+; cg_labels: CCGDIR 06500000-0657A1E0 (500192 bytes): names only; the build copies the bytes from the ROM (tools/rom_pieces.tsv)
+          .CPU        SH2
+          .SECTION    CCGDIR,DATA,ALIGN=4
+          .EXPORT     _cg_data_tbl
+_cg_data_tbl:
+          .RES.B      500192
+; cg_labels: CCG 06580000-067CD98C (2414988 bytes): names only; the build copies the bytes from the ROM (tools/rom_pieces.tsv)
+          .SECTION    CCG,DATA,ALIGN=4
+          .RES.B      2414988
+          .END

@@ -1,0 +1,73 @@
+/*
+ * SC_DATA4.C  tables read by cmb_cont.c and sc_sub_3.c
+ */
+
+#include "types.h"
+#include "structs.h"
+
+#pragma section TBL
+
+extern const u16 stngauge_puttbl_0[];
+extern const u16 stngauge_puttbl_1[];
+extern const u16 stngauge_postbl_0[];
+extern const u16 stngauge_postbl_1[];
+extern const u16 stngauge_postbl_0_2[];
+extern const u16 stngauge_postbl_1_2[];
+extern const s16 stun_genkai_tbl[];
+extern const s16 cmb_pos_tbl[][2][21];
+extern const s16 cmb_window_move_tbl[];
+extern const s16 cmb_window_time_tbl[];
+extern const u32 combo_score_tbl[][2];
+
+const u16 stngauge_puttbl_0[9] = {
+    0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8,
+};
+
+const u16 stngauge_puttbl_1[9] = {
+    0x170, 0x171, 0x172, 0x173, 0x174, 0x175, 0x176, 0x177, 0x178,
+};
+
+const u16 stngauge_postbl_0[11] = {
+    0x14, 0x13, 0x12, 0x11, 0x10, 0xF, 0xE, 0xD, 0xC, 0xB, 0xA,
+};
+
+const u16 stngauge_postbl_1[11] = {
+    0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25,
+};
+
+const u16 stngauge_postbl_0_2[11] = {
+    0x1B, 0x1A, 0x19, 0x18, 0x17, 0x16, 0x15, 0x14, 0x13, 0x12, 0x11,
+};
+
+const u16 stngauge_postbl_1_2[11] = {
+    0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C,
+};
+
+const s16 stun_genkai_tbl[14] = {
+    88, 80, 64, 64, 72, 64, 88, 64, 64, 72, 64, 64, 64, -9,
+};
+
+const s16 cmb_pos_tbl[2][2][21] = {
+    {
+        { 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27 },
+        { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 },
+    },
+    {
+        { 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41 },
+        { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 },
+    },
+};
+
+const s16 cmb_window_move_tbl[7] = {
+    12, 16, 20, 16, 12, 10, 12,
+};
+
+const s16 cmb_window_time_tbl[7] = {
+    28, 40, 60, 60, 50, 50, 24,
+};
+
+const u32 combo_score_tbl[11][2] = {
+    { 0x12C, 0xC8 }, { 0x1F4, 0x190 }, { 0x3E8, 0x258 }, { 0x3E8, 0x258 },
+    { 0x7D0, 0x320 }, { 0xBB8, 0x258 }, { 0xFA0, 0x320 }, { 0x1388, 0x3E8 },
+    { 0x1770, 0x7D0 }, { 0x1F40, 0x7D0 }, { 0x2328, 0xBB8 },
+};

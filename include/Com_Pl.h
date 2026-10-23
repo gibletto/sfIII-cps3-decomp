@@ -1,0 +1,80 @@
+#ifndef COM_PL_H
+#define COM_PL_H
+
+#include "structs.h"
+
+void Be_Catch(PLW* wk);
+s32 CPU_Sub(PLW* wk);
+void Check_At_Count(PLW* wk);
+s32 Check_Hamari(PLW* wk);
+s32 Check_Caught(PLW* wk);
+s32 Check_Counter_Attack(PLW* wk);
+s32 Check_Damage(PLW* wk);
+s32 Check_Flip(PLW* wk);
+s32 Check_Flip_Attack(PLW* wk);
+void Check_Guard_Type(PLW* wk, WORK* em);
+void Check_No12_Shell_Guard(PLW* wk);
+void Check_Store_Lv(PLW* wk);
+s32 Ck_Exit_Guard(PLW* wk, WORK* em);
+void Clear_Com_Flag(PLW* wk);
+void Com_Active(PLW* wk);
+void Com_Before_Follow(PLW* wk);
+void Com_Before_Passive(PLW* wk);
+void Com_Catch(PLW* wk);
+void Com_Caught(PLW* wk);
+void Com_Damage(PLW* wk);
+void Com_Flip(PLW* wk);
+void Com_Float(PLW* wk);
+void Com_Follow(PLW* wk);
+void Com_Free(PLW* wk);
+void Com_Guard(PLW* wk);
+void Com_Initialize(PLW* wk);
+void Com_Passive(PLW* wk);
+s32 Com_Rapid_Sub(PLW* wk, s16 Shot, s16* dir_step);
+void Com_VS_Shell(PLW* wk);
+void Com_Wait_Lie(PLW* wk);
+s32 Command_Attack_SP(PLW* wk, s8 Pl_Number, s16 Tech_Number, s16 Power_Level);
+void Damage_1st(PLW* wk);
+void Damage_2nd(PLW* wk);
+void Damage_5th(PLW* wk);
+void Damage_6th(PLW* wk);
+void Damage_7th(PLW* wk);
+void Damage_8th(PLW* wk);
+void Exit_Damage_Sub(PLW* wk);
+void test_mode_exit(void);
+void screen_flip_offsets_set(void);
+void Zoomf_Init_X(void);
+void Zoomf_Init_Y(void);
+s32 Frame_Up(u16 x, u16 y, u16 add_x, u16 add_y);
+s32 Frame_Down(u16 x, u16 y, u16 add_x, u16 add_y);
+void Frame_Adgjust(u16 pos_x, u16 pos_y);
+void Flip_1st(PLW* wk);
+void Flip_2nd(PLW* wk);
+void Flip_Zero(PLW* wk);
+void Float_2nd(PLW* wk);
+void Float_3rd(PLW* wk);
+void Float_4th(PLW* wk);
+void Main_Program(PLW* wk);
+void Next_Be_Float(PLW* wk);
+void Next_Be_Free();
+void Pattern_Insurance(PLW* wk, s16 Kind_Of_Insurance, s16 Forced_Number);
+void Setup_Bullet_Counter(PLW* wk);
+void Shift_Resume_Lv(PLW* wk);
+void Store_LR_Sub(PLW* wk);
+void test_menu_select(void);
+void test_mode_wait(void);
+void test_menu_init(void);
+void test_menu_run(void);
+void kill_mode_tasks(void);
+void test_mode_task(void);
+void boot_task(void);
+void mode_init_task();
+void region_setup(void);
+void region_group_params_set(void);
+void Zoomf_Init(void);
+void set_screen_mode();
+void Damage_3rd(PLW* );
+void Damage_4th(PLW* );
+void screen_window_regs_update(void);
+
+#endif

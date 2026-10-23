@@ -1,0 +1,5 @@
+; D_02007398: initialised work RAM 02007398-020073C2 (42 bytes): names only; the build copies the initial values from the ROM (06442FF8)
+          .CPU        SH2
+          .SECTION    D,DATA,ALIGN=4
+          .RES.B      42
+          .END

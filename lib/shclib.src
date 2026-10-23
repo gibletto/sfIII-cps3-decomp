@@ -1,0 +1,547 @@
+; shclib.src  Compiler run-time library: division, modulo, block move and shifts
+;
+; Arithmetic helpers called by compiled C code, with operands passed in registers.
+; __divls / __divlu are the signed and unsigned 32-bit divides and __divws the 16-bit signed
+; divide, built on the SH-2 DIV0/DIV1 step instructions; __modls returns the signed
+; remainder. __quick_mvn is the fast block move for structure copies.
+; __sftl is the variable-count left shift: counts of 32 or more give 0, other counts jump through
+; a byte offset table into an unrolled run of shift instructions. _abs is the C library's abs().
+; __sftra (the library's arithmetic-right shift and its offset table) is not linked, so the module ends after
+; the shift run, and abs follows.
+
+          .CPU        SH2
+          .IMPORT     _errno
+          .EXPORT     __divls
+          .EXPORT     __divlu
+          .EXPORT     __divws
+          .EXPORT     __modls
+          .EXPORT     __quick_mvn
+          .EXPORT     __sftl
+          .EXPORT     _abs
+          .SECTION    PSYS,CODE,ALIGN=4
+__divls:
+          TST         R0,R0
+          MOV.L       R2,@-R15
+          BT          divls_1
+          MOV.L       R3,@-R15
+          MOV         #0,R2
+          DIV0S       R2,R1
+          SUBC        R3,R3
+          SUBC        R2,R1
+          DIV0S       R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          ADDC        R2,R1
+          MOV         R1,R0
+          MOV.L       @R15+,R3
+          RTS
+          MOV.L       @R15+,R2
+divls_1:
+          MOV.L       p_errno,R1
+          MOV.L       k_divls_2,R2
+          MOV         #0,R0
+          MOV.L       R2,@R1
+          RTS
+          MOV.L       @R15+,R2
+          .DATA.W     H'0009
+          .ALIGN      4
+p_errno:
+          .DATA.L     _errno
+k_divls_2:
+          .DATA.L     H'0000044E
+__divlu:
+          TST         R0,R0
+          MOV.L       R2,@-R15
+          BT          divlu_1
+          MOV         #0,R2
+          DIV0U
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          DIV1        R0,R2
+          ROTCL       R1
+          MOV         R1,R0
+          RTS
+          MOV.L       @R15+,R2
+divlu_1:
+          MOV.L       p_errno_2,R2
+          MOV.L       k_divlu_2,R1
+          MOV         #0,R0
+          MOV.L       R1,@R2
+          RTS
+          MOV.L       @R15+,R2
+          .DATA.W     H'0009
+          .ALIGN      4
+p_errno_2:
+          .DATA.L     _errno
+k_divlu_2:
+          .DATA.L     H'0000044E
+__divws:
+          EXTS.W      R0,R0
+          TST         R0,R0
+          BT/S        divws_1
+          MOV.L       R2,@-R15
+          EXTS.W      R1,R1
+          MOV         #0,R2
+          DIV0S       R2,R1
+          SUBC        R2,R1
+          SHLL16      R0
+          DIV0S       R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          DIV1        R0,R1
+          EXTS.W      R1,R0
+          ROTCL       R0
+          ADDC        R2,R0
+          RTS
+          MOV.L       @R15+,R2
+divws_1:
+          MOV.L       p_errno_3,R2
+          MOV.L       k_divws_2,R1
+          MOV.L       R1,@R2
+          RTS
+          MOV.L       @R15+,R2
+          .ALIGN      4
+p_errno_3:
+          .DATA.L     _errno
+k_divws_2:
+          .DATA.L     H'0000044E
+__modls:
+          TST         R0,R0
+          MOV.L       R2,@-R15
+          BT          modls_2
+          MOV.L       R3,@-R15
+          MOV         #0,R2
+          MOV.L       R4,@-R15
+          DIV0S       R2,R1
+          MOVT        R4
+          SUBC        R3,R3
+          SUBC        R2,R1
+          DIV0S       R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          ROTCL       R1
+          DIV1        R0,R3
+          DIV0S       R2,R3
+          MOVT        R2
+          XOR         R4,R2
+          ROTCR       R2
+          BF          modls_1
+          DIV0S       R0,R3
+          SHAR        R3
+          DIV1        R0,R3
+modls_1:
+          ADD         R4,R3
+          MOV         R3,R0
+          MOV.L       @R15+,R4
+          MOV.L       @R15+,R3
+          RTS
+          MOV.L       @R15+,R2
+modls_2:
+          MOV.L       p_errno_4,R1
+          MOV.L       k_modls_3,R2
+          MOV         #0,R0
+          MOV.L       R2,@R1
+          RTS
+          MOV.L       @R15+,R2
+          .DATA.W     H'0009
+          .ALIGN      4
+p_errno_4:
+          .DATA.L     _errno
+k_modls_3:
+          .DATA.L     H'0000044E
+__quick_mvn:
+          MOV.L       R3,@-R15
+          MOV         #64,R3
+          CMP/HS      R0,R3
+          BF          quick_mvn_2
+          MOV.L       p_quick_mvn_1,R3
+          MOV.L       @(R0,R3),R3
+          JMP         @R3
+          NOP
+          .ALIGN      4
+p_quick_mvn_1:
+          .DATA.L     quick_mvn_1
+          .DATA.W     H'0009
+          .DATA.W     H'502F
+          .DATA.W     H'110F
+          .DATA.W     H'502E
+          .DATA.W     H'110E
+          .DATA.W     H'502D
+          .DATA.W     H'110D
+          .DATA.W     H'502C
+          .DATA.W     H'110C
+          .DATA.W     H'502B
+          .DATA.W     H'110B
+          .DATA.W     H'502A
+          .DATA.W     H'110A
+          .DATA.W     H'5029
+          .DATA.W     H'1109
+          .DATA.W     H'5028
+          .DATA.W     H'1108
+          .DATA.W     H'5027
+          .DATA.W     H'1107
+          .DATA.W     H'5026
+          .DATA.W     H'1106
+          .DATA.W     H'5025
+          .DATA.W     H'1105
+          .DATA.W     H'5024
+          .DATA.W     H'1104
+          .DATA.W     H'5023
+          .DATA.W     H'1103
+          .DATA.W     H'5022
+          .DATA.W     H'1102
+          .DATA.W     H'5021
+          .DATA.W     H'1101
+          .DATA.W     H'6022
+          .DATA.W     H'2102
+quick_mvn_rts:
+          .DATA.W     H'000B
+          .DATA.W     H'63F6
+          .DATA.W     H'0009
+; Jump table for copies of 64 bytes or less: entry n/4 enters the move run above n bytes before its RTS.
+quick_mvn_1:
+          .DATA.L     quick_mvn_rts
+          .DATA.L     quick_mvn_rts-4
+          .DATA.L     quick_mvn_rts-8
+          .DATA.L     quick_mvn_rts-12
+          .DATA.L     quick_mvn_rts-16
+          .DATA.L     quick_mvn_rts-20
+          .DATA.L     quick_mvn_rts-24
+          .DATA.L     quick_mvn_rts-28
+          .DATA.L     quick_mvn_rts-32
+          .DATA.L     quick_mvn_rts-36
+          .DATA.L     quick_mvn_rts-40
+          .DATA.L     quick_mvn_rts-44
+          .DATA.L     quick_mvn_rts-48
+          .DATA.L     quick_mvn_rts-52
+          .DATA.L     quick_mvn_rts-56
+          .DATA.L     quick_mvn_rts-60
+          .DATA.L     quick_mvn_rts-64
+quick_mvn_2:
+          MOV.L       R2,@-R15
+          MOV         R2,R3
+          ADD         R0,R3
+quick_mvn_3:
+          MOV.L       @R2+,R0
+          CMP/HS      R2,R3
+          BF          quick_mvn_4
+          MOV.L       R0,@R1
+          MOV.L       @R2+,R0
+          CMP/HS      R2,R3
+          BF          quick_mvn_4
+          MOV.L       R0,@(4,R1)
+          BRA         quick_mvn_3
+          ADD         #8,R1
+quick_mvn_4:
+          MOV.L       @R15+,R2
+          RTS
+          MOV.L       @R15+,R3
+quick_mvn_5:
+          .DATA.W     H'0E0C
+          .DATA.W     H'0A08
+          .DATA.W     H'0604
+          .DATA.W     H'0200
+          .DATA.W     H'201E
+          .DATA.W     H'1C1A
+          .DATA.W     H'1816
+          .DATA.W     H'1412
+          .DATA.W     H'3432
+          .DATA.W     H'302E
+          .DATA.W     H'2C2A
+          .DATA.W     H'2826
+          .DATA.W     H'403E
+          .DATA.W     H'3C3A
+          .DATA.W     H'4856
+          .DATA.W     H'626C
+__sftl:
+          MOV.L       R2,@-R15
+          CMP/PZ      R1
+          BF/S        sftl_3
+          MOV         #32,R2
+          CMP/GE      R2,R1
+          BT          sftl_1
+          MOV.L       p_quick_mvn_5,R2
+          ADD         R1,R2
+          MOV.B       @R2,R2
+          MOV.L       p_sftl_2,R1
+          ADD         R2,R1
+          JMP         @R1
+          NOP
+          .DATA.W     H'0009
+          .ALIGN      4
+p_sftl_2:
+          .DATA.L     sftl_2
+p_quick_mvn_5:
+          .DATA.L     quick_mvn_5
+sftl_1:
+          MOV         #0,R0
+          RTS
+          MOV.L       @R15+,R2
+sftl_2:
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+sftl_3:
+          RTS
+          MOV.L       @R15+,R2
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4018
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4028
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4000
+          .DATA.W     H'4018
+          .DATA.W     H'4028
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .DATA.W     H'C90F
+          .DATA.W     H'4005
+          .DATA.W     H'4005
+          .DATA.W     H'4005
+          .DATA.W     H'4005
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .DATA.W     H'C907
+          .DATA.W     H'4005
+          .DATA.W     H'4005
+          .DATA.W     H'4005
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .DATA.W     H'C903
+          .DATA.W     H'4005
+          .DATA.W     H'4005
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .DATA.W     H'C901
+          .DATA.W     H'4005
+          .DATA.W     H'000B
+          .DATA.W     H'62F6
+          .RES.W      1         ; fill (FFFF)
+_abs:
+          CMP/PL      R4
+          BF          abs_1
+          RTS
+          MOV         R4,R0
+abs_1:
+          NEG         R4,R0
+          RTS
+          NOP
+          .END

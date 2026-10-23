@@ -1,0 +1,125 @@
+/*
+ * EFF89.C  Effect 89: blinking text rectangle
+ *
+ * effect_89_init (from manage_2.c, EFF84, EFFA4 and n_input.c): blinks the palette of a tilemap text
+ * rectangle (eff89_cell_attr_set).
+ */
+
+#include "structs.h"
+#include "work.h"
+#include "romdata.h"
+#include "extern.h"
+#include "sc_trans.h"
+#include "fifo.h"
+#include "sys_test.h"
+#include "sys_test_2.h"
+#include "sys_test_2b.h"
+#include "sys_test_2c.h"
+#include "sys_test_3.h"
+#include "sys_test_4.h"
+#include "sys_test_5.h"
+#include "CALDIR.h"
+#include "CHARMOVE.h"
+#include "charmove_2.h"
+#include "ta_sub.h"
+#include "aboutspr.h"
+#include "EFFECT.h"
+#include "effect_2.h"
+#include "bg_sub.h"
+#include "bg_sub_2.h"
+#include "bg_sub_3.h"
+#include "bg_sub_5.h"
+#include "eff89.h"
+#include "cps3.h"
+
+
+
+void effect_89_move(WORK_Other* ewk)
+{
+    u16 attr;
+
+    switch (ewk->wu.routine_no[0]) {
+    case 0:
+        ewk->wu.routine_no[0]++;
+        ewk->wu.dir_timer = 1;
+        ewk->wu.dir_step = ewk->wu.vitality;
+        ewk->wu.step_xy_table = &EFF89_Step_Data[ewk->wu.direction];
+        ewk->wu.move_xy_table = ewk->wu.step_xy_table;
+        /* fall through */
+    case 1:
+        if (Exec_Wipe || Break_Into) {
+            ewk->wu.routine_no[0] = 99;
+            break;
+        }
+        if (--ewk->wu.dir_timer != 0) {
+            return;
+        }
+        attr = *ewk->wu.move_xy_table++;
+        ewk->wu.dir_timer = *ewk->wu.move_xy_table++;
+        eff89_cell_attr_set(ewk, attr);
+        if (--ewk->wu.dir_step == 0) {
+            if (ewk->wu.dir_old) {
+                ewk->wu.dir_step = ewk->wu.vitality;
+                ewk->wu.move_xy_table = ewk->wu.step_xy_table;
+            } else {
+                ewk->wu.routine_no[0] = 2;
+            }
+        }
+        break;
+    default:
+        all_cgps_put_back(&ewk->wu);
+        push_effect_work(&ewk->wu);
+        break;
+    }
+}
+
+
+
+/* provisional name */
+void eff89_cell_attr_set(WORK_Other* ewk, s16 attr) {
+    SCR_CELL* cell;
+    SCR_CELL* row;
+    u16* p;
+    s16 h;
+    s16 w;
+    cell = (SCR_CELL*)(ewk->wu.vital_new * 4 + (ewk->wu.vital_old << 8) + SS_RAM);
+    row = cell;
+    h = ewk->wu.dmcal_m;
+    while (h > 0) {
+        for (w = ewk->wu.dm_vital; w > 0; w--) {
+            p = &cell->attr;
+            *p = (*p & 1) | attr;
+            cell++;
+        }
+        row += 64;
+        h--;
+        cell = row;
+    }
+}
+
+
+
+s32 effect_89_init(type, a, b, c, d)
+s16 type;
+s16 a;
+s16 b;
+s16 c;
+s16 d;
+{
+    WORK_Other* ewk;
+    s16 ix;
+    if ((ix = pull_effect_work(4)) == -1) {
+        return -1;
+    }
+    ewk = (WORK_Other*)frw[ix];
+    ewk->wu.be_flag = 1;
+    ewk->wu.id = 89;
+    ewk->wu.vital_new = a;
+    ewk->wu.vital_old = b;
+    ewk->wu.dm_vital = c;
+    ewk->wu.dmcal_m = d;
+    ewk->wu.direction = EFF89_Init_Data[type][0];
+    ewk->wu.dir_old = EFF89_Init_Data[type][1];
+    ewk->wu.vitality = EFF89_Init_Data[type][2];
+    return 0;
+}

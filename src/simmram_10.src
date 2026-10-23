@@ -1,0 +1,203 @@
+; simmram_10.src  SIMM RAM allocator, 0x10-byte blocks
+;
+; The 0x10-byte block free list (simm10_*): list set-up, block allocation for an owner kind, freeing,
+; and purging everything an owner holds; the same routines as simmram.src's 0x40 ones with the other
+; tables. Written in assembler.
+
+          .CPU        SH2
+          .EXPORT     _simmram_freelist_init_10
+          .EXPORT     _simmram_block_alloc_10
+          .EXPORT     _simmram_block_free_10
+          .EXPORT     _simmram_purge_by_owner_10
+          .EXPORT     _simm10_owner
+          .EXPORT     _simm10_link
+          .EXPORT     _simm10_used
+          .SECTION    PSYS,CODE,ALIGN=4
+_simmram_freelist_init_10:
+          MOV.L       p10_link,R2
+          MOV         #0,R0
+          MOV.L       p10_owner,R3
+          MOV         #2,R1
+          MOV.L       p10_used,R4
+          MOV.L       p10_link_end,R5
+          MOV.L       p10_used_end,R6
+init10_loop:
+          MOV.W       R1,@R2
+          MOV.L       R0,@R3
+          ADD         #2,R1
+          ADD         #2,R2
+          ADD         #4,R3
+          CMP/EQ      R4,R6
+          BT          init10_link
+          MOV.L       R0,@R4
+          ADD         #4,R4
+init10_link:
+          CMP/EQ      R2,R5
+          BF          init10_loop
+          RTS
+          NOP
+_simmram_block_alloc_10:
+          MOV.L       R9,@-R15
+          MOV.L       R10,@-R15
+          MOV.L       R11,@-R15
+          MOV         #0,R1
+          MOV.L       alloc10_end,R11
+          MOV         R1,R7
+          MOV.L       alloc10_last,R10
+          MOV         R7,R0
+          MOV.L       p10_link,R9
+          NOP
+alloc10_run:
+          MOV.W       @(R0,R9),R3
+          MOV         R4,R6
+          CMP/EQ      R3,R11
+          BT          alloc10_fail
+          BRA         alloc10_count
+          MOV         R3,R0
+          .ALIGN      4
+alloc10_end:
+          .DATA.L     H'00001002
+alloc10_last:
+          .DATA.L     H'00001000
+alloc10_next:
+          ADD         #2,R0
+alloc10_count:
+          ADD         #-1,R6
+          CMP/EQ      R1,R6
+          BT          alloc10_take
+          CMP/EQ      R0,R10
+          BT          alloc10_fail
+          MOV.W       @(R0,R9),R2
+          ADD         #-2,R2
+          CMP/EQ      R0,R2
+          BT          alloc10_next
+          BRA         alloc10_run
+          MOV         R0,R7
+alloc10_fail:
+          BRA         alloc10_exit
+          MOV         #0,R0
+alloc10_take:
+          MOV.W       @(R0,R9),R11
+          ADD         R7,R9
+          MOV.L       p10_owner,R10
+          MOV         R3,R0
+          MOV.W       R11,@R9
+          SHLL        R0
+          MOV.W       R5,@(R0,R10)
+          ADD         #2,R10
+          MOV.W       R4,@(R0,R10)
+          SHLL        R5
+          MOV.L       p10_used,R11
+          ADD         R5,R11
+          MOV.W       @R11,R10
+          ADD         R10,R4
+          MOV.W       R4,@R11
+          SHLR2       R0
+alloc10_exit:
+          MOV.L       @R15+,R11
+          MOV.L       @R15+,R10
+          RTS
+          MOV.L       @R15+,R9
+_simmram_block_free_10:
+          MOV.L       p10_link,R7
+          MOV         #0,R6
+          MOV.L       p10_owner,R5
+          SHLL        R4
+          MOV         #0,R3
+free10_walk:
+          MOV         R6,R0
+          MOV.W       @(R0,R7),R6
+          CMP/HI      R6,R4
+          BT          free10_walk
+          NOP
+          MOV.W       R4,@(R0,R7)
+          SHLL        R4
+          ADD         R4,R5
+          SHLR        R4
+          MOV.L       @R5,R2
+          SWAP.W      R2,R1
+          EXTU.W      R1,R1
+          EXTU.W      R2,R2
+          MOV.L       R3,@R5
+          ADD         R2,R4
+          ADD         R2,R4
+          ADD         #-2,R4
+          ADD         R4,R7
+          SHLL        R1
+          MOV.W       R6,@R7
+          MOV.L       p10_used,R7
+          ADD         R1,R7
+          MOV.W       @R7,R0
+          SUB         R2,R0
+          RTS
+          MOV.W       R0,@R7
+_simmram_purge_by_owner_10:
+          STS.L       PR,@-R15
+          MOV.L       R8,@-R15
+          MOV.L       R9,@-R15
+          MOV.L       R10,@-R15
+          MOV.L       R11,@-R15
+          MOV.L       R12,@-R15
+          MOV.L       R13,@-R15
+          MOV.L       R14,@-R15
+          MOV.L       p10_owner,R9
+          MOV         #0,R10
+          MOV         #0,R11
+          MOV         R4,R12
+          MOV.L       p10_free,R13
+          MOV         #0,R14
+          MOV         R4,R8
+          MOV.L       p10_used,R1
+          SHLL        R8
+          ADD         R1,R8
+purge10_loop:
+          MOV.W       @R8,R1
+          CMP/EQ      R10,R1
+          BT          purge10_done
+          MOV.L       @R9+,R1
+          SWAP.W      R1,R2
+          EXTU.W      R2,R2
+          EXTU.W      R1,R1
+          CMP/EQ      R1,R10
+          BT          purge10_next
+          CMP/EQ      R2,R12
+          BF          purge10_next
+          MOV         #1,R14
+          JSR         @R13
+          MOV         R11,R4
+purge10_next:
+          BRA         purge10_loop
+          ADD         #1,R11
+purge10_done:
+          MOV         R14,R0
+          MOV.L       @R15+,R14
+          MOV.L       @R15+,R13
+          MOV.L       @R15+,R12
+          MOV.L       @R15+,R11
+          MOV.L       @R15+,R10
+          MOV.L       @R15+,R9
+          MOV.L       @R15+,R8
+          LDS.L       @R15+,PR
+          RTS
+          NOP
+          .ALIGN      4
+p10_link:
+          .DATA.L     _simm10_link
+p10_owner:
+          .DATA.L     _simm10_owner
+p10_used:
+          .DATA.L     _simm10_used
+p10_link_end:
+          .DATA.L     _simm10_link+H'1002
+p10_used_end:
+          .DATA.L     _simm10_used+H'0080
+p10_free:
+          .DATA.L     _simmram_block_free_10
+          .SECTION    B,DATA,ALIGN=4
+_simm10_owner:
+          .RES.W      4098
+_simm10_link:
+          .RES.W      2050
+_simm10_used:
+          .RES.W      64
+          .END

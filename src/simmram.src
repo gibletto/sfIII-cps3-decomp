@@ -1,0 +1,344 @@
+; simmram.src  SIMM RAM allocator
+;
+; The character graphics SIMM work area in blocks: free lists of 0x40-byte and 0x10-byte blocks
+; (simm40_* and simm10_*), block and page allocation for an owner kind, freeing, and purging
+; everything an owner holds. Each free list is a chain of s16 byte offsets in *_link, ending in
+; the list-end mark (0xF82 / 0x1002); *_owner holds kind and block count per allocated run
+; (one long per block), *_used the blocks each kind holds. _simmram_big_page_alloc_40 and
+; _simmram_small_page_alloc_40 look for a free run of 64 or 16 blocks starting on a page
+; boundary and finish through _simmram_block_alloc_40's tail. Written in assembler; the 0x10
+; routines, the same with the other tables, are in simmram_10.src.
+
+          .CPU        SH2
+          .EXPORT     _simmram_freelist_init
+          .EXPORT     _simmram_block_alloc_40
+          .EXPORT     _simmram_big_page_alloc_40
+          .EXPORT     _simmram_small_page_alloc_40
+          .EXPORT     _simmram_block_free_40
+          .EXPORT     _simmram_purge_by_owner_40
+          .EXPORT     _simm40_owner
+          .EXPORT     _simm40_link
+          .EXPORT     _simm40_used
+          .SECTION    PSYS,CODE,ALIGN=4
+_simmram_freelist_init:
+          MOV.L       p40_link,R2
+          MOV         #0,R0
+          MOV.L       p40_owner,R3
+          MOV         #2,R1
+          MOV.L       p40_used,R4
+          MOV.L       p40_link_end,R5
+          MOV.L       p40_used_end,R6
+init40_loop:
+          MOV.W       R1,@R2
+          MOV.L       R0,@R3
+          ADD         #2,R1
+          ADD         #2,R2
+          ADD         #4,R3
+          CMP/EQ      R4,R6
+          BT          init40_link
+          MOV.L       R0,@R4
+          ADD         #4,R4
+init40_link:
+          CMP/EQ      R2,R5
+          BF          init40_loop
+          RTS
+          NOP
+_simmram_block_alloc_40:
+          MOV.L       R9,@-R15
+          MOV.L       R10,@-R15
+          MOV.L       R11,@-R15
+          MOV         #0,R1
+          MOV.L       alloc40_end,R11
+          MOV         R1,R7
+          MOV.L       alloc40_last,R10
+          MOV         R7,R0
+          MOV.L       p40_link,R9
+          NOP
+alloc40_run:
+          MOV.W       @(R0,R9),R3
+          MOV         R4,R6
+          CMP/EQ      R3,R11
+          BT          alloc40_fail
+          BRA         alloc40_count
+          MOV         R3,R0
+          .ALIGN      4
+alloc40_end:
+          .DATA.L     H'00000F82
+alloc40_last:
+          .DATA.L     H'00000F80
+alloc40_next:
+          ADD         #2,R0
+alloc40_count:
+          ADD         #-1,R6
+          CMP/EQ      R1,R6
+          BT          alloc40_take
+          CMP/EQ      R0,R10
+          BT          alloc40_fail
+          MOV.W       @(R0,R9),R2
+          ADD         #-2,R2
+          CMP/EQ      R0,R2
+          BT          alloc40_next
+          BRA         alloc40_run
+          MOV         R0,R7
+alloc40_fail:
+          BRA         alloc40_exit
+          MOV         #0,R0
+alloc40_take:
+          MOV.W       @(R0,R9),R11
+          ADD         R7,R9
+          MOV.L       p40_owner,R10
+          MOV         R3,R0
+          MOV.W       R11,@R9
+          SHLL        R0
+          MOV.W       R5,@(R0,R10)
+          ADD         #2,R10
+          MOV.W       R4,@(R0,R10)
+          SHLL        R5
+          MOV.L       p40_used,R11
+          ADD         R5,R11
+          MOV.W       @R11,R10
+          ADD         R10,R4
+          MOV.W       R4,@R11
+          SHLR2       R0
+alloc40_exit:
+          MOV.L       @R15+,R11
+          MOV.L       @R15+,R10
+          RTS
+          MOV.L       @R15+,R9
+_simmram_big_page_alloc_40:
+          MOV.L       R9,@-R15
+          MOV.L       R10,@-R15
+          MOV.L       R11,@-R15
+          MOV.L       R8,@-R15
+          MOV.L       R12,@-R15
+          MOV         R4,R5
+          MOV         #0,R1
+          MOV.L       big40_end,R11
+          MOV.L       big40_last,R10
+          MOV.L       p40_link,R9
+          MOV.W       big40_first,R4
+          MOV.W       big40_step,R8
+          MOV.W       big40_limit,R12
+          BRA         big40_scan
+          MOV         #0,R0
+big40_first:
+          .DATA.W     H'0042
+big40_step:
+          .DATA.W     H'0080
+big40_limit:
+          .DATA.W     H'0EC2
+          .ALIGN      4
+big40_end:
+          .DATA.L     H'00000F82
+big40_last:
+          .DATA.L     H'00000F80
+big40_skip:
+          ADD         R8,R4
+          CMP/HI      R12,R4
+          BT          page40_fail
+big40_scan:
+          MOV         R0,R7
+          MOV.W       @(R0,R9),R3
+          CMP/EQ      R3,R11
+          BT          page40_fail
+          CMP/HI      R4,R3
+          BT          big40_skip
+          MOV         R3,R0
+          CMP/EQ      R3,R4
+          BT          big40_start
+          BRA         big40_scan
+          NOP
+big40_start:
+          BRA         big40_count
+          MOV         #64,R6
+big40_next:
+          ADD         #2,R0
+big40_count:
+          ADD         #-1,R6
+          CMP/EQ      R1,R6
+          BT          big40_found
+          CMP/EQ      R0,R10
+          BT          page40_fail
+          MOV.W       @(R0,R9),R2
+          ADD         #-2,R2
+          CMP/EQ      R0,R2
+          BT          big40_next
+          BRA         big40_scan
+          MOV         R0,R7
+_simmram_small_page_alloc_40:
+          MOV.L       R9,@-R15
+          MOV.L       R10,@-R15
+          MOV.L       R11,@-R15
+          MOV.L       R8,@-R15
+          MOV.L       R12,@-R15
+          MOV         R4,R5
+          MOV         #0,R1
+          MOV.L       small40_end,R11
+          MOV.L       small40_last,R10
+          MOV.L       p40_link,R9
+          MOV.W       small40_first,R4
+          MOV.W       small40_step,R8
+          MOV.W       small40_limit,R12
+          BRA         small40_scan
+          MOV         #0,R0
+small40_first:
+          .DATA.W     H'0002
+small40_step:
+          .DATA.W     H'0020
+small40_limit:
+          .DATA.W     H'0F62
+          .ALIGN      4
+small40_end:
+          .DATA.L     H'00000F82
+small40_last:
+          .DATA.L     H'00000F80
+small40_skip:
+          ADD         R8,R4
+          CMP/HI      R12,R4
+          BT          page40_fail
+small40_scan:
+          MOV         R0,R7
+          MOV.W       @(R0,R9),R3
+          CMP/EQ      R3,R11
+          BT          page40_fail
+          CMP/HI      R4,R3
+          BT          small40_skip
+          MOV         R3,R0
+          CMP/EQ      R3,R4
+          BT          small40_start
+          BRA         small40_scan
+          NOP
+small40_start:
+          BRA         small40_count
+          MOV         #16,R6
+small40_next:
+          ADD         #2,R0
+small40_count:
+          ADD         #-1,R6
+          CMP/EQ      R1,R6
+          BT          small40_found
+          CMP/EQ      R0,R10
+          BT          page40_fail
+          MOV.W       @(R0,R9),R2
+          ADD         #-2,R2
+          CMP/EQ      R0,R2
+          BT          small40_next
+          BRA         small40_scan
+          MOV         R0,R7
+page40_fail:
+          MOV.L       @R15+,R12
+          BRA         alloc40_fail
+          MOV.L       @R15+,R8
+big40_found:
+          MOV         #64,R4
+          MOV.L       @R15+,R12
+          BRA         alloc40_take
+          MOV.L       @R15+,R8
+small40_found:
+          MOV         #16,R4
+          MOV.L       @R15+,R12
+          BRA         alloc40_take
+          MOV.L       @R15+,R8
+_simmram_block_free_40:
+          MOV.L       p40_link,R7
+          MOV         #0,R6
+          MOV.L       p40_owner,R5
+          SHLL        R4
+          MOV         #0,R3
+free40_walk:
+          MOV         R6,R0
+          MOV.W       @(R0,R7),R6
+          CMP/HI      R6,R4
+          BT          free40_walk
+          NOP
+          MOV.W       R4,@(R0,R7)
+          SHLL        R4
+          ADD         R4,R5
+          SHLR        R4
+          MOV.L       @R5,R2
+          SWAP.W      R2,R1
+          EXTU.W      R1,R1
+          EXTU.W      R2,R2
+          MOV.L       R3,@R5
+          ADD         R2,R4
+          ADD         R2,R4
+          ADD         #-2,R4
+          ADD         R4,R7
+          SHLL        R1
+          MOV.W       R6,@R7
+          MOV.L       p40_used,R7
+          ADD         R1,R7
+          MOV.W       @R7,R0
+          SUB         R2,R0
+          RTS
+          MOV.W       R0,@R7
+_simmram_purge_by_owner_40:
+          STS.L       PR,@-R15
+          MOV.L       R8,@-R15
+          MOV.L       R9,@-R15
+          MOV.L       R10,@-R15
+          MOV.L       R11,@-R15
+          MOV.L       R12,@-R15
+          MOV.L       R13,@-R15
+          MOV.L       R14,@-R15
+          MOV.L       p40_owner,R9
+          MOV         #0,R10
+          MOV         #0,R11
+          MOV         R4,R12
+          MOV.L       p40_free,R13
+          MOV         #0,R14
+          MOV         R4,R8
+          MOV.L       p40_used,R1
+          SHLL        R8
+          ADD         R1,R8
+purge40_loop:
+          MOV.W       @R8,R1
+          CMP/EQ      R10,R1
+          BT          purge40_done
+          MOV.L       @R9+,R1
+          SWAP.W      R1,R2
+          EXTU.W      R2,R2
+          EXTU.W      R1,R1
+          CMP/EQ      R1,R10
+          BT          purge40_next
+          CMP/EQ      R2,R12
+          BF          purge40_next
+          MOV         #1,R14
+          JSR         @R13
+          MOV         R11,R4
+purge40_next:
+          BRA         purge40_loop
+          ADD         #1,R11
+purge40_done:
+          MOV         R14,R0
+          MOV.L       @R15+,R14
+          MOV.L       @R15+,R13
+          MOV.L       @R15+,R12
+          MOV.L       @R15+,R11
+          MOV.L       @R15+,R10
+          MOV.L       @R15+,R9
+          MOV.L       @R15+,R8
+          LDS.L       @R15+,PR
+          RTS
+          NOP
+          .ALIGN      4
+p40_link:
+          .DATA.L     _simm40_link
+p40_owner:
+          .DATA.L     _simm40_owner
+p40_used:
+          .DATA.L     _simm40_used
+p40_link_end:
+          .DATA.L     _simm40_link+H'0F82
+p40_used_end:
+          .DATA.L     _simm40_used+H'0080
+p40_free:
+          .DATA.L     _simmram_block_free_40
+          .SECTION    B,DATA,ALIGN=4
+_simm40_owner:
+          .RES.W      3970
+_simm40_link:
+          .RES.W      1986
+_simm40_used:
+          .RES.W      64
+          .END

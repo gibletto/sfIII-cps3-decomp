@@ -1,0 +1,648 @@
+; intr.src  Interrupt and exception entry points
+;
+; The exception traps (_exc_trapa, _exc_illegal_instr, _exc_illegal_slot, _exc_cpu_addr_err,
+; _exc_dma_addr_err) record a cause code 0-4 in exception_code; exc_save_regs then dumps all CPU and
+; control registers to exception_regs, switches to the system stack and jumps to cpu_hang_forever.
+; _sprite_poly_queue_flush is the sprite DMA end interrupt: it switches to the interrupt stack, masks interrupts and drains the polygon/sprite queue.
+; _vblank_frame_dispatch is the vertical blank interrupt: it counts frames, updates the screen
+; window, scroll, zoom and family registers, reads the switches, coins and card dispenser, calls
+; the optional user hook, builds the sprite display list, runs the opening demo when active and
+; ticks the sound driver. _frt_compare_intr is the timer interrupt that counts ticks and
+; samples the coin switches; _irq_spare_ack_intr and _frt_overflow_intr only acknowledge their
+; interrupt sources.
+
+          .CPU        SH2
+          .INCLUDE    "include\cps3.inc"
+          .IMPORT     _vblank_user_hook
+          .IMPORT     _coin_sw_sample
+          .IMPORT     _sprite_dma_end_wait
+          .IMPORT     _coin_chutes_update
+          .IMPORT     _cpu_hang_forever
+          .IMPORT     _dma_src_ack_seq
+          .IMPORT     _task_sleep_tick
+          .IMPORT     _oh_opening_demo
+          .IMPORT     _scroll_layers_finalize_frame
+          .IMPORT     _sound_driver_tick
+          .IMPORT     _sprite_display_list_build
+          .IMPORT     _sprite_poly_queue_drain_try
+          .IMPORT     _sprite_poly_queue_drain_wait
+          .IMPORT     _coin_in_sound_request
+          .IMPORT     _screen_window_regs_update
+          .IMPORT     _zoom_regs_update
+          .IMPORT     _Irl_Family
+          .IMPORT     _service_coin_check
+          .IMPORT     _coin_lockout_update
+          .IMPORT     _switch_read_six_button
+          .IMPORT     _coin_sw_shift
+          .IMPORT     _dispenser_sw_read
+          .IMPORT     _dispenser_control
+          .EXPORT     _irq_spare_ack_intr
+          .EXPORT     _frt_overflow_intr
+          .EXPORT     _exc_trapa
+          .EXPORT     _exc_illegal_slot
+          .EXPORT     _exc_dma_addr_err
+          .EXPORT     _exc_cpu_addr_err
+          .EXPORT     _exc_illegal_instr
+          .EXPORT     _frt_compare_intr
+          .EXPORT     _sprite_poly_queue_flush
+          .EXPORT     _vblank_frame_dispatch
+          .IMPORT     _vbl_frame_mask_tbl
+          .IMPORT     _system_timer
+          .IMPORT     _vsync_flag
+          .IMPORT     _exception_code
+          .IMPORT     _exception_regs
+          .IMPORT     _isp_exception
+          .IMPORT     _isp_sprite_poly
+          .IMPORT     _isp_vblank
+          .IMPORT     _frt_tick_count
+          .IMPORT     _coin_out_latch
+          .IMPORT     _Cd_Error_Flag
+          .IMPORT     _test_flag
+          .IMPORT     _task_tick_mode
+          .IMPORT     _task_tick_mask
+          .IMPORT     _system_ctrl_flag
+          .IMPORT     _bg_vbl_trans_flag
+          .IMPORT     _bg_w
+          .IMPORT     _frame_ready
+          .IMPORT     _isp_irq_spare
+          .IMPORT     _isp_frt_compare
+          .IMPORT     _isp_frt_overflow
+          .SECTION    P,CODE,ALIGN=4
+_exc_trapa:
+          MOV.L       R0,@-R15
+          MOV.L       R1,@-R15
+          MOV.L       p_exception_code,R0
+          MOV.L       k_0,R1
+          MOV.L       R1,@R0
+          MOV.L       @R15+,R1
+          BRA         exc_save_regs
+          NOP
+          .ALIGN      4
+p_exception_code:
+          .DATA.L     _exception_code
+k_0:
+          .DATA.L     H'00000000
+_exc_illegal_instr:
+          MOV.L       R0,@-R15
+          MOV.L       R1,@-R15
+          MOV.L       p_exception_code_2,R0
+          MOV.L       k_1,R1
+          MOV.L       R1,@R0
+          MOV.L       @R15+,R1
+          BRA         exc_save_regs
+          NOP
+          .ALIGN      4
+p_exception_code_2:
+          .DATA.L     _exception_code
+k_1:
+          .DATA.L     H'00000001
+_exc_illegal_slot:
+          MOV.L       R0,@-R15
+          MOV.L       R1,@-R15
+          MOV.L       p_exception_code_3,R0
+          MOV.L       k_2,R1
+          MOV.L       R1,@R0
+          MOV.L       @R15+,R1
+          BRA         exc_save_regs
+          NOP
+          .ALIGN      4
+p_exception_code_3:
+          .DATA.L     _exception_code
+k_2:
+          .DATA.L     H'00000002
+_exc_cpu_addr_err:
+          MOV.L       R0,@-R15
+          MOV.L       R1,@-R15
+          MOV.L       p_exception_code_4,R0
+          MOV.L       k_3,R1
+          MOV.L       R1,@R0
+          MOV.L       @R15+,R1
+          BRA         exc_save_regs
+          NOP
+          .ALIGN      4
+p_exception_code_4:
+          .DATA.L     _exception_code
+k_3:
+          .DATA.L     H'00000003
+_exc_dma_addr_err:
+          MOV.L       R0,@-R15
+          MOV.L       R1,@-R15
+          MOV.L       p_exception_code_5,R0
+          MOV.L       k_4,R1
+          MOV.L       R1,@R0
+          MOV.L       @R15+,R1
+exc_save_regs:
+          MOV.L       p_exception_regs,R0
+          MOV.L       R1,@(4,R0)
+          MOV.L       R2,@(8,R0)
+          MOV.L       R3,@(12,R0)
+          MOV.L       R4,@(16,R0)
+          MOV.L       R5,@(20,R0)
+          MOV.L       R6,@(24,R0)
+          MOV.L       R7,@(28,R0)
+          MOV.L       R8,@(32,R0)
+          MOV.L       R9,@(36,R0)
+          MOV.L       R10,@(40,R0)
+          MOV.L       R11,@(44,R0)
+          MOV.L       R12,@(48,R0)
+          MOV.L       R13,@(52,R0)
+          MOV.L       R14,@(56,R0)
+          MOV.L       @R15+,R1
+          MOV.L       R1,@(0,R0)
+          ADD         #64,R0
+          MOV.L       @R15+,R1
+          MOV.L       R1,@(24,R0)
+          MOV.L       @R15+,R1
+          MOV.L       R1,@(0,R0)
+          STC         GBR,R1
+          MOV.L       R1,@(4,R0)
+          STC         VBR,R1
+          MOV.L       R1,@(4,R0)
+          STS         MACH,R1
+          MOV.L       R1,@(12,R0)
+          STS         MACL,R1
+          MOV.L       R1,@(16,R0)
+          STS         PR,R1
+          MOV.L       R1,@(20,R0)
+          ADD         #-64,R0
+          MOV.L       R15,@(60,R0)
+          MOV.L       p_isp_exception,R0
+          MOV.L       @R0,R15
+          MOV.L       p_cpu_hang_forever,R0
+          JMP         @R0
+          NOP
+          .DATA.W     H'0000
+          .ALIGN      4
+p_exception_code_5:
+          .DATA.L     _exception_code
+k_4:
+          .DATA.L     H'00000004
+p_exception_regs:
+          .DATA.L     _exception_regs
+p_isp_exception:
+          .DATA.L     _isp_exception
+p_cpu_hang_forever:
+          .DATA.L     _cpu_hang_forever
+_sprite_poly_queue_flush:
+          MOV.L       R0,@-R15
+          MOV.L       p_isp_sprite_poly,R0
+          MOV.L       @R0,R0
+          MOV.L       R15,@-R0
+          MOV         R0,R15
+          STC         SR,R0
+          MOV.L       R7,@-R15
+          MOV.L       R6,@-R15
+          MOV.L       R5,@-R15
+          MOV.L       R4,@-R15
+          MOV.L       R3,@-R15
+          MOV.L       R2,@-R15
+          MOV.L       R1,@-R15
+          STS.L       PR,@-R15
+          MOV.W       k_sr_imask_clear,R3
+          AND         R3,R0
+          OR          #240,R0
+          LDC         R0,SR
+          MOV.L       p_sprite_poly_queue_drain_wait,R2
+          JSR         @R2
+          NOP
+          MOV         #0,R1
+          MOV.L       k_irq10_ack,R2
+          MOV.W       R1,@R2
+          LDS.L       @R15+,PR
+          MOV.L       @R15+,R1
+          MOV.L       @R15+,R2
+          MOV.L       @R15+,R3
+          MOV.L       @R15+,R4
+          MOV.L       @R15+,R5
+          MOV.L       @R15+,R6
+          MOV.L       @R15+,R7
+          MOV.L       @R15+,R15
+          MOV.L       @R15+,R0
+          RTE
+          NOP
+k_sr_imask_clear:
+          .DATA.W     H'FF0F
+          .RES.W      1         ; fill
+          .ALIGN      4
+p_isp_sprite_poly:
+          .DATA.L     _isp_sprite_poly
+p_sprite_poly_queue_drain_wait:
+          .DATA.L     _sprite_poly_queue_drain_wait
+k_irq10_ack:
+          .DATA.L     IRQ10_ACK
+_vblank_frame_dispatch:
+          MOV.L       R0,@-R15
+          MOV.L       p_isp_vblank,R0
+          MOV.L       @R0,R0
+          MOV.L       R15,@-R0
+          MOV         R0,R15
+          MOV.L       R14,@-R15
+          MOV.L       R13,@-R15
+          MOV.L       R7,@-R15
+          MOV.L       R6,@-R15
+          MOV.L       R5,@-R15
+          MOV.L       R4,@-R15
+          MOV.L       R3,@-R15
+          MOV.L       R2,@-R15
+          MOV.L       R1,@-R15
+          STS.L       PR,@-R15
+          ADD         #-36,R15
+          MOV.L       p_vbl_frame_mask_tbl,R3
+          MOV         R15,R0
+          MOV.L       @R3,R2
+          ADD         #4,R0
+          MOV.L       R2,@R0
+          MOV.L       @(4,R3),R2
+          MOV.L       R2,@(4,R0)
+          MOV.L       @(8,R3),R2
+          MOV.L       R2,@(8,R0)
+          MOV.L       @(12,R3),R2
+          MOV.L       R2,@(12,R0)
+          MOV.L       @(16,R3),R2
+          MOV.L       R2,@(16,R0)
+          MOV.L       @(20,R3),R2
+          MOV.L       R2,@(20,R0)
+          MOV.L       @(24,R3),R2
+          MOV.W       k_sr_imask_clear_2,R1
+          MOV.L       R2,@(24,R0)
+          MOV.L       @(28,R3),R2
+          MOV.L       R2,@(28,R0)
+          STC         SR,R0
+          AND         R1,R0
+          OR          #240,R0
+          LDC         R0,SR
+          MOV.L       p_vsync_flag,R0
+          MOV         #0,R14
+          MOV.L       p_frt_tick_count,R1
+          MOV         #1,R2
+          MOV.L       p_system_timer,R13
+          MOV.B       R2,@R0
+          MOV.L       @R13,R2
+          ADD         #1,R2
+          MOV.L       R2,@R13
+          MOV.L       R14,@R1
+          MOV.W       k_sh2_frch,R3
+          MOV.B       R14,@R3
+          MOV.W       k_sh2_frcl,R2
+          MOV.L       p_sprite_poly_queue_drain_try,R1
+          JSR         @R1
+          MOV.B       R14,@R2
+          MOV.L       p_Irl_Family,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_coin_out_latch,R3
+          MOV.L       k_C000,R2
+          MOV.B       @R3,R1
+          MOV.L       k_io_reg_8,R0
+          OR          R2,R1
+          MOV.L       p_screen_window_regs_update,R3
+          JSR         @R3
+          MOV.W       R1,@R0
+          MOV.L       p_dma_src_ack_seq,R2
+          JSR         @R2
+          NOP
+          MOV.L       p_scroll_layers_finalize_frame,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_zoom_regs_update,R2
+          JSR         @R2
+          NOP
+          MOV.L       p_Cd_Error_Flag,R2
+          MOV.B       @R2,R3
+          TST         R3,R3
+          BF          vbl_tick_mode
+          MOV.L       p_switch_read_six_button,R1
+          JSR         @R1
+          NOP
+          MOV.L       p_dispenser_sw_read,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_dispenser_control,R1
+          JSR         @R1
+          NOP
+          MOV.L       p_coin_in_sound_request,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_test_flag,R0
+          MOV.B       @R0,R1
+          TST         R1,R1
+          BF          vbl_tick_mode
+          MOV.L       p_coin_sw_shift,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_boot_control_test_dispatcher,R2
+          JSR         @R2
+          MOV         #0,R4
+          MOV.L       p_coin_lockout_update,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_coin_sw_sample,R2
+          JSR         @R2
+          NOP
+          MOV.L       p_coin_sw_shift,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_boot_control_test_dispatcher,R2
+          JSR         @R2
+          MOV         #1,R4
+          MOV.L       p_service_coin_check,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_coin_lockout_update,R2
+          JSR         @R2
+          NOP
+vbl_tick_mode:
+          MOV.L       p_task_tick_mode,R3
+          MOV.B       @R3,R0
+          CMP/EQ      #0,R0
+          BT          vbl_frame_tick
+          CMP/EQ      #1,R0
+          BT          vbl_after_tick
+          CMP/EQ      #2,R0
+          BT          vbl_tick_masked
+          CMP/EQ      #3,R0
+          BT          vbl_after_tick
+          BRA         vbl_frame_tick
+          NOP
+k_sr_imask_clear_2:
+          .DATA.W     H'FF0F
+k_sh2_frch:
+          .DATA.W     SH2_FRCH
+k_sh2_frcl:
+          .DATA.W     SH2_FRCL
+          .RES.W      1         ; fill
+          .ALIGN      4
+p_isp_vblank:
+          .DATA.L     _isp_vblank
+p_vbl_frame_mask_tbl:
+          .DATA.L     _vbl_frame_mask_tbl
+p_vsync_flag:
+          .DATA.L     _vsync_flag
+p_system_timer:
+          .DATA.L     _system_timer
+p_frt_tick_count:
+          .DATA.L     _frt_tick_count
+p_sprite_poly_queue_drain_try:
+          .DATA.L     _sprite_poly_queue_drain_try
+p_Irl_Family:
+          .DATA.L     _Irl_Family
+p_coin_out_latch:
+          .DATA.L     _coin_out_latch
+k_C000:
+          .DATA.L     H'0000C000
+k_io_reg_8:
+          .DATA.L     IO_REG+H'8
+p_screen_window_regs_update:
+          .DATA.L     _screen_window_regs_update
+p_dma_src_ack_seq:
+          .DATA.L     _dma_src_ack_seq
+p_scroll_layers_finalize_frame:
+          .DATA.L     _scroll_layers_finalize_frame
+p_zoom_regs_update:
+          .DATA.L     _zoom_regs_update
+p_Cd_Error_Flag:
+          .DATA.L     _Cd_Error_Flag
+p_switch_read_six_button:
+          .DATA.L     _switch_read_six_button
+p_dispenser_sw_read:
+          .DATA.L     _dispenser_sw_read
+p_dispenser_control:
+          .DATA.L     _dispenser_control
+p_coin_in_sound_request:
+          .DATA.L     _coin_in_sound_request
+p_test_flag:
+          .DATA.L     _test_flag
+p_coin_sw_shift:
+          .DATA.L     _coin_sw_shift
+p_boot_control_test_dispatcher:
+          .DATA.L     _coin_chutes_update
+p_coin_lockout_update:
+          .DATA.L     _coin_lockout_update
+p_coin_sw_sample:
+          .DATA.L     _coin_sw_sample
+p_service_coin_check:
+          .DATA.L     _service_coin_check
+p_task_tick_mode:
+          .DATA.L     _task_tick_mode
+vbl_tick_masked:
+          MOV.L       p_task_tick_mask,R1
+          MOV.L       @R1,R3
+          MOV.L       @R13,R2
+          TST         R3,R2
+          BF          vbl_after_tick
+vbl_frame_tick:
+          MOV.L       p_frame_tick,R3
+          JSR         @R3
+          NOP
+vbl_after_tick:
+          MOV.L       p_system_ctrl_flag,R3
+          MOV.B       @R3,R0
+          TST         #2,R0
+          BT          vbl_sprite_dma
+          MOV.L       p_vblank_user_hook,R2
+          JSR         @R2
+          NOP
+vbl_sprite_dma:
+          MOV.L       p_sprite_dma_end_wait,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_bg_vbl_trans_flag,R3
+          MOV.B       @R3,R1
+          TST         R1,R1
+          BT          vbl_display_list
+          MOV.L       p_bg_w_54,R2
+          MOV         #100,R0
+          MOV.W       k_1800,R7
+          MOV         #32,R6
+          MOV.L       R2,@R15
+          MOV         #16,R3
+          MOV.W       @(R0,R2),R1
+          MOV         R6,R5
+          MOV.L       R1,@-R15
+          MOV         #64,R2
+          MOV.L       R2,@-R15
+          MOV.L       R3,@-R15
+          MOV.L       @(12,R15),R4
+          MOV.L       p_oh_opening_demo,R2
+          JSR         @R2
+          MOV.L       @(40,R4),R4
+          ADD         #12,R15
+vbl_display_list:
+          MOV.L       p_sprite_display_list_build,R3
+          JSR         @R3
+          NOP
+          MOV.L       p_frame_ready,R2
+          MOV.L       p_sound_driver_tick,R3
+          JSR         @R3
+          MOV.L       R14,@R2
+          MOV.L       k_irq12_ack,R1
+          MOV.W       R14,@R1
+          ADD         #36,R15
+          LDS.L       @R15+,PR
+          MOV.L       @R15+,R1
+          MOV.L       @R15+,R2
+          MOV.L       @R15+,R3
+          MOV.L       @R15+,R4
+          MOV.L       @R15+,R5
+          MOV.L       @R15+,R6
+          MOV.L       @R15+,R7
+          MOV.L       @R15+,R13
+          MOV.L       @R15+,R14
+          MOV.L       @R15+,R15
+          MOV.L       @R15+,R0
+          RTE
+          NOP
+_irq_spare_ack_intr:
+          MOV.L       R0,@-R15
+          MOV.L       p_isp_irq_spare,R0
+          MOV.L       @R0,R0
+          MOV.L       R15,@-R0
+          MOV         R0,R15
+          MOV.L       R3,@-R15
+          MOV         #0,R3
+          MOV.L       R2,@-R15
+          MOV.L       k_irq14_ack,R2
+          MOV.W       R3,@R2
+          MOV.L       @R15+,R2
+          MOV.L       @R15+,R3
+          MOV.L       @R15+,R15
+          MOV.L       @R15+,R0
+          RTE
+          NOP
+_frt_compare_intr:
+          MOV.L       R0,@-R15
+          MOV.L       p_isp_frt_compare,R0
+          MOV.L       @R0,R0
+          MOV.L       R15,@-R0
+          MOV         R0,R15
+          MOV.L       R7,@-R15
+          MOV.L       R6,@-R15
+          MOV.L       R5,@-R15
+          MOV.L       R4,@-R15
+          MOV.L       R3,@-R15
+          MOV.L       R2,@-R15
+          MOV.L       R1,@-R15
+          STS.L       PR,@-R15
+          MOV.L       p_frt_tick_count_2,R4
+          MOV.L       @R4,R3
+          ADD         #1,R3
+          MOV         R3,R0
+          CMP/EQ      #2,R0
+          BF/S        frt_ack
+          MOV.L       R3,@R4
+          MOV.L       p_test_flag_2,R2
+          MOV.B       @R2,R3
+          TST         R3,R3
+          BF          frt_ack
+          MOV.L       p_coin_sw_sample_2,R1
+          JSR         @R1
+          NOP
+frt_ack:
+          MOV.W       k_sh2_ftcsr,R5
+          MOV         #1,R3
+          MOV.B       @R5,R4
+          AND         R3,R4
+          MOV.B       R4,@R5
+          LDS.L       @R15+,PR
+          MOV.L       @R15+,R1
+          MOV.L       @R15+,R2
+          MOV.L       @R15+,R3
+          MOV.L       @R15+,R4
+          MOV.L       @R15+,R5
+          MOV.L       @R15+,R6
+          MOV.L       @R15+,R7
+          MOV.L       @R15+,R15
+          MOV.L       @R15+,R0
+          RTE
+          NOP
+_frt_overflow_intr:
+          MOV.L       R0,@-R15
+          MOV.L       p_isp_frt_overflow,R0
+          MOV.L       @R0,R0
+          MOV.L       R15,@-R0
+          MOV         R0,R15
+          MOV.L       R5,@-R15
+          MOV.L       R4,@-R15
+          MOV.L       R3,@-R15
+          MOV         #1,R3
+          MOV.W       k_sh2_ftcsr,R5
+          MOV.B       @R5,R4
+          AND         R3,R4
+          MOV.B       R4,@R5
+          MOV.L       @R15+,R3
+          MOV.L       @R15+,R4
+          MOV.L       @R15+,R5
+          MOV.L       @R15+,R15
+          MOV.L       @R15+,R0
+          RTE
+          NOP
+k_1800:
+          .DATA.W     H'1800
+k_sh2_ftcsr:
+          .DATA.W     SH2_FTCSR
+          .RES.W      1         ; fill
+          .ALIGN      4
+p_task_tick_mask:
+          .DATA.L     _task_tick_mask
+p_frame_tick:
+          .DATA.L     _task_sleep_tick
+p_system_ctrl_flag:
+          .DATA.L     _system_ctrl_flag
+p_vblank_user_hook:
+          .DATA.L     _vblank_user_hook
+p_sprite_dma_end_wait:
+          .DATA.L     _sprite_dma_end_wait
+p_bg_vbl_trans_flag:
+          .DATA.L     _bg_vbl_trans_flag
+p_bg_w_54:
+          .DATA.L     _bg_w+H'54    ; &bg_w.bgw[0]
+p_oh_opening_demo:
+          .DATA.L     _oh_opening_demo
+p_sprite_display_list_build:
+          .DATA.L     _sprite_display_list_build
+p_frame_ready:
+          .DATA.L     _frame_ready
+p_sound_driver_tick:
+          .DATA.L     _sound_driver_tick
+k_irq12_ack:
+          .DATA.L     IRQ12_ACK
+p_isp_irq_spare:
+          .DATA.L     _isp_irq_spare
+k_irq14_ack:
+          .DATA.L     IRQ14_ACK
+p_isp_frt_compare:
+          .DATA.L     _isp_frt_compare
+p_frt_tick_count_2:
+          .DATA.L     _frt_tick_count
+p_test_flag_2:
+          .DATA.L     _test_flag
+p_coin_sw_sample_2:
+          .DATA.L     _coin_sw_sample
+p_isp_frt_overflow:
+          .DATA.L     _isp_frt_overflow
+; 06000810-0600083B: a small routine that nothing calls, kept as data words (debug_exsw_preset, provisional
+; name). It tests the byte after Demo_Time_Stop (02012DBB) and stores 3F00 to exsw_1 when bit 0 is set and
+; 0010 to exsw_3 when bit 7 is set. Its literal pool follows it.
+          .DATA.W     H'D407
+          .DATA.W     H'6040
+          .DATA.W     H'C801
+          .DATA.W     H'8902
+          .DATA.W     H'9309
+          .DATA.W     H'D206
+          .DATA.W     H'2231
+          .DATA.W     H'6040
+          .DATA.W     H'C880
+          .DATA.W     H'8902
+          .DATA.W     H'D204
+          .DATA.W     H'E310
+          .DATA.W     H'2231
+          .DATA.W     H'000B
+          .DATA.W     H'0009
+          .DATA.W     H'3F00
+          .DATA.W     H'0201
+          .DATA.W     H'2DBB
+          .DATA.W     H'0205
+          .DATA.W     H'EB84
+          .DATA.W     H'0205
+          .DATA.W     H'EB88
+          .END

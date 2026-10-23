@@ -1,0 +1,89 @@
+; sta_sftra.src  Compiler run-time library: fixed arithmetic right shifts
+;
+; Constant-count arithmetic right shift helpers used by compiled C code: _sta_sftra8 through
+; _sta_sftra12 shift R0 right by 8 to 12 places by falling through a single run of SHAR
+; instructions, and _sta_sftra21 shifts right by 21 (five SHARs, a 16-bit logical shift and a
+; sign extension of the low word). The following words are further unrolled shift sequences.
+
+          .CPU        SH2
+          .EXPORT     _sta_sftra21
+          .EXPORT     __sta_sftra10
+          .EXPORT     __sta_sftra11
+          .EXPORT     __sta_sftra12
+          .EXPORT     __sta_sftra21
+          .EXPORT     __sta_sftra8
+          .EXPORT     __sta_sftra9
+          .EXPORT     _sta_sftra10
+          .EXPORT     _sta_sftra11
+          .EXPORT     _sta_sftra12
+          .EXPORT     _sta_sftra8
+          .EXPORT     _sta_sftra9
+          .SECTION    PSYS,CODE,ALIGN=4
+__sta_sftra21:
+_sta_sftra21:
+          SHAR        R0
+          SHAR        R0
+          SHAR        R0
+          SHAR        R0
+          SHAR        R0
+          SHLR16      R0
+          RTS
+          EXTS.W      R0,R0
+          .DATA.W     H'4021
+          .DATA.W     H'4021
+          .DATA.W     H'4021
+__sta_sftra12:
+_sta_sftra12:
+          SHAR        R0
+__sta_sftra11:
+_sta_sftra11:
+          SHAR        R0
+__sta_sftra10:
+_sta_sftra10:
+          SHAR        R0
+__sta_sftra9:
+_sta_sftra9:
+          SHAR        R0
+__sta_sftra8:
+_sta_sftra8:
+          SHAR        R0
+          SHAR        R0
+          SHAR        R0
+          SHAR        R0
+          SHAR        R0
+          SHAR        R0
+          SHAR        R0
+          RTS
+          SHAR        R0
+          .DATA.W     H'4021
+          .DATA.W     H'4021
+          .DATA.W     H'4021
+          .DATA.W     H'4021
+          .DATA.W     H'4029
+          .DATA.W     H'4019
+          .DATA.W     H'000B
+          .DATA.W     H'600E
+          .DATA.W     H'4004
+          .DATA.W     H'8903
+          .DATA.W     H'4004
+          .DATA.W     H'4004
+          .DATA.W     H'000B
+          .DATA.W     H'C907
+          .DATA.W     H'4004
+          .DATA.W     H'4004
+          .DATA.W     H'CBFC
+          .DATA.W     H'000B
+          .DATA.W     H'600E
+          .DATA.W     H'4004
+          .DATA.W     H'8902
+          .DATA.W     H'4004
+          .DATA.W     H'000B
+          .DATA.W     H'C903
+          .DATA.W     H'4004
+          .DATA.W     H'CBFE
+          .DATA.W     H'000B
+          .DATA.W     H'600E
+          .DATA.W     H'4004
+          .DATA.W     H'000B
+          .DATA.W     H'300A
+          .END

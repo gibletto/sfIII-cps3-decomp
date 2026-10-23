@@ -1,0 +1,73 @@
+; quick_strcpy.src  Word-aligned string copy (compiler run-time library)
+;
+; _quick_strcpy copies a zero-terminated string from R1 to R0 four bytes at a time, using
+; CMP/STR to find the word that holds the terminating zero, then finishes that last word byte
+; by byte, and returns the destination address in R0. The inner entry quick_strcpy_1 is used by
+; __slow_strcpy (slow_mvn.src), which has already saved R3/R4 and jumps here when both source
+; and destination are word aligned.
+
+          .CPU        SH2
+          .EXPORT     quick_strcpy_1
+          .EXPORT     _quick_strcpy
+          .SECTION    PSYS,CODE,ALIGN=4
+_quick_strcpy:
+          MOV.L       R3,@-R15
+          MOV.L       R4,@-R15
+quick_strcpy_1:
+          MOV.L       R5,@-R15
+          MOV.L       R6,@-R15
+          MOV         R0,R3
+          MOV.L       @R1+,R4
+          MOV         #0,R6
+quick_strcpy_2:
+          CMP/STR     R4,R6
+          BT          quick_strcpy_6
+          MOV.L       @R1+,R5
+          MOV.L       R4,@R0
+          CMP/STR     R5,R6
+          BT          quick_strcpy_3
+          MOV.L       @R1+,R4
+          MOV.L       R5,@(4,R0)
+          CMP/STR     R4,R6
+          BT          quick_strcpy_4
+          MOV.L       @R1+,R5
+          MOV.L       R4,@(8,R0)
+          CMP/STR     R5,R6
+          BT          quick_strcpy_5
+          MOV.L       @R1+,R4
+          MOV.L       R5,@(12,R0)
+          BRA         quick_strcpy_2
+          ADD         #16,R0
+quick_strcpy_3:
+          BRA         quick_strcpy_6
+          ADD         #4,R0
+quick_strcpy_4:
+          BRA         quick_strcpy_6
+          ADD         #8,R0
+quick_strcpy_5:
+          ADD         #12,R0
+quick_strcpy_6:
+          ADD         #-4,R1
+          MOV         R0,R6
+          MOV.B       @R1+,R0
+          CMP/EQ      #0,R0
+          MOV.B       R0,@R6
+          BT          quick_strcpy_7
+          MOV.B       @R1+,R0
+          CMP/EQ      #0,R0
+          MOV.B       R0,@(1,R6)
+          BT          quick_strcpy_7
+          MOV.B       @R1+,R0
+          CMP/EQ      #0,R0
+          MOV.B       R0,@(2,R6)
+          BT          quick_strcpy_7
+          MOV.B       @R1+,R0
+          MOV.B       R0,@(3,R6)
+quick_strcpy_7:
+          MOV.L       @R15+,R6
+          MOV         R3,R0
+          MOV.L       @R15+,R5
+          MOV.L       @R15+,R4
+          RTS
+          MOV.L       @R15+,R3
+          .END

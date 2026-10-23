@@ -1,0 +1,69 @@
+#ifndef ENTRY_2_H
+#define ENTRY_2_H
+
+#include "structs.h"
+
+void Break_Into_02();
+void Break_Into_04();
+void Break_Into_05();
+void Break_Into_07();
+void Break_Into_08();
+void Break_Into_09();
+void Break_Into_10();
+void Continue_Score_Sub();
+s32 Credit_Sub_1P(void);
+s32 Credit_Sub_2P(void);
+s32 Get_2P_Coin_Count(void);
+void Entry_00(void);
+void Entry_01_Sub(s16 PL_id);
+void Entry_10_2nd(void);
+void Naming_Cut_Sub_1P(void);
+void Naming_Cut_Sub_2P(void);
+s32 Credit_Continue_1P(void);
+s32 Credit_Continue_2P(void);
+void Entry_03(void);
+void Entry_04(void);
+void Entry_06(void);
+void Entry_06_2nd(void);
+void Entry_07(void);
+void Entry_07_2nd(void);
+void Entry_08(void);
+void Entry_08_2nd(void);
+void Entry_10(void);
+void Entry_Continue_Sub();
+void Setup_Next_Step();
+void In_Game_Sub();
+void In_Over_Sub();
+void Disp_Start_Message(void);
+s32 Pay_Start_Credit();
+s32 Loser_Sub_1P(void);
+s32 Loser_Sub_2P(void);
+s32 Disp_More_Coins();
+s32 credit_display_render(s8 force);
+void entry_main(void);
+void entry_task(void);
+void Exit_Title_Sub_Entry(void);
+void Entry_03_2nd(void);
+void Entry_04_2nd(void);
+void Entry_01(void);
+void Entry_06_1st(void);
+void Entry_07_1st(void);
+void Entry_04_1st(void);
+void Entry_02(void);
+void Entry_10_1st(void);
+void Entry_03_1st(void);
+void Entry_08_1st(void);
+void Break_Into_Sub();
+s32 Ck_Break_Into();
+s32 Ck_Break_Into_SP();
+void Entry_Common_Sub();
+void Entry_Main_Sub();
+void Name_In_Sub();
+s32 Flash_Insert_Coin();
+void Disp_Free_Play();
+s32 Flash_Please();
+s32 Flash_Start();
+void Loser_Scene_Sub();
+s32 Flash_More_Coins();
+
+#endif

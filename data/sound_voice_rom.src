@@ -1,0 +1,7 @@
+; sound_voice_rom: PSYS 063CE212-063CE884 (1650 bytes): names only; the build copies the bytes from the ROM (tools/rom_pieces.tsv)
+          .CPU        SH2
+          .SECTION    PSYS,CODE,ALIGN=2
+          .EXPORT     _voice_process_primary
+_voice_process_primary:
+          .RES.B      1650
+          .END

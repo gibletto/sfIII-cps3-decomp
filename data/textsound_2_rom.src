@@ -1,0 +1,31 @@
+; textsound_2_rom: PSYS 063CD16C-063CDA4C (2272 bytes): names only; the build copies the bytes from the ROM (tools/rom_pieces.tsv)
+          .CPU        SH2
+          .SECTION    PSYS,CODE,ALIGN=4
+          .EXPORT     _sound_init
+          .EXPORT     _sound_request
+          .EXPORT     _sound_request_pan
+          .EXPORT     _bgm_stop
+          .EXPORT     _sound_fade_in_submit
+          .EXPORT     _bgm_fade_out
+          .EXPORT     _sound_reg_level_set
+_sound_init:
+          .RES.B      386
+_sound_request:
+          .RES.B      82
+_sound_seq_start:
+          .RES.B      1340
+_sound_request_pan:
+          .RES.B      58
+_bgm_stop:
+          .RES.B      86
+_bgm_pause:
+          .RES.B      116
+_bgm_resume:
+          .RES.B      94
+_sound_fade_in_submit:
+          .RES.B      62
+_bgm_fade_out:
+          .RES.B      38
+_sound_reg_level_set:
+          .RES.B      10
+          .END

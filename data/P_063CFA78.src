@@ -1,0 +1,5 @@
+; P_063CFA78: PSYS 063CFA78-063D1278 (6144 bytes): names only; the build copies the bytes from the ROM (tools/rom_pieces.tsv)
+          .CPU        SH2
+          .SECTION    PSYS,CODE,ALIGN=4
+          .RES.B      6144
+          .END
