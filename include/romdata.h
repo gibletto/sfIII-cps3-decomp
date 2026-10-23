@@ -658,6 +658,12 @@ extern const TM_STRING sysconfig_dispenser_scr[5];
 extern const TM_STRING sysconfig_winpoint_scr[4];
 extern const TM_STRING sysconfig_modify_guide[3];
 extern const TM_STRING sysconfig_return_guide[3];
+extern const u16 snd_attack_rate_tbl[];
+extern const u16 snd_decay_rate_tbl[];
+extern const u16 snd_lfo_rate_tbl[];
+extern const u16 snd_pitch_lfo_tbl[];
+extern const u16 snd_vol_lfo_tbl[];
+extern const s16 snd_pitch_tbl[];
 extern volatile u16 snd_key_on_reg;
 
 extern const s16 Lv08_Time_Data[3][3][7];

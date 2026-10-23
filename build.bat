@@ -28,8 +28,8 @@ if not exist "%SHC_TMP%" mkdir "%SHC_TMP%"
 if not exist obj mkdir obj
 if exist obj\warnings.log del obj\warnings.log
 if not exist build mkdir build
-if not exist rom\sfiiin.zip echo rom\sfiiin.zip is missing (see rom\README)& goto fail
-if not exist build\rom_pieces.bin python tools\cps3rom1.py extract rom\sfiiin.zip build\rom_pieces.bin
+if not exist rom\sfiiina.zip if not exist rom\sfiiin.zip echo rom\sfiiina.zip is missing (see rom\README)& goto fail
+if not exist build\rom_pieces.bin python tools\cps3rom1.py extract rom build\rom_pieces.bin
 if errorlevel 1 goto fail
 echo compiling
 
@@ -2165,20 +2165,16 @@ set GEN_NARROW_CONST=
 shc src\textsound_2.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -noinline -section=program=PSYS,const=CTBL -object=obj\textsound_2.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-asmsh data\textsound_2_rom.src -object=obj\textsound_2_rom.obj
+asmsh src\textsound_2_x1.src -object=obj\textsound_2_x1.obj
 if errorlevel 1 goto fail
 shc src\sound_status.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=program=PSYS -object=obj\sound_status.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-asmsh data\textsound_2_rom_b.src -object=obj\textsound_2_rom_b.obj
+asmsh src\textsound_2_x2.src -object=obj\textsound_2_x2.obj
 if errorlevel 1 goto fail
 asmsh lib\slow_mvn.src -object=obj\slow_mvn.obj
 if errorlevel 1 goto fail
 asmsh lib\sta_sftra.src -object=obj\sta_sftra.obj
-if errorlevel 1 goto fail
-asmsh data\D_02007398.src -object=obj\D_02007398.obj
-if errorlevel 1 goto fail
-asmsh data\B_0206CDCC.src -object=obj\B_0206CDCC.obj
 if errorlevel 1 goto fail
 shc src\textsound_3.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -noinline -section=program=PSYS -object=obj\textsound_3.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
@@ -2190,12 +2186,15 @@ shc src\cram_bank.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -no
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
 set GEN_NARROW_CONST=
+shc src\sound_work.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -object=obj\sound_work.obj >obj\shc.log 2>&1
+if errorlevel 1 goto fail
+findstr /c:") : " obj\shc.log >>obj\warnings.log
 shc src\sound_voice.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=program=PSYS -object=obj\sound_voice.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-asmsh data\sound_voice_rom.src -object=obj\sound_voice_rom.obj
+asmsh src\sound_voice_x1.src -object=obj\sound_voice_x1.obj
 if errorlevel 1 goto fail
-asmsh data\sound_voice_2_rom.src -object=obj\sound_voice_2_rom.obj
+asmsh src\sound_voice_2.src -object=obj\sound_voice_2.obj
 if errorlevel 1 goto fail
 set PEP_AUTOINC=0
 set ASM_READY_WAVES=1
@@ -2204,13 +2203,21 @@ if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
 set PEP_AUTOINC=
 set ASM_READY_WAVES=
-asmsh data\P_063CF610.src -object=obj\P_063CF610.obj
+shc data\textsound_tbl.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=const=PSYS -code=asmcode -object=obj\textsound_tbl.src >obj\shc.log 2>&1
+if errorlevel 1 goto fail
+findstr /c:") : " obj\shc.log >>obj\warnings.log
+python tools\incode.py obj\textsound_tbl.src PSYS
+if errorlevel 1 goto fail
+asmsh obj\textsound_tbl.src -object=obj\textsound_tbl.obj
 if errorlevel 1 goto fail
 asmsh lib\quick_strcpy.src -object=obj\quick_strcpy.obj
 if errorlevel 1 goto fail
-asmsh data\P_063CFA78.src -object=obj\P_063CFA78.obj
+shc data\sound_voice_tbl.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=const=PSYS -code=asmcode -object=obj\sound_voice_tbl.src >obj\shc.log 2>&1
 if errorlevel 1 goto fail
-asmsh data\B_0206CDF8.src -object=obj\B_0206CDF8.obj
+findstr /c:") : " obj\shc.log >>obj\warnings.log
+python tools\incode.py obj\sound_voice_tbl.src PSYS
+if errorlevel 1 goto fail
+asmsh obj\sound_voice_tbl.src -object=obj\sound_voice_tbl.obj
 if errorlevel 1 goto fail
 asmsh data\cg_labels.src -object=obj\cg_labels.obj
 if errorlevel 1 goto fail
@@ -2222,9 +2229,9 @@ lnk -subcommand=sfn.sub
 if errorlevel 1 goto fail
 rof2bin -s=06000000 -e=06800000 -v=FF sfn.abs
 if errorlevel 1 goto fail
-python tools\cps3rom1.py pack sfn.bin build\rom_pieces.bin rom\sfiiin.zip build
+python tools\cps3rom1.py pack sfn.bin build\rom_pieces.bin rom build
 if errorlevel 1 goto fail
-echo build\prog.bin and build\10 built: the arcade program
+echo build\prog.bin and the ROM set in build built: the arcade program
 goto end
 :fail
 if exist obj\shc.log findstr /c:") : " obj\shc.log

@@ -1,27 +1,43 @@
 #!/usr/bin/env python3
 """Street Fighter III New Generation (CPS3) program ROM tool.
 
-    python tools/cps3rom1.py extract <sfiiin.zip> <rom.bin>
-        Read the program file "10" from the ROM set, decrypt it and write the parts of the program that this source
-        does not build (tools/rom_pieces.tsv), one after the other, to <rom.bin>.
+    python tools/cps3rom1.py extract <rom dir> <rom.bin>
+        Read the program SIMM from your ROM set in <rom dir> (sfiiina.zip or sfiiin.zip), decrypt it and write the
+        parts of the program that this source does not build (tools/rom_pieces.tsv), one after the other, to <rom.bin>.
 
-    python tools/cps3rom1.py pack <sfn.bin> <rom.bin> <sfiiin.zip> <out dir>
-        Put those parts and the alignment-gap bytes (tools/gaps.tsv) into the linked image, write
-        <out dir>/prog.bin (06000000-067FFFFF) and compare it with the expected image (tools/prog.sha1); encrypt it,
-        write <out dir>/10 and <out dir>/sfiiin.zip (the ROM set with "10" replaced), and compare "10" with the
-        expected one and with your set's. Exit status 0 only when all three are the original's.
+    python tools/cps3rom1.py pack <sfn.bin> <rom.bin> <rom dir> <out dir>
+        Put those parts and the alignment-gap bytes (tools/gaps.tsv) into the linked image, write <out dir>/prog.bin
+        (06000000-067FFFFF) and compare it with the arcade program (tools/prog.sha1); encrypt it, split it into the four
+        program SIMM chips and write <out dir>/<set>.zip: your ROM set with those chips replaced, in MAME's layout
+        (sfiii-simm1.0 ... and the graphics SIMMs and BIOS as they are in your set). Each program chip's CRC and SHA-1
+        is printed and compared with the arcade's and with your set's. Exit status 0 only when all of them match.
 
-"10" is the CD's program image: 8 MB of big-endian words for 06000000-067FFFFF (no SIMM byte lanes). Every halfword is
-stored encrypted with the CPS3 address mask (MAME's cps3_state::cps3_mask, keys b5fe053e, fc03925a), code and data
-alike, except some parts outside the linked sections that are stored plain (tools/rom_pieces.tsv, stored = plain).
+The ROM set is MAME's sfiiina (Asia 970204, NO CD, BIOS set 2) or sfiiin (BIOS set 1): both have the same program
+SIMM, and the output zip takes its name from the BIOS your set carries. A set that stores each SIMM as one file
+(10, 30, 31, 40, 41, 50) is read too, and written out in MAME's layout.
+
+SIMM 1 holds the program: four 2 MB flash chips, one byte lane each, together 06000000-067FFFFF in big-endian words.
+Every halfword is stored encrypted with the CPS3 address mask (MAME's cps3_state::cps3_mask, keys b5fe053e,
+fc03925a), code and data alike, except some parts outside the linked sections that are stored plain
+(tools/rom_pieces.tsv, stored = plain).
 """
-import hashlib, sys, zipfile
+import hashlib, sys, zipfile, zlib
 from pathlib import Path
 
 KEYS = (0xb5fe053e, 0xfc03925a)
 SIZE = 0x800000
+CHIP = 0x200000
 BASE = 0x06000000
 HERE = Path(__file__).resolve().parent
+BIOS = {0x73e32463: 'sfiiina', 0xca2b715f: 'sfiiin'}
+BIOS_NAME = 'sfiii_asia_nocd.29f400.u2'
+# the arcade's program SIMM chips (MAME and FBNeo sfiiin / sfiiina)
+PROGRAM = {
+    'sfiii-simm1.0': ('cfc9e45a', '5d9061f76680642e730373e3ac29b24926dc5c0c'),
+    'sfiii-simm1.1': ('57920546', 'c8452e7e101b8888fb806d1c9874c6be49fc7dbd'),
+    'sfiii-simm1.2': ('0d8f2680', 'ade7b28acd11023696c4b20136f3d2f34da6b1be'),
+    'sfiii-simm1.3': ('ea4ca054', 'f91c55c4e4fc428ce15d27be38aeed3a483d028c'),
+}
 
 
 def rol16(v, n):
@@ -80,20 +96,78 @@ def expected():
             if l.strip()}
 
 
-def extract(rom, out):
-    raw = zipfile.ZipFile(rom).read('10')
-    if len(raw) != SIZE:
-        sys.exit(f'{rom}: "10" is {len(raw):#x} bytes, expected {SIZE:#x}')
-    if hashlib.sha1(raw).hexdigest() != expected()['10']:
-        print(f'warning: {rom}: "10" is not the original sfiiin program (sha1 {hashlib.sha1(raw).hexdigest()})')
+def find_set(romdir):
+    """the ROM set zip in <rom dir> (or the zip itself)"""
+    p = Path(romdir)
+    if p.is_file():
+        return p
+    for name in ('sfiiina.zip', 'sfiiin.zip'):
+        if (p / name).exists():
+            return p / name
+    sys.exit(f'{romdir}: no sfiiina.zip or sfiiin.zip (see rom/README)')
+
+
+def chip_split(simm, flat):
+    """program SIMM image -> its four chips (one byte lane each)"""
+    return {f'sfiii-simm{simm}.{c}': flat[c::4] for c in range(4)}
+
+
+def chip_join(chips):
+    flat = bytearray(SIZE)
+    for c in range(4):
+        flat[c::4] = chips[c]
+    return bytes(flat)
+
+
+def read_zip(path):
+    with zipfile.ZipFile(path) as z:
+        return {i.filename.rsplit('/', 1)[-1]: z.read(i.filename) for i in z.infolist() if not i.is_dir()}
+
+
+def read_set(path):
+    """{MAME file name: bytes} of a ROM set in either layout; a split set's shared SIMM files come from sfiii.zip"""
+    files = read_zip(path)
+    if '10' not in files:
+        parent = Path(path).with_name('sfiii.zip')
+        if parent.exists():
+            for name, b in read_zip(parent).items():
+                if name.startswith('sfiii-simm'):
+                    files.setdefault(name, b)
+        return files
+    out = {BIOS_NAME: files[BIOS_NAME]}
+    out.update(chip_split(1, files['10']))
+    for simm, (lo, hi) in ((3, ('30', '31')), (4, ('40', '41'))):
+        for k, flat in enumerate((files[lo], files[hi])):
+            half = len(flat) // 2
+            for h in range(2):
+                part = flat[h * half:(h + 1) * half]
+                for c in range(2):
+                    out[f'sfiii-simm{simm}.{4 * k + 2 * h + c}'] = part[c::2]
+    out['sfiii-simm5.0'] = files['50'][0::2]
+    out['sfiii-simm5.1'] = files['50'][1::2]
+    return out
+
+
+def program(files, path):
+    try:
+        return chip_join([files[f'sfiii-simm1.{c}'] for c in range(4)])
+    except KeyError:
+        sys.exit(f'{path}: the program SIMM chips sfiii-simm1.0-1.3 are missing')
+
+
+def extract(romdir, out):
+    path = find_set(romdir)
+    raw = program(read_set(path), path)
+    if hashlib.sha1(raw).hexdigest() != expected()['simm1']:
+        print(f'warning: {path}: the program SIMM is not the arcade\'s (sha1 {hashlib.sha1(raw).hexdigest()})')
     dec = crypt(raw)
     data = b''.join(dec[s:e] for s, e, _, _ in pieces())
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     Path(out).write_bytes(data)
-    print(f'{out}: {len(pieces())} parts of the program, {len(data)} bytes, read from {rom}')
+    print(f'{out}: {len(pieces())} parts of the program, {len(data)} bytes, read from {path}')
 
 
-def pack(linked, piecefile, rom, outdir):
+def pack(linked, piecefile, romdir, outdir):
     prog = bytearray(Path(linked).read_bytes())
     if len(prog) != SIZE:
         sys.exit(f'{linked}: {len(prog):#x} bytes, expected {SIZE:#x}')
@@ -111,27 +185,29 @@ def pack(linked, piecefile, rom, outdir):
     out.mkdir(parents=True, exist_ok=True)
     (out / 'prog.bin').write_bytes(prog)
     want = expected()
-    ok = True
     sha = hashlib.sha1(prog).hexdigest()
-    same = sha == want['prog.bin']
-    ok &= same
-    print(f'prog.bin sha1 {sha}: ' + ('matches the arcade program' if same else f'DIFFERS from the arcade program\'s {want["prog.bin"]}'))
-    enc = bytes(crypt(prog))
-    (out / '10').write_bytes(enc)
-    sha = hashlib.sha1(enc).hexdigest()
-    same = sha == want['10']
-    ok &= same
-    print(f'10 sha1 {sha}: ' + ('matches the original' if same else f'DIFFERS from the original\'s {want["10"]}'))
-    with zipfile.ZipFile(rom) as src, zipfile.ZipFile(out / 'sfiiin.zip', 'w', zipfile.ZIP_DEFLATED) as dst:
-        for info in src.infolist():
-            old = src.read(info.filename)
-            if info.filename == '10':
-                same = old == enc
-                ok &= same
-                print(f'10: {"identical to" if same else "DIFFERS from"} the one in {rom}')
-                old = enc
-            dst.writestr(info, old)
-    print(f'{out / "sfiiin.zip"} written; program ' + ('identical to the original' if ok else 'NOT the original'))
+    ok = sha == want['prog.bin']
+    print(f'prog.bin sha1 {sha}: ' + ('matches the arcade program' if ok else f'DIFFERS from the arcade program\'s {want["prog.bin"]}'))
+    path = find_set(romdir)
+    files = read_set(path)
+    bios = zlib.crc32(files.get(BIOS_NAME, b''))
+    setname = BIOS.get(bios, 'sfiiina')
+    if bios not in BIOS:
+        print(f'warning: {path}: BIOS {BIOS_NAME} crc {bios:08x} is neither sfiiina\'s nor sfiiin\'s')
+    new = chip_split(1, bytes(crypt(prog)))
+    for name, chip in new.items():
+        crc, sha = f'{zlib.crc32(chip):08x}', hashlib.sha1(chip).hexdigest()
+        arcade = (crc, sha) == PROGRAM[name]
+        yours = files.get(name) == chip
+        ok &= arcade and yours
+        print(f'{name}  crc {crc}  sha1 {sha}: ' + ('identical to the arcade\'s' if arcade else 'DIFFERS from the arcade\'s')
+              + ('' if yours else f' (differs from the one in {path.name})'))
+    files.update(new)
+    zpath = out / f'{setname}.zip'
+    with zipfile.ZipFile(zpath, 'w', zipfile.ZIP_DEFLATED) as dst:
+        for name in [BIOS_NAME] + sorted(n for n in files if n != BIOS_NAME):
+            dst.writestr(name, files[name])
+    print(f'{zpath} written (MAME/FBNeo set {setname}); program ' + ('identical to the original' if ok else 'NOT the original'))
     return ok
 
 

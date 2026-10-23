@@ -1,0 +1,348 @@
+; textsound_2_x2.src  Sound driver interface: voice stops and the driver tick
+;
+; It starts with three literals of _bgm_fade_out and _sound_reg_level_set (textsound_2_x1): one literal pool
+; served both sides of _sound_status_read (sound_status.c) when the interface was one object.
+; _sound_driver_init stops every voice and clears the key-on bits. _se_voice_stop stops one effect voice,
+; _se_voice_stop_all all of them. _sound_driver_tick, run once a frame, steps the master fade in or out (the fade
+; out ends by stopping the music), then steps the sequence of every music voice and every effect voice
+; (_voice_process_primary) and the output of each (_voice_process_secondary); an effect voice whose priority byte
+; has bit 7 set goes to voice_process_null and gets no output step.
+; The C these routines were compiled from is in nonmatching/textsound_2.c.
+
+          .CPU        SH2
+          .INCLUDE    "include\cps3.inc"
+          .IMPORT     _bgm_voice
+          .IMPORT     _se_voice
+          .IMPORT     _snd_fade_level
+          .IMPORT     _snd_fade_speed
+          .IMPORT     _snd_reg_save
+          .IMPORT     _sound_sample_submit_work4
+          .IMPORT     _sound_sample_submit_work7
+          .IMPORT     _voice_process_null
+          .IMPORT     _voice_process_primary
+          .IMPORT     _voice_process_secondary
+          .IMPORT     _voice_state_init_pair_work
+          .EXPORT     _sound_driver_init
+          .EXPORT     _se_voice_stop
+          .EXPORT     _se_voice_stop_all
+          .EXPORT     _sound_driver_tick
+          .SECTION    PSYS,CODE,ALIGN=4
+p_snd_fade_speed:
+          .DATA.L     _snd_fade_speed
+p_voice_state_init_pair_work:
+          .DATA.L     _voice_state_init_pair_work
+p_sound_sample_submit_work4:
+          .DATA.L     _sound_sample_submit_work4
+
+_sound_driver_init:
+          STS.L       MACL,@-R15
+          MOV         #112,R1
+          MOV         #0,R7
+          MOV.W       k_c0,R5
+          EXTU.B      R7,R4
+sound_driver_init_00A:
+          EXTU.B      R4,R6
+          EXTS.W      R1,R3
+          MOV         #94,R0
+          MOV.L       p_bgm_voice,R2
+          ADD         #1,R4
+          MULS.W      R3,R6
+          EXTU.B      R5,R3
+          STS         MACL,R6
+          EXTS.W      R6,R6
+          ADD         R6,R2
+          MOV.B       R3,@(R0,R2)
+          MOV.L       p_se_voice,R3
+          EXTU.B      R5,R2
+          MOV         #94,R0
+          ADD         R3,R6
+          MOV.B       R2,@(R0,R6)
+          EXTU.B      R4,R3
+          MOV         #16,R2
+          CMP/GE      R2,R3
+          BF          sound_driver_init_00A
+          MOV         #1,R2
+          MOV.L       p_sound_sample_submit_work7,R3
+          MOV.B       R2,@R3
+          EXTU.W      R7,R2
+          MOV.L       p_sound_reg_200,R3
+          MOV.W       R2,@R3
+          EXTU.W      R7,R2
+          MOV.L       p_snd_reg_save,R3
+          MOV.W       R2,@R3
+          RTS
+          LDS.L       @R15+,MACL
+
+_se_voice_stop:
+          STS.L       MACL,@-R15
+          EXTU.B      R4,R4
+          MOV         #112,R3
+          MOV         #94,R0
+          MOV.L       p_se_voice,R2
+          MULS.W      R3,R4
+          MOV.W       k_c0,R3
+          STS         MACL,R4
+          EXTS.W      R4,R4
+          ADD         R2,R4
+          MOV.B       R3,@(R0,R4)
+          RTS
+          LDS.L       @R15+,MACL
+k_c0:
+          .DATA.W     H'00C0
+p_bgm_voice:
+          .DATA.L     _bgm_voice
+p_se_voice:
+          .DATA.L     _se_voice
+p_sound_sample_submit_work7:
+          .DATA.L     _sound_sample_submit_work7
+p_sound_reg_200:
+          .DATA.L     SOUND_REG+H'200
+p_snd_reg_save:
+          .DATA.L     _snd_reg_save
+
+_se_voice_stop_all:
+          STS.L       MACL,@-R15
+          MOV         #112,R6
+          MOV.W       k_c0_2,R5
+          MOV         #0,R4
+se_voice_stop_all_008:
+          EXTU.B      R4,R3
+          EXTS.W      R6,R2
+          MOV.L       p_se_voice_2,R1
+          MOV         #94,R0
+          ADD         #1,R4
+          MULS.W      R2,R3
+          EXTU.B      R5,R2
+          STS         MACL,R3
+          EXTS.W      R3,R3
+          ADD         R1,R3
+          MOV.B       R2,@(R0,R3)
+          EXTU.B      R4,R3
+          MOV         #16,R2
+          CMP/GE      R2,R3
+          BF          se_voice_stop_all_008
+          RTS
+          LDS.L       @R15+,MACL
+k_c0_2:
+          .DATA.W     H'00C0
+p_se_voice_2:
+          .DATA.L     _se_voice
+
+_sound_driver_tick:
+          MOV.L       R14,@-R15
+          MOV         #8,R3
+          MOV.L       R13,@-R15
+          MOV.L       R12,@-R15
+          MOV.L       R11,@-R15
+          MOV.L       R10,@-R15
+          MOV.L       R9,@-R15
+          MOV.L       R8,@-R15
+          STS.L       PR,@-R15
+          MOV         #0,R8
+          STS.L       MACL,@-R15
+          MOV.L       p_sound_sample_submit_work7_2,R9
+          MOV.W       k_80,R10
+          MOV.L       p_snd_fade_level,R11
+          MOV.L       p_se_voice_3,R12
+          MOV.B       @R9,R4
+          EXTU.B      R4,R4
+          AND         R4,R3
+          TST         R3,R3
+          BT/S        sound_driver_tick_050
+          MOV         #112,R14
+          MOV         #4,R3
+          AND         R4,R3
+          TST         R3,R3
+          BF          sound_driver_tick_050
+          MOV.L       p_snd_fade_speed_2,R3
+          MOV.L       @R11,R2
+          MOV.L       @R3,R3
+          ADD         R3,R2
+          MOV.L       R2,@R11
+          MOV         R2,R3
+          MOV.L       k_8000,R2
+          CMP/HS      R2,R3
+          BF          sound_driver_tick_050
+          MOV.L       k_8000,R2
+          MOV.L       R2,@R11
+          MOV         #-9,R3
+          MOV.B       @R9,R2
+          AND         R3,R2
+          MOV.B       R2,@R9
+sound_driver_tick_050:
+          MOV.B       @R9,R4
+          MOV         #16,R3
+          EXTU.B      R4,R4
+          AND         R4,R3
+          TST         R3,R3
+          BT          sound_driver_tick_088
+          MOV         #4,R3
+          AND         R4,R3
+          TST         R3,R3
+          BF          sound_driver_tick_088
+          MOV.L       p_snd_fade_speed_2,R3
+          MOV.L       @R11,R2
+          MOV.L       @R3,R3
+          CMP/HS      R2,R3
+          BF          sound_driver_tick_07E
+          .DATA.W     H'BE9C              ; BSR _bgm_stop (in another object)
+          NOP
+          MOV.L       R8,@R11
+          MOV         #-17,R3
+          MOV.B       @R9,R2
+          AND         R3,R2
+          BRA         sound_driver_tick_088
+          MOV.B       R2,@R9
+sound_driver_tick_07E:
+          MOV.L       p_snd_fade_speed_2,R3
+          MOV.L       @R3,R3
+          MOV.L       @R11,R2
+          SUB         R3,R2
+          MOV.L       R2,@R11
+sound_driver_tick_088:
+          MOV         R8,R13
+sound_driver_tick_08A:
+          EXTU.B      R13,R6
+          MOV         #1,R5
+          EXTS.W      R13,R4
+          EXTS.W      R14,R3
+          MULS.W      R3,R4
+          STS         MACL,R4
+          EXTS.W      R4,R4
+          MOV.L       p_bgm_voice_2,R2
+          MOV.L       o_voice_process_primary,R3
+          BSRF        R3
+          ADD         R2,R4
+sound_driver_tick_0A0:
+          ADD         #1,R13
+          MOV         #16,R2
+          CMP/HS      R2,R13
+          BF          sound_driver_tick_08A
+          MOV         R8,R13
+sound_driver_tick_0AA:
+          EXTS.W      R13,R2
+          EXTS.W      R14,R3
+          MOV         #110,R0
+          MULS.W      R3,R2
+          STS         MACL,R2
+          EXTS.W      R2,R2
+          ADD         R12,R2
+          MOV.B       @(R0,R2),R2
+          EXTU.B      R2,R2
+          AND         R10,R2
+          TST         R2,R2
+          BT          sound_driver_tick_0FC
+          EXTU.B      R13,R5
+          EXTS.W      R13,R4
+          EXTS.W      R14,R3
+          MULS.W      R3,R4
+          STS         MACL,R4
+          EXTS.W      R4,R4
+          MOV.L       o_voice_process_null,R3
+          BSRF        R3
+          ADD         R12,R4
+sound_driver_tick_0D4:
+          BRA         sound_driver_tick_110
+          NOP
+k_80:
+          .DATA.W     H'0080
+          .DATA.W     H'9E56           ; alignment pad
+p_sound_sample_submit_work7_2:
+          .DATA.L     _sound_sample_submit_work7
+p_snd_fade_level:
+          .DATA.L     _snd_fade_level
+p_se_voice_3:
+          .DATA.L     _se_voice
+p_snd_fade_speed_2:
+          .DATA.L     _snd_fade_speed
+k_8000:
+          .DATA.L     H'00008000
+p_bgm_voice_2:
+          .DATA.L     _bgm_voice
+o_voice_process_primary:
+          .DATA.L     _voice_process_primary-sound_driver_tick_0A0
+o_voice_process_null:
+          .DATA.L     _voice_process_null-sound_driver_tick_0D4
+sound_driver_tick_0FC:
+          EXTU.B      R13,R6
+          MOV         #0,R5
+          EXTS.W      R13,R4
+          EXTS.W      R14,R3
+          MULS.W      R3,R4
+          STS         MACL,R4
+          EXTS.W      R4,R4
+          MOV.L       o_voice_process_primary_2,R3
+          BSRF        R3
+          ADD         R12,R4
+sound_driver_tick_110:
+          ADD         #1,R13
+          MOV         #16,R2
+          CMP/HS      R2,R13
+          BF          sound_driver_tick_0AA
+          MOV         R8,R13
+sound_driver_tick_11A:
+          MOV         #1,R6
+          EXTU.B      R13,R5
+          EXTS.W      R13,R4
+          EXTS.W      R14,R3
+          MULS.W      R3,R4
+          STS         MACL,R4
+          EXTS.W      R4,R4
+          MOV.L       p_bgm_voice_3,R2
+          MOV.L       o_voice_process_secondary,R3
+          BSRF        R3
+          ADD         R2,R4
+sound_driver_tick_130:
+          ADD         #1,R13
+          MOV         #16,R2
+          CMP/HS      R2,R13
+          BF          sound_driver_tick_11A
+          MOV         R8,R13
+sound_driver_tick_13A:
+          EXTS.W      R13,R2
+          EXTS.W      R14,R3
+          MOV         #110,R0
+          MULS.W      R3,R2
+          STS         MACL,R2
+          EXTS.W      R2,R2
+          ADD         R12,R2
+          MOV.B       @(R0,R2),R2
+          EXTU.B      R2,R2
+          AND         R10,R2
+          TST         R2,R2
+          BF          sound_driver_tick_166
+          MOV         #0,R6
+          EXTU.B      R13,R5
+          EXTS.W      R13,R4
+          EXTS.W      R14,R3
+          MULS.W      R3,R4
+          STS         MACL,R4
+          EXTS.W      R4,R4
+          MOV.L       o_voice_process_secondary_2,R3
+          BSRF        R3
+          ADD         R12,R4
+sound_driver_tick_166:
+          ADD         #1,R13
+          MOV         #16,R2
+          CMP/HS      R2,R13
+          BF          sound_driver_tick_13A
+          LDS.L       @R15+,MACL
+          LDS.L       @R15+,PR
+          MOV.L       @R15+,R8
+          MOV.L       @R15+,R9
+          MOV.L       @R15+,R10
+          MOV.L       @R15+,R11
+          MOV.L       @R15+,R12
+          MOV.L       @R15+,R13
+          RTS
+          MOV.L       @R15+,R14
+          .DATA.W     H'A84C           ; alignment pad
+o_voice_process_primary_2:
+          .DATA.L     _voice_process_primary-sound_driver_tick_110
+p_bgm_voice_3:
+          .DATA.L     _bgm_voice
+o_voice_process_secondary:
+          .DATA.L     _voice_process_secondary-sound_driver_tick_130
+o_voice_process_secondary_2:
+          .DATA.L     _voice_process_secondary-sound_driver_tick_166
+          .END

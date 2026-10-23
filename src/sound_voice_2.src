@@ -1,0 +1,1841 @@
+; sound_voice_2.src  Sound voice output
+;
+; _sound_note_to_pitch turns a pitch in 1/256 semitones into the chip's pitch word: snd_pitch_tbl holds one
+; octave, shifted by the octave. _sound_voice_volume_compute scales an envelope level by the voice's volume,
+; expression and level offsets and the master volumes (the music also by the fade), with the chip's output curve
+; in mono. _voice_process_secondary counts the voice's delays down, keys notes on (the sample's addresses into the
+; voice's chip registers) and off, runs the portamento, the envelope (attack, decay, sustain, release), the LFOs
+; and the effect pan ramps, and writes the voice's left and right levels and pitch to the chip.
+; _sound_reg_write_verify writes a chip register until it reads back the value.
+; The C these routines were compiled from is in nonmatching/sound_voice_2.c.
+
+          .CPU        SH2
+          .INCLUDE    "include\cps3.inc"
+          .IMPORT     __quick_mvn
+          .IMPORT     __sftl
+          .IMPORT     _bgm_master_vol
+          .IMPORT     _bgm_tick_step
+          .IMPORT     _se_pan_ramp
+          .IMPORT     _se_tick_step
+          .IMPORT     _se_voice
+          .IMPORT     _snd_ctrl
+          .IMPORT     _snd_decay_ptr
+          .IMPORT     _snd_fade_level
+          .IMPORT     _snd_master_vol
+          .IMPORT     _snd_pitch_tbl
+          .IMPORT     _snd_stereo
+          .IMPORT     _snd_wave_bias
+          .IMPORT     _sound_envelope_rate
+          .IMPORT     _sound_sample_submit_work4
+          .IMPORT     _voice_state_init_pair_work
+          .EXPORT     _sound_note_to_pitch
+          .EXPORT     _sound_voice_volume_compute
+          .EXPORT     _voice_process_secondary
+          .EXPORT     _sound_reg_write_verify
+          .SECTION    PSYS,CODE,ALIGN=4
+_sound_note_to_pitch:
+          MOV.W       k_c00,R6
+          CMP/GE      R6,R4
+          BF/S        sound_note_to_pitch_010
+          MOV         #0,R5
+sound_note_to_pitch_008:
+          SUB         R6,R4
+          CMP/GE      R6,R4
+          BT/S        sound_note_to_pitch_008
+          ADD         #1,R5
+sound_note_to_pitch_010:
+          CMP/PZ      R4
+          BT          sound_note_to_pitch_01C
+sound_note_to_pitch_014:
+          ADD         R6,R4
+          CMP/PZ      R4
+          BF/S        sound_note_to_pitch_014
+          ADD         #-1,R5
+sound_note_to_pitch_01C:
+          SHLL        R4
+          EXTS.B      R5,R2
+          MOV.L       p_snd_pitch_tbl,R3
+          ADD         R3,R4
+          MOV.W       @R4,R4
+          CMP/PL      R2
+          BF/S        sound_note_to_pitch_036
+          ADD         #1,R4
+sound_note_to_pitch_02C:
+          SHLL        R4
+          ADD         #-1,R5
+          EXTS.B      R5,R2
+          CMP/PL      R2
+          BT          sound_note_to_pitch_02C
+sound_note_to_pitch_036:
+          EXTS.B      R5,R2
+          CMP/PZ      R2
+          BT          sound_note_to_pitch_048
+sound_note_to_pitch_03C:
+          EXTU.W      R4,R4
+          ADD         #1,R5
+          SHLR        R4
+          EXTS.B      R5,R2
+          CMP/PZ      R2
+          BF          sound_note_to_pitch_03C
+sound_note_to_pitch_048:
+          ADD         #-1,R4
+          RTS
+          MOV         R4,R0
+
+_sound_voice_volume_compute:
+          MOV         #98,R0
+          MOV.L       R14,@-R15
+          MOV.L       R13,@-R15
+          MOV.L       R12,@-R15
+          MOV         #127,R13
+          STS.L       PR,@-R15
+          STS.L       MACL,@-R15
+          ADD         #-4,R15
+          MOV.W       k_7fff,R12
+          MOV.B       @(R0,R7),R3
+          MOV         #100,R0
+          MOV.B       @(R0,R7),R14
+          EXTU.B      R14,R14
+          TST         R14,R14
+          BT/S        sound_voice_volume_compute_02E
+          EXTU.B      R3,R3
+          MOV         R14,R2
+          BRA         sound_voice_volume_compute_030
+          ADD         #1,R2
+k_c00:
+          .DATA.W     H'0C00
+k_7fff:
+          .DATA.W     H'7FFF
+p_snd_pitch_tbl:
+          .DATA.L     _snd_pitch_tbl
+sound_voice_volume_compute_02E:
+          MOV         R14,R2
+sound_voice_volume_compute_030:
+          MUL.L       R2,R3
+          MOV         #88,R0
+          STS         MACL,R3
+          MOV         R3,R14
+          SHLL        R14
+          MOV.W       @(R0,R7),R3
+          ADD         #64,R3
+          AND         R13,R3
+          MUL.L       R3,R14
+          MOV.L       @(8,R7),R3
+          STS         MACL,R14
+          MOV.B       @(2,R3),R0
+          SHAR        R14
+          MOV         R0,R2
+          SHAR        R14
+          ADD         #64,R2
+          SHAR        R14
+          AND         R13,R2
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          MUL.L       R2,R14
+          STS         MACL,R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          MOV.L       p_snd_master_vol,R3
+          MOV.B       @R3,R3
+          EXTU.B      R3,R3
+          MOV         #110,R0
+          ADD         #64,R3
+          MOV.B       @(R0,R7),R0
+          AND         R13,R3
+          EXTU.B      R0,R0
+          MUL.L       R14,R3
+          STS         MACL,R3
+          MOV         R3,R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          TST         R0,R0
+          BF          sound_voice_volume_compute_0AC
+          MOV.L       p_bgm_master_vol,R3
+          MOV.B       @R3,R3
+          EXTU.B      R3,R3
+          ADD         #64,R3
+          AND         R13,R3
+          MUL.L       R14,R3
+          STS         MACL,R3
+          MOV         R3,R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+sound_voice_volume_compute_0AC:
+          ADD         #1,R14
+          EXTU.W      R4,R4
+          EXTS.B      R6,R6
+          MUL.L       R4,R14
+          SHLL8       R6
+          STS         MACL,R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          SHAR        R14
+          EXTU.W      R14,R4
+          EXTU.W      R4,R14
+          MUL.L       R5,R14
+          STS         MACL,R5
+          SHLR16      R5
+          EXTS.W      R5,R5
+          ADD         R6,R5
+          ADD         R14,R5
+          CMP/GT      R12,R5
+          BF          sound_voice_volume_compute_0EE
+          BRA         sound_voice_volume_compute_0F8
+          EXTU.W      R12,R4
+sound_voice_volume_compute_0EE:
+          CMP/PZ      R5
+          BT          sound_voice_volume_compute_0F6
+          BRA         sound_voice_volume_compute_0F8
+          MOV         #0,R4
+sound_voice_volume_compute_0F6:
+          EXTU.W      R5,R4
+sound_voice_volume_compute_0F8:
+          MOV         R15,R1
+          MOV.L       p_snd_ctrl,R2
+          MOV.L       o_quick_mvn,R3
+          BSRF        R3
+          MOV         #4,R0
+sound_voice_volume_compute_102:
+          MOV         R15,R0
+          ADD         #1,R0
+          MOV.B       @R0,R0
+          TST         #1,R0
+          BT          sound_voice_volume_compute_136
+          MOV         #110,R0
+          MOV.B       @(R0,R7),R3
+          EXTU.B      R3,R3
+          TST         R3,R3
+          BF          sound_voice_volume_compute_132
+          MOV.L       p_snd_fade_level,R3
+          MOV.L       @R3,R3
+          SHLR8       R3
+          EXTU.W      R3,R3
+          MULU.W      R4,R3
+          STS         MACL,R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          EXTU.W      R3,R4
+sound_voice_volume_compute_132:
+          BRA         sound_voice_volume_compute_198
+          MOV         R4,R0
+sound_voice_volume_compute_136:
+          EXTU.W      R4,R2
+          MOV.W       k_1000,R3
+          CMP/GT      R3,R2
+          BT          sound_voice_volume_compute_15A
+          EXTU.W      R4,R5
+          BRA         sound_voice_volume_compute_18C
+          SHLL2       R5
+k_1000:
+          .DATA.W     H'1000
+p_snd_master_vol:
+          .DATA.L     _snd_master_vol
+p_bgm_master_vol:
+          .DATA.L     _bgm_master_vol
+p_snd_ctrl:
+          .DATA.L     _snd_ctrl
+o_quick_mvn:
+          .DATA.L     __quick_mvn-sound_voice_volume_compute_102
+p_snd_fade_level:
+          .DATA.L     _snd_fade_level
+sound_voice_volume_compute_15A:
+          EXTU.W      R4,R2
+          MOV.W       k_2000,R3
+          CMP/GT      R3,R2
+          BT          sound_voice_volume_compute_16E
+          EXTU.W      R4,R5
+          SHLL        R5
+          MOV.W       k_2000,R3
+          ADD         R3,R5
+          BRA         sound_voice_volume_compute_18C
+          NOP
+sound_voice_volume_compute_16E:
+          EXTU.W      R4,R2
+          MOV.W       k_4000,R3
+          CMP/GT      R3,R2
+          BT          sound_voice_volume_compute_182
+          EXTU.W      R4,R5
+          SHAR        R5
+          MOV.W       k_5000,R3
+          ADD         R3,R5
+          BRA         sound_voice_volume_compute_18C
+          NOP
+sound_voice_volume_compute_182:
+          EXTU.W      R4,R5
+          SHAR        R5
+          SHAR        R5
+          MOV.W       k_6000,R3
+          ADD         R3,R5
+sound_voice_volume_compute_18C:
+          MOV.L       k_8000,R2
+          CMP/GE      R2,R5
+          BF          sound_voice_volume_compute_194
+          MOV         R12,R5
+sound_voice_volume_compute_194:
+          SHLL        R5
+          EXTU.W      R5,R0
+sound_voice_volume_compute_198:
+          ADD         #4,R15
+          LDS.L       @R15+,MACL
+          LDS.L       @R15+,PR
+          MOV.L       @R15+,R12
+          MOV.L       @R15+,R13
+          RTS
+          MOV.L       @R15+,R14
+k_2000:
+          .DATA.W     H'2000
+k_4000:
+          .DATA.W     H'4000
+k_5000:
+          .DATA.W     H'5000
+k_6000:
+          .DATA.W     H'6000
+k_8000:
+          .DATA.L     H'00008000
+
+_voice_process_secondary:
+          MOV.L       R14,@-R15
+          MOV.L       R13,@-R15
+          MOV.L       R12,@-R15
+          MOV.L       R11,@-R15
+          MOV.L       R10,@-R15
+          MOV.L       R9,@-R15
+          MOV.L       R8,@-R15
+          STS.L       PR,@-R15
+          STS.L       MACL,@-R15
+          ADD         #-20,R15
+          MOV.L       p_se_pan_ramp,R8
+          MOV.L       o_sound_voice_volume_compute,R9
+          MOVA        voice_process_secondary_01C,R0
+          ADD         R0,R9
+voice_process_secondary_01C:
+          MOV         #0,R11
+          MOV.L       o_sound_reg_write_verify,R12
+          MOVA        voice_process_secondary_024,R0
+          ADD         R0,R12
+voice_process_secondary_024:
+          MOV         R5,R0
+          EXTU.B      R11,R3
+          MOV         #1,R2
+          MOV.B       R0,@(8,R15)
+          MOV         R6,R0
+          MOV.B       R0,@(4,R15)
+          MOV.B       R3,@R15
+          MOV         R2,R0
+          MOV.B       R0,@(12,R15)
+          MOV.B       @(4,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT/S        voice_process_secondary_064
+          MOV         R4,R14
+          MOV         #112,R3
+          MOV.L       p_se_voice,R2
+          MOV         #94,R1
+          MOV.B       @(8,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          MULS.W      R3,R0
+          STS         MACL,R0
+          EXTS.W      R0,R0
+          ADD         R2,R0
+          MOV.B       @(R0,R1),R0
+          EXTU.B      R0,R0
+          TST         #128,R0
+          BF          voice_process_secondary_064
+          EXTU.B      R11,R3
+          MOV         R3,R0
+          MOV.B       R0,@(12,R15)
+voice_process_secondary_064:
+          MOV.B       @(8,R15),R0
+          MOV.L       p_sound_reg,R3
+          MOV         R0,R10
+          EXTU.B      R10,R10
+          MOV         #94,R0
+          MOV         R10,R13
+          MOV.B       @(R0,R14),R0
+          SHLL2       R13
+          EXTU.B      R0,R0
+          SHLL2       R13
+          SHLL        R13
+          TST         #128,R0
+          BT/S        voice_process_secondary_0B4
+          ADD         R3,R13
+          MOV.B       @(4,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_0B0
+          MOV.B       @(12,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_0B0
+          MOV.B       @(8,R15),R0
+          MOV         R0,R1
+          EXTU.B      R1,R1
+          MOV.L       o_sftl,R3
+          BSRF        R3
+          MOV         #1,R0
+voice_process_secondary_0A0:
+          EXTU.W      R0,R0
+          EXTU.W      R0,R0
+          NOT         R0,R0
+          MOV.L       p_sound_reg_200,R2
+          MOV.W       @R2,R2
+          AND         R0,R2
+          MOV.L       p_sound_reg_200,R3
+          MOV.W       R2,@R3
+voice_process_secondary_0B0:
+          BRA         voice_process_secondary_AE4
+          NOP
+voice_process_secondary_0B4:
+          MOV.B       @(4,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_0EC
+          MOV.L       p_bgm_tick_step,R3
+          MOV.W       @R3,R3
+          EXTU.W      R3,R3
+          MOV.L       @(40,R14),R2
+          SUB         R3,R2
+          BRA         voice_process_secondary_0FE
+          MOV.L       R2,@(40,R14)
+p_se_pan_ramp:
+          .DATA.L     _se_pan_ramp
+o_sound_voice_volume_compute:
+          .DATA.L     _sound_voice_volume_compute-voice_process_secondary_01C
+o_sound_reg_write_verify:
+          .DATA.L     _sound_reg_write_verify-voice_process_secondary_024
+p_se_voice:
+          .DATA.L     _se_voice
+p_sound_reg:
+          .DATA.L     SOUND_REG
+o_sftl:
+          .DATA.L     __sftl-voice_process_secondary_0A0
+p_sound_reg_200:
+          .DATA.L     SOUND_REG+H'200
+p_bgm_tick_step:
+          .DATA.L     _bgm_tick_step
+voice_process_secondary_0EC:
+          MOV         R10,R2
+          SHLL        R2
+          MOV.L       p_se_tick_step,R3
+          ADD         R3,R2
+          MOV.W       @R2,R2
+          EXTU.W      R2,R2
+          MOV.L       @(40,R14),R1
+          SUB         R2,R1
+          MOV.L       R1,@(40,R14)
+voice_process_secondary_0FE:
+          MOV         #103,R0
+          MOV.B       @(R0,R14),R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_13A
+          MOV.B       @(4,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_128
+          MOV.L       p_bgm_tick_step_2,R3
+          MOV.W       @R3,R3
+          EXTU.W      R3,R3
+          MOV.L       @(36,R14),R2
+          SUB         R3,R2
+          BRA         voice_process_secondary_13A
+          MOV.L       R2,@(36,R14)
+p_se_tick_step:
+          .DATA.L     _se_tick_step
+p_bgm_tick_step_2:
+          .DATA.L     _bgm_tick_step
+voice_process_secondary_128:
+          MOV         R10,R2
+          SHLL        R2
+          MOV.L       p_se_tick_step_2,R3
+          ADD         R3,R2
+          MOV.W       @R2,R2
+          EXTU.W      R2,R2
+          MOV.L       @(36,R14),R1
+          SUB         R2,R1
+          MOV.L       R1,@(36,R14)
+voice_process_secondary_13A:
+          MOV.L       @(40,R14),R3
+          CMP/PL      R3
+          BT          voice_process_secondary_14C
+          MOV         #-33,R3
+          MOV         #94,R0
+          MOV.B       @(R0,R14),R2
+          AND         R3,R2
+          MOV         #94,R0
+          MOV.B       R2,@(R0,R14)
+voice_process_secondary_14C:
+          MOV.L       @(36,R14),R3
+          CMP/PL      R3
+          BT          voice_process_secondary_1A2
+          MOV         #103,R0
+          MOV.B       @(R0,R14),R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_1A2
+          EXTU.B      R11,R3
+          MOV         #103,R0
+          MOV.B       R3,@(R0,R14)
+          MOV.B       @(12,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_174
+          MOV         #0,R5
+          MOV         R13,R4
+          JSR         @R12
+          ADD         #10,R4
+voice_process_secondary_174:
+          MOV         #107,R0
+          MOV.B       @(R0,R14),R0
+          EXTU.B      R0,R0
+          CMP/EQ      #4,R0
+          BT          voice_process_secondary_1A2
+          MOV         #4,R2
+          MOV         #107,R0
+          MOV.B       R2,@(R0,R14)
+          MOV.L       p_snd_decay_ptr,R6
+          MOV.L       @R6,R6
+          MOV.L       @(8,R14),R5
+          MOV.B       @(11,R5),R0
+          MOV         R0,R5
+          EXTU.B      R5,R5
+          MOV         #66,R0
+          MOV.W       @(R0,R14),R4
+          MOV.L       o_sound_envelope_rate,R3
+          BSRF        R3
+          EXTU.W      R4,R4
+voice_process_secondary_19A:
+          EXTU.W      R0,R0
+          MOV         #84,R1
+          ADD         R14,R1
+          MOV.W       R0,@R1
+voice_process_secondary_1A2:
+          MOV         #104,R0
+          MOV.B       @(R0,R14),R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BF          voice_process_secondary_1B0
+          BRA         voice_process_secondary_370
+          NOP
+voice_process_secondary_1B0:
+          MOV         #104,R0
+          MOV.B       R11,@(R0,R14)
+          MOV.L       @(20,R14),R3
+          MOV         #102,R0
+          MOV.L       R3,@(24,R14)
+          MOV.L       @(16,R14),R2
+          MOV.L       R2,@(20,R14)
+          MOV.B       @(R0,R14),R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BF          voice_process_secondary_1CA
+          BRA         voice_process_secondary_33E
+          NOP
+voice_process_secondary_1CA:
+          MOV         #102,R0
+          EXTU.W      R11,R3
+          MOV.B       R11,@(R0,R14)
+          MOV         #66,R0
+          MOV.W       R3,@(R0,R14)
+          MOV.B       @(12,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BF          voice_process_secondary_1E2
+          BRA         voice_process_secondary_2F4
+          NOP
+voice_process_secondary_1E2:
+          MOV.B       @(8,R15),R0
+          MOV         R0,R1
+          EXTU.B      R1,R1
+          MOV.L       o_sftl_2,R3
+          BSRF        R3
+          MOV         #1,R0
+voice_process_secondary_1EE:
+          EXTU.W      R0,R0
+          MOV.L       p_sound_reg_200_2,R2
+          MOV         #0,R5
+          MOV         R13,R4
+          MOV.L       p_sound_reg_200_2,R3
+          EXTU.W      R0,R0
+          MOV.W       @R2,R2
+          NOT         R0,R0
+          AND         R0,R2
+          MOV.W       R2,@R3
+          JSR         @R12
+          ADD         #2,R4
+          MOV         R13,R4
+          MOV.L       p_snd_wave_bias,R2
+          MOV.W       @R2,R2
+          EXTU.W      R2,R2
+          MOV.L       R2,@R15
+          MOV.L       @(12,R14),R5
+          MOV.L       @R5,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #4,R4
+          MOV         R13,R4
+          MOV.L       @(12,R14),R5
+          MOV.L       @R15,R3
+          MOV.L       @R5,R5
+          SHLR16      R5
+          EXTU.W      R5,R5
+          EXTU.W      R5,R5
+          ADD         R3,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #6,R4
+          MOV.L       @(12,R14),R5
+          MOV         R13,R4
+          MOV.L       @(4,R5),R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #14,R4
+          MOV.L       @(12,R14),R5
+          MOV.L       @(4,R5),R5
+          SHLR16      R5
+          BRA         voice_process_secondary_260
+          NOP
+          .DATA.W     H'BF4A           ; alignment pad
+p_se_tick_step_2:
+          .DATA.L     _se_tick_step
+p_snd_decay_ptr:
+          .DATA.L     _snd_decay_ptr
+o_sound_envelope_rate:
+          .DATA.L     _sound_envelope_rate-voice_process_secondary_19A
+o_sftl_2:
+          .DATA.L     __sftl-voice_process_secondary_1EE
+p_sound_reg_200_2:
+          .DATA.L     SOUND_REG+H'200
+p_snd_wave_bias:
+          .DATA.L     _snd_wave_bias
+voice_process_secondary_260:
+          EXTU.W      R5,R5
+          MOV         R13,R4
+          MOV.L       @R15,R3
+          EXTU.W      R5,R5
+          ADD         R3,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #18,R4
+          MOV.L       @(12,R14),R5
+          MOV         R13,R4
+          MOV.L       @(8,R5),R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #20,R4
+          MOV.L       @(12,R14),R5
+          MOV         R13,R4
+          MOV.L       @(8,R5),R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #24,R4
+          MOV.L       @(12,R14),R5
+          MOV         R13,R4
+          MOV.L       @R15,R3
+          MOV.L       @(8,R5),R5
+          SHLR16      R5
+          EXTU.W      R5,R5
+          EXTU.W      R5,R5
+          ADD         R3,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #22,R4
+          MOV         R13,R4
+          MOV.L       @(12,R14),R5
+          MOV.L       @R15,R3
+          MOV.L       @(8,R5),R5
+          SHLR16      R5
+          EXTU.W      R5,R5
+          EXTU.W      R5,R5
+          ADD         R3,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #26,R4
+          MOV         #0,R5
+          MOV         R13,R4
+          JSR         @R12
+          ADD         #2,R4
+          MOV.L       @(12,R14),R5
+          MOV         R13,R4
+          MOV.L       @R5,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #4,R4
+          MOV.L       @(12,R14),R5
+          MOV         R13,R4
+          MOV.L       @R15,R3
+          MOV.L       @R5,R5
+          SHLR16      R5
+          EXTU.W      R5,R5
+          EXTU.W      R5,R5
+          ADD         R3,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #6,R4
+          MOV.L       @(12,R14),R4
+          MOV.L       @(4,R4),R3
+          MOV.L       @(8,R4),R2
+          CMP/EQ      R2,R3
+          BF          voice_process_secondary_2EC
+          BRA         voice_process_secondary_2EE
+          MOV         #0,R5
+voice_process_secondary_2EC:
+          MOV         #1,R5
+voice_process_secondary_2EE:
+          MOV         R13,R4
+          JSR         @R12
+          ADD         #10,R4
+voice_process_secondary_2F4:
+          MOV         #70,R0
+          MOV.W       @(R0,R14),R0
+          EXTU.W      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_30C
+          MOV         #94,R0
+          MOV.B       @(R0,R14),R0
+          OR          #2,R0
+          MOV         #94,R1
+          ADD         R14,R1
+          BRA         voice_process_secondary_31C
+          MOV.B       R0,@R1
+voice_process_secondary_30C:
+          MOV         #-3,R3
+          MOV         #94,R0
+          MOV.B       @(R0,R14),R2
+          AND         R3,R2
+          MOV         #94,R0
+          MOV.B       R2,@(R0,R14)
+          MOV.L       @(20,R14),R3
+          MOV.L       R3,@(24,R14)
+voice_process_secondary_31C:
+          MOV         #1,R2
+          MOV         #107,R0
+          MOV.B       R2,@(R0,R14)
+          MOV         #94,R0
+          MOV.B       @(R0,R14),R0
+          EXTU.B      R0,R0
+          TST         #1,R0
+          BT          voice_process_secondary_36C
+          MOV         #109,R0
+          MOV.B       @(R0,R14),R0
+          AND         #252,R0
+          MOV         #109,R1
+          ADD         R14,R1
+          MOV.B       R0,@R1
+          MOV.L       R11,@(28,R14)
+          BRA         voice_process_secondary_36C
+          MOV.L       R11,@(32,R14)
+voice_process_secondary_33E:
+          MOV         #70,R0
+          MOV.W       @(R0,R14),R0
+          EXTU.W      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_356
+          MOV         #94,R0
+          MOV.B       @(R0,R14),R0
+          OR          #2,R0
+          MOV         #94,R1
+          ADD         R14,R1
+          BRA         voice_process_secondary_366
+          MOV.B       R0,@R1
+voice_process_secondary_356:
+          MOV         #-3,R3
+          MOV         #94,R0
+          MOV.B       @(R0,R14),R2
+          AND         R3,R2
+          MOV         #94,R0
+          MOV.B       R2,@(R0,R14)
+          MOV.L       @(20,R14),R3
+          MOV.L       R3,@(24,R14)
+voice_process_secondary_366:
+          MOV         #3,R2
+          MOV         #107,R0
+          MOV.B       R2,@(R0,R14)
+voice_process_secondary_36C:
+          MOV         #1,R3
+          MOV.B       R3,@R15
+voice_process_secondary_370:
+          MOV.B       @(4,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BF          voice_process_secondary_37E
+          BRA         voice_process_secondary_4A4
+          NOP
+voice_process_secondary_37E:
+          MOV         #106,R0
+          MOV.B       @(R0,R14),R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BF          voice_process_secondary_38C
+          BRA         voice_process_secondary_4A4
+          NOP
+voice_process_secondary_38C:
+          MOV.B       @(12,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BF          voice_process_secondary_39A
+          BRA         voice_process_secondary_4A4
+          NOP
+voice_process_secondary_39A:
+          MOV         #106,R0
+          MOV.B       R11,@(R0,R14)
+          MOV.B       @(8,R15),R0
+          MOV         R0,R1
+          EXTU.B      R1,R1
+          MOV.L       o_sftl_3,R3
+          BSRF        R3
+          MOV         #1,R0
+voice_process_secondary_3AA:
+          EXTU.W      R0,R0
+          MOV.L       p_sound_reg_200_3,R2
+          MOV         #0,R5
+          MOV         R13,R4
+          MOV.L       p_sound_reg_200_3,R3
+          EXTU.W      R0,R0
+          MOV.W       @R2,R2
+          NOT         R0,R0
+          AND         R0,R2
+          MOV.W       R2,@R3
+          JSR         @R12
+          ADD         #2,R4
+          MOV         R13,R4
+          MOV.L       p_snd_wave_bias_2,R2
+          MOV.W       @R2,R2
+          EXTU.W      R2,R2
+          MOV.L       R2,@R15
+          MOV.L       @(12,R14),R5
+          MOV.L       @R5,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #4,R4
+          MOV         R13,R4
+          MOV.L       @(12,R14),R5
+          MOV.L       @R15,R3
+          MOV.L       @R5,R5
+          SHLR16      R5
+          EXTU.W      R5,R5
+          EXTU.W      R5,R5
+          ADD         R3,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #6,R4
+          MOV.L       @(12,R14),R5
+          MOV         R13,R4
+          MOV.L       @(4,R5),R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #14,R4
+          MOV.L       @(12,R14),R5
+          MOV         R13,R4
+          MOV.L       @R15,R3
+          MOV.L       @(4,R5),R5
+          SHLR16      R5
+          EXTU.W      R5,R5
+          EXTU.W      R5,R5
+          ADD         R3,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #18,R4
+          MOV         R13,R4
+          MOV.L       @(12,R14),R5
+          MOV.L       @(8,R5),R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #20,R4
+          MOV         R13,R4
+          MOV.L       @(12,R14),R5
+          MOV.L       @(8,R5),R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #24,R4
+          MOV         R13,R4
+          MOV.L       @(12,R14),R5
+          MOV.L       @R15,R3
+          MOV.L       @(8,R5),R5
+          SHLR16      R5
+          EXTU.W      R5,R5
+          EXTU.W      R5,R5
+          ADD         R3,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #22,R4
+          MOV.L       @(12,R14),R5
+          MOV         R13,R4
+          MOV.L       @R15,R3
+          MOV.L       @(8,R5),R5
+          SHLR16      R5
+          EXTU.W      R5,R5
+          EXTU.W      R5,R5
+          ADD         R3,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #26,R4
+          MOV         #0,R5
+          MOV         R13,R4
+          JSR         @R12
+          ADD         #2,R4
+          MOV         R13,R4
+          MOV.L       @(12,R14),R5
+          MOV.L       @R5,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #4,R4
+          MOV         R13,R4
+          MOV.L       @(12,R14),R5
+          MOV.L       @R15,R3
+          MOV.L       @R5,R5
+          SHLR16      R5
+          EXTU.W      R5,R5
+          EXTU.W      R5,R5
+          ADD         R3,R5
+          EXTU.W      R5,R5
+          JSR         @R12
+          ADD         #6,R4
+          MOV.L       @(12,R14),R4
+          MOV.L       @(4,R4),R3
+          MOV.L       @(8,R4),R2
+          CMP/EQ      R2,R3
+          BF          voice_process_secondary_498
+          BRA         voice_process_secondary_49A
+          MOV         #0,R5
+          .DATA.W     H'48BF           ; alignment pad
+o_sftl_3:
+          .DATA.L     __sftl-voice_process_secondary_3AA
+p_sound_reg_200_3:
+          .DATA.L     SOUND_REG+H'200
+p_snd_wave_bias_2:
+          .DATA.L     _snd_wave_bias
+voice_process_secondary_498:
+          MOV         #1,R5
+voice_process_secondary_49A:
+          MOV         R13,R4
+          JSR         @R12
+          ADD         #10,R4
+          MOV         #1,R2
+          MOV.B       R2,@R15
+voice_process_secondary_4A4:
+          MOV         #94,R0
+          MOV.B       @(R0,R14),R0
+          EXTU.B      R0,R0
+          TST         #64,R0
+          BT          voice_process_secondary_4E4
+          MOV         #66,R0
+          MOV.W       @(R0,R14),R0
+          EXTU.W      R0,R0
+          TST         R0,R0
+          BF          voice_process_secondary_4CC
+          MOV         #94,R0
+          MOV.B       @(R0,R14),R0
+          OR          #128,R0
+          MOV         #94,R1
+          ADD         R14,R1
+          MOV.B       R0,@R1
+          EXTU.B      R11,R3
+          MOV         #110,R0
+          BRA         voice_process_secondary_AE4
+          MOV.B       R3,@(R0,R14)
+voice_process_secondary_4CC:
+          MOV         #4,R2
+          MOV         #107,R0
+          MOV.B       R2,@(R0,R14)
+          MOV.B       @(12,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_4E4
+          MOV         #0,R5
+          MOV         R13,R4
+          JSR         @R12
+          ADD         #10,R4
+voice_process_secondary_4E4:
+          MOV         #94,R0
+          MOV.B       @(R0,R14),R0
+          EXTU.B      R0,R0
+          TST         #2,R0
+          BT          voice_process_secondary_530
+          MOV.L       @(24,R14),R3
+          MOV.L       @(20,R14),R2
+          CMP/EQ      R2,R3
+          BT          voice_process_secondary_530
+          MOV.L       @(24,R14),R2
+          MOV.L       @(20,R14),R3
+          CMP/GT      R3,R2
+          BF          voice_process_secondary_518
+          MOV         #70,R0
+          MOV.L       @(24,R14),R2
+          MOV.W       @(R0,R14),R3
+          EXTU.W      R3,R3
+          SUB         R3,R2
+          MOV         R2,R3
+          MOV.L       R2,@(24,R14)
+          MOV.L       @(20,R14),R2
+          CMP/GT      R2,R3
+          BT          voice_process_secondary_530
+          MOV.L       @(20,R14),R2
+          BRA         voice_process_secondary_530
+          MOV.L       R2,@(24,R14)
+voice_process_secondary_518:
+          MOV         #70,R0
+          MOV.L       @(24,R14),R3
+          MOV.W       @(R0,R14),R2
+          EXTU.W      R2,R2
+          ADD         R2,R3
+          MOV         R3,R2
+          MOV.L       R3,@(24,R14)
+          MOV.L       @(20,R14),R3
+          CMP/GE      R3,R2
+          BF          voice_process_secondary_530
+          MOV.L       @(20,R14),R3
+          MOV.L       R3,@(24,R14)
+voice_process_secondary_530:
+          MOV         #107,R0
+          MOV.B       @(R0,R14),R0
+          BRA         voice_process_secondary_630
+          EXTU.B      R0,R0
+voice_process_secondary_538:
+          MOV         #66,R0
+          MOV.W       @(R0,R14),R4
+          MOV         #76,R0
+          EXTU.W      R4,R4
+          MOV.W       @(R0,R14),R3
+          MOV         #74,R0
+          EXTU.W      R3,R3
+          MOV.W       @(R0,R14),R5
+          ADD         R3,R4
+          EXTU.W      R5,R5
+          CMP/HS      R5,R4
+          BT          voice_process_secondary_558
+          EXTU.W      R4,R4
+          MOV         #66,R0
+          BRA         voice_process_secondary_648
+          MOV.W       R4,@(R0,R14)
+voice_process_secondary_558:
+          EXTU.W      R5,R5
+          MOV         #66,R0
+          MOV.W       R5,@(R0,R14)
+          MOV         #2,R3
+          MOV         #107,R0
+          MOV.B       R3,@(R0,R14)
+          BRA         voice_process_secondary_648
+          NOP
+voice_process_secondary_568:
+          MOV         #78,R0
+          MOV.W       @(R0,R14),R4
+          MOV         #80,R0
+          EXTU.W      R4,R4
+          MOV.W       @(R0,R14),R5
+          MOV         R4,R3
+          EXTU.W      R5,R5
+          MOV         #66,R0
+          ADD         R5,R3
+          MOV.W       @(R0,R14),R2
+          EXTU.W      R2,R2
+          CMP/HS      R2,R3
+          BT          voice_process_secondary_592
+          EXTU.W      R5,R5
+          EXTU.W      R5,R5
+          MOV         #66,R0
+          MOV.W       @(R0,R14),R2
+          SUB         R5,R2
+          MOV         #66,R0
+          BRA         voice_process_secondary_648
+          MOV.W       R2,@(R0,R14)
+voice_process_secondary_592:
+          EXTU.W      R4,R4
+          MOV         #66,R0
+          MOV.W       R4,@(R0,R14)
+          MOV         #3,R3
+          MOV         #107,R0
+          MOV.B       R3,@(R0,R14)
+          BRA         voice_process_secondary_648
+          NOP
+voice_process_secondary_5A2:
+          MOV         #82,R0
+          MOV.W       @(R0,R14),R4
+          MOV         #66,R0
+          EXTU.W      R4,R4
+          MOV.W       @(R0,R14),R5
+          EXTU.W      R5,R5
+          CMP/HI      R4,R5
+          BF          voice_process_secondary_5BC
+          SUB         R4,R5
+          EXTU.W      R5,R5
+          MOV         #66,R0
+          BRA         voice_process_secondary_648
+          MOV.W       R5,@(R0,R14)
+voice_process_secondary_5BC:
+          EXTU.W      R11,R2
+          MOV         #66,R0
+          MOV.W       R2,@(R0,R14)
+          EXTU.B      R11,R3
+          MOV         #107,R0
+          MOV.B       R3,@(R0,R14)
+          BRA         voice_process_secondary_648
+          NOP
+voice_process_secondary_5CC:
+          MOV         #84,R0
+          MOV.W       @(R0,R14),R4
+          MOV         #66,R0
+          EXTU.W      R4,R4
+          MOV.W       @(R0,R14),R5
+          EXTU.W      R5,R5
+          CMP/HI      R4,R5
+          BF          voice_process_secondary_5E6
+          SUB         R4,R5
+          EXTU.W      R5,R5
+          MOV         #66,R0
+          BRA         voice_process_secondary_622
+          MOV.W       R5,@(R0,R14)
+voice_process_secondary_5E6:
+          EXTU.W      R11,R2
+          MOV         #66,R0
+          EXTU.B      R11,R3
+          MOV.W       R2,@(R0,R14)
+          MOV         #107,R0
+          MOV.B       R3,@(R0,R14)
+          MOV.B       @(4,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_622
+          MOV.B       @(12,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_622
+          MOV.B       @(8,R15),R0
+          MOV         R0,R1
+          EXTU.B      R1,R1
+          MOV.L       o_sftl_4,R3
+          BSRF        R3
+          MOV         #1,R0
+voice_process_secondary_612:
+          EXTU.W      R0,R0
+          EXTU.W      R0,R0
+          NOT         R0,R0
+          MOV.L       p_sound_reg_200_4,R2
+          MOV.W       @R2,R2
+          AND         R0,R2
+          MOV.L       p_sound_reg_200_4,R3
+          MOV.W       R2,@R3
+voice_process_secondary_622:
+          BRA         voice_process_secondary_648
+          NOP
+          .DATA.W     H'320C           ; alignment pad
+o_sftl_4:
+          .DATA.L     __sftl-voice_process_secondary_612
+p_sound_reg_200_4:
+          .DATA.L     SOUND_REG+H'200
+voice_process_secondary_630:
+          CMP/EQ      #0,R0
+          BT          voice_process_secondary_648
+          CMP/EQ      #1,R0
+          BF          voice_process_secondary_63C
+          BRA         voice_process_secondary_538
+          NOP
+voice_process_secondary_63C:
+          CMP/EQ      #2,R0
+          BT          voice_process_secondary_568
+          CMP/EQ      #3,R0
+          BT          voice_process_secondary_5A2
+          CMP/EQ      #4,R0
+          BT          voice_process_secondary_5CC
+voice_process_secondary_648:
+          MOV         #64,R0
+          MOV.W       @(R0,R14),R0
+          EXTU.W      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_72E
+          MOV         #60,R0
+          MOV.W       @(R0,R14),R0
+          EXTU.W      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_6BE
+          MOV         #60,R0
+          MOV.W       @(R0,R14),R5
+          MOV         #64,R0
+          EXTU.W      R5,R5
+          MOV.W       @(R0,R14),R4
+          MOV         #109,R0
+          EXTU.W      R4,R4
+          MOV.B       @(R0,R14),R0
+          MUL.L       R4,R5
+          EXTU.B      R0,R0
+          STS         MACL,R4
+          TST         #1,R0
+          BT/S        voice_process_secondary_69C
+          SHLL16      R5
+          MOV         R4,R3
+          MOV.L       @(28,R14),R2
+          SUB         R5,R3
+          CMP/GE      R2,R3
+          BT          voice_process_secondary_68A
+          MOV.L       @(28,R14),R2
+          SUB         R4,R2
+          BRA         voice_process_secondary_6BE
+          MOV.L       R2,@(28,R14)
+voice_process_secondary_68A:
+          NEG         R5,R5
+          MOV.L       R5,@(28,R14)
+          MOV         #-2,R3
+          MOV         #109,R0
+          MOV.B       @(R0,R14),R2
+          AND         R3,R2
+          MOV         #109,R0
+          BRA         voice_process_secondary_6BE
+          MOV.B       R2,@(R0,R14)
+voice_process_secondary_69C:
+          MOV         R5,R2
+          MOV.L       @(28,R14),R3
+          SUB         R4,R2
+          CMP/GT      R3,R2
+          BF          voice_process_secondary_6B0
+          MOV.L       @(28,R14),R3
+          ADD         R4,R3
+          MOV.L       R3,@(28,R14)
+          BRA         voice_process_secondary_6BE
+          NOP
+voice_process_secondary_6B0:
+          MOV.L       R5,@(28,R14)
+          MOV         #109,R0
+          MOV.B       @(R0,R14),R0
+          OR          #1,R0
+          MOV         #109,R1
+          ADD         R14,R1
+          MOV.B       R0,@R1
+voice_process_secondary_6BE:
+          MOV         #62,R0
+          MOV.W       @(R0,R14),R0
+          EXTU.W      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_732
+          MOV         #62,R0
+          MOV.W       @(R0,R14),R5
+          MOV         #64,R0
+          MOV.W       @(R0,R14),R4
+          MOV         #109,R0
+          MULU.W      R4,R5
+          MOV.B       @(R0,R14),R0
+          STS         MACL,R4
+          EXTU.B      R0,R0
+          SHLR16      R4
+          EXTS.W      R4,R4
+          TST         #2,R0
+          BT/S        voice_process_secondary_708
+          EXTU.W      R5,R5
+          MOV         R4,R3
+          MOV.L       @(32,R14),R2
+          SUB         R5,R3
+          CMP/GE      R2,R3
+          BT          voice_process_secondary_6F6
+          MOV.L       @(32,R14),R2
+          SUB         R4,R2
+          BRA         voice_process_secondary_72A
+          MOV.L       R2,@(32,R14)
+voice_process_secondary_6F6:
+          NEG         R5,R5
+          MOV.L       R5,@(32,R14)
+          MOV         #-3,R3
+          MOV         #109,R0
+          MOV.B       @(R0,R14),R2
+          AND         R3,R2
+          MOV         #109,R0
+          BRA         voice_process_secondary_72A
+          MOV.B       R2,@(R0,R14)
+voice_process_secondary_708:
+          MOV         R5,R2
+          MOV.L       @(32,R14),R3
+          SUB         R4,R2
+          CMP/GT      R3,R2
+          BF          voice_process_secondary_71C
+          MOV.L       @(32,R14),R3
+          ADD         R4,R3
+          MOV.L       R3,@(32,R14)
+          BRA         voice_process_secondary_72A
+          NOP
+voice_process_secondary_71C:
+          MOV.L       R5,@(32,R14)
+          MOV         #109,R0
+          MOV.B       @(R0,R14),R0
+          OR          #2,R0
+          MOV         #109,R1
+          ADD         R14,R1
+          MOV.B       R0,@R1
+voice_process_secondary_72A:
+          BRA         voice_process_secondary_732
+          NOP
+voice_process_secondary_72E:
+          MOV.L       R11,@(28,R14)
+          MOV.L       R11,@(32,R14)
+voice_process_secondary_732:
+          MOV.B       @(4,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_740
+          BRA         voice_process_secondary_834
+          NOP
+voice_process_secondary_740:
+          MOV         R10,R0
+          SHLL2       R0
+          SHLL        R0
+          ADD         R8,R0
+          MOV.W       @(6,R0),R0
+          CMP/EQ      #-1,R0
+          BT          voice_process_secondary_834
+          MOV         R10,R2
+          SHLL2       R2
+          SHLL        R2
+          ADD         R8,R2
+          MOV.W       @(6,R2),R0
+          MOV         R0,R3
+          TST         R3,R3
+          BT          voice_process_secondary_834
+          MOV         R10,R4
+          SHLL2       R4
+          SHLL        R4
+          ADD         R8,R4
+          MOV.W       @R4,R3
+          MOV.W       @(4,R4),R0
+          MOV         R3,R4
+          MOV         R0,R5
+          CMP/PZ      R5
+          BT/S        voice_process_secondary_7D6
+          ADD         R5,R4
+          MOV         R10,R2
+          SHLL2       R2
+          SHLL        R2
+          ADD         R8,R2
+          MOV.W       @(2,R2),R0
+          MOV         R0,R3
+          CMP/GE      R4,R3
+          BT          voice_process_secondary_792
+          MOV         R10,R2
+          SHLL2       R2
+          SHLL        R2
+          ADD         R8,R2
+          EXTS.W      R4,R4
+          BRA         voice_process_secondary_834
+          MOV.W       R4,@R2
+voice_process_secondary_792:
+          MOV         R10,R4
+          SHLL2       R4
+          SHLL        R4
+          ADD         R8,R4
+          MOV.W       @(2,R4),R0
+          MOV         R0,R3
+          MOV.W       R3,@R4
+          MOV.W       @(6,R4),R0
+          CMP/EQ      #1,R0
+          BF          voice_process_secondary_7C4
+          MOV.B       @(8,R15),R0
+          MOV         R0,R3
+          EXTU.B      R3,R3
+          MOV         #112,R2
+          MULS.W      R2,R3
+          STS         MACL,R3
+          EXTS.W      R3,R3
+          MOV.L       p_se_voice_2,R1
+          ADD         R1,R3
+          MOV         #94,R0
+          MOV.B       @(R0,R3),R0
+          OR          #64,R0
+          MOV         #94,R1
+          ADD         R3,R1
+          MOV.B       R0,@R1
+voice_process_secondary_7C4:
+          MOV         R10,R3
+          SHLL2       R3
+          SHLL        R3
+          ADD         R8,R3
+          EXTS.W      R11,R2
+          MOV         R2,R0
+          MOV.W       R0,@(6,R3)
+          BRA         voice_process_secondary_834
+          NOP
+voice_process_secondary_7D6:
+          MOV         R10,R2
+          SHLL2       R2
+          SHLL        R2
+          ADD         R8,R2
+          MOV.W       @(2,R2),R0
+          MOV         R0,R3
+          CMP/GE      R3,R4
+          BT          voice_process_secondary_7F4
+          MOV         R10,R2
+          SHLL2       R2
+          SHLL        R2
+          ADD         R8,R2
+          EXTS.W      R4,R4
+          BRA         voice_process_secondary_834
+          MOV.W       R4,@R2
+voice_process_secondary_7F4:
+          MOV         R10,R4
+          SHLL2       R4
+          SHLL        R4
+          ADD         R8,R4
+          MOV.W       @(2,R4),R0
+          MOV         R0,R3
+          MOV.W       R3,@R4
+          MOV.W       @(6,R4),R0
+          CMP/EQ      #1,R0
+          BF          voice_process_secondary_826
+          MOV.B       @(8,R15),R0
+          MOV         R0,R3
+          EXTU.B      R3,R3
+          MOV         #112,R2
+          MULS.W      R2,R3
+          STS         MACL,R3
+          EXTS.W      R3,R3
+          MOV.L       p_se_voice_2,R1
+          ADD         R1,R3
+          MOV         #94,R0
+          MOV.B       @(R0,R3),R0
+          OR          #64,R0
+          MOV         #94,R1
+          ADD         R3,R1
+          MOV.B       R0,@R1
+voice_process_secondary_826:
+          MOV         R10,R3
+          SHLL2       R3
+          SHLL        R3
+          ADD         R8,R3
+          EXTS.W      R11,R2
+          MOV         R2,R0
+          MOV.W       R0,@(6,R3)
+voice_process_secondary_834:
+          MOV.B       @(12,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BF          voice_process_secondary_842
+          BRA         voice_process_secondary_AE4
+          NOP
+voice_process_secondary_842:
+          MOV.L       p_snd_stereo,R0
+          MOV.B       @R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BF          voice_process_secondary_850
+          BRA         voice_process_secondary_9C4
+          NOP
+voice_process_secondary_850:
+          MOV.B       @(4,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BF          voice_process_secondary_884
+          MOV         R10,R0
+          MOV.L       p_se_pan_ramp_2,R3
+          SHLL2       R0
+          SHLL        R0
+          ADD         R3,R0
+          MOV.W       @(6,R0),R0
+          CMP/EQ      #-1,R0
+          BT          voice_process_secondary_884
+          SHLL2       R10
+          SHLL        R10
+          ADD         R8,R10
+          MOV.W       @R10,R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          BRA         voice_process_secondary_8AA
+          SHAR        R2
+voice_process_secondary_884:
+          MOV.L       @(8,R14),R4
+          MOV.W       k_ff,R3
+          MOV.B       @(1,R4),R0
+          MOV         R0,R4
+          EXTU.B      R4,R4
+          CMP/EQ      R3,R4
+          BF          voice_process_secondary_8A8
+          MOV         #108,R0
+          MOV.B       @(R0,R14),R2
+          BRA         voice_process_secondary_8AA
+          EXTU.B      R2,R2
+k_ff:
+          .DATA.W     H'00FF
+p_se_voice_2:
+          .DATA.L     _se_voice
+p_snd_stereo:
+          .DATA.L     _snd_stereo
+p_se_pan_ramp_2:
+          .DATA.L     _se_pan_ramp
+voice_process_secondary_8A8:
+          MOV         R4,R2
+voice_process_secondary_8AA:
+          EXTU.B      R2,R2
+          MOV         #16,R0
+          MOV.B       R2,@(R0,R15)
+          MOV.B       @(4,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_940
+          MOV         #16,R0
+          MOV         #64,R2
+          MOV.B       @(R0,R15),R3
+          EXTU.B      R3,R3
+          CMP/GE      R2,R3
+          BT          voice_process_secondary_900
+          MOV         R14,R7
+          MOV.L       p_sound_sample_submit_work4,R6
+          MOV         #16,R0
+          MOV.L       @(32,R14),R5
+          MOV.B       @R6,R6
+          MOV.B       @(R0,R15),R4
+          MOV         #66,R0
+          EXTU.B      R4,R4
+          MOV.W       @(R0,R14),R3
+          MULU.W      R3,R4
+          STS         MACL,R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          JSR         @R9
+          EXTU.W      R4,R4
+          MOV.W       R0,@(30,R13)
+          MOV         R14,R7
+          MOV.L       p_sound_sample_submit_work4,R6
+          MOV         #66,R0
+          MOV.L       @(32,R14),R5
+          MOV.B       @R6,R6
+          JSR         @R9
+          MOV.W       @(R0,R14),R4
+          BRA         voice_process_secondary_A0C
+          MOV.W       R0,@(28,R13)
+voice_process_secondary_900:
+          MOV         R14,R7
+          MOV         #16,R0
+          MOV         #127,R4
+          MOV.L       p_sound_sample_submit_work4,R6
+          MOV.L       @(32,R14),R5
+          MOV.B       @(R0,R15),R2
+          MOV.B       @R6,R6
+          EXTU.B      R2,R2
+          MOV         #66,R0
+          SUB         R2,R4
+          MOV.W       @(R0,R14),R3
+          EXTU.W      R4,R4
+          MULU.W      R3,R4
+          STS         MACL,R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          JSR         @R9
+          EXTU.W      R4,R4
+          MOV.W       R0,@(28,R13)
+          MOV         R14,R7
+          MOV.L       p_sound_sample_submit_work4,R6
+          MOV         #66,R0
+          MOV.L       @(32,R14),R5
+          MOV.B       @R6,R6
+          JSR         @R9
+          MOV.W       @(R0,R14),R4
+          BRA         voice_process_secondary_A0C
+          MOV.W       R0,@(30,R13)
+voice_process_secondary_940:
+          MOV         #16,R0
+          MOV         #64,R3
+          MOV.B       @(R0,R15),R2
+          EXTU.B      R2,R2
+          CMP/GE      R3,R2
+          BT          voice_process_secondary_982
+          MOV         R14,R7
+          MOV         #0,R6
+          MOV         #16,R0
+          MOV.L       @(32,R14),R5
+          MOV.B       @(R0,R15),R4
+          MOV         #66,R0
+          EXTU.B      R4,R4
+          MOV.W       @(R0,R14),R3
+          MULU.W      R3,R4
+          STS         MACL,R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          JSR         @R9
+          EXTU.W      R4,R4
+          MOV         R14,R7
+          MOV         #0,R6
+          MOV.W       R0,@(30,R13)
+          MOV.L       @(32,R14),R5
+          MOV         #66,R0
+          JSR         @R9
+          MOV.W       @(R0,R14),R4
+          BRA         voice_process_secondary_9BC
+          MOV.W       R0,@(28,R13)
+voice_process_secondary_982:
+          MOV         R14,R7
+          MOV         #0,R6
+          MOV         #16,R0
+          MOV         #127,R4
+          MOV.L       @(32,R14),R5
+          MOV.B       @(R0,R15),R2
+          MOV         #66,R0
+          EXTU.B      R2,R2
+          MOV.W       @(R0,R14),R3
+          SUB         R2,R4
+          EXTU.W      R4,R4
+          MULU.W      R3,R4
+          STS         MACL,R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          SHAR        R4
+          JSR         @R9
+          EXTU.W      R4,R4
+          MOV.W       R0,@(28,R13)
+          MOV         R14,R7
+          MOV         #0,R6
+          MOV         #66,R0
+          MOV.L       @(32,R14),R5
+          JSR         @R9
+          MOV.W       @(R0,R14),R4
+          MOV.W       R0,@(30,R13)
+voice_process_secondary_9BC:
+          BRA         voice_process_secondary_A0C
+          NOP
+p_sound_sample_submit_work4:
+          .DATA.L     _sound_sample_submit_work4
+voice_process_secondary_9C4:
+          MOV.B       @(4,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_9F0
+          MOV         R14,R7
+          MOV         #66,R0
+          MOV.L       p_sound_sample_submit_work4_2,R6
+          MOV.L       @(32,R14),R5
+          MOV.B       @R6,R6
+          JSR         @R9
+          MOV.W       @(R0,R14),R4
+          MOV         R14,R7
+          MOV.W       R0,@(30,R13)
+          MOV         #66,R0
+          MOV.L       p_sound_sample_submit_work4_2,R6
+          MOV.L       @(32,R14),R5
+          MOV.B       @R6,R6
+          JSR         @R9
+          MOV.W       @(R0,R14),R4
+          BRA         voice_process_secondary_A0C
+          MOV.W       R0,@(28,R13)
+voice_process_secondary_9F0:
+          MOV         R14,R7
+          MOV         #0,R6
+          MOV.L       @(32,R14),R5
+          MOV         #66,R0
+          JSR         @R9
+          MOV.W       @(R0,R14),R4
+          MOV.W       R0,@(28,R13)
+          MOV         R14,R7
+          MOV         #0,R6
+          MOV         #66,R0
+          MOV.L       @(32,R14),R5
+          JSR         @R9
+          MOV.W       @(R0,R14),R4
+          MOV.W       R0,@(30,R13)
+voice_process_secondary_A0C:
+          MOV.B       @(4,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_A70
+          MOV.L       @(28,R14),R4
+          MOV         #95,R0
+          MOV.L       @(24,R14),R3
+          SHLR16      R4
+          MOV.B       @(R0,R14),R2
+          EXTS.W      R4,R4
+          MOV         #96,R0
+          ADD         R3,R4
+          MOV         R2,R3
+          SHLL8       R3
+          SHLL8       R2
+          SHLL2       R3
+          SHLL2       R2
+          SHLL        R2
+          ADD         R2,R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          ADD         R3,R4
+          MOV.B       @(R0,R14),R3
+          ADD         #-64,R3
+          MOV         R3,R2
+          SHLL8       R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          MOV.L       p_voice_state_init_pair_work,R3
+          ADD         R2,R4
+          MOV.W       @R3,R3
+          ADD         R3,R4
+          BSR         _sound_note_to_pitch
+          NOP
+          BRA         voice_process_secondary_AB6
+          NOP
+p_sound_sample_submit_work4_2:
+          .DATA.L     _sound_sample_submit_work4
+p_voice_state_init_pair_work:
+          .DATA.L     _voice_state_init_pair_work
+voice_process_secondary_A70:
+          MOV.L       @(28,R14),R4
+          MOV         #95,R0
+          MOV.L       @(24,R14),R3
+          SHLR16      R4
+          MOV.B       @(R0,R14),R2
+          EXTS.W      R4,R4
+          MOV         #96,R0
+          ADD         R3,R4
+          MOV         R2,R3
+          SHLL8       R3
+          SHLL8       R2
+          SHLL2       R3
+          SHLL2       R2
+          SHLL        R2
+          ADD         R2,R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          SHAR        R3
+          ADD         R3,R4
+          MOV.B       @(R0,R14),R3
+          ADD         #-64,R3
+          MOV         R3,R2
+          SHLL8       R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          SHAR        R2
+          BSR         _sound_note_to_pitch
+          ADD         R2,R4
+voice_process_secondary_AB6:
+          MOV.W       R0,@(12,R13)
+          MOV.B       @R15,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_AE4
+          MOV.B       @(12,R15),R0
+          MOV         R0,R0
+          EXTU.B      R0,R0
+          TST         R0,R0
+          BT          voice_process_secondary_AE4
+          MOV.B       @(8,R15),R0
+          MOV         R0,R1
+          EXTU.B      R1,R1
+          MOV.L       o_sftl_5,R3
+          BSRF        R3
+          MOV         #1,R0
+voice_process_secondary_AD6:
+          EXTU.W      R0,R0
+          EXTU.W      R0,R0
+          MOV.L       p_sound_reg_200_5,R2
+          MOV.W       @R2,R2
+          OR          R0,R2
+          MOV.L       p_sound_reg_200_5,R3
+          MOV.W       R2,@R3
+voice_process_secondary_AE4:
+          ADD         #20,R15
+          LDS.L       @R15+,MACL
+          LDS.L       @R15+,PR
+          MOV.L       @R15+,R8
+          MOV.L       @R15+,R9
+          MOV.L       @R15+,R10
+          MOV.L       @R15+,R11
+          MOV.L       @R15+,R12
+          MOV.L       @R15+,R13
+          RTS
+          MOV.L       @R15+,R14
+
+_sound_reg_write_verify:
+          MOV.W       R5,@R4
+sound_reg_write_verify_002:
+          EXTU.W      R5,R2
+          MOV.W       @R4,R3
+          EXTU.W      R3,R3
+          CMP/EQ      R3,R2
+          BF          sound_reg_write_verify_010
+          BRA         sound_reg_write_verify_014
+          NOP
+sound_reg_write_verify_010:
+          BRA         sound_reg_write_verify_002
+          MOV.W       R5,@R4
+sound_reg_write_verify_014:
+          RTS
+          NOP
+          .DATA.W     H'18B3           ; alignment pad
+o_sftl_5:
+          .DATA.L     __sftl-voice_process_secondary_AD6
+p_sound_reg_200_5:
+          .DATA.L     SOUND_REG+H'200
+          .END

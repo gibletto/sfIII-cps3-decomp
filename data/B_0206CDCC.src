@@ -1,8 +1,0 @@
-; B_0206CDCC: work RAM 0206CDCC-0206CDF0 (36 bytes), cleared at boot: the names in it not yet declared in C
-          .CPU        SH2
-          .SECTION    B,DATA,ALIGN=4
-          .EXPORT     _sound_sample_submit_work7
-          .RES.B      32
-_sound_sample_submit_work7:
-          .RES.B      4
-          .END

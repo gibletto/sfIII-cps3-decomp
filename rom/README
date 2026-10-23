@@ -1,1 +1,3 @@
-Put sfiiin.zip (the MAME set of Street Fighter III: New Generation) here.
+Put your Street Fighter III: New Generation ROM set here: sfiiina.zip (MAME/FBNeo, Asia 970204, NO CD,
+BIOS set 2) or sfiiin.zip (BIOS set 1). A split set's shared SIMM files are read from sfiii.zip
+when it is here too.

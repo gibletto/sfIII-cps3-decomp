@@ -1,8 +1,0 @@
-; B_0206CDF8: work RAM 0206CDF8-0206DCCA (3794 bytes), cleared at boot: the names in it not yet declared in C
-          .CPU        SH2
-          .SECTION    B,DATA,ALIGN=4
-          .EXPORT     _snd_wave_bias
-          .RES.B      3750
-_snd_wave_bias:
-          .RES.B      44
-          .END

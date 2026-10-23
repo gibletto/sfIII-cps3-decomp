@@ -75,7 +75,7 @@ $(INCODE:%=obj/%.obj): obj/%.obj: data/%.c | obj
 	$(BIN)/asmsh.exe $(call win,$(@:.obj=.src)) -object=$(call win,$@)
 
 # tables between the code objects of PSYS: their constant data as code (tools/incode.py)
-INCODE_PSYS = sys_font
+INCODE_PSYS = sound_voice_tbl sys_font textsound_tbl
 $(INCODE_PSYS:%=obj/%.obj): obj/%.obj: data/%.c | obj
 	@echo $<
 	@mkdir -p "$(SHC_TMP)/$(*F)"; SHC_TMP='$(SHC_TMP)\$(*F)' \
@@ -118,12 +118,12 @@ sfn.abs: $(OBJS) sfn.sub
 sfn.bin: sfn.abs
 	$(BIN)/rof2bin.exe -s=06000000 -e=06800000 -v=FF sfn.abs
 
-build/rom_pieces.bin: rom/sfiiin.zip tools/rom_pieces.tsv
+build/rom_pieces.bin: $(wildcard rom/*.zip) tools/rom_pieces.tsv
 	@mkdir -p build
-	$(PYTHON) tools/cps3rom1.py extract $< $@
+	$(PYTHON) tools/cps3rom1.py extract rom $@
 
 build/prog.bin: sfn.bin build/rom_pieces.bin tools/gaps.tsv
-	$(PYTHON) tools/cps3rom1.py pack sfn.bin build/rom_pieces.bin rom/sfiiin.zip build
+	$(PYTHON) tools/cps3rom1.py pack sfn.bin build/rom_pieces.bin rom build
 
 clean:
 	rm -rf obj build sfn.abs sfn.map sfn.bin

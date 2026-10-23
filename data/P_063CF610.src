@@ -1,5 +1,0 @@
-; P_063CF610: PSYS 063CF610-063CFA10 (1024 bytes): names only; the build copies the bytes from the ROM (tools/rom_pieces.tsv)
-          .CPU        SH2
-          .SECTION    PSYS,CODE,ALIGN=4
-          .RES.B      1024
-          .END

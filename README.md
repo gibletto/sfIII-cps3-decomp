@@ -7,37 +7,45 @@ the finished [3rd Strike](https://github.com/gibletto/sfIII3-cps3-decomp) and
 the names of the files here follow Capcom's 3rd Strike file names (New Generation's own modules are named in the same
 style).
 
-C and SH-2 assembler source for the CPS3 program ROM of *Street Fighter III: New Generation* (MAME set sfiiin, Asia
-970204, NO CD), built with the original Hitachi toolchain (SHC 5.0, asmsh, lnk 6.0, rof2bin). New Generation is the
-first game on the engine that 2nd Impact and 3rd Strike continue.
+C and SH-2 assembler source for the CPS3 program ROM of *Street Fighter III: New Generation* (MAME and FBNeo set
+sfiiina, Asia 970204, NO CD, BIOS set 2; sfiiin, BIOS set 1, has the same program), built with the original Hitachi
+toolchain (SHC 5.0, asmsh, lnk 6.0, rof2bin). New Generation is the first game on the engine that 2nd Impact and 3rd
+Strike continue.
 
 The build is a byte-for-byte copy of the arcade program. `build/prog.bin` has the arcade program's SHA-1,
-3dcfb7a2cea2dee0785ce4a3a90d555c107f5372, and the program file `10` written into `build/sfiiin.zip` is the original ROM's:
+3dcfb7a2cea2dee0785ce4a3a90d555c107f5372, and the four program SIMM chips written into `build/sfiiina.zip` are the original ROM's:
 
-    10  sha1 47623820c64b72e69417afcafaacdd2c318cde1c
+    sfiii-simm1.0  crc cfc9e45a  sha1 5d9061f76680642e730373e3ac29b24926dc5c0c
+    sfiii-simm1.1  crc 57920546  sha1 c8452e7e101b8888fb806d1c9874c6be49fc7dbd
+    sfiii-simm1.2  crc 0d8f2680  sha1 ade7b28acd11023696c4b20136f3d2f34da6b1be
+    sfiii-simm1.3  crc ea4ca054  sha1 f91c55c4e4fc428ce15d27be38aeed3a483d028c
 
-5,719 C routines, 37 assembler routines and 18 run-time routines compile and link from
-this source to the arcade's exact bytes. The rest of the program is not source yet: 19 routines and some data tables, which the build copies from your ROM (see [What the build reads from your
-ROM](#what-the-build-reads-from-your-rom)).
+5,659 C routines, 56 assembler routines and 18 run-time routines compile and link from
+this source to the arcade's exact bytes, and all the program's tables and work RAM are source too. The build copies
+only the graphics and the parts outside the linked sections from your ROM (see [What the build reads from your
+ROM](#what-the-build-reads-from-your-rom)). The sound driver's routines are built from assembler source; their
+reconstructed C is in `src/nonmatching/` (see [Sound driver](#sound-driver)).
 
 ## Building
 
 Needs Windows (the tools in `bin/` are Win32 programs) and Python 3.
 
-1. Put your `sfiiin.zip` in `rom/`.
+1. Put your `sfiiina.zip` (or `sfiiin.zip`) in `rom/`. A split set's shared SIMM files are read from `sfiii.zip`
+   when it is there too.
 2. Run `build.bat` (or `make`).
 
-The build reads from the ROM the parts of the program that are not source yet, compiles and links the program, and
-writes:
+The build reads the graphics and the parts outside the linked sections from the ROM, compiles and links the program,
+and writes:
 
 - `build/prog.bin` - the program image, 06000000-067FFFFF
-- `build/10` - the program file as the ROM set stores it (encrypted)
-- `build/sfiiin.zip` - your ROM set with `10` replaced
+- `build/sfiiina.zip` (or `sfiiin.zip`, after your set's BIOS) - your ROM set, in MAME's and FBNeo's layout, with the
+  four program SIMM chips replaced by the new build
 
-The build checks `build/prog.bin` and `build/10` against the SHA-1s in `tools/prog.sha1`, the arcade program's, and
-`10` against the one in your ROM set; if any differs it still writes the files, then stops with BUILD FAILED (`make`
-fails too). New Generation stores its whole program encrypted, code and data alike, apart from a few parts outside the
-linked sections that are stored plain (`tools/rom_pieces.tsv`).
+The build prints each program chip's CRC and SHA-1 and checks them, and `build/prog.bin`, against the arcade's
+(`tools/prog.sha1`) and against your set's; if any differs it still writes the files, then stops with BUILD FAILED
+(`make` fails too). The program SIMM holds 06000000-067FFFFF in four chips, one byte lane each. New Generation stores
+its whole program encrypted, code and data alike, apart from a few parts outside the linked sections that are stored
+plain (`tools/rom_pieces.tsv`).
 
 When running a new build in MAME, use an empty `-nvram_directory`: MAME keeps the program flash in nvram and loads it
 over the ROM files.
@@ -45,8 +53,9 @@ over the ROM files.
 ## Layout
 
     src/      game code (C, and SH-2 assembler in .src files), and the work RAM the modules share
-    data/     game tables, the CD volume identifier, and the labels-only objects: the parts of the program that are
-              not source yet (names and sizes only; the bytes come from the ROM)
+    src/nonmatching/  the sound driver's reconstructed C (not built; see Sound driver)
+    data/     game tables, the CD volume identifier, and cg_labels.src: the graphics' names (labels only; the
+              bytes come from the ROM)
     include/  headers
     lib/      the compiler's run-time routines, as linked into the program
     bin/      Hitachi SHC toolchain: shcmdl, shcgen, shcpep and shcasm are the rebuilt stages (see Compiler; the
@@ -57,25 +66,18 @@ over the ROM files.
               gaps.tsv: the alignment-gap bytes; prog.sha1
 
 A data file holds the tables of the 3rd Strike file of that name, or is named after the module that reads its tables
-(`<module>_tbl`) where no 3rd Strike file fits. A labels-only object is named after its section and address
-(`CTBL_063D2C74`) or after the module it belongs to; the graphics' names are in `cg_labels.src`.
+(`<module>_tbl`) where no 3rd Strike file fits. An assembler module that is part of a C module of the same name (the
+sound driver's) is named `<module>_x1`, `_x2`.
 
 ## What the build reads from your ROM
 
 Apart from the alignment-gap bytes (`tools/gaps.tsv`, below), nothing from the ROM is in this repository.
-`tools/cps3rom1.py extract` reads these 15 parts of the program
-(3.8 MB) from `10` in your `sfiiin.zip`, and `pack` puts them into the linked image:
+`tools/cps3rom1.py extract` reads these 8 parts of the program
+(3.7 MB) from the program SIMM in your ROM set, and `pack` puts them into the linked image:
 
 | part | address | size |
 |---|---|---|
 | outside the linked sections | 06000200-060003FF | 512 bytes |
-| data/textsound_2_rom.src | 063CD16C-063CDA4B | 2,272 bytes |
-| data/textsound_2_rom_b.src | 063CDA58-063CDC9F | 584 bytes |
-| data/sound_voice_rom.src | 063CE212-063CE883 | 1,650 bytes |
-| data/sound_voice_2_rom.src | 063CE884-063CF59F | 3,356 bytes |
-| data/P_063CF610.src | 063CF610-063CFA0F | 1,024 bytes |
-| data/P_063CFA78.src | 063CFA78-063D1277 | 6,144 bytes |
-| data/D_02007398.src (initial values of work RAM 02007398) | 06442FF8-06443021 | 42 bytes |
 | outside the linked sections | 06443022-0646A891 | 158 KB |
 | outside the linked sections (stored plain) | 0646A892-064FFFFF | 598 KB |
 | data/cg_labels.src | 06500000-0657A1DF | 488 KB |
@@ -84,9 +86,7 @@ Apart from the alignment-gap bytes (`tools/gaps.tsv`, below), nothing from the R
 | outside the linked sections (stored plain) | 067CD98C-067FFFDF | 202 KB |
 | outside the linked sections (stored plain) | 067FFFEC-067FFFFF | 20 bytes |
 
-- The `data/` objects are labels only: the names the rest of the program uses, with space reserved for the bytes.
-  As they become C or assembler source they leave this list.
-- The routines `sound_init`, `sound_request`, `sound_seq_start`, `sound_request_pan`, `bgm_stop`, `bgm_pause`, `bgm_resume`, `sound_fade_in_submit`, `bgm_fade_out`, `sound_reg_level_set`, `sound_driver_init`, `se_voice_stop`, `se_voice_stop_all`, `sound_driver_tick`, `voice_process_primary`, `sound_note_to_pitch`, `sound_voice_volume_compute`, `voice_process_secondary`, `sound_reg_write_verify` are not source yet; their bytes are in the labels-only objects that hold them.
+- `data/cg_labels.src` is labels only: the graphics' names the program uses, with space reserved for their bytes.
 - "outside the linked sections": the CD image New Generation was cut from kept whatever an earlier build had left
   where this program's link writes nothing (an earlier build's tables, bitmaps). No source produces those bytes.
   For the same reason the alignment gaps inside the sections (the halfword before a 4-aligned literal pool, the
@@ -137,17 +137,26 @@ C.
 
 ### Sound driver
 
-<!-- PLACEHOLDER: the sound driver's compiler profile goes here when its C lands: its options (the driver is built
-with -pic=1, position-independent code), its settings, and the routines that show them. Until then its routines are
-read from the ROM (see below). -->
-The sound driver's routines are not source yet. They were built with position-independent code (`-pic=1`) and a
-compiler profile that is still being worked out; this section will describe it when they land.
+Unlike the 3rd Strike and 2nd Impact decomps, New Generation's sound driver was built with an SHC release much older
+than any that has been found: the oldest available, 5.0 Release 10, already compiles it as Release 26 does, and
+matching it with the rebuilt compiler would need massive modification. So the driver's 19 routines are built from
+assembler source written from the arcade code (`src/textsound_2_x1.src`, `src/textsound_2_x2.src`,
+`src/sound_voice_x1.src`, `src/sound_voice_2.src`), and their reconstructed C is in `src/nonmatching/`
+(`textsound_2.c`, `sound_voice.c`, `sound_voice_2.c`, under `NONMATCHING`), where it compiles to most of the same
+instructions but not to the exact bytes. The driver's other routines (`textsound_2.c`, `sound_status.c`,
+`sound_voice.c`, `sound_voice_3.c`) and its tables and work RAM are C that builds the arcade's bytes.
+
+The driver was built as position-independent code: it calls through `BSRF` with the callee's offset from the call in
+the literal pool, which the assembler source writes as a label difference (`.DATA.L __slow_mvn-sound_init_026`).
+The assembler prints one expected warning (817, ILLEGAL BOUNDARY VALUE) for `src/sound_voice_x1.src`: that module
+starts on a 2-byte boundary, right after the C of `sound_voice.c`, as it does in the arcade program.
 
 ## Contributing
 As this is an exact byte-match, contributions should maintain the match while improving or explaining the code, or
 replace a compiler setting with source that produces the same bytes (with a PR to the compiler decomp project too).
-Turning the labels-only objects into source is the open task. Matching forms that look
-like workarounds rather than original source (dead reads, `if (0)` blocks, odd spellings) are the next candidates.
+The open tasks are C for the sound driver that builds its bytes (`src/nonmatching/` is the
+starting point), and matching forms that look like workarounds rather than original source (dead reads, `if (0)`
+blocks, odd spellings).
 
 ## Thanks
 
