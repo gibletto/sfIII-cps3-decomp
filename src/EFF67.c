@@ -21,6 +21,13 @@
 #include "effect_2.h"
 #include "aboutspr.h"
 #include "EFF67.h"
+
+/* routine_no[0] */
+#define R0_INIT         0       /* count in with the parent and show */
+#define R0_FLY          1       /* fly about until it comes down */
+#define R0_STAY         2       /* stay at its height for a while */
+#define R0_KILL         3       /* count out and put the work back */
+
 int abs(int);
 extern const s16 eff67_data_tbl[2][48];
 extern const s32 eff67_accel_tbl[2][64];
@@ -34,7 +41,6 @@ s32 effect_67_init(WORK_Other* oya, s16 type) {
     s16 ix;
     s16 rnd;
     const s16* data;
-    (void)eff67_accel_tbl;
     if ((ix = pull_effect_work(3)) == -1) {
         return -1;
     }
@@ -71,7 +77,7 @@ s32 effect_67_init(WORK_Other* oya, s16 type) {
     ewk->wu.char_index = *data;
     ewk->wu.dm_vital = 50;
     rnd = random_32_com();
-    rnd = rnd + rnd;
+    rnd += rnd;
     if (rnd == 0) {
         rnd = 16;
     }
@@ -105,7 +111,7 @@ void effect_67_move(WORK_Other* ewk) {
         return;
     }
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         oya = (WORK_Other*)ewk->my_master;
         if (ewk->wu.type == 0) {
             oya->wu.direction++;
@@ -116,7 +122,7 @@ void effect_67_move(WORK_Other* ewk) {
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R0_FLY:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
@@ -173,7 +179,7 @@ void effect_67_move(WORK_Other* ewk) {
         }
         disp_seraph_cells(&ewk->wu);
         break;
-    case 2:
+    case R0_STAY:
         ewk->wu.dm_vital--;
         if (ewk->wu.dm_vital == 0) {
             ewk->wu.routine_no[0]++;
@@ -182,7 +188,7 @@ void effect_67_move(WORK_Other* ewk) {
         }
         disp_seraph_cells(&ewk->wu);
         break;
-    case 3:
+    case R0_KILL:
         oya = (WORK_Other*)ewk->my_master;
         if (ewk->wu.type == 0) {
             oya->wu.direction--;

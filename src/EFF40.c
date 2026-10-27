@@ -21,11 +21,17 @@
 #include "EFF41.h"
 #include "EFF42.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* count the delay down, then show */
+#define R0_HOLD         1       /* one frame at double size */
+#define R0_SHRINK       2       /* shrink to normal size */
+#define R0_STAY         3       /* (default) stay at normal size */
+
 void set_char_move_init2();
 
 void effect_40_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (--ewk->wu.dir_timer != 0) {
             return;
         }
@@ -35,12 +41,12 @@ void effect_40_move(WORK_Other* ewk) {
         ewk->wu.mvxy.a[0].sp = 0x80000;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
         break;
-    case 1:
+    case R0_HOLD:
         if (--ewk->wu.dir_timer == 0) {
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 2:
+    case R0_SHRINK:
         ewk->wu.my_priority++;
         ewk->wu.position_z++;
         if ((ewk->wu.my_mr.size.x -= *(s16*)&ewk->wu.mvxy.a[0]) <= 63) {

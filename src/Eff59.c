@@ -22,17 +22,29 @@
 #include "bg_sub_5.h"
 #include "Eff59.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* count the start delay down */
+#define R0_OPEN         1       /* widen the letter */
+#define R0_HOLD         2       /* hold, then set the stage */
+#define R0_CLOSE        3       /* narrow the letter away */
+#define R0_NEXT         4       /* wait out a break-in, then go on */
+#define R0_DONE         5       /* ask for the next step until told to die */
+#define R0_KILL         6       /* (default) put the work back */
+
+/* eff59_country_tbl columns */
+#define COUNTRY_NAME    0       /* row of eff59_name_tbl */
+#define COUNTRY_LEN     1       /* number of letters */
+
 extern const u8 eff59_country_tbl[13][2];
 extern const s16 eff59_name_x_tbl[10];
 extern const u8 eff59_name_tbl[10][39];
 
 
 #define COUNTRY_LETTER_SCALE(value) (((WORK_Other*)(value))->wu.id)
-#define COUNTRY_LETTER_TIMER(value) (((WORK_Other*)(value))->wu.id)
 
 void effect_59_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (--ewk->wu.dir_timer) {
             return;
         }
@@ -40,14 +52,14 @@ void effect_59_move(WORK_Other* ewk) {
         ewk->wu.disp_flag = 1;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
         break;
-    case 1:
+    case R0_OPEN:
         if ((ewk->wu.my_mr.size.x += 6) >= 63) {
             ewk->wu.routine_no[0]++;
             ewk->wu.dir_timer = 40;
             ewk->wu.my_mr.size.x = 63;
         }
         break;
-    case 2:
+    case R0_HOLD:
         if (Break_Into) {
             break;
         }
@@ -57,14 +69,14 @@ void effect_59_move(WORK_Other* ewk) {
             bg_w.area = 0;
         }
         break;
-    case 3:
+    case R0_CLOSE:
         if ((ewk->wu.my_mr.size.x -= 6) < 0) {
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 0;
             ewk->wu.my_mr.size.x = 0;
         }
         break;
-    case 4:
+    case R0_NEXT:
         if (Break_Into) {
             break;
         }
@@ -73,7 +85,7 @@ void effect_59_move(WORK_Other* ewk) {
             Next_Step = 1;
         }
         break;
-    case 5:
+    case R0_DONE:
         if (ewk->master_id) {
             Next_Step = 1;
         }
@@ -94,7 +106,8 @@ void effect_59_move(WORK_Other* ewk) {
 
 
 /* one letter per name character */
-s32 effect_59_init(s16 timer) {
+s32 effect_59_init(s16 time) {
+    s16 timer = time;
     WORK_Other* ewk;
     s16 ix;
     s16 i;
@@ -104,8 +117,8 @@ s32 effect_59_init(s16 timer) {
     s32 n;
     const u8* name;
     const u8* p;
-    no = eff59_country_tbl[Battle_Country][0];
-    num = eff59_country_tbl[Battle_Country][1];
+    no = eff59_country_tbl[Battle_Country][COUNTRY_NAME];
+    num = eff59_country_tbl[Battle_Country][COUNTRY_LEN];
     i = 0;
     x = eff59_name_x_tbl[no];
     n = num * 2;
@@ -147,8 +160,7 @@ s32 effect_59_init(s16 timer) {
             ewk->wu.my_mr.size.x = 0;
         }
     }
-    (void)COUNTRY_LETTER_SCALE(63);
-    (void)COUNTRY_LETTER_TIMER(timer);
+    (void)&COUNTRY_LETTER_SCALE(63);
     load_any_color(7);
     return 0;
 }

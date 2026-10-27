@@ -1,5 +1,10 @@
 /*
- * END_4_TBL.C  tables read by end_4.c
+ * END_4_TBL.C  Dudley's ending tables (ending 4)
+ *
+ * end_400_panel0 and end_400_panel1 list the BG0 and BG1 cells (map offset, cell number)
+ * written by end_400_cell_set at the start of the ending, reached through end_4_panel_p in
+ * OP_END_WORK.C. timer_4_tbl is the length in frames of each of the five scenes and end_4_pos
+ * the BG x and y of each scene. Read by END_4.C.
  */
 
 #include "types.h"

@@ -1,5 +1,10 @@
 /*
- * MANAGE_TBL_B.C  tables read by Manage.c: the attract mode's texts
+ * MANAGE_TBL_B.C  attract-mode text
+ *
+ * The text strings of the attract mode: FBI, Q SOUND, EYE CATCH, STREET FIGHTER III, 199X
+ * CAPCOM, PLAY DEMO, RANKING, SELECT PLAYER, INSERT COIN and PUSH 1 OR 2 START BUTTON. FBI_msg
+ * is printed by MANAGE.C on the FBI warning screen; the others are reached through MANAGE.C's
+ * attract_menu_str, which nothing reads.
  */
 
 #include "types.h"

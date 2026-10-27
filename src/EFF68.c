@@ -25,14 +25,23 @@
 #include "bg_sub_5.h"
 #include "EFF68.h"
 
+/* routine_no[0] */
+#define R0_IDLE         0       /* idle until a player comes near */
+#define R0_REACT        1       /* play the reaction */
+#define R0_KILL         99      /* (default) put the work back */
+
+/* routine_no[1] */
+#define R1_INIT         0       /* start the animation */
+#define R1_PLAY         1       /* play it */
+
 extern void (*eff68_jp[2])(WORK_Other*);
 
 
 void effect_68_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_IDLE:
         if (compel_dead_check(ewk)) {
-            ewk->wu.routine_no[0] = 99;
+            ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
         if (!EXE_flag && !Game_pause) {
@@ -40,9 +49,9 @@ void effect_68_move(WORK_Other* ewk) {
         }
         disp_pos_trans_entry_rs(ewk);
         break;
-    case 1:
+    case R0_REACT:
         if (compel_dead_check(ewk)) {
-            ewk->wu.routine_no[0] = 99;
+            ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
         if (!EXE_flag && !Game_pause) {
@@ -72,8 +81,8 @@ void eff68_0001(WORK_Other* ewk) {
     char_move(&ewk->wu);
     if (ewk->wu.cg_type == 2) {
         if (range_abs_check(plw[0].wu.position_x, ewk->wu.position_x, 32) || range_abs_check(plw[1].wu.position_x, ewk->wu.position_x, 32)) {
-            ewk->wu.routine_no[0] = 1;
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[0] = R0_REACT;
+            ewk->wu.routine_no[1] = R1_INIT;
         }
     }
 }
@@ -81,16 +90,16 @@ void eff68_0001(WORK_Other* ewk) {
 /* provisional name */
 void eff68_0002(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 18);
         break;
-    case 1:
+    case R1_PLAY:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
-            ewk->wu.routine_no[0] = 0;
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[0] = R0_IDLE;
+            ewk->wu.routine_no[1] = R1_INIT;
         }
         suzi_sync_pos_set(ewk);
         sort_push_request4(&ewk->wu);

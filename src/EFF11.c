@@ -19,17 +19,23 @@
 #include "sys_test.h"
 #include "EFF11.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* fill the map pages, show the first */
+#define R0_MOVE         1       /* flip BG 0 between the pages */
+
 
 
 
 extern const EFF11_ROW eff11_tile_tbl[4];
 extern const EFF11_FRAME eff11_frame_tbl[8][4];
 extern const EFF11_ANIME eff11_anime_tbl[14];
-extern const u16 bg070_cell_data[];
+extern const u16 bg070_cell_data[155][16][32];
 
 void debug_bg_tile_put(s16 bg, s32 ofs, s32 page, s32 src);
 
 
+
+static void eff11_tile_disp(s32 ofs) {}
 
 void effect_11_move(WORK_Other* ewk) {
     s16 i;
@@ -40,8 +46,8 @@ void effect_11_move(WORK_Other* ewk) {
     const EFF11_ROW* row;
     const EFF11_TILE* tile;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
-        ewk->wu.routine_no[0]++;
+    case R0_INIT:
+        ewk->wu.routine_no[0] += 1;
         ewk->wu.cg_ix = 0;
         ewk->wu.char_index = 0;
         ewk->wu.now_koc = eff11_anime_tbl[ewk->wu.char_index].count;
@@ -50,24 +56,20 @@ void effect_11_move(WORK_Other* ewk) {
         put = debug_bg_tile_put;
         for (i = 0; i < 4; i++) {
             row = (const EFF11_ROW*)&eff11_tile_tbl[i].t[0];
-            (void)((WORK*)row)->id;
-            (void)((WORK*)put)->id;
             for (j = 0; j < 16; j++) {
                 tile = &row->t[j];
-                (void)((EFF11_ROW*)tile)->t[0].ofs;
                 put(i, tile->ofs, tile->page, (s32)bg070_cell_data);
+                eff11_tile_disp(tile->ofs);
             }
-            (void)((WORK*)i)->id;
         }
-        (void)((WORK*)put)->id;
+        (void)&((WORK*)put)->id;
         scrn_map_set_now(0, (u32)bg_w.bgw[0].bg_address);
         Scrn_Y_Set_R(0, eff11_frame_tbl[ewk->wu.pat_status][ewk->wu.cg_ix].y);
         break;
-    case 1:
+    case R0_MOVE:
         if (!EXE_flag && !Game_pause) {
             ewk->wu.cg_ctr--;
             if (!ewk->wu.cg_ctr) {
-                (void)((WORK*)0)->id;
                 ewk->wu.cg_ix++;
                 if (ewk->wu.cg_ix > 3) {
                     ewk->wu.cg_ix = 0;
@@ -102,6 +104,8 @@ void effect_11_move(WORK_Other* ewk) {
 
 
 
+static void bg_adrs_disp(s16 no) {}
+
 s32 effect_11_init(void) {
     WORK_Other* ewk;
     s16 ix;
@@ -114,7 +118,7 @@ s32 effect_11_init(void) {
     ewk = (WORK_Other*)frw[ix];
     ewk->wu.be_flag = 1;
     ewk->wu.id = 11;
-    (void)&((BG_ADRS*)eff_bg_adrs)->no;
+    bg_adrs_disp(eff_bg_adrs->no);
     bg = &bg_w;
     ewk->wu.work_id = 16;
     eff_bg_adrs[0].no = bg->bgw[0].bg_adrs_c_no;

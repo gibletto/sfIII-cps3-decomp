@@ -1,5 +1,9 @@
 /*
- * DEMO_TBL.C  tables read by Game_Main.c: the bookkeeping screen's labels
+ * DEMO_TBL.C  operator information headings
+ *
+ * Game_Data_msg, Income_msg, Service_msg and Card_msg are the headings GAME DATA, INCOME,
+ * SERVICE and CARD shown to the operator in some countries while 1P light punch is held. Read
+ * by GAME_MAIN.C, the game phase dispatcher.
  */
 
 #include "types.h"

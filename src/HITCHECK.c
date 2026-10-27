@@ -38,6 +38,10 @@
 #include "HITCHECK.h"
 #include "fighter.h"
 
+/* hit_mark_hosei_table[att.mkh_ix] columns */
+#define MARK_HOSEI_X    0       /* x offset, mirrored by facing */
+#define MARK_HOSEI_Y    1       /* y offset */
+
 WORK* q_hit_push[32];  /* 0200E84C */
 HS hs[32];  /* 0200E8CC */
 s8 ca_check_flag;  /* 0200EACC */
@@ -85,8 +89,8 @@ void check_result_extra(void) {
     s16 hs1;
     s16 hs2;
     s16 qua;
-    if (plw[0].wu.routine_no[1] == 1 && plw[0].wu.routine_no[3] == 0) {
-        if (plw[1].wu.routine_no[1] == 1 && plw[1].wu.routine_no[3] == 0) {
+    if (plw[0].wu.routine_no[1] == PLAYER_DAMAGE && plw[0].wu.routine_no[3] == 0) {
+        if (plw[1].wu.routine_no[1] == PLAYER_DAMAGE && plw[1].wu.routine_no[3] == 0) {
             dm1p = (WORK_Other*)plw[0].wu.dmg_adrs;
             dm2p = (WORK_Other*)plw[1].wu.dmg_adrs;
             switch ((dm1p->wu.work_id == 1) + ((dm2p->wu.work_id == 1) * 2)) {
@@ -214,7 +218,7 @@ four:
     as->wu.hf.hit.player = 1;
     ds->wu.routine_no[2] = as->wu.att.reaction;
 react:
-    switch ((ds->wu.routine_no[1] == 1 && ds->wu.cg_type == 10) + (((as->wu.rl_flag + ds->wu.rl_flag) & 1) * 2)) {
+    switch ((ds->wu.routine_no[1] == PLAYER_DAMAGE && ds->wu.cg_type == 10) + (((as->wu.rl_flag + ds->wu.rl_flag) & 1) * 2)) {
     case 0:
     case 3:
         as->wu.routine_no[1] = as->wu.cmcr.koc;
@@ -231,7 +235,7 @@ react:
     as->tsukami_num = ds->player_number;
     as->tsukami_f = 1;
     ds->tsukamare_f = 1;
-    ds->wu.routine_no[1] = 3;
+    ds->wu.routine_no[1] = PLAYER_CAUGHT;
     ds->wu.routine_no[2] = as->wu.att.ng_type;
     ds->wu.routine_no[3] = 0;
     if (as->wu.att.ng_type == 2) {
@@ -267,11 +271,11 @@ void setup_catch_atthit(WORK* as, WORK* ds) {
 void set_catch_hit_mark_pos(WORK* as, WORK* ds) {
     if (as->att.mkh_ix) {
         if (as->rl_flag) {
-            as->hit_mark_x = as->xyz[0].disp.pos - hit_mark_hosei_table[as->att.mkh_ix][0];
+            as->hit_mark_x = as->xyz[0].disp.pos - hit_mark_hosei_table[as->att.mkh_ix][MARK_HOSEI_X];
         } else {
-            as->hit_mark_x = as->xyz[0].disp.pos + hit_mark_hosei_table[as->att.mkh_ix][0];
+            as->hit_mark_x = as->xyz[0].disp.pos + hit_mark_hosei_table[as->att.mkh_ix][MARK_HOSEI_X];
         }
-        as->hit_mark_y = as->xyz[1].disp.pos + hit_mark_hosei_table[as->att.mkh_ix][1];
+        as->hit_mark_y = as->xyz[1].disp.pos + hit_mark_hosei_table[as->att.mkh_ix][MARK_HOSEI_Y];
     } else {
         cal_hit_mark_position(ds, as, (s16*)ds->h_cau, (s16*)as->h_att);
     }
@@ -318,11 +322,11 @@ s16 ix;
 {
     if (as->att.mkh_ix) {
         if (as->rl_flag) {
-            as->hit_mark_x = as->xyz[0].disp.pos - hit_mark_hosei_table[as->att.mkh_ix][0];
+            as->hit_mark_x = as->xyz[0].disp.pos - hit_mark_hosei_table[as->att.mkh_ix][MARK_HOSEI_X];
         } else {
-            as->hit_mark_x = as->xyz[0].disp.pos + hit_mark_hosei_table[as->att.mkh_ix][0];
+            as->hit_mark_x = as->xyz[0].disp.pos + hit_mark_hosei_table[as->att.mkh_ix][MARK_HOSEI_X];
         }
-        as->hit_mark_y = as->xyz[1].disp.pos + hit_mark_hosei_table[as->att.mkh_ix][1];
+        as->hit_mark_y = as->xyz[1].disp.pos + hit_mark_hosei_table[as->att.mkh_ix][MARK_HOSEI_Y];
     } else {
         cal_hit_mark_position(ds, as, hs[ix].dh, hs[ix2].ah);
     }
@@ -340,7 +344,7 @@ char gddir;
         if (ds->wu.pat_status == 10) {
             goto fall;
         }
-        if (ds->wu.routine_no[1] == 1) {
+        if (ds->wu.routine_no[1] == PLAYER_DAMAGE) {
             if (ds->wu.xyz[1].disp.pos > 0) {
                 goto jump_one;
             }
@@ -391,7 +395,7 @@ char gddir;
         dm_reaction_init_set(as, ds);
         if (as->wu.zu_flag == 0) {
             if (ds->wu.pat_status >= 32) {
-                if (ds->dm_point == 4 && ds->player_number == 5) {
+                if (ds->dm_point == 4 && ds->player_number == PL_NECRO) {
                     ds->wu.routine_no[2] = get_kagami2_damage(ds->wu.routine_no[2]);
                 }
                 ds->wu.routine_no[2] = get_kagami_damage(ds->wu.routine_no[2]);
@@ -404,7 +408,7 @@ char gddir;
                     }
                     break;
                 case 4:
-                    if (ds->player_number == 5) {
+                    if (ds->player_number == PL_NECRO) {
                         ds->wu.routine_no[2] = get_grd_hand_damage(ds->wu.routine_no[2]);
                     }
                 default:
@@ -416,7 +420,7 @@ char gddir;
             }
         }
     }
-    ds->wu.routine_no[1] = 1;
+    ds->wu.routine_no[1] = PLAYER_DAMAGE;
     ds->wu.routine_no[3] = 0;
     effect_02_init(&as->wu, ds->dm_point, 1, ds->wu.dm_rl);
     dm_status_copy(&as->wu, &ds->wu);
@@ -468,7 +472,7 @@ void set_guard_status(PLW* as, PLW* ds) {
     if (as->wu.att.hs_you == 0 && as->wu.att.hs_me == 0) {
         ds->wu.routine_no[2] = ds->wu.old_rno[2];
     } else {
-        ds->wu.routine_no[1] = 1;
+        ds->wu.routine_no[1] = PLAYER_DAMAGE;
         ds->wu.routine_no[3] = 0;
         effect_02_init(&as->wu, ds->dm_point, 2, ds->wu.dm_rl);
         dm_status_copy(&as->wu, &ds->wu);
@@ -496,7 +500,7 @@ void set_paring_status(PLW* as, PLW* ds) {
     if ((as->wu.att.hs_you == 0) && (as->wu.att.hs_me == 0)) {
         ds->wu.routine_no[2] = ds->wu.old_rno[2];
     } else {
-        ds->wu.routine_no[1] = 0;
+        ds->wu.routine_no[1] = PLAYER_NORMAL;
         ds->wu.routine_no[3] = 0;
         waza_compel_all_init2(ds);
         dm_status_copy(&as->wu, &ds->wu);
@@ -508,8 +512,6 @@ void set_paring_status(PLW* as, PLW* ds) {
         case 2:
         case 4:
             ds->wu.dm_stop = -12;
-            goto paring_hit_stop_set;
-        paring_hit_stop_set:;
             as->wu.hit_stop = 22;
             as->wu.hit_quake = 22;
             break;
@@ -562,8 +564,6 @@ void set_paring_status(PLW* as, PLW* ds) {
             *(ds->wu.id + *row_copy) = 49;
             if (0) {
             }
-            goto paring_row_ready;
-        paring_row_ready:;
             player = 0;
             player_copy = player;
             (void)plw[(row ? player : 1) | (player_copy != 0)].wu.id;
@@ -772,19 +772,19 @@ guard:
     }
     switch (as->wu.att.dipsw & 3) {
     case 1:
-        if (!(ds->cp->sw_lvbt & 2)) {
+        if (!(ds->cp->sw_lvbt & LEVER_DOWN)) {
             return 2;
         }
         ds->wu.routine_no[2] = 6;
         break;
     case 2:
-        if (ds->cp->sw_lvbt & 2) {
+        if (ds->cp->sw_lvbt & LEVER_DOWN) {
             return 2;
         }
         ds->wu.routine_no[2] = 5;
         break;
     default:
-        if (ds->cp->sw_lvbt & 2) {
+        if (ds->cp->sw_lvbt & LEVER_DOWN) {
             ds->wu.routine_no[2] = 6;
         } else {
             ds->wu.routine_no[2] = 5;
@@ -969,8 +969,7 @@ loop_mi:
         if ((mh = (s16*)mad->h_att)[0] == 0) {
             goto cont_mi;
         }
-        (void)((ATTACK_BOX*)mh)->att_box[0][1];
-        (void)((ATTACK_BOX*)mh)->att_box[0][2];
+        (void)&((ATTACK_BOX*)mh)->att_box[0][2];
         si = 0;
         goto next_si;
     loop_si:
@@ -994,13 +993,13 @@ loop_mi:
                 goto cont_si;
             }
             if (!(mad->att.at_free4 & 0xC0)) {
-                if ((sad->routine_no[1] == 1) && (sad->routine_no[3] != 0)) {
-                    if (sad->routine_no[2] != 0x19) {
+                if ((sad->routine_no[1] == PLAYER_DAMAGE) && (sad->routine_no[3] != 0)) {
+                    if (sad->routine_no[2] != DAMAGE_STUN) {
                         goto cont_si;
                     }
                 }
             } else {
-                if (!((sad->routine_no[1] == 1) && (sad->routine_no[3] != 0) && (sad->cg_type != 10))) {
+                if (!((sad->routine_no[1] == PLAYER_DAMAGE) && (sad->routine_no[3] != 0) && (sad->cg_type != 10))) {
                     goto hit;
                 }
                 if (!dm_oiuchi_catch[sad->routine_no[2]]) {
@@ -1038,8 +1037,8 @@ next_mi:
 }
 
 
-#define HIT_DAMAGE_W(value) ((void)((WORK*)(s32)(value))->id)
-#define HIT_BOX_INDEX_W(value) ((void)((WORK*)(s32)(value))->id)
+#define HIT_DAMAGE_W(value) ((void)&((WORK*)(s32)(value))->id)
+#define HIT_BOX_INDEX_W(value) ((void)&((WORK*)(s32)(value))->id)
 
 void attack_hit_check(void) {
     WORK* mad;
@@ -1056,7 +1055,6 @@ void attack_hit_check(void) {
         if (hs[mi].flag.results & 0x1110) {
             continue;
         }
-        (void)((HS*)&hs[mi])->my_hit;
         mad = q_hit_push[mi];
         if (mad->att_hit_ok == 0) {
             continue;
@@ -1094,9 +1092,9 @@ void attack_hit_check(void) {
                 dh = sad->h_bod->body_dm[0];
                 j = 0;
                 ah = &mh[i * 4];
-                (void)((ATTACK_BOX*)ah)->att_box[0][0];
+                (void)&((ATTACK_BOX*)ah)->att_box[0][0];
                 for (; j < 5; j++, dh += 4) {
-                    (void)((ATTACK_BOX*)ah)->att_box[0][2];
+                    (void)&((ATTACK_BOX*)ah)->att_box[0][2];
                     if (dh[0] == 0) {
                         continue;
                     }
@@ -1154,12 +1152,11 @@ void attack_hit_check(void) {
             if ((dh = (s16*)sad->h_hos)[0] == 0) {
                 continue;
             }
-            (void)((HOSEI_BOX*)dh)->hos_box[1];
+            (void)&((HOSEI_BOX*)dh)->hos_box[1];
             HIT_BOX_INDEX_W(i);
             if (mad->att.at_free4 & 0x80) {
                 if (!(hs[mi].flag.results & 0x10)) {
                     for (i = 1; i < 3; i++) {
-                        HIT_BOX_INDEX_W(i);
                         if (mh[i * 4] == 0) {
                             continue;
                         }
@@ -1167,7 +1164,7 @@ void attack_hit_check(void) {
                             hs[mi].flag.results |= 0x10;
                             hs[mi].my_hit = si;
                             hs[mi].my_att = i;
-                            hs[si].flag.results |= 1;
+                            hs[si].flag.results = hs[si].flag.results | 1;
                             hs[si].dm_me = mi;
                             hs[si].dm_body = j;
                             mad->att_hit_ok = 0;

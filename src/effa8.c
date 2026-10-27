@@ -17,16 +17,27 @@
 #include "CHARMOVE.h"
 #include "effa9.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show the highlight */
+#define R0_OPEN         1       /* open, then mark the plate */
+#define R0_HOLD         2       /* hold open for 4 frames */
+#define R0_CLOSE        3       /* close and hand over the cursor */
+#define R0_WAIT         4       /* wait for the answer */
+#define R0_REOPEN       5       /* open again, then reset the plate */
+#define R0_HOLD_2       6       /* hold open for 4 frames */
+#define R0_CLOSE_2      7       /* close for good */
+#define R0_KILL         99      /* (default) put the work back */
+
 extern s16 sel_plate_state[2][3];
 
 void effect_A8_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
         break;
-    case 1:
+    case R0_OPEN:
         if ((ewk->wu.my_mr.size.y += 8) >= 63) {
             ewk->wu.my_mr.size.y = 63;
             ewk->wu.routine_no[0]++;
@@ -35,13 +46,13 @@ void effect_A8_move(WORK_Other* ewk) {
             effect_A9_init(ewk->master_id, ewk->master_player);
         }
         break;
-    case 2:
+    case R0_HOLD:
         if (--ewk->wu.dir_timer) {
             break;
         }
         ewk->wu.routine_no[0]++;
         break;
-    case 3:
+    case R0_CLOSE:
         if ((ewk->wu.my_mr.size.y -= 8) <= 0) {
             ewk->wu.my_mr.size.y = 0;
             ewk->wu.routine_no[0]++;
@@ -49,14 +60,14 @@ void effect_A8_move(WORK_Other* ewk) {
             Arts_Cursor_Timer[ewk->master_id] = 1;
         }
         break;
-    case 4:
+    case R0_WAIT:
         if (Arts_Cursor_Timer[ewk->master_id] != -1) {
             break;
         }
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         /* fall through */
-    case 5:
+    case R0_REOPEN:
         if ((ewk->wu.my_mr.size.y += 8) >= 63) {
             ewk->wu.my_mr.size.y = 63;
             ewk->wu.routine_no[0]++;
@@ -64,16 +75,16 @@ void effect_A8_move(WORK_Other* ewk) {
             sel_plate_state[(s8)ewk->master_id][ewk->master_player] = 52;
         }
         break;
-    case 6:
+    case R0_HOLD_2:
         if (--ewk->wu.dir_timer) {
             break;
         }
         ewk->wu.routine_no[0]++;
         break;
-    case 7:
+    case R0_CLOSE_2:
         if ((ewk->wu.my_mr.size.y -= 8) <= 0) {
             ewk->wu.my_mr.size.y = 0;
-            ewk->wu.routine_no[0] = 99;
+            ewk->wu.routine_no[0] = R0_KILL;
             Arts_Cursor_Timer[ewk->master_id] = 0;
         }
         break;

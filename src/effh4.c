@@ -23,26 +23,36 @@
 #include "end_main.h"
 #include "effh4.h"
 
+/* routine_no[1] */
+#define R1_INIT         0       /* start small */
+#define R1_GROW         1       /* grow to full size while moving */
+#define R1_FLY          2       /* fly off the side */
+
+/* effH4_sp_tbl columns */
+#define H4_SPEED_X      0       /* x speed while growing */
+#define H4_ACCEL_X      1       /* x speed change once full size */
+#define H4_SPEED_Y      2       /* y speed */
+
 
 
 void effect_H4_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.old_rno[1], ewk->wu.char_index, 0);
         ewk->wu.disp_flag = 1;
         ewk->wu.my_mr_flag = 1;
         ewk->wu.my_mr.size.x = 14;
         ewk->wu.my_mr.size.y = 14;
-        ewk->wu.mvxy.a[0].sp = effH4_sp_tbl[ewk->wu.type][0];
+        ewk->wu.mvxy.a[0].sp = effH4_sp_tbl[ewk->wu.type][H4_SPEED_X];
         ewk->wu.mvxy.d[0].sp = 0;
-        ewk->wu.mvxy.a[1].sp = effH4_sp_tbl[ewk->wu.type][2];
+        ewk->wu.mvxy.a[1].sp = effH4_sp_tbl[ewk->wu.type][H4_SPEED_Y];
         ewk->wu.mvxy.d[1].sp = 0;
         ewk->wu.position_x = ewk->wu.xyz[0].disp.pos & 0x3FF;
         ewk->wu.position_y = ewk->wu.xyz[1].disp.pos & 0x3FF;
         sort_push_request4(&ewk->wu);
         break;
-    case 1:
+    case R1_GROW:
         add_x_sub(ewk);
         add_y_sub(ewk);
         if (ewk->wu.my_mr.size.x < 63) {
@@ -50,13 +60,13 @@ void effect_H4_move(WORK_Other* ewk) {
             ewk->wu.my_mr.size.y++;
         } else {
             ewk->wu.routine_no[1]++;
-            ewk->wu.mvxy.d[0].sp = effH4_sp_tbl[ewk->wu.type][1];
+            ewk->wu.mvxy.d[0].sp = effH4_sp_tbl[ewk->wu.type][H4_ACCEL_X];
         }
         ewk->wu.position_x = ewk->wu.xyz[0].disp.pos & 0x3FF;
         ewk->wu.position_y = ewk->wu.xyz[1].disp.pos & 0x3FF;
         sort_push_request4(&ewk->wu);
         break;
-    case 2:
+    case R1_FLY:
         add_x_sub(ewk);
         add_y_sub(ewk);
         if (ewk->wu.xyz[0].disp.pos < 288 || ewk->wu.xyz[0].disp.pos > 736) {

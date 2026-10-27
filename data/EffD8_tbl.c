@@ -1,5 +1,8 @@
 /*
- * EFFD8_TBL.C  tables read by EffD8.c
+ * EFFD8_TBL.C  face cursor priorities
+ *
+ * effD8_priority_tbl gives the priority of the face cursor for each cursor number given to
+ * effect_D8_entry. Read by EFFD8.C, the player's face cursor on the character select screen.
  */
 
 #include "types.h"

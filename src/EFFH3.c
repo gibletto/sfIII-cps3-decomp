@@ -25,6 +25,10 @@
 #include "effh6_code.h"
 #include "EFFH3.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show the picture */
+#define R0_MOVE         1       /* draw until freed */
+
 extern const u32 effH3_char_table[];   /* provisional name */
 
 
@@ -32,12 +36,12 @@ extern const u32 effH3_char_table[];   /* provisional name */
 /* char index 7 */
 void effect_H3_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init2(&ewk->wu, 0, 7, ewk->wu.char_index + 1, 0);
         break;
-    case 1:
+    case R0_MOVE:
         disp_pos_trans_entry(ewk);
         break;
     default:

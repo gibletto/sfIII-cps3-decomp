@@ -31,6 +31,10 @@
 #include "eff90.h"
 #include "cps3.h"
 
+/* routine_no[0] (type 0: the switch; others: the row objects) */
+#define R0_INIT         0       /* start hidden */
+#define R0_MOVE         1       /* show as switched or with the master */
+
 
 
 void effect_90_move(WORK_Other* ewk) {
@@ -38,11 +42,11 @@ void effect_90_move(WORK_Other* ewk) {
     s16 sw;
     if (ewk->wu.type == 0) {
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_INIT:
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 0;
             break;
-        case 1:
+        case R0_MOVE:
             if (exsw_0 & 0x8000) {
                 sw = p1sw_0 & ~p1sw_1;
                 if (sw & 0x100) {
@@ -58,12 +62,12 @@ void effect_90_move(WORK_Other* ewk) {
     } else {
         mwk = (WORK*)ewk->my_master;
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_INIT:
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 0;
             set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
             break;
-        case 1:
+        case R0_MOVE:
             if (mwk->disp_flag) {
                 ewk->wu.xyz[0].disp.pos = bg_w.bgw[1].xy[0].disp.pos;
                 ewk->wu.disp_flag = 1;

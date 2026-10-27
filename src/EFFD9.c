@@ -17,6 +17,11 @@
 #include "effect_2.h"
 #include "EFFD9.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* read the colour table entry */
+#define R0_MOVE         1       /* cycle the player's colour */
+#define R0_KILL         2       /* clear the colour, free the work */
+
 
 
 void effect_D9_move(WORK_Other* ewk) {
@@ -25,7 +30,7 @@ void effect_D9_move(WORK_Other* ewk) {
 
     mwk = (PLW*)ewk->my_master;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         t = color_table_index;
         r = t;
@@ -41,7 +46,7 @@ void effect_D9_move(WORK_Other* ewk) {
         ewk->wu.dir_step = 0;
         ewk->wu.vitality = 0;
         break;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
@@ -89,7 +94,7 @@ void effect_D9_move(WORK_Other* ewk) {
             mwk->wu.extra_col_2 = ewk->wu.vital_new;
         }
         break;
-    case 2:
+    case R0_KILL:
     default:
         if (ewk->wu.vital_old & 1) {
             mwk->wu.extra_col = 0;

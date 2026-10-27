@@ -20,12 +20,28 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 #include "ta_sub.h"
+
+/* routine_no[0] */
+#define R0_INIT         0       /* clear the sub-states */
+#define R0_MOVE         1       /* launch flying objects until retired */
+#define R0_KILL         2       /* put the work back */
+
+/* routine_no[1] */
+#define R1_FIRST        0       /* launch the first two groups */
+#define R1_MORE         1       /* then one of each kind at a time */
+
+/* routine_no[2] */
+#define R2_WAIT         0       /* count the first kind's wait down */
+#define R2_LAUNCH       1       /* launch one while below the limit */
+
+/* routine_no[3] */
+#define R3_WAIT         0       /* count the second kind's wait down */
+#define R3_LAUNCH       1       /* launch one while below the limit */
+
 extern const s16 eff34_first_tbl[56];
 extern const s16 eff34_second_tbl[56];
 extern const s16 eff34_wait_tbl[32];
 s32 effect_35_init(WORK_Other* ewk, s16 type);
-
-#define GROUP_WORK(value) ((WORK*)(value))
 
 s32 effect_34_init(void) {
     WORK_Other* ewk;
@@ -44,18 +60,19 @@ s32 effect_34_init(void) {
     return 0;
 }
 
-void effect_34_move(WORK_Other* ewk) {
+void effect_34_move(WORK_Other* wk) {
+    WORK_Other* ewk = wk;
     s8 num;
     s8 rnd;
     s16 i;
     const s16* data;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
-        ewk->wu.routine_no[1] = 0;
-        ewk->wu.routine_no[2] = 0;
-        ewk->wu.routine_no[3] = 0;
+    case R0_INIT:
+        ewk->wu.routine_no[1] = R1_FIRST;
+        ewk->wu.routine_no[2] = R2_WAIT;
+        ewk->wu.routine_no[3] = R3_WAIT;
         ewk->wu.routine_no[0]++;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
@@ -71,25 +88,19 @@ void effect_34_move(WORK_Other* ewk) {
             break;
         }
         switch (ewk->wu.routine_no[1]) {
-        case 0:
+        case R1_FIRST:
             num = random_32_com();
-            num &= 7;
+            num = num & 7;
             if ((s8)num == 0) {
                 num = 4;
             }
             rnd = random_32_com();
             rnd &= 7;
             data = eff34_first_tbl;
-            i = 0;
             data += (s8)(rnd * 7);
-            if (0) {}
-            goto first_group;
-            first_group:;
-            for (; i < (s8)num; i++, data++) {
+            for (i = 0; i < (s8)num; i++, data++) {
                 effect_35_init(ewk, *data);
-                if (0) {}
             }
-            (void)GROUP_WORK(num)->id;
             rnd = random_32_com();
             ewk->wu.vitality = eff34_wait_tbl[rnd];
             num = random_32_com();
@@ -100,22 +111,15 @@ void effect_34_move(WORK_Other* ewk) {
             rnd = random_32_com();
             rnd &= 7;
             data = eff34_second_tbl;
-            i = 0;
             data += (s8)(rnd * 7);
-            if (0) {}
-            goto second_group;
-            second_group:;
-            for (; i < (s8)num; i++, data++) {
+            for (i = 0; i < (s8)num; i++, data++) {
                 effect_35_init(ewk, *data);
-                if (0) {}
             }
-            (void)GROUP_WORK(eff34_wait_tbl)->id;
-            (void)GROUP_WORK(0)->be_flag;
             rnd = random_32_com();
             ewk->wu.vital_new = eff34_wait_tbl[rnd];
             ewk->wu.routine_no[1]++;
             break;
-        case 1:
+        case R1_MORE:
             if (Conclusion_Flag) {
                 ewk->wu.dir_step = 30;
                 ewk->wu.dir_timer = 15;
@@ -124,14 +128,14 @@ void effect_34_move(WORK_Other* ewk) {
                 ewk->wu.dir_timer = 8;
             }
             switch (ewk->wu.routine_no[2]) {
-            case 0:
+            case R2_WAIT:
                 if (ewk->wu.vitality == 0) {
                     ewk->wu.routine_no[2]++;
                 } else {
                     ewk->wu.vitality--;
                 }
                 break;
-            case 1:
+            case R2_LAUNCH:
                 if (ewk->wu.direction < ewk->wu.dir_step) {
                     num = random_32_com();
                     num &= 15;
@@ -146,14 +150,14 @@ void effect_34_move(WORK_Other* ewk) {
                 break;
             }
             switch (ewk->wu.routine_no[3]) {
-            case 0:
+            case R3_WAIT:
                 if (ewk->wu.vital_new == 0) {
                     ewk->wu.routine_no[3]++;
                 } else {
                     ewk->wu.vital_new--;
                 }
                 break;
-            case 1:
+            case R3_LAUNCH:
                 if (ewk->wu.dir_old < ewk->wu.dir_timer) {
                     num = random_32_com();
                     num &= 15;
@@ -170,7 +174,7 @@ void effect_34_move(WORK_Other* ewk) {
             }
         }
         break;
-    case 2:
+    case R0_KILL:
     default:
         goto effect_retire;
         effect_retire:;

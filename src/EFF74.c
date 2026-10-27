@@ -19,6 +19,19 @@
 #include "aboutspr.h"
 #include "EFF74.h"
 
+/* routine_no[0] */
+#define R0_PERCH        0       /* settle on the perch */
+#define R0_STAY         1       /* stay put */
+
+/* routine_no[1], watching */
+#define R1_WATCH        0       /* watch for a player */
+#define R1_REST         1       /* rest a while */
+
+/* routine_no[1], flight path from eff74_move_tbl */
+#define R1_FLAP         0       /* flap in place, then perch */
+#define R1_RIGHT        1       /* fly off to the right */
+#define R1_LEFT         2       /* fly off to the left */
+
 extern const s16 eff74_data_tbl[4][3];      /* provisional name */
 extern const s32 eff74_move_tbl[8][6];      /* provisional name */
 extern const u32 brz_char_table[];
@@ -56,12 +69,12 @@ void effect_74_move(WORK_Other* ewk) {
 /* provisional name */
 void eff74_0000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_PERCH:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 35);
         break;
-    case 1:
+    case R0_STAY:
         break;
     }
 }
@@ -104,7 +117,7 @@ void eff74_2000(WORK_Other* ewk) {
 void eff74_2001(WORK_Other* ewk) {
     s16 work;
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_WATCH:
         if (range_abs_check(plw[0].wu.position_y, ewk->wu.position_y, 224)
             || range_abs_check(plw[1].wu.position_y, ewk->wu.position_y, 224)) {
             work = random_16_com();
@@ -120,7 +133,7 @@ void eff74_2001(WORK_Other* ewk) {
         }
         char_move(&ewk->wu);
         break;
-    case 1:
+    case R1_REST:
         eff74_rest(ewk);
         break;
     }
@@ -140,7 +153,7 @@ void eff74_3000(WORK_Other* ewk) {
 void eff74_3001(WORK_Other* ewk) {
     s16 work;
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_WATCH:
         if (range_abs_check(plw[0].wu.position_y, ewk->wu.position_y, 224)
             || range_abs_check(plw[1].wu.position_y, ewk->wu.position_y, 224)) {
             work = random_16_com();
@@ -156,7 +169,7 @@ void eff74_3001(WORK_Other* ewk) {
         }
         char_move(&ewk->wu);
         break;
-    case 1:
+    case R1_REST:
         eff74_rest(ewk);
         break;
     }
@@ -178,26 +191,26 @@ void eff74_perch(WORK_Other* ewk) {
 /* provisional name */
 void eff74_fly(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_FLAP:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
-            ewk->wu.routine_no[0] = 0;
+            ewk->wu.routine_no[0] = R0_PERCH;
         }
         break;
-    case 1:
+    case R1_RIGHT:
         char_move(&ewk->wu);
         add_x_sub(ewk);
         add_y_sub(ewk);
         if (ewk->wu.xyz[0].disp.pos > 400) {
-            ewk->wu.routine_no[0] = 0;
+            ewk->wu.routine_no[0] = R0_PERCH;
         }
         break;
-    case 2:
+    case R1_LEFT:
         char_move(&ewk->wu);
         add_x_sub(ewk);
         add_y_sub(ewk);
         if (ewk->wu.xyz[0].disp.pos < -416) {
-            ewk->wu.routine_no[0] = 0;
+            ewk->wu.routine_no[0] = R0_PERCH;
         }
         break;
     }
@@ -209,7 +222,7 @@ void eff74_fly(WORK_Other* ewk) {
 void eff74_rest(WORK_Other* ewk) {
     ewk->wu.old_rno[2]--;
     if (ewk->wu.old_rno[2] < 0) {
-        ewk->wu.routine_no[1] = 0;
+        ewk->wu.routine_no[1] = R1_WATCH;
     }
 }
 

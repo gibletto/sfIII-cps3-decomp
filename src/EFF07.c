@@ -19,7 +19,11 @@
 #include "eff08.h"
 #include "EFF07.h"
 
-extern const s16 eff07_char_index_tbl[16];   /* provisional name */
+/* routine_no[0] */
+#define R0_INIT         0       /* start the next animation */
+#define R0_MOVE         1       /* animate; at its cue, restart with the next one */
+
+extern const s16 eff07_char_index_tbl[18];   /* provisional name */
 extern const u32 eff07_char_table[];   /* provisional name */
 
 
@@ -27,12 +31,12 @@ extern const u32 eff07_char_table[];   /* provisional name */
 /* next animation from eff07_char_index_tbl, sort_push_request4 */
 void effect_07_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         /* fall through */
-    case 1:
+    case R0_MOVE:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             if (ewk->wu.cg_type) {
@@ -40,7 +44,7 @@ void effect_07_move(WORK_Other* ewk) {
                 ewk->wu.old_rno[0]++;
                 ewk->wu.old_rno[0] &= 15;
                 ewk->wu.char_index = eff07_char_index_tbl[ewk->wu.old_rno[0]];
-                ewk->wu.routine_no[0] = 0;
+                ewk->wu.routine_no[0] = R0_INIT;
             }
         }
         sort_push_request4(&ewk->wu);

@@ -1,5 +1,5 @@
 /*
- * EFFC4.C  Effect C4: bouncing object (move)
+ * EFFC4.C  Effect C4: bouncing object
  *
  * effect_C4_move starts the object's pattern and runs it through three flight phases whose speeds
  * come from effC4_sp_tbl: each time it falls below the floor the next phase starts (a bounce),
@@ -23,13 +23,22 @@
 #include "se_3.h"
 #include "EFFC4.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start the first flight */
+#define R0_FLY          1       /* first flight, sound on landing */
+#define R0_BOUNCE       2       /* first bounce */
+#define R0_BOUNCE2      3       /* second bounce */
+#define R0_SLIDE        4       /* slide left until x 128 */
+#define R0_END          5       /* one more frame */
+#define R0_KILL         6       /* (default) put the work back */
+
 
 
 /* voice master_id * 0x200 + 0x139 */
 void effect_C4_move(WORK_Other* ewk) {
     const s32* spd;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
@@ -39,9 +48,9 @@ void effect_C4_move(WORK_Other* ewk) {
         ewk->wu.mvxy.d[0].sp = *spd++;
         ewk->wu.mvxy.d[1].sp = *spd;
         break;
-    case 1:
-    case 2:
-    case 3:
+    case R0_FLY:
+    case R0_BOUNCE:
+    case R0_BOUNCE2:
         if (EXE_flag == 0 && Game_pause == 0) {
             if (ewk->wu.cg_type != 2) {
                 char_move(&ewk->wu);
@@ -49,7 +58,7 @@ void effect_C4_move(WORK_Other* ewk) {
             add_x_sub(ewk);
             add_y_sub(ewk);
             if (ewk->wu.xyz[1].disp.pos < 0) {
-                if (ewk->wu.routine_no[0] == 1) {
+                if (ewk->wu.routine_no[0] == R0_FLY) {
                     Sound_SE(0x139);
                 }
                 ewk->wu.routine_no[0]++;
@@ -65,7 +74,7 @@ void effect_C4_move(WORK_Other* ewk) {
         ewk->wu.position_y = ewk->wu.xyz[1].disp.pos;
         sort_push_request(&ewk->wu);
         break;
-    case 4:
+    case R0_SLIDE:
         if (EXE_flag == 0 && Game_pause == 0) {
             add_x_sub(ewk);
             char_move(&ewk->wu);
@@ -77,7 +86,7 @@ void effect_C4_move(WORK_Other* ewk) {
         ewk->wu.position_y = ewk->wu.xyz[1].disp.pos;
         sort_push_request(&ewk->wu);
         break;
-    case 5:
+    case R0_END:
         ewk->wu.routine_no[0]++;
         break;
     default:

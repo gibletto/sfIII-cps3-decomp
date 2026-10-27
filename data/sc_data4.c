@@ -1,5 +1,13 @@
 /*
- * SC_DATA4.C  tables read by cmb_cont.c and sc_sub_3.c
+ * SC_DATA4.C  stun gauge and combo message tables
+ *
+ * stngauge_puttbl_0 and _1 are the cell codes of the stun gauge, stngauge_postbl_0 ..
+ * stngauge_postbl_1_2 the cell columns of each player's gauge for the two screen modes, and
+ * stun_genkai_tbl the stun limit of each character; read by SC_SUB_3.C, the stun gauge
+ * control. cmb_pos_tbl gives the combo message window columns by screen mode and side,
+ * cmb_window_move_tbl and cmb_window_time_tbl each message kind's slide and display time, and
+ * combo_score_tbl the first-hit and per-hit points of each combo kind; read by CMB_CONT.C, the
+ * combo, reversal and parry bonus control.
  */
 
 #include "types.h"
@@ -66,6 +74,7 @@ const s16 cmb_window_time_tbl[7] = {
     28, 40, 60, 60, 50, 50, 24,
 };
 
+/* one row per score_calc slot: { score, score per combo hit } */
 const u32 combo_score_tbl[11][2] = {
     { 0x12C, 0xC8 }, { 0x1F4, 0x190 }, { 0x3E8, 0x258 }, { 0x3E8, 0x258 },
     { 0x7D0, 0x320 }, { 0xBB8, 0x258 }, { 0xFA0, 0x320 }, { 0x1388, 0x3E8 },

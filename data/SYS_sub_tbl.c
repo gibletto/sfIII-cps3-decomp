@@ -17,12 +17,20 @@ extern const s16 win_mark_pos_tbl[][8];
 extern const s16 win_mark_blink_tbl[][4];
 extern const s16 color_flash_tbl[];
 
+/*
+ * One row per effect 89 type: first entry in EFF89_Step_Data, whether the steps start
+ * again when they run out, and the number of steps in one pass.
+ */
 const s16 EFF89_Init_Data[9][3] = {
     { 0, 0, 11 }, { 22, 0, 11 }, { 44, 0, 11 }, { 66, 0, 11 },
     { 88, 0, 11 }, { 110, 1, 2 }, { 114, 0, 1 }, { 116, 0, 1 },
     { 118, 0, 7 },
 };
 
+/*
+ * One row per effect 91 / A3 type: first entry in EFF91_Step_Data, whether the steps
+ * start again when they run out, and the number of steps in one pass.
+ */
 const s16 EFF91_Init_Data[3][3] = {
     { 0, 1, 4 }, { 100, 1, 4 }, { 200, 1, 3 },
 };

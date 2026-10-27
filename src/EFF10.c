@@ -23,6 +23,21 @@
 #include "bg_sub_5.h"
 #include "EFF10.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start the animation */
+#define R0_MOVE         1       /* run the object's behaviour */
+#define R0_END          2       /* hidden for a frame */
+#define R0_KILL         3       /* (default) put the work back */
+
+/* routine_no[1], eff10_run_away */
+#define R1_STAY         0       /* animate until the win scene moves on */
+#define R1_COUNT        1       /* count down, faster on the owner's button */
+#define R1_RUN          2       /* run off screen away from the owner */
+
+/* routine_no[1], eff10_anime_end_wait */
+#define R1_PLAY         0       /* play the animation once */
+#define R1_WAIT         1       /* wait 32 frames, then end */
+
 
 
 /* 02006C04 */
@@ -36,12 +51,12 @@ const s16* scr_obj_data10[4] = {
 
 void effect_10_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R0_MOVE:
         switch (ewk->wu.type) {
         case 0:
             char_move(&ewk->wu);
@@ -57,7 +72,7 @@ void effect_10_move(WORK_Other* ewk) {
         suzi_sync_pos_set(ewk);
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_END:
         ewk->wu.routine_no[0]++;
         break;
     default:
@@ -73,14 +88,14 @@ void effect_10_move(WORK_Other* ewk) {
 void eff10_run_away(WORK_Other* ewk) {
     WORK* oya_ptr = (WORK*)ewk->my_master;
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_STAY:
         char_move(&ewk->wu);
         if (win_rno[1] > 2) {
             ewk->wu.routine_no[1]++;
             ewk->wu.old_rno[0] = 16;
         }
         break;
-    case 1:
+    case R1_COUNT:
         char_move(&ewk->wu);
         ewk->wu.old_rno[0]--;
         if (pl_shot_on_check(oya_ptr->id)) {
@@ -99,7 +114,7 @@ void eff10_run_away(WORK_Other* ewk) {
             }
         }
         break;
-    case 2:
+    case R1_RUN:
         char_move(&ewk->wu);
         add_x_sub(ewk);
         if (ewk->wu.direction) {
@@ -120,14 +135,14 @@ void eff10_anime_end_wait(wk)
 WORK* wk;
 {
     switch (wk->routine_no[1]) {
-    case 0:
+    case R1_PLAY:
         char_move(wk);
         if (wk->cg_type == 0xFF) {
             wk->routine_no[1]++;
             wk->old_rno[0] = 32;
         }
         break;
-    case 1:
+    case R1_WAIT:
         wk->old_rno[0]--;
         if (wk->old_rno[0] < 0) {
             wk->routine_no[0]++;

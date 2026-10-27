@@ -1,5 +1,9 @@
 /*
- * ABOUTSPR_TBL.C  tables read by aboutspr.c
+ * ABOUTSPR_TBL.C  shadow width table
+ *
+ * kage_width_tbl is the width of a character's shadow by height above the ground (in steps of
+ * 4 dots, 64 entries; higher than that the width is 16). Read by get_kage_width in ABOUTSPR.C,
+ * the character sprite graphics and display lists.
  */
 
 #include "types.h"

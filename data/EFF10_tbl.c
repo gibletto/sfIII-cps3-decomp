@@ -1,5 +1,14 @@
 /*
- * EFF10_TBL.C  tables read by EFF10.c, EFF11.c and eff12.c
+ * EFF10_TBL.C  character scene objects and animated background map tables
+ *
+ * scr_obj_num10 starts with the number of objects of each of the four types, followed by the
+ * rows of each type (x offset from the owner, y position, animation number) reached through
+ * scr_obj_data10; read by EFF10.C, the character scene objects. eff11_tile_tbl gives the tiles
+ * (map offset and cell) written into each of the four map pages, eff11_frame_tbl the page, y
+ * offset and time of each frame, and eff11_anime_tbl each animation's repeat count and frame
+ * set; read by EFF11.C, the animated background map of stage 07. eff12_tile_tbl and
+ * eff12_frame_tbl do the same for the two pages and four frames of EFF12.C, the animated BG 0
+ * map.
  */
 
 #include "types.h"

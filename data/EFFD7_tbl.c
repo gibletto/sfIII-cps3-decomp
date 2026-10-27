@@ -1,5 +1,9 @@
 /*
- * EFFD7_TBL.C  tables read by EFFD7.c
+ * EFFD7_TBL.C  super art plate positions and colours
+ *
+ * effD7_plate_pos gives, for each player side, the x and y of the three plate rows, and
+ * effD7_plate_col the colour of each row's plate. Read by EFFD7.C, the super art selection
+ * plates.
  */
 
 #include "types.h"

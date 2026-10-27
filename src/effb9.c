@@ -21,6 +21,11 @@
 #include "effb2.h"
 #include "effb9.h"
 
+/* routine_no[1] */
+#define R1_WAIT         0       /* wait, then show the number */
+#define R1_OPEN         1       /* open it out */
+#define R1_SHOW         2       /* show at full size */
+
 
 
 WORK_Other * oya_p;  
@@ -34,7 +39,7 @@ void effect_B9_move(WORK_Other* ewk) {
     switch (oya_p->wu.routine_no[0]) {
     case 2:
         switch (ewk->wu.routine_no[1]) {
-        case 0:
+        case R1_WAIT:
             ewk->wu.hit_stop--;
             if (ewk->wu.hit_stop < 0) {
                 ewk->wu.routine_no[1]++;
@@ -46,7 +51,7 @@ void effect_B9_move(WORK_Other* ewk) {
                 ewk->wu.hit_stop = 6;
             }
             break;
-        case 1:
+        case R1_OPEN:
             ewk->wu.hit_stop--;
             if (ewk->wu.hit_stop < 0) {
                 ewk->wu.routine_no[1]++;
@@ -57,7 +62,7 @@ void effect_B9_move(WORK_Other* ewk) {
             }
             disp_pos_trans_entry5(ewk);
             break;
-        case 2:
+        case R1_SHOW:
         default:
             disp_pos_trans_entry(ewk);
             break;

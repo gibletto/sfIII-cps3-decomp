@@ -13,12 +13,15 @@
 #include "sys_config_3.h"
 #include "cps3.h"
 
+#define SIMM_SLOT_SHIFT 12      /* 4 KB slots, numbered from 1 */
+#define SIMM_SLOT_CG    0x20    /* character numbers per slot */
+
 /* provisional name */
 u32 simmram_slot_to_offset(s16 slot) {
-    return (slot - 1) << 12;
+    return (slot - 1) << SIMM_SLOT_SHIFT;
 }
 
 /* provisional name */
 u16 simmram_slot_to_cg_no(s16 n) {
-    return (u16)(n - 1) * 0x20;
+    return (u16)(n - 1) * SIMM_SLOT_CG;
 }

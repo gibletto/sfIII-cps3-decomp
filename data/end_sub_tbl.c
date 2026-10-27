@@ -1,5 +1,13 @@
 /*
- * END_SUB_TBL.C  tables read by color3rd.c, end_sub.c and end_sub_2.c
+ * END_SUB_TBL.C  prize card and CD messages, staff roll and colour transfer tables
+ *
+ * no_card_mes, win_card_mes and their blank lines are the prize card messages blinked by
+ * END_SUB.C; no_cd_drive_mes and no_cd_rom_mes are the CD error lines and staff_roll_tbl and
+ * staff_roll_last the staff roll (wait, x, y, attribute and text of each line, the texts being
+ * the str_ strings that follow), read by END_SUB_2.C. player_color_tbl holds the twelve
+ * palette transfers of each character, side and colour, any_color_tbl the transfer of each
+ * numbered palette and char_eff_color_tbl the source of each character's effect palette; these
+ * are read by COLOR3RD.C, the colour loads.
  */
 
 #include "types.h"

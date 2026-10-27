@@ -1,5 +1,17 @@
 /*
- * PLS02_TBL.C  tables read by PLS00.c, PLS02.c and PLS03.c
+ * PLS02_TBL.C  player movement, gauge, direction and CPU random tables
+ *
+ * mvxy_PoSB_scale, air_paring_scale and mvxy_PoGR_scale scale the x speed of a blow-away by
+ * its size; satse is each character's body half-width for the screen-edge checks;
+ * random_tbl_32_com, random_tbl_16_com and their _ex companions are the CPU random number
+ * tables; dir16_rl_conv mirrors a 16-way direction, dir16_hddm and dir16_trdm pick the head
+ * and body hit by attack direction, and dir32_skydm and dir32_grddm the blow-away routine by
+ * flight direction; asagh_zuru and asagh_zuru2 (by region) adjust, by game level, the super
+ * art gauge a computer-controlled attacker gains from a hit; dead_voice_table and
+ * voice_select_table are the KO and other voices per character, convert_saishin_lvdir the
+ * lever direction after a super art stop, and gauge_rank_table the time bonus per second by
+ * time left. Read by PLS02.C (gauge_rank_table through gauge_rank_value from MANAGE_2.C);
+ * jump_pat_status_data, the jump posture by lever direction, by PLS00.C and PLS03.C.
  */
 
 #include "types.h"
@@ -102,15 +114,41 @@ const s16 dir32_grddm[32] = {
 };
 
 const s16 dead_voice_table[16][2] = {
-    { 479, 480 }, { 448, 449 }, { 375, 376 }, { 400, 401 }, { 462, 463 }, { 492, 493 }, { 479, 480 }, { 352, 353 },
-    { 364, 365 }, { 424, 425 }, { 412, 413 }, { 387, 388 }, { 436, 437 }, { 479, 480 }, { 479, 480 }, { 479, 480 },
+    { 479, 480 },  /* Gill */
+    { 448, 449 },  /* Alex */
+    { 375, 376 },  /* Ryu */
+    { 400, 401 },  /* Yun */
+    { 462, 463 },  /* Dudley */
+    { 492, 493 },  /* Necro */
+    { 479, 480 },  /* Hugo */
+    { 352, 353 },  /* Ibuki */
+    { 364, 365 },  /* Elena */
+    { 424, 425 },  /* Oro */
+    { 412, 413 },  /* Yang */
+    { 387, 388 },  /* Ken */
+    { 436, 437 },  /* Sean */
+    { 479, 480 },  /* 13 */
+    { 479, 480 },  /* 14 */
+    { 479, 480 },  /* 15 */
 };
 
 const s16 voice_select_table[16][4] = {
-    { 484, 481, 488, 480 }, { 455, 451, 456, 449 }, { 380, 378, 381, 376 }, { 408, 402, 406, 401 },
-    { 466, 464, 468, 463 }, { 498, 494, 499, 493 }, { 479, 480, 480, 480 }, { 357, 354, 356, 353 },
-    { 369, 367, 373, 365 }, { 429, 426, 428, 425 }, { 417, 415, 421, 413 }, { 391, 390, 398, 388 },
-    { 440, 438, 445, 437 }, { 479, 480, 480, 480 }, { 479, 480, 480, 480 }, { 479, 480, 480, 480 },
+    { 484, 481, 488, 480 },  /* Gill */
+    { 455, 451, 456, 449 },  /* Alex */
+    { 380, 378, 381, 376 },  /* Ryu */
+    { 408, 402, 406, 401 },  /* Yun */
+    { 466, 464, 468, 463 },  /* Dudley */
+    { 498, 494, 499, 493 },  /* Necro */
+    { 479, 480, 480, 480 },  /* Hugo */
+    { 357, 354, 356, 353 },  /* Ibuki */
+    { 369, 367, 373, 365 },  /* Elena */
+    { 429, 426, 428, 425 },  /* Oro */
+    { 417, 415, 421, 413 },  /* Yang */
+    { 391, 390, 398, 388 },  /* Ken */
+    { 440, 438, 445, 437 },  /* Sean */
+    { 479, 480, 480, 480 },  /* 13 */
+    { 479, 480, 480, 480 },  /* 14 */
+    { 479, 480, 480, 480 },  /* 15 */
 };
 
 const u8 convert_saishin_lvdir[2][16] = {

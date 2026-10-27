@@ -19,6 +19,11 @@
 #include "aboutspr.h"
 #include "ta_sub.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* wait for a player to stay far left */
+#define R0_MOVE         1       /* walk and shrink to the animation's end */
+#define R0_KILL         2       /* put the work back */
+
 extern const u32 eff75_char_table[];
 extern const s16 eff75_dir_tbl[];
 extern const s16 eff75_prio_tbl[];
@@ -62,7 +67,7 @@ void effect_75_move(WORK_Other* ewk) {
         return;
     }
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (plw[0].wu.xyz[0].disp.pos < -240 || plw[1].wu.xyz[0].disp.pos < -208) {
             ewk->wu.old_rno[0]--;
             if (ewk->wu.old_rno[0] < 0) {
@@ -71,7 +76,7 @@ void effect_75_move(WORK_Other* ewk) {
             }
         }
         break;
-    case 1:
+    case R0_MOVE:
         if (EXE_flag == 0 && Game_pause == 0) {
             if (ewk->wu.old_rno[3] == 0) {
                 ewk->wu.old_rno[2]--;
@@ -102,7 +107,7 @@ void effect_75_move(WORK_Other* ewk) {
         }
         sort_push_request4(&ewk->wu);
         break;
-    case 2:
+    case R0_KILL:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
         break;

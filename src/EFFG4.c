@@ -18,11 +18,16 @@
 #include "effect_2.h"
 #include "EFFG4.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* place from the record */
+#define R0_MOVE         1       /* play the pattern once */
+#define R0_KILL         2       /* put the work back */
+
 
 
 void effect_G4_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         if (ewk->wu.rl_flag) {
@@ -33,7 +38,7 @@ void effect_G4_move(WORK_Other* ewk) {
         ewk->wu.position_y = ewk->wu.xyz[1].disp.pos + gill_eff_data[ewk->wu.type].hy;
         ewk->wu.position_z = ewk->wu.xyz[2].disp.pos + gill_eff_data[ewk->wu.type].hz;
         set_char_move_init(&ewk->wu, 0, gill_eff_data[ewk->wu.type].chix);
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
@@ -47,7 +52,7 @@ void effect_G4_move(WORK_Other* ewk) {
         }
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);

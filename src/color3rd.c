@@ -80,8 +80,7 @@ void load_any_color(ix)
 u8 ix;
 {
     const XFER* p = &any_color_tbl[ix];
-    s32 zero = 0;
-    polygon2d_submit_quad(p->src, p->dst, p->size, zero, zero, zero);
+    polygon2d_submit_quad(p->src, p->dst, p->size, 0, 0, 0);
 }
 
 

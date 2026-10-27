@@ -1,5 +1,9 @@
 /*
- * SE_TBL2.C  tables read by se_3.c
+ * SE_TBL2.C  voice replacement table
+ *
+ * Voice_SE_Data maps sound codes from 0x140 up to the codes of the alternate voice set, used
+ * when Voice_Type is not 0. Read by Check_Voice_SE in SE_3.C, the sound requests for the game
+ * and its objects.
  */
 
 #include "types.h"

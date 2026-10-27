@@ -18,19 +18,24 @@
 #include "bg_sub_5.h"
 #include "EFF45.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show and start the animation */
+#define R0_MOVE         1       /* drift left and animate */
+#define R0_KILL         2       /* put the work back */
+
 extern const u32 eff45_char_table[];
 
 
 
 void effect_45_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         ewk->wu.old_pos[0] = 0;
         set_char_move_init(&ewk->wu, 0, 8);
         break;
-    case 1:
+    case R0_MOVE:
         if (!EXE_flag && !Game_pause) {
             ewk->wu.xyz[0].cal -= 0x8000;
             ewk->wu.old_pos[0]++;
@@ -43,7 +48,7 @@ void effect_45_move(WORK_Other* ewk) {
         }
         disp_pos_trans_entry_s(ewk);
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);

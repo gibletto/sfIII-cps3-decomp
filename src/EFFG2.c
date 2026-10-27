@@ -20,6 +20,32 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start at the follow point */
+#define R0_MOVE         1       /* run after the follow point */
+#define R0_AFTER        2       /* after the round */
+#define R0_KILL         3       /* (default) put the work back */
+
+/* routine_no[1], after the round */
+#define R1_CHOOSE       0       /* fall away or keep following */
+#define R1_FALL         1       /* fall away on stage 8's first round */
+#define R1_FOLLOW       2       /* follow, watching the player's pose */
+#define R1_RUN          3       /* follow, animating fast */
+#define R1_LAST         4       /* play the end pattern */
+
+/* routine_no[2], R1_FALL */
+#define R2_WAIT         0       /* follow until the stage base moves */
+#define R2_DROP         1       /* drop off the screen */
+
+/* routine_no[2], R1_LAST */
+#define R2_START        0       /* start the end pattern */
+#define R2_PLAY         1       /* play it to the end */
+
+/* effG2_char_tbl columns */
+#define G2_CHAR_NORMAL  0       /* pattern while the player is not hit */
+#define G2_CHAR_DAMAGE  1       /* pattern while the player is hit or thrown */
+#define G2_CHAR_END     2       /* pattern played once at the end */
+
 extern const s16 effG2_fall_tbl[4][2];
 extern const s16 effG2_char_tbl[4][3];
 extern const s16 effG2_speed_tbl[3][4][8];
@@ -32,18 +58,18 @@ void effG2_pattern(WORK_Other* ewk, WORK_Other* mwk);
 void effect_G2_move(WORK_Other* ewk) {
     WORK_Other* mwk = (WORK_Other*)ewk->my_master;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.xyz[0].disp.pos = ewk->wu.old_pos[0] = mwk->wu.old_rno[ewk->wu.type * 2];
         ewk->wu.xyz[1].disp.pos = ewk->wu.old_pos[1] = mwk->wu.position_y;
         ewk->wu.xyz[2].disp.pos = ewk->wu.old_pos[2] = mwk->wu.position_z;
         ewk->wu.disp_flag = 1;
         ewk->wu.rl_flag = 0;
-        set_char_move_init(&ewk->wu, 0, effG2_char_tbl[ewk->wu.type][0]);
+        set_char_move_init(&ewk->wu, 0, effG2_char_tbl[ewk->wu.type][G2_CHAR_NORMAL]);
         break;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
         if (EXE_flag == 0 && Game_pause == 0) {
@@ -53,31 +79,31 @@ void effect_G2_move(WORK_Other* ewk) {
             effG2_char_move(ewk, mwk->wu.dmcal_m);
         }
         if (pcon_dp_flag) {
-            ewk->wu.routine_no[0] = 2;
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[0] = R0_AFTER;
+            ewk->wu.routine_no[1] = R1_CHOOSE;
             break;
         }
         effG2_disp(ewk);
         break;
-    case 2:
+    case R0_AFTER:
         if (ewk->wu.dead_f == 1) {
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
         switch (ewk->wu.routine_no[1]) {
-        case 0:
+        case R1_CHOOSE:
             if (bg_w.stage == 8 && Round_num == 0) {
-                ewk->wu.routine_no[1] = 1;
+                ewk->wu.routine_no[1] = R1_FALL;
                 ewk->wu.routine_no[2] = 0;
                 ewk->wu.dir_old = stage8_base_y;
             } else {
-                ewk->wu.routine_no[1] = 2;
+                ewk->wu.routine_no[1] = R1_FOLLOW;
                 ewk->wu.routine_no[2] = 0;
             }
             break;
-        case 1:
+        case R1_FALL:
             switch (ewk->wu.routine_no[2]) {
-            case 0:
+            case R2_WAIT:
                 effG2_follow(ewk, mwk);
                 add_mvxy_speed_direct(&ewk->wu, ewk->wu.dir_timer, 0);
                 effG2_char_move(ewk, mwk->wu.dmcal_m);
@@ -90,7 +116,7 @@ void effect_G2_move(WORK_Other* ewk) {
                     ewk->wu.routine_no[2]++;
                 }
                 break;
-            case 1:
+            case R2_DROP:
                 add_mvxy_speed(&ewk->wu);
                 cal_mvxy_speed(&ewk->wu);
                 if (ewk->wu.mvxy.a[1].sp < -0x100000) {
@@ -101,37 +127,37 @@ void effect_G2_move(WORK_Other* ewk) {
                 break;
             }
             break;
-        case 2:
+        case R1_FOLLOW:
             effG2_pattern(ewk, mwk);
             effG2_follow(ewk, mwk);
             add_mvxy_speed_direct(&ewk->wu, ewk->wu.dir_timer, 0);
             effG2_char_move(ewk, mwk->wu.dmcal_m);
             if (mwk->wu.routine_no[1] == 0) {
                 if (mwk->wu.routine_no[2] == 40) {
-                    ewk->wu.routine_no[1] = 3;
+                    ewk->wu.routine_no[1] = R1_RUN;
                 }
                 if (mwk->wu.routine_no[2] == 41) {
-                    ewk->wu.routine_no[1] = 4;
+                    ewk->wu.routine_no[1] = R1_LAST;
                 }
             } else if (mwk->wu.routine_no[1] == 1) {
                 if (!mwk->wu.routine_no[2] && mwk->wu.routine_no[3] == 3) {
-                    ewk->wu.routine_no[1] = 4;
+                    ewk->wu.routine_no[1] = R1_LAST;
                 }
             }
             break;
-        case 3:
+        case R1_RUN:
             effG2_pattern(ewk, mwk);
             effG2_follow(ewk, mwk);
             add_mvxy_speed_direct(&ewk->wu, ewk->wu.dir_timer, 0);
             effG2_char_move(ewk, 2);
             break;
-        case 4:
+        case R1_LAST:
             switch (ewk->wu.routine_no[2]) {
-            case 0:
+            case R2_START:
                 ewk->wu.routine_no[2]++;
-                set_char_move_init(&ewk->wu, 0, effG2_char_tbl[ewk->wu.type][2]);
+                set_char_move_init(&ewk->wu, 0, effG2_char_tbl[ewk->wu.type][G2_CHAR_END]);
                 break;
-            case 1:
+            case R2_PLAY:
                 char_move(&ewk->wu);
                 if (ewk->wu.cg_type == 0xFF) {
                     ewk->wu.routine_no[2]++;
@@ -204,11 +230,11 @@ void effG2_disp(WORK_Other* ewk) {
 
 void effG2_pattern(WORK_Other* ewk, WORK_Other* mwk) {
     if (mwk->wu.routine_no[1] == 1 || mwk->wu.routine_no[1] == 3) {
-        if (ewk->wu.char_index != effG2_char_tbl[ewk->wu.type][1]) {
-            set_char_move_init(&ewk->wu, 0, effG2_char_tbl[ewk->wu.type][1]);
+        if (ewk->wu.char_index != effG2_char_tbl[ewk->wu.type][G2_CHAR_DAMAGE]) {
+            set_char_move_init(&ewk->wu, 0, effG2_char_tbl[ewk->wu.type][G2_CHAR_DAMAGE]);
         }
-    } else if (ewk->wu.char_index != effG2_char_tbl[ewk->wu.type][0]) {
-        set_char_move_init(&ewk->wu, 0, effG2_char_tbl[ewk->wu.type][0]);
+    } else if (ewk->wu.char_index != effG2_char_tbl[ewk->wu.type][G2_CHAR_NORMAL]) {
+        set_char_move_init(&ewk->wu, 0, effG2_char_tbl[ewk->wu.type][G2_CHAR_NORMAL]);
     }
 }
 

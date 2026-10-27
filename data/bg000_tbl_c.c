@@ -1,5 +1,10 @@
 /*
- * BG000_TBL_C.C  tables read by bg000.c: the BG clear cells and the deformation tables
+ * BG000_TBL_C.C  stage background clear cell and scroll limit tables
+ *
+ * bg_clear_cell_tbl gives, per stage and area, the cell used to clear the scroll layers;
+ * bg_limit_tbl gives, per stage background and layer, the left and right scroll limits (normal
+ * and wide screen) and the two vertical limits. Read by BG000.C, the stage background
+ * services. bg_limit_tbl_tail, a short row after bg_limit_tbl, is not referred to.
  */
 
 #include "types.h"

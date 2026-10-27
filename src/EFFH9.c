@@ -23,6 +23,29 @@
 #include "effect_2.h"
 #include "EFFH9.h"
 
+/* routine_no[0], effects H7 and H8 */
+#define R0_INIT         0       /* place, hidden */
+#define R0_MOVE         1       /* come out of the ground */
+#define R0_KILL         3       /* (default) put the work back */
+
+/* routine_no[1], effect H7 (0 and 1 also H8) */
+#define R1_WAIT         0       /* wait, then raise the dust */
+#define R1_SHOW         1       /* a short wait, then show */
+#define R1_BOUND        2       /* bounce out of the ground */
+#define R1_HOLD         3       /* hold before bobbing */
+#define R1_PICK         4       /* pick a random bob table */
+
+/* routine_no[1], effect H8 */
+#define R1_PLAY         2       /* play the pattern once */
+#define R1_FLY_WAIT     3       /* wait for the stage to move */
+#define R1_FLY          4       /* fly upward */
+#define R1_STOP         9       /* stay as it is */
+
+/* effH7_pos_tbl / effH8_pos_tbl columns */
+#define H9_POS_X        0       /* x offset, toward the facing */
+#define H9_POS_Y        1       /* y offset */
+#define H9_POS_Z        2       /* priority offset */
+
 
 
 /* 02007428 */
@@ -48,29 +71,29 @@ s16* effH7_move_tbl[16] = {
 
 void effect_H7_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         if (ewk->wu.rl_waza) {
-            ewk->wu.position_x += effH7_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][0];
+            ewk->wu.position_x += effH7_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][H9_POS_X];
         } else {
-            ewk->wu.position_x -= effH7_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][0];
+            ewk->wu.position_x -= effH7_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][H9_POS_X];
         }
-        ewk->wu.position_y += effH7_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][1];
-        ewk->wu.position_z += effH7_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][2];
+        ewk->wu.position_y += effH7_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][H9_POS_Y];
+        ewk->wu.position_z += effH7_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][H9_POS_Z];
         ewk->wu.xyz[0].disp.pos = ewk->wu.position_x;
         ewk->wu.xyz[1].disp.pos = ewk->wu.position_y;
         ewk->wu.disp_flag = 0;
         ewk->wu.rl_flag = 0;
         ewk->wu.dir_timer = effH7_wait_tbl[ewk->wu.type];
         set_char_move_init(&ewk->wu, 0, effH7_char_tbl[ewk->wu.rl_waza][ewk->wu.type]);
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
         if (EXE_flag == 0 && Game_pause == 0) {
             switch (ewk->wu.routine_no[1]) {
-            case 0:
+            case R1_WAIT:
                 if (--ewk->wu.dir_timer > 0) {
                     break;
                 }
@@ -78,7 +101,7 @@ void effect_H7_move(WORK_Other* ewk) {
                 ewk->wu.routine_no[1]++;
                 ewk->wu.dir_timer = 4;
                 break;
-            case 1:
+            case R1_SHOW:
                 if (--ewk->wu.dir_timer > 0) {
                     break;
                 }
@@ -86,7 +109,7 @@ void effect_H7_move(WORK_Other* ewk) {
                 ewk->wu.disp_flag = 1;
                 ewk->wu.dir_timer = 0;
                 break;
-            case 2:
+            case R1_BOUND:
                 ewk->wu.dir_step = effH7_bound_tbl[ewk->wu.dir_timer++];
                 if (ewk->wu.dir_step == 99) {
                     ewk->wu.routine_no[1]++;
@@ -95,12 +118,12 @@ void effect_H7_move(WORK_Other* ewk) {
                 }
                 ewk->wu.position_y += ewk->wu.dir_step;
                 break;
-            case 3:
+            case R1_HOLD:
                 if (--ewk->wu.dir_timer > 0) {
                     break;
                 }
                 ewk->wu.routine_no[1]++;
-            case 4:
+            case R1_PICK:
                 ewk->wu.dir_timer = 0;
                 ewk->wu.move_xy_table = effH7_move_tbl[random_16_com()];
                 ewk->wu.routine_no[1]++;
@@ -108,7 +131,7 @@ void effect_H7_move(WORK_Other* ewk) {
                 char_move(&ewk->wu);
                 ewk->wu.dir_step = ewk->wu.move_xy_table[ewk->wu.dir_timer++];
                 if (ewk->wu.dir_step == 99) {
-                    ewk->wu.routine_no[1] = 4;
+                    ewk->wu.routine_no[1] = R1_PICK;
                 } else {
                     ewk->wu.position_y += ewk->wu.dir_step;
                 }
@@ -157,29 +180,29 @@ s32 effect_H7_init(WORK* wk, s16 type) {
 
 void effect_H8_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         if (ewk->wu.rl_waza) {
-            ewk->wu.position_x += effH8_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][0];
+            ewk->wu.position_x += effH8_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][H9_POS_X];
         } else {
-            ewk->wu.position_x -= effH8_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][0];
+            ewk->wu.position_x -= effH8_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][H9_POS_X];
         }
-        ewk->wu.position_y += effH8_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][1];
-        ewk->wu.position_z += effH8_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][2];
+        ewk->wu.position_y += effH8_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][H9_POS_Y];
+        ewk->wu.position_z += effH8_pos_tbl[ewk->wu.rl_waza][ewk->wu.type][H9_POS_Z];
         ewk->wu.xyz[0].disp.pos = ewk->wu.position_x;
         ewk->wu.xyz[1].disp.pos = ewk->wu.position_y;
         ewk->wu.disp_flag = 0;
         ewk->wu.rl_flag = 0;
         ewk->wu.dir_timer = effH8_wait_tbl[ewk->wu.type];
         set_char_move_init(&ewk->wu, 0, effH8_char_tbl[ewk->wu.rl_waza][ewk->wu.type]);
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
         if (EXE_flag == 0 && Game_pause == 0) {
             switch (ewk->wu.routine_no[1]) {
-            case 0:
+            case R1_WAIT:
                 if (--ewk->wu.dir_timer > 0) {
                     break;
                 }
@@ -187,24 +210,24 @@ void effect_H8_move(WORK_Other* ewk) {
                 ewk->wu.routine_no[1]++;
                 ewk->wu.dir_timer = 4;
                 break;
-            case 1:
+            case R1_SHOW:
                 if (--ewk->wu.dir_timer > 0) {
                     break;
                 }
                 ewk->wu.routine_no[1]++;
                 ewk->wu.disp_flag = 1;
                 break;
-            case 2:
+            case R1_PLAY:
                 char_move(&ewk->wu);
                 if (ewk->wu.cg_type == 0xFF) {
                     if (bg_w.stage == 8 && Round_num == 0) {
-                        ewk->wu.routine_no[1] = 3;
+                        ewk->wu.routine_no[1] = R1_FLY_WAIT;
                     } else {
-                        ewk->wu.routine_no[1] = 9;
+                        ewk->wu.routine_no[1] = R1_STOP;
                     }
                 }
                 break;
-            case 3:
+            case R1_FLY_WAIT:
                 if (bg_w.bgw[1].r_no_1 >= 1) {
                     set_char_move_init(&ewk->wu, 0, effH8_char2_tbl[ewk->wu.rl_waza][ewk->wu.type]);
                     ewk->wu.xyz[0].disp.pos = ewk->wu.position_x;
@@ -217,7 +240,7 @@ void effect_H8_move(WORK_Other* ewk) {
                     ewk->wu.routine_no[1]++;
                 }
                 break;
-            case 4:
+            case R1_FLY:
                 char_move(&ewk->wu);
                 add_mvxy_speed(&ewk->wu);
                 cal_mvxy_speed(&ewk->wu);

@@ -19,6 +19,14 @@
 #include "effect_2.h"
 #include "EFFG3.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* set up beside the pulled player */
+#define R0_MOVE         1       /* follow, then play the closing pattern */
+#define R0_KILL         2       /* put the work back */
+
+/* routine_no[1] */
+#define R1_FOLLOW       0       /* follow while the suction lasts */
+
 
 
 void effect_G3_move(WORK_Other* ewk) {
@@ -26,16 +34,16 @@ void effect_G3_move(WORK_Other* ewk) {
     PLW* pwk = (PLW*)ewk->wu.target_adrs;
     s16 adjust;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
-        ewk->wu.routine_no[1] = 0;
+        ewk->wu.routine_no[1] = R1_FOLLOW;
         ewk->wu.disp_flag = 1;
         ewk->wu.my_col_mode = 0x4200;
         ewk->wu.my_col_code = 0x2020;
         ewk->wu.position_y = pwk->wu.position_y - 8;
         ewk->wu.position_z = pwk->wu.position_z - 4;
         set_char_move_init(&ewk->wu, 0, 0);
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f) {
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 1;
@@ -69,7 +77,7 @@ void effect_G3_move(WORK_Other* ewk) {
         }
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_KILL:
         goto release;
     case 3:
         goto release;

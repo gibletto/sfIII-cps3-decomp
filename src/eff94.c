@@ -22,6 +22,39 @@
 #include "aboutspr.h"
 #include "bg_sub_5.h"
 #include "eff94.h"
+#include "fighter.h"
+
+/* routine_no[0], following the player */
+#define R0_DELAY        0       /* wait a frame */
+#define R0_INIT         1       /* stand at the player and show */
+#define R0_MOVE         2       /* run the follow states */
+
+/* routine_no[0], standing at its post */
+#define R0_PLACE        0       /* take its stage position */
+#define R0_WATCH        1       /* run the round result states */
+
+/* routine_no[1], following the player: index into eff94_jp_a */
+#define R1_STAND        0       /* stand and pick the next move */
+#define R1_WALK         1       /* walk after the player */
+#define R1_TURN         2       /* turn round */
+#define R1_REACT        3       /* react to the player's attack */
+#define R1_OVER         4       /* round decided: wait for the win pose */
+#define R1_WIN          5       /* react to the player's win pose */
+#define R1_IDLE         6       /* idle move after standing a while */
+#define R1_HIDE         7       /* hide at the end of the fight */
+
+/* routine_no[1], standing at its post: index into eff94_jp_b */
+#define R1_RESULT       1       /* act on the round result */
+#define R1_LOSE         2       /* the player lost */
+
+/* routine_no[2]: step within the current state */
+#define R2_INIT         0       /* first step of the state */
+#define R2_MOVE         1       /* play the state's pattern */
+
+/* routine_no[2], eff94_01 */
+#define R2_READY        1       /* stand out the wait, then set off */
+#define R2_WALK         2       /* walk toward the player */
+#define R2_STOP         3       /* finish the walk pattern */
 
 const s16 eff94_wait_tbl[16] = { 8, 34, 278, 40, 42, 140, 238, 0, 240, 18, 6, 72, 26, 124, 80, 32 };
 const s8 eff94_attack_tbl[8] = { 0, 1, 0, 0, 1, 0, 0, 1 };
@@ -38,16 +71,16 @@ void effect_94_move(WORK_Other* ewk) {
     void (*const eff94_jp_b[4])(WORK_Other*) = { eff94_10, eff94_11, eff94_12, eff94_13 };
     if (ewk->wu.old_rno[3]) {
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_DELAY:
             ewk->wu.routine_no[0]++;
             break;
-        case 1:
+        case R0_INIT:
             ewk->wu.routine_no[0]++;
             ewk->wu.old_rno[1] = ewk->wu.xyz[0].disp.pos = plw[ewk->master_id].wu.xyz[0].disp.pos;
             ewk->wu.old_rno[0] = 0;
             ewk->wu.disp_flag = 1;
             break;
-        case 2:
+        case R0_MOVE:
             ewk->wu.rl_waza = ewk->wu.old_rno[5];
             ewk->wu.old_rno[5] = plw[ewk->master_id].wu.xyz[0].disp.pos - ewk->wu.xyz[0].disp.pos;
             ewk->wu.old_rno[6] = (ewk->wu.old_rno[5] < 0) ? -ewk->wu.old_rno[5] : ewk->wu.old_rno[5];
@@ -59,7 +92,7 @@ void effect_94_move(WORK_Other* ewk) {
         }
     } else {
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_PLACE:
             ewk->wu.routine_no[0]++;
             if (bg_w.stage == 7 && bg_w.area == 1) {
                 ewk->wu.xyz[0].disp.pos = 0x1A0;
@@ -67,7 +100,7 @@ void effect_94_move(WORK_Other* ewk) {
                 ewk->wu.xyz[0].disp.pos = bg_w.bgw[1].pos_x_work;
             }
             break;
-        case 1:
+        case R0_WATCH:
             if (!EXE_flag && !Game_pause) {
                 eff94_jp_b[ewk->wu.routine_no[1]](ewk);
             }
@@ -86,11 +119,11 @@ const s16 eff94_time_tbl[32] = { 16, 16, 16, 32, 32, 32, 48, 48, 48, 56, 56, 56,
 /* provisional name */
 void eff94_00(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         set_char_move_init(&ewk->wu, 0, 17);
         break;
-    case 1:
+    case R2_MOVE:
         char_move(&ewk->wu);
         if (eff94_select(ewk)) {
             ewk->wu.dir_step++;
@@ -106,8 +139,8 @@ void eff94_00(WORK_Other* ewk) {
 
 /* provisional name */
 void eff94_go_00(WORK_Other* ewk) {
-    ewk->wu.routine_no[1] = 0;
-    ewk->wu.routine_no[2] = 0;
+    ewk->wu.routine_no[1] = R1_STAND;
+    ewk->wu.routine_no[2] = R2_INIT;
     eff94_set_wait(ewk);
 }
 
@@ -117,10 +150,10 @@ void eff94_go_00(WORK_Other* ewk) {
 /* provisional name */
 void eff94_01(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         set_char_move_init(&ewk->wu, 0, 17);
-    case 1:
+    case R2_READY:
         ewk->wu.old_rno[0]--;
         if (ewk->wu.old_rno[0] < 0) {
             ewk->wu.dir_step = 0;
@@ -133,7 +166,7 @@ void eff94_01(WORK_Other* ewk) {
             char_move(&ewk->wu);
         }
         break;
-    case 2:
+    case R2_WALK:
         char_move(&ewk->wu);
         if (eff94_check_front(ewk)) {
             eff94_check_and_go(ewk);
@@ -147,7 +180,7 @@ void eff94_01(WORK_Other* ewk) {
             }
         }
         break;
-    case 3:
+    case R2_STOP:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
             eff94_check_and_go(ewk);
@@ -163,8 +196,8 @@ void eff94_01(WORK_Other* ewk) {
 
 /* provisional name */
 void eff94_go_01(WORK_Other* ewk) {
-    ewk->wu.routine_no[1] = 1;
-    ewk->wu.routine_no[2] = 0;
+    ewk->wu.routine_no[1] = R1_WALK;
+    ewk->wu.routine_no[2] = R2_INIT;
     eff94_set_wait(ewk);
 }
 
@@ -174,11 +207,11 @@ void eff94_go_01(WORK_Other* ewk) {
 /* provisional name */
 void eff94_02(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         set_char_move_init(&ewk->wu, 0, 19);
         break;
-    case 1:
+    case R2_MOVE:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
             eff94_go_01(ewk);
@@ -192,8 +225,8 @@ void eff94_02(WORK_Other* ewk) {
 
 /* provisional name */
 void eff94_go_02(WORK_Other* ewk) {
-    ewk->wu.routine_no[1] = 2;
-    ewk->wu.routine_no[2] = 0;
+    ewk->wu.routine_no[1] = R1_TURN;
+    ewk->wu.routine_no[2] = R2_INIT;
 }
 
 
@@ -202,14 +235,14 @@ void eff94_go_02(WORK_Other* ewk) {
 /* provisional name */
 void eff94_03(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.old_rno[0]--;
         if (ewk->wu.old_rno[0] < 0) {
             ewk->wu.routine_no[2]++;
             set_char_move_init(&ewk->wu, 0, 20);
         }
         break;
-    case 1:
+    case R2_MOVE:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
             eff94_check_and_go(ewk);
@@ -225,19 +258,19 @@ void eff94_03(WORK_Other* ewk) {
 void eff94_04(WORK_Other* ewk) {
     if (pcon_rno[0] == 2 && pcon_rno[1] == 3) {
         ewk->wu.old_rno[0] = 60;
-        ewk->wu.routine_no[1] = 7;
-        ewk->wu.routine_no[2] = 0;
+        ewk->wu.routine_no[1] = R1_HIDE;
+        ewk->wu.routine_no[2] = R2_INIT;
     } else {
         switch (ewk->wu.routine_no[2]) {
-        case 0:
+        case R2_INIT:
             ewk->wu.routine_no[2]++;
             set_char_move_init(&ewk->wu, 0, 23);
             break;
-        case 1:
+        case R2_MOVE:
             char_move(&ewk->wu);
             if (plw[ewk->master_id].wu.char_index == 39) {
-                ewk->wu.routine_no[1] = 5;
-                ewk->wu.routine_no[2] = 0;
+                ewk->wu.routine_no[1] = R1_WIN;
+                ewk->wu.routine_no[2] = R2_INIT;
             }
             break;
         }
@@ -249,12 +282,12 @@ void eff94_04(WORK_Other* ewk) {
 /* provisional name */
 void eff94_05(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         ewk->wu.rl_flag = 0;
         set_char_move_init(&ewk->wu, 0, 24);
         break;
-    case 1:
+    case R2_MOVE:
         char_move(&ewk->wu);
         break;
     case 2:
@@ -267,11 +300,11 @@ void eff94_05(WORK_Other* ewk) {
 /* provisional name */
 void eff94_06(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         set_char_move_init(&ewk->wu, 0, 28);
         break;
-    case 1:
+    case R2_MOVE:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
             eff94_check_and_go(ewk);
@@ -285,8 +318,8 @@ void eff94_06(WORK_Other* ewk) {
 /* provisional name */
 void eff94_go_06(WORK_Other* ewk) {
     ewk->wu.dir_step = 0;
-    ewk->wu.routine_no[1] = 6;
-    ewk->wu.routine_no[2] = 0;
+    ewk->wu.routine_no[1] = R1_IDLE;
+    ewk->wu.routine_no[2] = R2_INIT;
     eff94_set_wait(ewk);
 }
 
@@ -295,7 +328,7 @@ void eff94_go_06(WORK_Other* ewk) {
 /* provisional name */
 void eff94_07(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         ewk->wu.disp_flag = 0;
         break;
@@ -310,8 +343,8 @@ void eff94_07(WORK_Other* ewk) {
 /* provisional name */
 s32 eff94_check_end(WORK_Other* ewk) {
     if (!Allow_a_battle_f && Conclusion_Flag == 1 && C_No0 >= 2) {
-        ewk->wu.routine_no[1] = 4;
-        ewk->wu.routine_no[2] = 0;
+        ewk->wu.routine_no[1] = R1_OVER;
+        ewk->wu.routine_no[2] = R2_INIT;
         return 1;
     }
     return 0;
@@ -370,8 +403,8 @@ s32 eff94_select(WORK_Other* ewk) {
         ix &= 7;
         if (eff94_pl_attack_check(&plw[ewk->master_id])) {
             if (eff94_attack_tbl[ix]) {
-                ewk->wu.routine_no[1] = 3;
-                ewk->wu.routine_no[2] = 0;
+                ewk->wu.routine_no[1] = R1_REACT;
+                ewk->wu.routine_no[2] = R2_INIT;
                 ewk->wu.old_rno[0] = 8;
             }
             return 0;
@@ -385,16 +418,16 @@ s32 eff94_select(WORK_Other* ewk) {
 /* provisional name */
 void eff94_10(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 26);
         break;
-    case 1:
+    case R2_MOVE:
         char_move(&ewk->wu);
         if (!Allow_a_battle_f && Conclusion_Flag == 1 && C_No0 >= 2) {
-            ewk->wu.routine_no[1] = 1;
-            ewk->wu.routine_no[2] = 0;
+            ewk->wu.routine_no[1] = R1_RESULT;
+            ewk->wu.routine_no[2] = R2_INIT;
         }
         break;
     }
@@ -405,11 +438,11 @@ void eff94_10(WORK_Other* ewk) {
 /* provisional name */
 void eff94_11(WORK_Other* ewk) {
     if (Winner_id != ewk->master_id) {
-        ewk->wu.routine_no[1] = 2;
-        ewk->wu.routine_no[2] = 0;
+        ewk->wu.routine_no[1] = R1_LOSE;
+        ewk->wu.routine_no[2] = R2_INIT;
     } else if (plw[ewk->master_id].wu.char_index == 39) {
         ewk->wu.routine_no[1] = 5;
-        ewk->wu.routine_no[2] = 0;
+        ewk->wu.routine_no[2] = R2_INIT;
     }
 }
 
@@ -418,11 +451,11 @@ void eff94_11(WORK_Other* ewk) {
 /* provisional name */
 void eff94_12(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         set_char_move_init(&ewk->wu, 0, 29);
         break;
-    case 1:
+    case R2_MOVE:
         if (pcon_rno[0] == 2 && pcon_rno[1] == 3) {
             ewk->wu.disp_flag = 0;
         }
@@ -499,18 +532,18 @@ s32 effect_94_init(s16 PL_id, s16 sw) {
 /* provisional name */
 void effect_94_entry(s16 sw) {
     if (sw) {
-        if (plw[0].player_number == 8 || plw[1].player_number == 8) {
+        if (plw[0].player_number == PL_ELENA || plw[1].player_number == PL_ELENA) {
             sw = 0;
         }
     }
-    if (plw[0].player_number == 7 && plw[1].player_number == 7) {
+    if (plw[0].player_number == PL_IBUKI && plw[1].player_number == PL_IBUKI) {
         effect_94_init(0, 0);
         return;
     }
-    if (plw[0].player_number == 7) {
+    if (plw[0].player_number == PL_IBUKI) {
         effect_94_init(0, sw);
     }
-    if (plw[1].player_number == 7) {
+    if (plw[1].player_number == PL_IBUKI) {
         effect_94_init(1, sw);
     }
 }

@@ -18,6 +18,21 @@
 #include "effect_2.h"
 #include "EFFG6.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* read the entry from effg6_data */
+#define R0_MOVE         1       /* drop particles while the work moves */
+#define R0_KILL         2       /* put the work back */
+
+/* effg6_data columns */
+#define G6_FLAGS        0       /* end conditions (bit flags) */
+#define G6_LIFE         1       /* frames to live, with flag 0x10 */
+#define G6_X            2       /* x offset from the work, mirrored by rl_flag */
+#define G6_Y            3       /* y offset from the work */
+#define G6_SPEED_X      4       /* particle x speed */
+#define G6_SPEED_Y      5       /* particle y speed */
+#define G6_RATE         6       /* emit mask (low byte), disp_flag (high byte) */
+#define G6_PATTERN      7       /* particle pattern */
+
 
 
 void effect_G6_move(WORK_Other* ewk) {
@@ -26,16 +41,16 @@ void effect_G6_move(WORK_Other* ewk) {
     s16* mr;
     XY* mp;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0] += 1;
-        ewk->wu.dmcal_m = effg6_data[ewk->wu.type][0];
-        ewk->wu.dir_timer = effg6_data[ewk->wu.type][1];
-        ewk->wu.next_x = effg6_data[ewk->wu.type][2];
-        ewk->wu.next_y = effg6_data[ewk->wu.type][3];
-        ewk->wu.mvxy.a[0].sp = effg6_data[ewk->wu.type][4];
-        ewk->wu.mvxy.a[1].sp = effg6_data[ewk->wu.type][5];
-        ewk->wu.now_koc = effg6_data[ewk->wu.type][6];
-        ewk->wu.direction = effg6_data[ewk->wu.type][7];
+        ewk->wu.dmcal_m = effg6_data[ewk->wu.type][G6_FLAGS];
+        ewk->wu.dir_timer = effg6_data[ewk->wu.type][G6_LIFE];
+        ewk->wu.next_x = effg6_data[ewk->wu.type][G6_X];
+        ewk->wu.next_y = effg6_data[ewk->wu.type][G6_Y];
+        ewk->wu.mvxy.a[0].sp = effg6_data[ewk->wu.type][G6_SPEED_X];
+        ewk->wu.mvxy.a[1].sp = effg6_data[ewk->wu.type][G6_SPEED_Y];
+        ewk->wu.now_koc = effg6_data[ewk->wu.type][G6_RATE];
+        ewk->wu.direction = effg6_data[ewk->wu.type][G6_PATTERN];
         if (ewk->wu.rl_flag) {
             ewk->wu.next_x = -ewk->wu.next_x;
         }
@@ -43,7 +58,7 @@ void effect_G6_move(WORK_Other* ewk) {
         ewk->wu.mvxy.a[1].sp *= 256;
         ewk->wu.disp_flag = ewk->wu.now_koc / 256;
         ewk->wu.now_koc &= 0xFF;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0] += 1;
             break;
@@ -98,7 +113,7 @@ void effect_G6_move(WORK_Other* ewk) {
             effect_G9_init(&ewk->wu);
         }
         break;
-    case 2:
+    case R0_KILL:
     default:
         push_effect_work(&ewk->wu);
         break;

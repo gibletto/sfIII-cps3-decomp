@@ -48,6 +48,19 @@
 #include "textsound_2.h"
 #include "textsound_3.h"
 #include "demo00.h"
+
+/* D_No1 in Logo_Capcom */
+#define LC_INIT         0       /* clear the screen and set up */
+#define LC_PAUSE        1       /* wait D_Timer */
+#define LC_ANIM         2       /* capcom_logo_anim */
+#define LC_FADE_OUT     3       /* request the fade out */
+#define LC_FADE_OUT_WAIT 4      /* until it is done, then the next screen */
+
+/* D_No1 in Logo_Warning and Logo_Etc */
+#define LW_INIT         0       /* set up */
+#define LW_PAUSE        1       /* wait D_Timer, then show it */
+#define LW_SHOW         2       /* show it for D_Timer, then fade out */
+#define LW_FADE_WAIT    3       /* until the fade is done, then the next screen */
 /* provisional name */
 s32 CAPCOM_Logo(void) {
     void (*jmp_tbl[3])() = { Logo_Capcom, Logo_Warning, Logo_Etc };
@@ -61,7 +74,7 @@ s32 CAPCOM_Logo(void) {
 /* provisional name */
 void Logo_Capcom(void) {
     switch (D_No1) {
-    case 0:
+    case LC_INIT:
         D_No1++;
         tilemap_fill_all(0, 32);
         System_all_clear_Wait();
@@ -70,24 +83,24 @@ void Logo_Capcom(void) {
         Bg_Family_Set();
         D_Timer = 12;
         break;
-    case 1:
+    case LC_PAUSE:
         if (--D_Timer <= 0) {
             D_No1++;
             ToneDown(0);
         }
         break;
-    case 2:
+    case LC_ANIM:
         if (capcom_logo_anim()) {
             D_No1++;
         }
         break;
-    case 3:
+    case LC_FADE_OUT:
         if (Request_Fade(36, 0)) {
             D_No1++;
             scfont_page1_fill(62, 30);
         }
         break;
-    case 4:
+    case LC_FADE_OUT_WAIT:
         if (Check_Fade_Complete()) {
             D_No1++;
         }
@@ -103,13 +116,13 @@ void Logo_Capcom(void) {
 /* provisional name */
 void Logo_Warning(void) {
     switch (D_No1) {
-    case 0:
+    case LW_INIT:
         D_No1++;
         D_Timer = 10;
         scfont_page0_fill(0, 32);
         tilemap_print_string(DE_X[3], 0, 0xFFFF, parental_advisory_msg);
         break;
-    case 1:
+    case LW_PAUSE:
         if (--D_Timer) {
             break;
         }
@@ -117,7 +130,7 @@ void Logo_Warning(void) {
         D_Timer = 120;
         Scrn_Move_Set(4, 0, 0);
         break;
-    case 2:
+    case LW_SHOW:
         if (--D_Timer) {
             break;
         }
@@ -127,7 +140,7 @@ void Logo_Warning(void) {
             D_Timer = 1;
         }
         break;
-    case 3:
+    case LW_FADE_WAIT:
         if (Check_Fade_Complete()) {
             D_No1++;
         }
@@ -143,7 +156,7 @@ void Logo_Warning(void) {
 /* provisional name */
 void Logo_Etc(void) {
     switch (D_No1) {
-    case 0:
+    case LW_INIT:
         D_No1++;
         D_Timer = 10;
         scfont_page0_fill(0, 32);
@@ -152,7 +165,7 @@ void Logo_Etc(void) {
         bg_pos_hosei2();
         Bg_Family_Set();
         break;
-    case 1:
+    case LW_PAUSE:
         if (--D_Timer) {
             break;
         }
@@ -160,7 +173,7 @@ void Logo_Etc(void) {
         D_Timer = 120;
         Scrn_Move_Set(4, 0, 0);
         break;
-    case 2:
+    case LW_SHOW:
         if (--D_Timer) {
             break;
         }
@@ -170,7 +183,7 @@ void Logo_Etc(void) {
             D_Timer = 1;
         }
         break;
-    case 3:
+    case LW_FADE_WAIT:
         if (Check_Fade_Complete()) {
             D_No1++;
         }

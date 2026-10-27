@@ -1,5 +1,11 @@
 /*
- * EFF18_TBL.C  tables read by EFF18.c and EFF19.c
+ * EFF18_TBL.C  reacting stage object placement and effect 19 piece positions
+ *
+ * scr_obj_num18 gives the number of effect 18 objects for each display index and compel
+ * setting, and scr_obj_data18_0 .. scr_obj_data18_7 their rows (family, colour, position,
+ * priority, animations, line-scroll sync and behaviour routine), reached through
+ * scr_obj_data18; read by EFF18.C, the reacting stage objects. eff19_data_tbl gives the
+ * position and priority of each of the seven pieces of effect 19; read by EFF19.C.
  */
 
 #include "types.h"

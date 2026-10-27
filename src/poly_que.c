@@ -15,17 +15,49 @@
 #include "sys_config_3.h"
 #include "cps3.h"
 
+/* video DMA status: the sprite and polygon list transfers are busy */
+#define VIDEO_DMA_STATUS    (*(volatile u16*)(VIDEO_REG + 0xC))
+#define VIDEO_DMA_BUSY      6
+
+/* polygon line list address (in CHARACTER RAM, in words) */
+#define POLY_LIST_LO        (*(volatile u16*)(VIDEO_REG + 0x96))
+#define POLY_LIST_HI        (*(volatile u16*)(VIDEO_REG + 0x98))
+
+/* quad request registers */
+#define POLY_QUAD_A_HI      (*(volatile u16*)(VIDEO_REG + 0xA0))
+#define POLY_QUAD_A_LO      (*(volatile u16*)(VIDEO_REG + 0xA2))
+#define POLY_QUAD_B_HI      (*(volatile u16*)(VIDEO_REG + 0xA4))
+#define POLY_QUAD_B_LO      (*(volatile u16*)(VIDEO_REG + 0xA6))
+#define POLY_QUAD_ATTR      (*(volatile u16*)(VIDEO_REG + 0xA8))
+#define POLY_QUAD_PRI       (*(volatile u16*)(VIDEO_REG + 0xAA))
+#define POLY_QUAD_C_LO      (*(volatile u16*)(VIDEO_REG + 0xAC))
+#define POLY_QUAD_C_HI      (*(volatile u16*)(VIDEO_REG + 0xAE))    /* | POLY_QUAD_GO starts it */
+#define POLY_QUAD_GO        2
+
+#define POLY_COORD_MASK     0x1FFFFF
+#define POLY_SOURCE_MASK    0x3FFFFFF
+
+/* poly_dma_state */
+#define POLY_IDLE           0
+#define POLY_SENDING_LINES  1
+#define POLY_SENDING_QUADS  2
+#define POLY_SENDING_DIRECT 3   /* a quad sent straight to the registers */
+
+/* poly_order_kind[] and sprite_polygon_flush_queue's kind */
+#define POLY_KIND_LINE      1
+#define POLY_KIND_QUAD      2
+
 s32 poly_dma_state;  /* 0207603C */
 s16 poly_reserve0;  /* 02076040 */
 s16 poly_reserve1;  /* 02076042 */
-POLY_LINE poly_line_buf[2][0x155];  /* 02076044 */
+POLY_LINE poly_line_buf[2][POLY_LINE_MAX];  /* 02076044 */
 u32 poly_line_cnt[2];  /* 0207803C */
 u32 poly_line_rd[2];  /* 02078044 */
-POLYCMD poly_quad_buf[2][32];  /* 0207804C */
+POLYCMD poly_quad_buf[2][POLY_QUAD_MAX];  /* 0207804C */
 u32 poly_quad_cnt[2];  /* 0207844C */
 u32 poly_quad_rd[2];  /* 02078454 */
 u32 poly_order_pos[2];  /* 0207845C */
-u16 poly_order_kind[2][0x175];  /* 02078464 */
+u16 poly_order_kind[2][POLY_ORDER_MAX];  /* 02078464 */
 s32 poly_wr_bank;  /* 02078A38 */
 s32 poly_rd_bank;  /* 02078A3C */
 
@@ -37,16 +69,16 @@ s32 poly_cram_bank = 0;  /* 02007EE4 */
 /* provisional name */
 void poly_queue_init(s32 offset) {
     s32 unused[2];
-    if ((*(volatile u16*)(VIDEO_REG + 0xC)) & 6) {
-        if ((*(volatile u16*)(VIDEO_REG + 0xC)) & 2) {
-            while ((*(volatile u16*)(VIDEO_REG + 0xC)) & 2) {
+    if (VIDEO_DMA_STATUS & VIDEO_DMA_BUSY) {
+        if (VIDEO_DMA_STATUS & 2) {
+            while (VIDEO_DMA_STATUS & 2) {
             }
         } else {
-            while ((*(volatile u16*)(VIDEO_REG + 0xC)) & 4) {
+            while (VIDEO_DMA_STATUS & 4) {
             }
         }
     }
-    poly_dma_state = 0;
+    poly_dma_state = POLY_IDLE;
     poly_reserve0 = 0;
     poly_reserve1 = 0;
     if (offset != -1) {
@@ -74,7 +106,7 @@ void poly_queue_init(s32 offset) {
 void poly_bank_flip(void) {
     s32 mask;
     if (poly_line_cnt[poly_wr_bank] + poly_quad_cnt[poly_wr_bank] > 0) {
-        if (poly_line_cnt[((u32)poly_rd_bank)] + poly_quad_cnt[((u32)poly_rd_bank)] == 0) {
+        if (poly_line_cnt[(u32)poly_rd_bank] + poly_quad_cnt[(u32)poly_rd_bank] == 0) {
             mask = _builtin_get_imask();
             _builtin_set_imask(15);
             poly_wr_bank++;
@@ -101,7 +133,7 @@ s32 polygon2d_submit_line(addr, y, x, kind)
     u8 kind;
 {
     register POLY_LINE* line;
-    if (poly_line_cnt[poly_wr_bank] >= 0x155) {
+    if (poly_line_cnt[poly_wr_bank] >= POLY_LINE_MAX) {
         return -1;
     }
     line = &poly_line_buf[poly_wr_bank][poly_line_cnt[poly_wr_bank]];
@@ -113,14 +145,14 @@ s32 polygon2d_submit_line(addr, y, x, kind)
         kind++;
     }
     if (kind == 4) {
-        line->w0 = (kind << 21) | (x & 0x1FFFFF);
+        line->w0 = (kind << 21) | (x & POLY_COORD_MASK);
     } else {
-        line->w0 = (((x << 1) & 0x1FFFFF) | (kind << 21)) + 1;
+        line->w0 = (((x << 1) & POLY_COORD_MASK) | (kind << 21)) + 1;
     }
-    line->w1 = (y >> 3) & 0x1FFFFF;
-    line->w2 = addr & 0x3FFFFFF;
+    line->w1 = (y >> 3) & POLY_COORD_MASK;
+    line->w2 = addr & POLY_SOURCE_MASK;
     poly_line_cnt[poly_wr_bank]++;
-    poly_order_kind[poly_wr_bank][poly_order_pos[poly_wr_bank]] = 1;
+    poly_order_kind[poly_wr_bank][poly_order_pos[poly_wr_bank]] = POLY_KIND_LINE;
     return 0;
 }
 
@@ -137,8 +169,8 @@ s16 pri;
 {
     register POLYCMD* cmd;
     s32 unused;
-    if ((*(volatile u16*)(VIDEO_REG + 0xC) & 6) || poly_dma_state != 0) {
-        if (poly_quad_cnt[poly_wr_bank] >= 32) {
+    if ((VIDEO_DMA_STATUS & VIDEO_DMA_BUSY) || poly_dma_state != POLY_IDLE) {
+        if (poly_quad_cnt[poly_wr_bank] >= POLY_QUAD_MAX) {
             return -1;
         }
         cmd = &poly_quad_buf[poly_wr_bank][poly_quad_cnt[poly_wr_bank]];
@@ -151,17 +183,17 @@ s16 pri;
         cmd->attr = (hi << 8 | lo) & 0x7F7F;
         cmd->pri = pri & 0x7F;
         poly_quad_cnt[poly_wr_bank]++;
-        poly_order_kind[poly_wr_bank][poly_order_pos[poly_wr_bank]] = 2;
+        poly_order_kind[poly_wr_bank][poly_order_pos[poly_wr_bank]] = POLY_KIND_QUAD;
     } else {
-        poly_dma_state = 3;
-        *(volatile u16*)(VIDEO_REG + 0xA0) = ((a >> 1) & 0x7FF0000) >> 16;
-        *(volatile u16*)(VIDEO_REG + 0xA2) = a >> 1;
-        *(volatile u16*)(VIDEO_REG + 0xA4) = ((b >> 1) & 0x10000) >> 16;
-        *(volatile u16*)(VIDEO_REG + 0xA6) = b >> 1;
-        *(volatile u16*)(VIDEO_REG + 0xA8) = (hi << 8 | lo) & 0x7F7F;
-        *(volatile u16*)(VIDEO_REG + 0xAA) = pri & 0x7F;
-        *(volatile u16*)(VIDEO_REG + 0xAC) = c >> 1;
-        *(volatile u16*)(VIDEO_REG + 0xAE) = ((c >> 1) & 0x10000) >> 16 | 2;
+        poly_dma_state = POLY_SENDING_DIRECT;
+        POLY_QUAD_A_HI = ((a >> 1) & 0x7FF0000) >> 16;
+        POLY_QUAD_A_LO = a >> 1;
+        POLY_QUAD_B_HI = ((b >> 1) & 0x10000) >> 16;
+        POLY_QUAD_B_LO = b >> 1;
+        POLY_QUAD_ATTR = (hi << 8 | lo) & 0x7F7F;
+        POLY_QUAD_PRI = pri & 0x7F;
+        POLY_QUAD_C_LO = c >> 1;
+        POLY_QUAD_C_HI = ((c >> 1) & 0x10000) >> 16 | POLY_QUAD_GO;
     }
     return 0;
 }
@@ -172,7 +204,7 @@ s16 pri;
 s32 polygon2d_queue_quad(u32 a, u32 b, u32 c, u16 lo, u16 hi, s16 pri) {
     register POLYCMD* cmd;
     s32 unused;
-    if (poly_quad_cnt[poly_wr_bank] >= 32) {
+    if (poly_quad_cnt[poly_wr_bank] >= POLY_QUAD_MAX) {
         return -1;
     }
     cmd = &poly_quad_buf[poly_wr_bank][poly_quad_cnt[poly_wr_bank]];
@@ -185,18 +217,18 @@ s32 polygon2d_queue_quad(u32 a, u32 b, u32 c, u16 lo, u16 hi, s16 pri) {
     cmd->attr = (hi << 8 | lo) & 0x7F7F;
     cmd->pri = pri & 0x7F;
     poly_quad_cnt[poly_wr_bank]++;
-    poly_order_kind[poly_wr_bank][poly_order_pos[poly_wr_bank]] = 2;
+    poly_order_kind[poly_wr_bank][poly_order_pos[poly_wr_bank]] = POLY_KIND_QUAD;
     return 0;
 }
 
 /* provisional name */
 void sprite_poly_queue_drain_try(void)
 {
-    if ((*(volatile u16 *)(VIDEO_REG + 0xC) & 6) == 0 && poly_dma_state == 0) {
+    if ((VIDEO_DMA_STATUS & VIDEO_DMA_BUSY) == 0 && poly_dma_state == POLY_IDLE) {
         if (poly_line_cnt[poly_rd_bank] > 0) {
-            sprite_polygon_flush_queue(1);
+            sprite_polygon_flush_queue(POLY_KIND_LINE);
         } else if (poly_quad_cnt[poly_rd_bank] > 0) {
-            sprite_polygon_flush_queue(2);
+            sprite_polygon_flush_queue(POLY_KIND_QUAD);
         }
     }
 }
@@ -209,21 +241,21 @@ void sprite_poly_queue_drain_try(void)
 /* provisional name */
 void sprite_poly_queue_drain_wait(void)
 {
-    while (*(volatile u16 *)(VIDEO_REG + 0xC) & 6) {
+    while (VIDEO_DMA_STATUS & VIDEO_DMA_BUSY) {
     }
     switch (poly_dma_state) {
-    case 1:
-    case 2:
-        poly_dma_state = 0;
+    case POLY_SENDING_LINES:
+    case POLY_SENDING_QUADS:
+        poly_dma_state = POLY_IDLE;
         if (poly_line_cnt[poly_rd_bank] > 0) {
-            sprite_polygon_flush_queue(1);
+            sprite_polygon_flush_queue(POLY_KIND_LINE);
         } else if (poly_quad_cnt[poly_rd_bank] > 0) {
-            sprite_polygon_flush_queue(2);
+            sprite_polygon_flush_queue(POLY_KIND_QUAD);
         }
         break;
-    case 3:
-        poly_dma_state = 0;
-    case 0:
+    case POLY_SENDING_DIRECT:
+        poly_dma_state = POLY_IDLE;
+    case POLY_IDLE:
     default:
         break;
     }
@@ -242,9 +274,9 @@ void sprite_polygon_flush_queue(s32 kind) {
     s32 n;
     s32 unused;
     switch (kind) {
-    case 1:
-        if (poly_line_cnt[poly_rd_bank] > 0x155) {
-            n = 0x155;
+    case POLY_KIND_LINE:
+        if (poly_line_cnt[poly_rd_bank] > POLY_LINE_MAX) {
+            n = POLY_LINE_MAX;
         } else {
             n = poly_line_cnt[poly_rd_bank];
         }
@@ -261,21 +293,21 @@ void sprite_polygon_flush_queue(s32 kind) {
         out[i].w0 = 0x01000000;
         out[i].w1 = 0;
         out[i].w2 = 0;
-        *(volatile u16*)(VIDEO_REG + 0x96) = ((u32)out - CHARACTER_RAM) >> 2;
-        *(volatile u16*)(VIDEO_REG + 0x98) = ((((u32)out - CHARACTER_RAM) >> 18) & 63) | 64;
+        POLY_LIST_LO = ((u32)out - CHARACTER_RAM) >> 2;
+        POLY_LIST_HI = ((((u32)out - CHARACTER_RAM) >> 18) & 63) | 64;
         cram_bank_restore();
         break;
-    case 2:
+    case POLY_KIND_QUAD:
         cmd.quad = &poly_quad_buf[poly_rd_bank][poly_quad_rd[poly_rd_bank]];
-        poly_dma_state = 2;
-        *(volatile u16*)(VIDEO_REG + 0xA0) = cmd.quad->a_hi;
-        *(volatile u16*)(VIDEO_REG + 0xA2) = cmd.quad->a_lo;
-        *(volatile u16*)(VIDEO_REG + 0xA4) = cmd.quad->b_hi;
-        *(volatile u16*)(VIDEO_REG + 0xA6) = cmd.quad->b_lo;
-        *(volatile u16*)(VIDEO_REG + 0xA8) = cmd.quad->attr;
-        *(volatile u16*)(VIDEO_REG + 0xAA) = cmd.quad->pri;
-        *(volatile u16*)(VIDEO_REG + 0xAC) = cmd.quad->c_lo;
-        *(volatile u16*)(VIDEO_REG + 0xAE) = cmd.quad->c_hi | 2;
+        poly_dma_state = POLY_SENDING_QUADS;
+        POLY_QUAD_A_HI = cmd.quad->a_hi;
+        POLY_QUAD_A_LO = cmd.quad->a_lo;
+        POLY_QUAD_B_HI = cmd.quad->b_hi;
+        POLY_QUAD_B_LO = cmd.quad->b_lo;
+        POLY_QUAD_ATTR = cmd.quad->attr;
+        POLY_QUAD_PRI = cmd.quad->pri;
+        POLY_QUAD_C_LO = cmd.quad->c_lo;
+        POLY_QUAD_C_HI = cmd.quad->c_hi | POLY_QUAD_GO;
         poly_quad_cnt[poly_rd_bank]--;
         poly_quad_rd[poly_rd_bank]++;
     default:

@@ -13,6 +13,13 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 #include "EFFC1.h"
+#include "fighter.h"
+
+/* routine_no[0] */
+#define R0_INIT         0       /* show the first pose */
+#define R0_WATCH        1       /* turn to face the player */
+#define R0_RESULT       2       /* hold the result pose */
+
 extern const s16 effC1_reverse_tbl[5];
 extern const s16 effC1_position_tbl[2][5];
 
@@ -20,13 +27,13 @@ void effect_C1_move(WORK_Other* ewk) {
     s16 x;
     s16 id;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.old_rno[3], ewk->wu.old_rno[0] + 1, 0);
         ewk->wu.old_rno[1] = ewk->wu.old_rno[0];
         break;
-    case 1:
+    case R0_WATCH:
         if (Allow_a_battle_f == 0 && Conclusion_Flag == 1 && C_No0 >= 2) {
             if (Complete_Victory != 0 && Conclusion_Flag) {
                 s32 pattern;
@@ -62,7 +69,7 @@ void effect_C1_move(WORK_Other* ewk) {
             ewk->wu.old_rno[1] = ewk->wu.old_rno[0];
         }
         break;
-    case 2:
+    case R0_RESULT:
         break;
     default:
         all_cgps_put_back(&ewk->wu);
@@ -72,26 +79,26 @@ void effect_C1_move(WORK_Other* ewk) {
     sort_push_request(&ewk->wu);
 }
 
+static void effc1_pos_disp(s16 pos) {}
+
 s32 effect_C1_init(PLW* wk) {
     s16 id;
     PLW* other;
     WORK_Other* ewk;
-    u8 zero = 0;
     s16 pattern = -1;
     s16 ix;
     if (pattern < 0) {
         id = wk->wu.id ^ 1;
         other = &plw[id];
-        (void)other->wu.xyz[id].disp.pos;
-        if (wk->player_number == 10) {
-            if (other->player_number == 3 || other->player_number == 10) {
-            } else {
+        effc1_pos_disp(other->wu.xyz[id].disp.pos);
+        if (wk->player_number == PL_YANG) {
+            if (other->player_number != PL_YUN && other->player_number != PL_YANG) {
                 pattern = 3;
             }
-        } else if (wk->player_number == 3) {
-            if (other->player_number == 3 || other->player_number == 10) {
+        } else if (wk->player_number == PL_YUN) {
+            if (other->player_number == PL_YUN || other->player_number == PL_YANG) {
             } else {
-                pattern = zero;
+                pattern = 0;
             }
         }
     }
@@ -108,11 +115,11 @@ companion_check:;
     ewk->wu.id = 121;
     ewk->wu.work_id = 16;
     ewk->wu.cgromtype = 1;
-    ewk->wu.disp_flag = zero;
+    ewk->wu.disp_flag = 0;
     ewk->wu.type = pattern;
     ewk->wu.old_rno[2] = wk->wu.id;
     ewk->wu.my_family = 2;
-    ewk->wu.old_rno[0] = zero;
+    ewk->wu.old_rno[0] = 0;
     ewk->wu.old_rno[3] = pattern;
     ewk->wu.my_col_mode = 0x4200;
     ewk->wu.kage_flag = 1;
@@ -121,8 +128,8 @@ companion_check:;
     ewk->wu.kage_char = 13;
     ewk->wu.my_priority = ewk->wu.position_z = 70;
     ewk->wu.kage_prio = ewk->wu.my_priority + 1;
-    ewk->wu.xyz[0].disp.low = zero;
-    ewk->wu.xyz[1].disp.low = zero;
+    ewk->wu.xyz[0].disp.low = 0;
+    ewk->wu.xyz[1].disp.low = 0;
     ewk->wu.char_table[0] = direct_03_char_table;
     if (ewk->wu.type) {
         ewk->wu.my_col_code = 0x205C;
@@ -133,7 +140,7 @@ companion_check:;
     if (ewk->wu.old_rno[2]) {
         ewk->wu.position_x = ewk->wu.xyz[0].disp.pos = 656;
         if (ewk->wu.type) {
-            ewk->wu.rl_flag = zero;
+            ewk->wu.rl_flag = 0;
         } else {
             ewk->wu.rl_flag = 1;
         }
@@ -142,7 +149,7 @@ companion_check:;
         if (ewk->wu.type) {
             ewk->wu.rl_flag = 1;
         } else {
-            ewk->wu.rl_flag = zero;
+            ewk->wu.rl_flag = 0;
         }
     }
 }

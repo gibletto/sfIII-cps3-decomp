@@ -1,5 +1,9 @@
 /*
- * END_1_TBL.C  tables read by end_1.c
+ * END_1_TBL.C  Alex's ending tables (ending 1)
+ *
+ * end_100_panel0 and end_100_panel1 list the BG0 and BG1 cells (map offset, cell number)
+ * written by end_100_cell_set at the start of the ending, timer_1_tbl the length in frames of
+ * each of its eight scenes and end_1_pos the BG0 x and y of each scene. Read by END_1.C.
  */
 
 #include "types.h"

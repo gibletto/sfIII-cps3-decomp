@@ -151,47 +151,47 @@ s16 caldir_wk_8(WORK* wk, WORK* emwk) {
 
 /* provisional name */
 void add_pos_dir_256(WORK* wk, s16 sp) {
-    wk->xyz[0].cal += (rate_256_table[wk->direction][0] * sp) >> 8;
-    wk->xyz[1].cal += (rate_256_table[wk->direction][1] * sp) >> 8;
+    wk->xyz[0].cal += (rate_256_table[wk->direction][RATE_X] * sp) >> 8;
+    wk->xyz[1].cal += (rate_256_table[wk->direction][RATE_Y] * sp) >> 8;
 }
 
 
 
 /* provisional name */
 void add_pos_dir_128(WORK* wk, s16 sp) {
-    wk->xyz[0].cal += (rate_256_table[wk->direction * 2][0] * sp) >> 8;
-    wk->xyz[1].cal += (rate_256_table[wk->direction * 2][1] * sp) >> 8;
+    wk->xyz[0].cal += (rate_256_table[wk->direction * 2][RATE_X] * sp) >> 8;
+    wk->xyz[1].cal += (rate_256_table[wk->direction * 2][RATE_Y] * sp) >> 8;
 }
 
 
 
 void add_pos_dir_064(WORK* wk, s16 sp) {
-    wk->xyz[0].cal += (rate_256_table[wk->direction * 4][0] * sp) >> 8;
-    wk->xyz[1].cal += (rate_256_table[wk->direction * 4][1] * sp) >> 8;
+    wk->xyz[0].cal += (rate_256_table[wk->direction * 4][RATE_X] * sp) >> 8;
+    wk->xyz[1].cal += (rate_256_table[wk->direction * 4][RATE_Y] * sp) >> 8;
 }
 
 
 
 /* provisional name */
 void add_pos_dir_032(WORK* wk, s16 sp) {
-    wk->xyz[0].cal += (rate_256_table[wk->direction * 8][0] * sp) >> 8;
-    wk->xyz[1].cal += (rate_256_table[wk->direction * 8][1] * sp) >> 8;
+    wk->xyz[0].cal += (rate_256_table[wk->direction * 8][RATE_X] * sp) >> 8;
+    wk->xyz[1].cal += (rate_256_table[wk->direction * 8][RATE_Y] * sp) >> 8;
 }
 
 
 
 /* provisional name */
 void add_pos_dir_016(WORK* wk, s16 sp) {
-    wk->xyz[0].cal += (rate_256_table[wk->direction * 16][0] * sp) >> 8;
-    wk->xyz[1].cal += (rate_256_table[wk->direction * 16][1] * sp) >> 8;
+    wk->xyz[0].cal += (rate_256_table[wk->direction * 16][RATE_X] * sp) >> 8;
+    wk->xyz[1].cal += (rate_256_table[wk->direction * 16][RATE_Y] * sp) >> 8;
 }
 
 
 
 /* provisional name */
 void add_pos_dir_008(WORK* wk, s16 sp) {
-    wk->xyz[0].cal += (rate_256_table[wk->direction * 32][0] * sp) >> 8;
-    wk->xyz[1].cal += (rate_256_table[wk->direction * 32][1] * sp) >> 8;
+    wk->xyz[0].cal += (rate_256_table[wk->direction * 32][RATE_X] * sp) >> 8;
+    wk->xyz[1].cal += (rate_256_table[wk->direction * 32][RATE_Y] * sp) >> 8;
 }
 
 
@@ -270,8 +270,8 @@ s16 cal_move_quantity2(s16 x1, s16 x2, s16 y1, s16 y2) {
         }
     }
     kakudo = dir_sel_table[y1][y2];
-    ms.psi = (x1 * rate_256_table[kakudo][0]);
-    ms.psi += x2 * rate_256_table[kakudo][1];
+    ms.psi = (x1 * rate_256_table[kakudo][RATE_X]);
+    ms.psi += x2 * rate_256_table[kakudo][RATE_Y];
     return ms.pss.h;
 }
 

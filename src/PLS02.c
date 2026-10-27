@@ -310,8 +310,7 @@ void check_body_touch(void) {
     s16 meri;
     if (p1w->wu.h_hos->hos_box[0] != 0 && p2w->wu.h_hos->hos_box[0] != 0) {
         meri = hit_check_subroutine(&p1w->wu, &p2w->wu, &p1w->wu.h_hos->hos_box[0], &p2w->wu.h_hos->hos_box[0]);
-        if (meri == 0) {
-        } else {
+        if (meri != 0) {
             meri = meri_case_switch(meri);
             if (check_work_position(&p1w->wu, &p2w->wu)) {
                 goto one;
@@ -810,7 +809,7 @@ void dead_voice_request2(PLW* wk) {
     s16 secd2;
     secd1 = dead_voice_table[wk->player_number][0];
     secd2 = dead_voice_table[wk->player_number][1];
-    if ((wk->wu.routine_no[1] == 1) && atsagct[wk->wu.routine_no[2]] & 0x10) {
+    if ((wk->wu.routine_no[1] == PLAYER_DAMAGE) && atsagct[wk->wu.routine_no[2]] & 0x10) {
         sound_effect_request[secd2](wk, secd2);
     } else {
         sound_effect_request[secd1](wk, secd1);
@@ -846,9 +845,9 @@ void setup_saishin_lvdir(ds, gddir)
             ds->saishin_lvdir = convert_saishin_lvdir[0][ds->sa_stop_lvdir & 0xC];
         }
     } else if (ds->wu.rl_flag) {
-        ds->saishin_lvdir = convert_saishin_lvdir[1][ds->cp->sw_lvbt & 0xC];
+        ds->saishin_lvdir = convert_saishin_lvdir[1][ds->cp->sw_lvbt & LEVER_LR];
     } else {
-        ds->saishin_lvdir = convert_saishin_lvdir[0][ds->cp->sw_lvbt & 0xC];
+        ds->saishin_lvdir = convert_saishin_lvdir[0][ds->cp->sw_lvbt & LEVER_LR];
     }
     gc = ds->guard_chuu;
     if (gc && gc < 5) {
@@ -861,11 +860,11 @@ void setup_saishin_lvdir(ds, gddir)
 void setup_lvdir_after_autodir(PLW* wk) {
     const u8* p = convert_saishin_lvdir[0];
     if (wk->wu.rl_flag) {
-        p += wk->cp->sw_lvbt & 0xC;
+        p += wk->cp->sw_lvbt & LEVER_LR;
         p += 16;
         wk->cp->lever_dir = *p;
     } else {
-        p += wk->cp->sw_lvbt & 0xC;
+        p += wk->cp->sw_lvbt & LEVER_LR;
         wk->cp->lever_dir = *p;
     }
 }

@@ -21,6 +21,13 @@
 #include "effect_2.h"
 #include "ta_sub.h"
 #include "eff35.h"
+
+/* routine_no[0] */
+#define R0_INIT         0       /* count in with the controller and show */
+#define R0_FLY          1       /* fly until it comes down or leaves */
+#define R0_LAND         2       /* stay where it came down for a while */
+#define R0_KILL         3       /* count out and put the work back */
+
 extern const s16 eff35_spawn_tbl[132];
 extern const s32 eff35_vertical_tbl[128];
 extern const s32 eff35_speed_tbl[16];
@@ -97,7 +104,7 @@ void effect_35_move(WORK_Other* ewk) {
         return;
     }
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         oya = (WORK_Other*)ewk->my_master;
         if (ewk->wu.dmcal_m == 0) {
             oya->wu.direction++;
@@ -108,7 +115,7 @@ void effect_35_move(WORK_Other* ewk) {
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R0_FLY:
         if (EXE_flag != 0 || Game_pause != 0) {
             disp_seraph_cells(&ewk->wu);
             break;
@@ -149,7 +156,7 @@ void effect_35_move(WORK_Other* ewk) {
         }
         disp_seraph_cells(&ewk->wu);
         break;
-    case 2:
+    case R0_LAND:
         ewk->wu.dm_vital--;
         if (ewk->wu.dm_vital == 0) {
             ewk->wu.routine_no[0]++;
@@ -158,7 +165,7 @@ void effect_35_move(WORK_Other* ewk) {
         }
         disp_seraph_cells(&ewk->wu);
         break;
-    case 3:
+    case R0_KILL:
         oya = (WORK_Other*)ewk->my_master;
         if (ewk->wu.dmcal_m == 0) {
             oya->wu.direction--;

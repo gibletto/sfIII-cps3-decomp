@@ -1,5 +1,13 @@
 /*
- * EFFECT_TBL.C  tables read by CHARMOVE.c, EFF00.c, EFF01_code.c and EFFECT.c
+ * EFFECT_TBL.C  effect routine jump tables
+ *
+ * effmovejptbl is the move routine of every effect, indexed by effect id (00 .. H9), called by
+ * EFFECT.C, the effect work manager, each frame. effinitjptbl is the list of the 37 effect
+ * starters and setters called from character scripts by CHARMOVE.C (comm_exec and the cg
+ * effect field). jdb and jdb2 give, by the extra DIP switch setting, which judgement boxes are
+ * shown and their cell count; read by EFF00.C, the judgement box display. parts_colmd_table
+ * and parts_colcd_table give the colour mode and colour code of overlay parts; read by
+ * EFF01_CODE.C, the overlay parts.
  */
 
 #include "types.h"

@@ -1,5 +1,14 @@
 /*
- * EFF02_TBL.C  tables read by EFF02.c, EFF03.c, EFFA7.c and HITCHECK.c
+ * EFF02_TBL.C  hit mark tables and player-attached effect settings
+ *
+ * hmdt has one entry per hit mark number: mark, colour, direction, position offset, screen
+ * quake and hit sound. hcct gives the mark colours, gqdt the delay and quake index of each
+ * quake number, eff02_speed_tbl the mark's step speed by chip power, and explem and explem2
+ * the position offsets a mark entry picks. Read by EFF02.C and EFFA7.C, the hit marks.
+ * hit_mark_hosei_table gives the hit mark position of each attack's mark index, read by
+ * HITCHECK.C. plef_data has one entry per effect 03 type: display flag, facing, offset from
+ * the master, priority, colour, shadow and whether it follows the master; read by EFF03.C, the
+ * player-attached move effects.
  */
 
 #include "types.h"
@@ -120,6 +129,10 @@ const s16 hcct[4] = {
     8192, 8224, 8224, 8225,
 };
 
+/*
+ * One row per quake number of a hit (hmdt quake): frames before the screen quake starts,
+ * and the quake_y_index set then.
+ */
 const s16 gqdt[11][2] = {
     { 0, 0 }, { 6, 8 }, { 6, 10 }, { 6, 12 }, { 6, 14 }, { 6, 20 }, { 6, 8 }, { 6, 6 },
     { 6, 8 }, { 6, 2 }, { 6, 4 },

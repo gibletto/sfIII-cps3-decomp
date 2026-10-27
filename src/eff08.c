@@ -28,6 +28,10 @@
 #include "ta_sub.h"
 #include "eff08.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start the animation */
+#define R0_MOVE         1       /* animate with the master, restart with it */
+
 extern const u32 eff08_char_table[];   /* provisional name */
 
 
@@ -37,17 +41,17 @@ void effect_08_move(WORK_Other* ewk) {
     WORK_Other* oya;
     oya = (WORK_Other*)ewk->my_master;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         /* fall through */
-    case 1:
+    case R0_MOVE:
         if (!EXE_flag && !Game_pause) {
             if (!oya->wu.routine_no[0]) {
                 if (oya->wu.char_index == 2) {
                     ewk->wu.char_index = 0;
-                    ewk->wu.routine_no[0] = 0;
+                    ewk->wu.routine_no[0] = R0_INIT;
                 }
             } else if (oya->wu.char_index == 2) {
                 char_move(&ewk->wu);

@@ -25,13 +25,18 @@
 #include "charmove_2.h"
 #include "EFFF4.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show only BG 3 */
+#define R0_FLASH        1       /* swap the layers every frame */
+#define R0_KILL         2       /* (default) put the work back */
+
 void effect_F4_move(WORK_Other* ewk) {
     s16 i;
     if (akebono_flag) {
         ewk->wu.old_rno[0] = -1;
     }
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         for (i = 0; i < bg_w.scno; i++) {
             Bg_Off_R(1 << i);
@@ -41,7 +46,7 @@ void effect_F4_move(WORK_Other* ewk) {
         scrn_map_set_now(3, (u32)bg_w.bgw[3].bg_address);
         Scrn_Move_Set_R(3, 0x100 - bg_w.pos_offset, 0x200);
         break;
-    case 1:
+    case R0_FLASH:
         ewk->wu.old_rno[0]--;
         if (ewk->wu.old_rno[0] > 0) {
             ewk->wu.disp_flag ^= 1;

@@ -17,21 +17,26 @@
 #include "charmove_2.h"
 #include "effd2.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start the pattern */
+#define R0_MOVE         1       /* play the pattern once, then hide */
+#define R0_KILL         3       /* (default) put the work back */
+
 
 
 void effect_D2_move(WORK_Other* ewk) {
     WORK_Other* mwk = (WORK_Other*)ewk->my_master;
     if (mwk->wu.routine_no[0] == 3) {
-        ewk->wu.routine_no[0] = 3;
+        ewk->wu.routine_no[0] = R0_KILL;
         ewk->wu.disp_flag = 0;
     }
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R0_MOVE:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
             ewk->wu.routine_no[0]++;
@@ -72,7 +77,7 @@ s32 effect_D2_init(WORK_Other* oya) {
         ewk->wu.my_priority = ewk->wu.position_z = 80;
         ewk->wu.char_index = i + 18;
     }
-    (void)((WORK*)etc_char_table)->id;
+    (void)&((WORK*)etc_char_table)->id;
 }
 
 
@@ -101,5 +106,5 @@ s32 effect_D2_init2(WORK_Other* oya) {
         ewk->wu.my_priority = ewk->wu.position_z = 80;
         ewk->wu.char_index = i + 18;
     }
-    (void)((WORK*)etc_char_table)->id;
+    (void)&((WORK*)etc_char_table)->id;
 }

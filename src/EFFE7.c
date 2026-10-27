@@ -19,18 +19,23 @@
 #include "effect_2.h"
 #include "EFFE7.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* take the first recorded frame */
+#define R0_MOVE         1       /* copy the player until time runs out */
+#define R0_KILL         2       /* put the work back */
+
 
 
 void effect_E7_move(WORK_Other* ewk) {
     PLW* mwk = (PLW*)ewk->my_master;
     s16 pricol;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.cg_att_ix = 0;
         ewk->wu.cg_hit_ix = 0;
         effe7_get_zanzou_data(ewk);
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
@@ -68,7 +73,7 @@ void effect_E7_move(WORK_Other* ewk) {
         }
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_KILL:
     default:
         if (ewk->wu.old_rno[3]) {
             all_cgps_put_back(&ewk->wu);

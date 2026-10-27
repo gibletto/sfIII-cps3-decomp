@@ -1,5 +1,9 @@
 /*
- * END_MAIN_TBL_C.C  tables read by end_main_c.c
+ * END_MAIN_TBL_C.C  ending type table
+ *
+ * end_type_tbl gives, per ending character, which of the two colour and fade sets the ending
+ * uses (its colour load, the fade that closes the scenes and the fade into the staff roll).
+ * Read by END_MAIN_C.C, the ending main control.
  */
 
 #include "types.h"

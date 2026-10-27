@@ -32,6 +32,11 @@
 #include "eff88.h"
 #include "cps3.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show and start the pattern */
+#define R0_MOVE         1       /* animate until the stage retires it */
+#define R0_KILL         2       /* (default) put the work back */
+
 
 
 const s16* scr_obj_data88[1][4] = {
@@ -46,12 +51,12 @@ const s16* scr_obj_data88_tail[1][4] = {
 
 void effect_88_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R0_MOVE:
         if (compel_dead_check(ewk)) {
             ewk->wu.routine_no[0]++;
             break;

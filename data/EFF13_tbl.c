@@ -1,5 +1,9 @@
 /*
- * EFF13_TBL.C  tables read by EFF13.c
+ * EFF13_TBL.C  projectile process and shadow tables
+ *
+ * kind_of_tama_process is the jump table of the four shell processes kotp_00000 .. kotp_03000,
+ * picked by a shell's kind of tama, and kage_tbl gives the shadow offset, priority and pattern
+ * of each shadow index. Read by EFF13.C, the projectiles.
  */
 
 #include "types.h"

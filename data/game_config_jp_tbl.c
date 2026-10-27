@@ -1,5 +1,11 @@
 /*
- * GAME_CONFIG_JP_TBL.C  tables read by game_config_jp.c: the game configuration screen's scripts
+ * GAME_CONFIG_JP_TBL.C  Japanese game configuration page scripts
+ *
+ * Text-layer scripts of the Japanese GAME CONFIGURATION page of test mode (each a run of
+ * lines: length, x, y, attribute, then character codes): gcfg_title_scr_jp_0 draws the title
+ * and item names, gcfg_guide_scr_jp_0 and gcfg_exit_guide_scr_jp_0 the guide lines, and
+ * gcfg_screen_scr_jp_1 one value of the screen item; the other value scripts are in
+ * NEXT_CPU_TBL.C. Read by GAME_CONFIG_JP.C through its gcfg_*_scr_jp script tables.
  */
 
 #include "types.h"

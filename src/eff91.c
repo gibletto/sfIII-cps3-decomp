@@ -31,17 +31,22 @@
 #include "eff91.h"
 #include "cps3.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* load the step data */
+#define R0_MOVE         1       /* put the cells frame by frame */
+#define R0_KILL         2       /* (default) put the work back */
+
 
 
 void effect_91_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.dir_timer = 1;
         ewk->wu.dir_step = ewk->wu.vitality;
         ewk->wu.step_xy_table = &EFF91_Step_Data[ewk->wu.direction];
         ewk->wu.move_xy_table = ewk->wu.step_xy_table;
-    case 1:
+    case R0_MOVE:
         if (--ewk->wu.dir_timer == 0) {
             eff91_cell_data_set(ewk);
             if (--ewk->wu.dir_step == 0) {
@@ -49,7 +54,7 @@ void effect_91_move(WORK_Other* ewk) {
                     ewk->wu.dir_step = ewk->wu.vitality;
                     ewk->wu.move_xy_table = ewk->wu.step_xy_table;
                 } else {
-                    ewk->wu.routine_no[0] = 2;
+                    ewk->wu.routine_no[0] = R0_KILL;
                 }
             }
         }
@@ -70,9 +75,6 @@ void eff91_cell_data_set(WORK_Other* ewk)
 {
     u16* row;
     u16* cell;
-    u16* dst;
-    s16* code;
-    u16 attr;
     s16 h;
     s16 w;
 
@@ -104,8 +106,8 @@ s32 effect_91_init(s16 type, s16 a, s16 b, s16 c, s16 d) {
     ewk->wu.vital_old = b;
     ewk->wu.dm_vital = c;
     ewk->wu.dmcal_m = d;
-    ewk->wu.direction = EFF91_Init_Data[type][0];
-    ewk->wu.dir_old = EFF91_Init_Data[type][1];
-    ewk->wu.vitality = EFF91_Init_Data[type][2];
+    ewk->wu.direction = EFF91_Init_Data[type][STEP_INIT_START];
+    ewk->wu.dir_old = EFF91_Init_Data[type][STEP_INIT_LOOP];
+    ewk->wu.vitality = EFF91_Init_Data[type][STEP_INIT_STEPS];
     return 0;
 }

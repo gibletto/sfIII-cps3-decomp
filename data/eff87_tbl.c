@@ -1,5 +1,10 @@
 /*
- * EFF87_TBL.C  tables read by eff87.c
+ * EFF87_TBL.C  stage background object tables for effect 87
+ *
+ * eff87_loop_tbl gives the number of objects to make per type and compel flag, and
+ * scr_obj_data87_0 the object rows (dead flag, family, colour, x, y, priority, animation, hit
+ * stop, line-scroll sync), reached through scr_obj_data87 in EFF87.C. Read by EFF87.C, the
+ * stage background object.
  */
 
 #include "types.h"

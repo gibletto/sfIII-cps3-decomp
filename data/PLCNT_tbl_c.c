@@ -1,5 +1,11 @@
 /*
- * PLCNT_TBL_C.C  tables read by plcntset_2.c and PLPDM.c
+ * PLCNT_TBL_C.C  stun recovery rates and stun times
+ *
+ * pl_nr_piyo_tbl gives each character's stun recovery rate; read by PLCNTSET_2.C. The
+ * tsuujyou_dageki_*, hissatsu_dageki_*, tsuujyou_nage_* and super_arts_nage_* tables are the
+ * stun times after normal strikes, special-move strikes, throws and super art throws at three
+ * settings, 16 random choices each (tsuujyou_nage_02 also holds the rows of two further
+ * kinds); reached through the kizetsu_timer_table lists of PLPDM.C, the player damage process.
  */
 
 #include "types.h"

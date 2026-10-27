@@ -1,5 +1,13 @@
 /*
- * EFF03_TBL.C  tables read by EFF03.c, EFF04.c and eff05.c
+ * EFF03_TBL.C  shadow, falling stone and stage scenery tables
+ *
+ * plef_kage_data gives the shadow offset, priority and pattern of each effect 03 shadow number
+ * (a single empty entry); read by EFF03.C. eff04_stone_tbl holds the rows of stones dropped at
+ * the start, one row picked at random, and eff04_wait_tbl the random waits between later
+ * stones; read by EFF04.C, the falling stones controller. scr_obj_num starts with the number
+ * of scenery objects of each stage and area, followed by the object rows (family, colour,
+ * position, priority, animation and line-scroll sync) reached through scr_obj_data; read by
+ * EFF05.C, the stage scenery objects.
  */
 
 #include "types.h"

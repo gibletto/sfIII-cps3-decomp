@@ -1,5 +1,12 @@
 /*
- * PLS00_TBL.C  tables read by PLS00.c and PLS01.c
+ * PLS00_TBL.C  player input check dispatch tables
+ *
+ * process_ndcca lists the input check for each routine class (normal, damage, catch, caught,
+ * attack); plpnm_xxxxx lists the per-state checks nm_00000 onward for the normal routines and
+ * plpdm_xxxxx those for the damage routines. These are read by PLS00.C. sel_hd_fg_hos gives
+ * each character the offset of the point the direction to the opponent's attack is measured
+ * from and the direction window that picks the guard kind, and dir32_rl_conv mirrors a 32-way
+ * direction; these are read by PLS01.C.
  */
 
 #include "types.h"
@@ -71,10 +78,22 @@ void (*const plpdm_xxxxx[37])(PLW* wk) = {
 };
 
 const s16 sel_hd_fg_hos[16][4] = {
-    { 0, 0, 8, 0 }, { 48, 88, 8, 6 }, { 36, 76, 8, 5 }, { 40, 64, 8, 4 },
-    { 44, 76, 8, 5 }, { 40, 68, 8, 5 }, { 0, 0, 8, 0 }, { 36, 68, 8, 6 },
-    { 24, 72, 8, 5 }, { 16, 60, 8, 4 }, { 40, 64, 8, 4 }, { 36, 76, 8, 5 },
-    { 36, 76, 8, 5 }, { 0, 0, 8, 0 }, { 0, 0, 8, 0 }, { 0, 0, 8, 0 },
+    { 0, 0, 8, 0 },  /* Gill */
+    { 48, 88, 8, 6 },  /* Alex */
+    { 36, 76, 8, 5 },  /* Ryu */
+    { 40, 64, 8, 4 },  /* Yun */
+    { 44, 76, 8, 5 },  /* Dudley */
+    { 40, 68, 8, 5 },  /* Necro */
+    { 0, 0, 8, 0 },  /* Hugo */
+    { 36, 68, 8, 6 },  /* Ibuki */
+    { 24, 72, 8, 5 },  /* Elena */
+    { 16, 60, 8, 4 },  /* Oro */
+    { 40, 64, 8, 4 },  /* Yang */
+    { 36, 76, 8, 5 },  /* Ken */
+    { 36, 76, 8, 5 },  /* Sean */
+    { 0, 0, 8, 0 },  /* 13 */
+    { 0, 0, 8, 0 },  /* 14 */
+    { 0, 0, 8, 0 },  /* 15 */
 };
 
 const s16 dir32_rl_conv[32] = {

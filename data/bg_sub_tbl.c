@@ -1,5 +1,10 @@
 /*
- * BG_SUB_TBL.C  tables read by bg000.c and tate00.c: the background test's stages and zoom rates
+ * BG_SUB_TBL.C  background test stage list and zoom rates
+ *
+ * bg_test_stage_tbl is the stage and area of each entry the debug background test steps
+ * through (ending in -1); read by TATE00.C, the stage background control task.
+ * bg_zoom_rate_tbl is the zoom step per frame of the background zoom, by zoom position; read
+ * by BG000.C.
  */
 
 #include "types.h"

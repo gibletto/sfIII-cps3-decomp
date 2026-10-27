@@ -1,5 +1,12 @@
 /*
- * BG_DATA.C  tables read by bg000.c and CMD_MAIN.c
+ * BG_DATA.C  stage background index and special screen position tables
+ *
+ * bg_index_tbl gives the background number (bg_index) for each stage and area; every other
+ * stage background table is indexed by it. etc_bg_limit_tbl and etc_bg_pos_tbl are the scroll
+ * limits and start positions of the layers of each special screen drawn by bg_etc_write. Read
+ * by BG000.C, the stage background services; the etc_ tables also by CMD_MAIN.C (debug menu
+ * screen). bg_test_menu_scr, the layout of a background position display with the BG and stage
+ * labels of BG_DATA2.C, is not referred to.
  */
 
 #include "types.h"

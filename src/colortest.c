@@ -22,6 +22,11 @@
 #include "sys_test_2.h"
 #include "cps3.h"
 
+/* colortest_no: the colour test page step */
+#define COLOR_TITLE     0       /* colortest_draw_title */
+#define COLOR_GRID      1       /* colortest_draw_palette_grid */
+#define COLOR_SHOW      2       /* the grid is up */
+
 s16 colortest_no = 0;  /* 02007CA0 */
 
 
@@ -88,18 +93,18 @@ void colortest_draw_palette_grid(void) {
 s32 colortest_page(void) {
     register s32 rc;
     switch (colortest_no) {
-    case 0:
+    case COLOR_TITLE:
         colortest_draw_title();
         break;
-    case 1:
+    case COLOR_GRID:
         colortest_draw_palette_grid();
         break;
-    case 2:
+    case COLOR_SHOW:
         break;
     }
-    if ((p1sw_0 & 0x1000) && (p1sw_0 & 0x10)) {
+    if ((p1sw_0 & BUTTON_START) && (p1sw_0 & BUTTON_LP)) {
         rc = -1;
-        colortest_no = 0;
+        colortest_no = COLOR_TITLE;
         return rc;
     }
     rc = 0;

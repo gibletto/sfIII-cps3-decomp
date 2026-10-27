@@ -1,5 +1,11 @@
 /*
- * WIN_PL_TBL_B.C  tables read by lose_pl.c and win_pl.c: the round winner and loser poses
+ * WIN_PL_TBL_B.C  round winner and loser pose tables
+ *
+ * win_2000_tbl marks, per stage background, where Dudley's final-win pose may play;
+ * Win_3000_tbl and Win_3001_tbl are Ibuki's pose choices for an ordinary and a final win;
+ * Win_4000_voice_tbl is Elena's win voice choices. These are read by WIN_PL.C, the round
+ * winner poses. lose_type_tbl selects, by character, which loser routine (Lose_00000 or
+ * Lose_10000) plays; read by LOSE_PL.C, the lose poses after a round.
  */
 
 #include "types.h"

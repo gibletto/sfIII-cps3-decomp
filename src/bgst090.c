@@ -27,6 +27,7 @@
 #include "eff06.h"
 #include "SE.h"
 #include "EFF07.h"
+#include "fighter.h"
 
 /* declarations the headers do not give */
 void zoom_ud_check(void);
@@ -178,13 +179,13 @@ void bg090_init00(void) {
 
 
 s32 bg090_check(void) {
-    if (plw[0].player_number == 5 && plw[1].player_number == 5) {
+    if (plw[0].player_number == PL_NECRO && plw[1].player_number == PL_NECRO) {
         if (Appear_hv[0]) {
             return 0;
         }
         return 1;
     }
-    if (plw[0].player_number != 5 && plw[1].player_number == 5) {
+    if (plw[0].player_number != PL_NECRO && plw[1].player_number == PL_NECRO) {
         return 0;
     }
     return 1;

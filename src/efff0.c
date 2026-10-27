@@ -29,6 +29,13 @@
 #include "textsound_3.h"
 #include "meta_col_mem.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* clear BG 3's line scroll */
+#define R0_WAIT         1       /* wait for an another-BG request */
+#define R0_MOVE         2       /* wave BG 3 while it is requested */
+#define R0_OFF          3       /* put the stage layers back */
+#define R0_KILL         99      /* (default) put the work back */
+
 extern s16 ls_rate0;
 extern s16 line_scroll_mode;
 extern s16 ls_cnt1;
@@ -42,17 +49,17 @@ void effF0_scroll_set(WORK_Other* ewk);
 void effect_F0_move(WORK_Other* ewk) {
     s16 i;
     if (akebono_flag) {
-        ewk->wu.routine_no[0] = 99;
+        ewk->wu.routine_no[0] = R0_KILL;
         seraph_flag = 0;
         Bg_Off_R(0x80);
     }
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         scrn_map_set_now(3, ake_scrl_w[0].adrs);
         memset(bg_w.bgw[3].suzi_adrs, 0, 0x1000);
         /* fall through */
-    case 1:
+    case R0_WAIT:
         if (!another_bg[0] && !another_bg[1]) {
             break;
         }
@@ -73,7 +80,7 @@ void effect_F0_move(WORK_Other* ewk) {
         }
         sound_reg_level_set(0, 0xF0);
         /* fall through */
-    case 2:
+    case R0_MOVE:
         if (another_bg[0] || another_bg[1]) {
             seraph_flag = 1;
             scrn_map_set(3, ake_scrl_w[0].adrs);
@@ -83,14 +90,14 @@ line_done:;
             scrn_map_set(3, ake_scrl_w[0].adrs);
             effF0_line_scroll(ewk);
             effF0_scroll_set(ewk);
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_OFF;
             ewk->wu.old_rno[0] = 2;
             seraph_flag = 0;
             sound_reg_level_set(0, 0);
             return;
         }
         goto scroll_set;
-    case 3:
+    case R0_OFF:
         effF0_line_scroll(ewk);
 scroll_set:;
         effF0_scroll_set(ewk);
@@ -141,7 +148,7 @@ void effF0_line_scroll(WORK_Other* ewk) {
 void effF0_scroll_reset(WORK_Other* ewk) {
     s16 i;
     seraph_flag = 0;
-    ewk->wu.routine_no[0] = 1;
+    ewk->wu.routine_no[0] = R0_WAIT;
     if (!sa_pa_flag) {
         if (scrn_reg_w[3].ctrl & 0x8000) {
             Bg_Off_W(8);

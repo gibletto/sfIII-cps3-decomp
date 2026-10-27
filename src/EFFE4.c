@@ -17,6 +17,15 @@
 #include "effect_2.h"
 #include "aboutspr.h"
 #include "HITCHECK.h"
+#include "fighter.h"
+
+/* routine_no[0] */
+#define R0_INIT         0       /* show the marker */
+#define R0_WAIT         1       /* wait for the cursor to be free */
+#define R0_CHOICE       2       /* wait for the art choice */
+#define R0_LEAVE        3       /* follow the plate off the screen */
+#define R0_STAY         4       /* stay beside the plate */
+#define R0_KILL         99      /* (default) put the work back */
 
 extern s16 eff98_plate_z[2][3];
 extern s8 effE4_col_req[2][3];
@@ -25,33 +34,33 @@ s32 effE4_colour(WORK_Other* ewk);
 
 void effect_E4_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         ewk->wu.dir_timer = 1;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.vital_new + 1, 0);
         break;
-    case 1:
+    case R0_WAIT:
         if (Stop_Cursor[ewk->master_id] == 0) {
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 2:
+    case R0_CHOICE:
         switch (eff98_arts_check(ewk)) {
         case 1:
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_LEAVE;
             break;
         case -1:
-            ewk->wu.routine_no[0] = 4;
+            ewk->wu.routine_no[0] = R0_STAY;
         }
         break;
-    case 3:
+    case R0_LEAVE:
         if (Ck_Range_Out_S(ewk, 2, 8)) {
             ewk->wu.disp_flag = 0;
-            ewk->wu.routine_no[0] = 99;
+            ewk->wu.routine_no[0] = R0_KILL;
         }
         break;
-    case 4:
+    case R0_STAY:
         break;
     default:
         all_cgps_put_back(&ewk->wu);
@@ -76,7 +85,7 @@ void effect_E4_move(WORK_Other* ewk) {
 s32 effect_E4_init(s16 PL_id, s16 Art, s16 Arts_No) {
     WORK_Other* ewk;
     s16 ix;
-    if (My_char[PL_id] == 0) {
+    if (My_char[PL_id] == PL_GILL) {
         return;
     }
     if ((ix = pull_effect_work(4)) == -1) {
@@ -97,7 +106,7 @@ s32 effect_E4_init(s16 PL_id, s16 Art, s16 Arts_No) {
     ewk->master_priority = Arts_No;
     ewk->wu.my_col_code = Arts_No + 0x2040;
     if (Sel_Arts_Complete[PL_id] < 0 || plw[PL_id].wu.operator == 0) {
-        ewk->wu.routine_no[0] = 4;
+        ewk->wu.routine_no[0] = R0_STAY;
         ewk->wu.disp_flag = 1;
         ewk->wu.my_col_code = 0x2040;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.vital_new + 1, 0);

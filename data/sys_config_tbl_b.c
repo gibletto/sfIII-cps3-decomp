@@ -1,5 +1,13 @@
 /*
- * SYS_CONFIG_TBL_B.C  tables read by sys_config.c and sys_config_2.c
+ * SYS_CONFIG_TBL_B.C  coin rates and system configuration setting texts
+ *
+ * coin_rate_tbl gives the coins and credits of each coin setting, read by SYS_CONFIG.C when
+ * the settings are put into effect. The coin_setting_str_tbl_, chute_mode_str_tbl_,
+ * on_off_str_tbl_, sound_mode_str_tbl_ and monitor_str_tbl_ entries place the value shown for
+ * each coin, chute mode, on/off, sound mode, language and monitor setting, and cursor_mark_str
+ * and cursor_blank_str are the menu cursor and its blank; these are read by SYS_CONFIG_2.C,
+ * the test mode configuration menu. The str_ strings that follow are the setting texts they
+ * point at.
  */
 
 #include "types.h"
@@ -91,6 +99,7 @@ extern const char str_cfg_portuguese[];
 extern const char str_NORMAL_3[];
 extern const char str_FLIP_2[];
 
+/* one row per coin setting (Coin_Mode): { coins, credits } */
 const u8 coin_rate_tbl[20][2] = {
     { 1, 1 }, { 1, 2 }, { 1, 3 }, { 1, 4 }, { 1, 5 }, { 1, 6 }, { 1, 7 }, { 1, 8 },
     { 1, 9 }, { 2, 1 }, { 3, 1 }, { 4, 1 }, { 5, 1 }, { 6, 1 }, { 7, 1 }, { 8, 1 },

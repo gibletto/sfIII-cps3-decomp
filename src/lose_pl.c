@@ -41,6 +41,9 @@
 #include "Com_Pl.h"
 #include "lose_pl.h"
 
+/* wk->wu.routine_no[3] in a win or lose pose */
+#define POSE_RUN        1       /* the pose runs until its script sets RN3_DONE */
+
 s16 lose_rno[3];  /* 02023A7C */
 s16 lose_free[2];  /* 02023A82 */
 
@@ -53,7 +56,7 @@ void lose_player(PLW* wk) {
 
 
 void Lose_00000(PLW* wk) {
-    if (pcon_rno[0] == 2 && pcon_rno[1] == 3) {
+    if (pcon_rno[0] == PCON_DIE && pcon_rno[1] == SETTLE_JUDGE) {
         Judge_normal_loser(wk);
     } else {
         Normal_normal_Loser(wk);
@@ -67,9 +70,9 @@ void Lose_10000(PLW* wk) {
         lose_stage8_action(wk);
         return;
     }
-    if ((pcon_rno[0] == 2) && (pcon_rno[1] == 3)) {
+    if ((pcon_rno[0] == PCON_DIE) && (pcon_rno[1] == SETTLE_JUDGE)) {
         switch (wk->wu.routine_no[3]) {
-        case 0:
+        case RN3_START:
             wk->wu.routine_no[3]++;
             lose_rno[0] = lose_rno[1] = lose_rno[2] = 0;
             wk->wu.char_index = random_16_com();
@@ -77,24 +80,24 @@ void Lose_10000(PLW* wk) {
             set_char_move_init(&wk->wu, 9, wk->wu.char_index + 0x38);
             break;
         default:
-        case 1:
-        case 9:
+        case POSE_RUN:
+        case RN3_DONE:
             char_move(&wk->wu);
             break;
         }
-    } else if (pcon_rno[1] == 0) {
+    } else if (pcon_rno[1] == SETTLE_KO) {
         return;
     } else {
         switch (wk->wu.routine_no[3]) {
-        case 0:
+        case RN3_START:
             wk->wu.routine_no[3]++;
             lose_rno[0] = lose_rno[1] = lose_rno[2] = 0;
             wk->wu.char_index = random_16_com();
             wk->wu.char_index &= 7;
             set_char_move_init(&wk->wu, 9, wk->wu.char_index + 0x18);
             break;
-        case 1:
-        case 9:
+        case POSE_RUN:
+        case RN3_DONE:
             char_move(&wk->wu);
             break;
         }
@@ -108,19 +111,19 @@ void Normal_normal_Loser(PLW* wk) {
     if (bg_w.stage == 8 && bg_w.area == 0) {
         lose_stage8_action(wk);
         return;
-    } else if (pcon_rno[1] == 0) {
+    } else if (pcon_rno[1] == SETTLE_KO) {
         return;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         lose_rno[0] = lose_rno[1] = lose_rno[2] = 0;
         work = random_16_com();
         work &= 7;
         set_char_move_init(&wk->wu, 9, work + 0x18);
         break;
-    case 1:
-    case 9:
+    case POSE_RUN:
+    case RN3_DONE:
         char_move(&wk->wu);
         break;
     }
@@ -136,14 +139,14 @@ void Judge_normal_loser(PLW* wk) {
         return;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3] += 1;
         work = random_16_com();
         work &= 3;
         set_char_move_init(&wk->wu, 9, work + 0x38);
         break;
-    case 1:
-    case 9:
+    case POSE_RUN:
+    case RN3_DONE:
     default:
         char_move(&wk->wu);
         break;
@@ -153,7 +156,7 @@ void Judge_normal_loser(PLW* wk) {
 
 
 void lose_stage8_action(PLW* wk) {
-    if (wk->wu.routine_no[3] == 0) {
+    if (wk->wu.routine_no[3] == RN3_START) {
         wk->wu.routine_no[3]++;
         lose_rno[0] = lose_rno[1] = lose_rno[2] = 0;
     }

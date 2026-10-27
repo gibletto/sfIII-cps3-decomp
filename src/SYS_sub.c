@@ -324,9 +324,9 @@ void challenger_banner_clear(void) {
 
 void Setup_Play_Type(void) {
     if (Operator_Status[0] & 0x7F && Operator_Status[1] & 0x7F) {
-        Play_Type = 1;
+        Play_Type = PLAY_VS_PLAYER;
     } else {
-        Play_Type = 0;
+        Play_Type = PLAY_VS_CPU;
     }
 }
 
@@ -337,17 +337,17 @@ s16 PL_id;
 {
     Present_Data[PL_id].player = Stock_My_char[PL_id] & 0x7F;
     Present_Data[PL_id].player_color = Stock_Player_Color[PL_id];
-    Present_Data[PL_id].score = Score[PL_id][0];
-    Rank_In[PL_id][0] = Check_Sort_Ranking(0, PL_id);
-    if (Rank_In[PL_id][0] >= 0 && Rank_In[PL_id ^ 1][0] >= 0) {
+    Present_Data[PL_id].score = Score[PL_id][SCORE_CPU];
+    Rank_In[PL_id][RANK_SCORE] = Check_Sort_Ranking(0, PL_id);
+    if (Rank_In[PL_id][RANK_SCORE] >= 0 && Rank_In[PL_id ^ 1][RANK_SCORE] >= 0) {
         Check_Partners_Rank(0, PL_id);
     }
     Present_Data[PL_id].score = Win_Record[PL_id];
-    Rank_In[PL_id][1] = Check_Sort_Ranking(6, PL_id);
-    if (Rank_In[PL_id][1] >= 0 && Rank_In[PL_id ^ 1][1] >= 0) {
+    Rank_In[PL_id][RANK_WINS] = Check_Sort_Ranking(6, PL_id);
+    if (Rank_In[PL_id][RANK_WINS] >= 0 && Rank_In[PL_id ^ 1][RANK_WINS] >= 0) {
         Check_Partners_Rank(1, PL_id);
     }
-    if (Rank_In[PL_id][0] >= 0 || Rank_In[PL_id][1] >= 0) {
+    if (Rank_In[PL_id][RANK_SCORE] >= 0 || Rank_In[PL_id][RANK_WINS] >= 0) {
         return 1;
     }
     return 0;
@@ -446,7 +446,7 @@ s32 Button_Cut_Hold(s16* timer, s16 first, s16 repeat) {
 /* provisional name */
 int cut_button_side(void)
 {
-    if (Play_Type == 1) {
+    if (Play_Type == PLAY_VS_PLAYER) {
         return Winner_id;
     }
     if (Round_Operator[0]) {
@@ -529,10 +529,10 @@ void Disp_Win_Type(void) {
 void commit_name_entry_row_both_players(pos_y)
     s16 pos_y;
 {
-    if (E_Number[0][0] == 2 && name_wk[0].dmm) {
+    if (E_Number[0][0] == ENTRY_NAME && name_wk[0].dmm) {
         name_entry_commit_row(0, pos_y);
     }
-    if (E_Number[1][0] == 2 && name_wk[1].dmm) {
+    if (E_Number[1][0] == ENTRY_NAME && name_wk[1].dmm) {
         name_entry_commit_row(1, pos_y);
     }
 }

@@ -1,5 +1,9 @@
 /*
- * EFF70_TBL.C  tables read by EFF70.c: effect 70's placements and characters
+ * EFF70_TBL.C  breakable stage object pieces
+ *
+ * eff70_data_tbl gives the position, priority and first animation of each of the three pieces,
+ * and eff70_char_tbl the animation each piece takes in each state of the effect 69 object.
+ * Read by EFF70.C, the three pieces of the breakable stage object.
  */
 
 #include "types.h"

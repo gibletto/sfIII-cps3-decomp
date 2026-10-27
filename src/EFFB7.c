@@ -21,18 +21,23 @@
 #include "PLS02.h"
 #include "EFFB6.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show the number */
+#define R0_MOVE         1       /* draw it for the name entry */
+#define R0_END          2       /* one more frame */
+#define R0_KILL         3       /* (default) put the work back */
+
 void effect_B7_move(WORK_Other* ewk) {
-    NAME_WK* np = (NAME_WK*)ewk->my_master;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init2(&ewk->wu, 0, 7, ewk->wu.old_rno[0] + 1, 0);
         break;
-    case 1:
+    case R0_MOVE:
         disp_pos_trans_entry(ewk);
         break;
-    case 2:
+    case R0_END:
         ewk->wu.routine_no[0]++;
         break;
     default:

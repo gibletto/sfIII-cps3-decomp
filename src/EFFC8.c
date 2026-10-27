@@ -20,6 +20,14 @@
 #include "aboutspr.h"
 #include "EFFC8.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start pattern 12 */
+#define R0_FOLLOW       1       /* follow the player's entrance frames */
+#define R0_THROW        2       /* throw the prop clear */
+#define R0_FLY          3       /* fly until the pattern ends */
+#define R0_IDLE         4       /* pattern over: do nothing */
+#define R0_KILL         5       /* put the work back */
+
 
 
 /* case 3 not gated by EXE_flag/Game_pause, drawn only while it runs */
@@ -28,12 +36,12 @@ void effect_C8_move(WORK_Other* ewk) {
     s16 work;
     const s32* ptr;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 12);
         break;
-    case 1:
+    case R0_FOLLOW:
         switch (oya_pl->wu.routine_no[3]) {
         case 1:
             break;
@@ -51,7 +59,7 @@ void effect_C8_move(WORK_Other* ewk) {
         }
         pl_eff_trans_entry(ewk);
         break;
-    case 2:
+    case R0_THROW:
         ewk->wu.routine_no[0]++;
         set_char_move_init(&ewk->wu, 0, 13);
         ptr = effc8_data_tbl;
@@ -73,7 +81,7 @@ void effect_C8_move(WORK_Other* ewk) {
         ewk->wu.xyz[1].disp.pos = 137;
         pl_eff_trans_entry(ewk);
         break;
-    case 3:
+    case R0_FLY:
         add_x_sub(ewk);
         add_y_sub(ewk);
         char_move(&ewk->wu);
@@ -82,9 +90,9 @@ void effect_C8_move(WORK_Other* ewk) {
         }
         pl_eff_trans_entry(ewk);
         break;
-    case 4:
+    case R0_IDLE:
         break;
-    case 5:
+    case R0_KILL:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
         break;

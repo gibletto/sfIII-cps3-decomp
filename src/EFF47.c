@@ -17,6 +17,11 @@
 #include "EFF47.h"
 #include "EFF19.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show and start the blinking */
+#define R0_WIPE         1       /* blink until the screen wipe ends */
+#define R0_MOVE         2       /* blink until retired */
+
 extern const u8 eff47_timer_tbl[];    /* provisional name */
 extern const s16 eff47_init_data[5][4];
 extern const u32 stg00_char_table[];
@@ -28,7 +33,7 @@ void disp_mark_cells();
 void effect_47_move(WORK_Other* ewk) {
     s16 no;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         ewk->wu.cg_ctr = eff47_timer_tbl[0];
@@ -36,12 +41,12 @@ void effect_47_move(WORK_Other* ewk) {
         ewk->wu.position_x = ewk->wu.xyz[0].disp.pos & 0x3FF;
         ewk->wu.position_y = ewk->wu.xyz[1].disp.pos & 0x3FF;
         break;
-    case 1:
+    case R0_WIPE:
         if (!Exec_Wipe) {
             ewk->wu.routine_no[0]++;
         }
         /* fall through */
-    case 2:
+    case R0_MOVE:
         if (!EXE_flag && !Game_pause) {
             if (--ewk->wu.cg_ctr == 0) {
                 ewk->wu.cg_ix += 2;

@@ -23,6 +23,11 @@
 #include "eff05.h"
 #include "eff06.h"
 
+/* bgw r_no_0 of a layer with an entrance demo: its bg*_jmp routine */
+#define R0_INIT         0       /* set up the layer */
+#define R0_DEMO         1       /* the entrance demo */
+#define R0_MOVE         2       /* follow the fight */
+
 /* declarations the headers do not give */
 void zoom_ud_check(void);
 void bg_x_move_check(void);
@@ -141,7 +146,7 @@ static void bg_move_common(void) {
 /* provisional name */
 void bg000_layer4(void) {
     switch (bgw_ptr->r_no_0) {
-    case 0:
+    case R0_INIT:
         bgw_ptr->r_no_0++;
         bgw_ptr->old_pos_x = bgw_ptr->xy[0].disp.pos = bgw_ptr->pos_x_work = 0x200;
         bgw_ptr->hos_xy[0].cal = bgw_ptr->wxy[0].cal = bgw_ptr->xy[0].cal;
@@ -160,11 +165,11 @@ void bg000_layer4(void) {
             bgw_ptr->r_no_0++;
         }
         break;
-    case 1:
+    case R0_DEMO:
         bg000_demo();
         sync_fam_set3(4);
         break;
-    case 2:
+    case R0_MOVE:
         bg_x_move_check();
         bg_y_move_check();
         sync_fam_set3(4);

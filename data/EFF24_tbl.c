@@ -1,5 +1,10 @@
 /*
- * EFF24_TBL.C  tables read by EFF25.c
+ * EFF24_TBL.C  breakable stage object records for effect 25
+ *
+ * scr_obj_data25_0 .. scr_obj_data25_4 are the records of five breakable objects: family,
+ * colour, position, priority, animation, line-scroll sync, the behaviour settings and the type
+ * of effect 26 part to add (-1 for none). Reached through scr_obj_data25 by object number in
+ * EFF25.C, the bg130 breakable stage objects.
  */
 
 #include "types.h"

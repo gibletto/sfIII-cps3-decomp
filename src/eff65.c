@@ -19,6 +19,16 @@
 #include "aboutspr.h"
 #include "eff65.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* set up at the start point */
+#define R0_MOVE         1       /* drift across the stage */
+#define R0_KILL         99      /* (default) put the work back */
+
+/* routine_no[1] */
+#define R1_WAIT         0       /* wait 600 frames */
+#define R1_DRIFT        1       /* drift for 196 frames */
+#define R1_SHRINK       2       /* go faster and shrink, then start over */
+
 extern const u32 stg04_char_table[];   /* provisional name */
 
 void eff65_char_move(WORK_Other* ewk);
@@ -27,12 +37,12 @@ void eff65_char_move(WORK_Other* ewk);
 
 void effect_65_move(WORK_Other* ewk) {
     if (compel_dead_check(ewk)) {
-        ewk->wu.routine_no[0] = 99;
+        ewk->wu.routine_no[0] = R0_KILL;
     } else {
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_INIT:
             ewk->wu.routine_no[0]++;
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[1] = R1_WAIT;
             ewk->wu.disp_flag = 1;
             set_char_move_init(&ewk->wu, 0, 10);
             ewk->wu.old_rno[0] = 600;
@@ -46,9 +56,9 @@ void effect_65_move(WORK_Other* ewk) {
             ewk->wu.my_mr.size.x = 55;
             ewk->wu.my_mr.size.y = 55;
             break;
-        case 1:
+        case R0_MOVE:
             switch (ewk->wu.routine_no[1]) {
-            case 0:
+            case R1_WAIT:
                 if (!EXE_flag && !Game_pause) {
                     ewk->wu.old_rno[0]--;
                     if (ewk->wu.old_rno[0] < 0) {
@@ -57,7 +67,7 @@ void effect_65_move(WORK_Other* ewk) {
                     }
                 }
                 break;
-            case 1:
+            case R1_DRIFT:
                 if (!EXE_flag && !Game_pause) {
                     eff65_char_move(ewk);
                     add_x_sub(ewk);
@@ -77,9 +87,9 @@ sync_done:;
                     goto draw;
                 }
                 break;
-            case 2:
+            case R1_SHRINK:
                 if (ewk->wu.xyz[0].disp.pos < 48) {
-                    ewk->wu.routine_no[0] = 0;
+                    ewk->wu.routine_no[0] = R0_INIT;
                 } else if (!EXE_flag && !Game_pause) {
                     char_move(&ewk->wu);
                     add_x_sub(ewk);

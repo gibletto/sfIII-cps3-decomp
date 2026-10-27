@@ -21,6 +21,22 @@
 #include "Eff51.h"
 #include "EFF49.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* count the wait down, then show */
+#define R0_HOLD         1       /* one frame at double size */
+#define R0_SHRINK       2       /* shrink to normal size */
+#define R0_COUNT        3       /* show the continue count */
+#define R0_SHOW         4       /* show until the count runs out */
+#define R0_PAUSE        5       /* count down before leaving */
+#define R0_NARROW       6       /* narrow to nothing, then hide */
+#define R0_KILL         7       /* (default) put the work back */
+
+/* routine_no[1]: colour flash */
+#define R1_IDLE         0       /* wait for the start */
+#define R1_ON           1       /* count down, then the flash colour */
+#define R1_OFF          2       /* count down, then the normal colour */
+#define R1_DONE         3       /* (default) flash finished */
+
 void set_char_move_init2();
 extern const s16 eff49_pos_tbl[10];
 
@@ -30,7 +46,7 @@ void effect_49_move(WORK_Other* ewk) {
     s16 num;
     Flash_Violent(ewk, E_07_Flag[LOSER]);
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (--ewk->wu.dir_timer != 0) {
             return;
         }
@@ -40,12 +56,12 @@ void effect_49_move(WORK_Other* ewk) {
         ewk->wu.mvxy.a[0].sp = 0xC0000;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
         break;
-    case 1:
+    case R0_HOLD:
         if (--ewk->wu.dir_timer == 0) {
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 2:
+    case R0_SHRINK:
         ewk->wu.my_priority++;
         ewk->wu.position_z++;
         if ((ewk->wu.my_mr.size.x -= *(s16*)&ewk->wu.mvxy.a[0]) <= 63) {
@@ -56,16 +72,16 @@ void effect_49_move(WORK_Other* ewk) {
         }
         if (ewk->wu.my_mr.size.x <= 63 && ewk->wu.my_mr.size.y <= 63) {
             if (ewk->wu.dir_step != 18) {
-                ewk->wu.routine_no[0] = 4;
+                ewk->wu.routine_no[0] = R0_SHOW;
             } else {
                 ewk->wu.routine_no[0]++;
                 ewk->wu.direction = 9;
             }
         }
         break;
-    case 3:
+    case R0_COUNT:
         if ((num = Continue_Count[LOSER]) < 0) {
-            ewk->wu.routine_no[0] = 5;
+            ewk->wu.routine_no[0] = R0_PAUSE;
             set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, 10, 0);
         } else {
             set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, num + 10, 0);
@@ -75,20 +91,20 @@ void effect_49_move(WORK_Other* ewk) {
             }
         }
         break;
-    case 4:
+    case R0_SHOW:
         if (Continue_Count[LOSER] < 0) {
-            ewk->wu.routine_no[0] = 5;
+            ewk->wu.routine_no[0] = R0_PAUSE;
         }
         ewk->wu.vitality = 0;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
         break;
-    case 5:
+    case R0_PAUSE:
         if (--ewk->wu.dir_old == 0) {
             ewk->wu.routine_no[0]++;
             ewk->wu.mvxy.a[0].sp = 0x120000;
         }
         break;
-    case 6:
+    case R0_NARROW:
         if ((ewk->wu.my_mr.size.x -= *(s16*)&ewk->wu.mvxy.a[0]) <= 0) {
             ewk->wu.my_mr.size.x = 0;
         }
@@ -115,12 +131,12 @@ s16 start;
 {
     ewk->wu.vitality = 0;
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_IDLE:
         if (start) {
             ewk->wu.routine_no[1]++;
         }
         break;
-    case 1:
+    case R1_ON:
         if (--ewk->wu.routine_no[2]) {
             break;
         }
@@ -130,7 +146,7 @@ s16 start;
         ewk->wu.my_col_code = ewk->wu.vital_new;
         ewk->wu.vitality = 1;
         break;
-    case 2:
+    case R1_OFF:
         if (--ewk->wu.routine_no[2]) {
             break;
         }

@@ -24,6 +24,13 @@
 #include "bg_sub_5.h"
 #include "EFF46.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show and pick a pattern at random */
+#define R0_START        1       /* animate until the cue */
+#define R0_PLAY         2       /* play the chosen pattern to its cue */
+#define R0_DONE         3       /* tell the win pose, step on */
+#define R0_KILL         4       /* (default) put the work back */
+
 
 
 extern const s16 eff46_char_tbl[8];
@@ -32,7 +39,7 @@ extern const s16 eff46_char_tbl[8];
 
 void effect_46_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
@@ -40,7 +47,7 @@ void effect_46_move(WORK_Other* ewk) {
         ewk->wu.old_rno[0] &= 7;
         ewk->wu.old_rno[0] = eff46_char_tbl[ewk->wu.old_rno[0]];
         break;
-    case 1:
+    case R0_START:
         char_move(&ewk->wu);
         if (pl_shot_on_check(ewk->master_id)) {
             char_move(&ewk->wu);
@@ -52,7 +59,7 @@ void effect_46_move(WORK_Other* ewk) {
         suzi_sync_pos_set(ewk);
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_PLAY:
         char_move(&ewk->wu);
         if (pl_shot_on_check(ewk->master_id)) {
             char_move(&ewk->wu);
@@ -63,7 +70,7 @@ void effect_46_move(WORK_Other* ewk) {
         suzi_sync_pos_set(ewk);
         sort_push_request(&ewk->wu);
         break;
-    case 3:
+    case R0_DONE:
         win_rno[1] = 1;
         ewk->wu.routine_no[0]++;
         break;

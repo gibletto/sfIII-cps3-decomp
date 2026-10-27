@@ -1,5 +1,11 @@
 /*
- * SC_TRANS_TBL.C  tables read by sc_trans.c
+ * SC_TRANS_TBL.C  text layer cell lists
+ *
+ * sc_celllist_0 .. sc_celllist_16 are prepared screen parts for the text layer, each a list of
+ * cells (x, y, attribute, character code) ending at an x of 100: the vitality bar frames, the
+ * round timer frame, the parts of the round and match screens and the name entry rows.
+ * sc_celllist_tbl lists them by number and is read by SC_TRANS.C, whose cell list put routines
+ * VITAL.C, COUNT.C, MANAGE_2.C, N_INPUT.C and EFF58.C call.
  */
 
 #include "types.h"

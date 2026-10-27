@@ -1,10 +1,11 @@
 /*
- * EFFD0.C  Effect D0: thrown object that bounces along the floor (move)
+ * EFFD0.C  Effect D0: thrown object that bounces along the floor
  *
  * effect_D0_move plays the object's start pattern, then switches to pattern 15, moves it 96 dots
  * up and 22 dots forward, and flies it through a series of arcs whose timers and speeds come from
  * effd0_conter / effd0_data_tbl (d0_speed_set, mirrored for facing). When it falls below the
- * floor it plays its landing pattern 16 and rests.
+ * floor it plays its landing pattern 16 and rests. effect_D0_init creates it at a player's
+ * position with a palette chosen by side (etc_char_table pattern 14).
  */
 
 #include "structs.h"
@@ -21,17 +22,24 @@
 #include "CALDIR.h"
 #include "EFFD1.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start the first pattern */
+#define R0_THROW        1       /* play it, then take off */
+#define R0_BOUNCE       2       /* bounce along the floor */
+#define R0_LAND         3       /* play the landing pattern */
+#define R0_REST         4       /* rest on the floor */
+
 
 
 void effect_D0_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         ewk->wu.old_rno[1] = 0;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R0_THROW:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
             ewk->wu.routine_no[0]++;
@@ -46,7 +54,7 @@ void effect_D0_move(WORK_Other* ewk) {
         }
         pl_eff_trans_entry(ewk);
         break;
-    case 2:
+    case R0_BOUNCE:
         ewk->wu.old_rno[0]--;
         if (ewk->wu.old_rno[0] < 0) {
             d0_speed_set(&ewk->wu, ewk->wu.old_rno[1]);
@@ -61,13 +69,13 @@ void effect_D0_move(WORK_Other* ewk) {
         }
         pl_eff_trans_entry(ewk);
         break;
-    case 3:
+    case R0_LAND:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
             ewk->wu.routine_no[0]++;
         }
         /* fall through */
-    case 4:
+    case R0_REST:
         pl_eff_trans_entry(ewk);
         break;
     default:

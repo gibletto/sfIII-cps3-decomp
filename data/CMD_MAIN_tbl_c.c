@@ -1,5 +1,11 @@
 /*
- * CMD_MAIN_TBL_C.C  tables read by CMD_MAIN.c and game_config_en.c
+ * CMD_MAIN_TBL_C.C  English configuration values and the debug preview character sets
+ *
+ * str_NORMAL_2 and str_WIDE (screen), str_1_ROUND .. str_7_ROUNDS (max round) and str_OFF and
+ * str_1_MATCH (event) are the value strings of the English configuration page, placed through
+ * the screen, round and event lists of GAME_CONFIG_EN.C. debug_charset_tbl gives the character
+ * set of each character's block of cg numbers in the debug character preview; read by
+ * CMD_MAIN.C, the debug menu.
  */
 
 #include "types.h"

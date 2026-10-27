@@ -31,6 +31,7 @@
 #include "cmd_main_2.h"
 #include "charmove_2.h"
 #include "fighter.h"
+#include "cmd_data.h"
 
 
 void char_move(WORK* wk);
@@ -973,7 +974,6 @@ s32 comm_quay(s32 wk_adrs, CHAR_CMD* ctc)
 s32 comm_if_s(WORK* wk, CHAR_CMD* ctc) {
     u16 shdat;
     u16 my_shdat;
-    s16 ix;
     if (ctc->koc & 0x4000) {
         my_shdat = wk->cmwk[ctc->koc & 0xF];
     } else {
@@ -1127,7 +1127,6 @@ s32 comm_ngem(WORK* wk, CHAR_CMD* ctc) {
 s32 comm_iflb(WORK* wk, CHAR_CMD* ctc) {
     u16 shdat;
     u16 my_shdat;
-    s16 ix;
     if (ctc->koc & 0x4000) {
         my_shdat = wk->cmwk[ctc->koc & 0xF];
     } else {
@@ -1677,7 +1676,6 @@ s32 comm_atmf(PLW* wk, CHAR_CMD* ctc) {
 
 
 s32 comm_chkwf(PLW* wk, CHAR_CMD* ctc) {
-    s16 ix;
     if (wk->cp->waza_flag[ctc->koc] == 0 || wk->cp->waza_flag[ctc->koc] == -1) {
         return decord_if_jump(&wk->wu, ctc, ctc->pat);
     }
@@ -1703,9 +1701,9 @@ s32 decord_if_jump(WORK* wk, CHAR_CMD* cpc, s16 ix) {
 s32 get_comm_if_lever(WORK* wk) {
     u16 num;
     if (wk->work_id == 1) {
-        num = wcp[wk->id].sw_new & 0xF;
+        num = wcp[wk->id].sw_new & CMD_LV_MASK;
     } else {
-        num = wcp[((WORK_Other*)wk)->master_id & 1].sw_new & 0xF;
+        num = wcp[((WORK_Other*)wk)->master_id & 1].sw_new & CMD_LV_MASK;
     }
     return num;
 }
@@ -1715,9 +1713,9 @@ s32 get_comm_if_lever(WORK* wk) {
 s32 get_comm_if_shot(WORK* wk) {
     u16 num;
     if (wk->work_id == 1) {
-        num = wcp[wk->id].sw_new & 0x3F0;
+        num = wcp[wk->id].sw_new & CMD_SW_SHOT;
     } else {
-        num = wcp[(s16)(((WORK_Other*)wk)->master_id & 1)].sw_new & 0x3F0;
+        num = wcp[(s16)(((WORK_Other*)wk)->master_id & 1)].sw_new & CMD_SW_SHOT;
     }
     return num;
 }
@@ -1727,9 +1725,9 @@ s32 get_comm_if_shot(WORK* wk) {
 s32 get_comm_if_lvsh(WORK* wk) {
     u16 num;
     if (wk->work_id == 1) {
-        num = wcp[wk->id].sw_new & 0x3FF;
+        num = wcp[wk->id].sw_new & CMD_LVSW_ALL;
     } else {
-        num = wcp[(s16)(((WORK_Other*)wk)->master_id & 1)].sw_new & 0x3FF;
+        num = wcp[(s16)(((WORK_Other*)wk)->master_id & 1)].sw_new & CMD_LVSW_ALL;
     }
     return num;
 }

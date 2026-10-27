@@ -1,5 +1,12 @@
 /*
- * META_COL_TBL.C  tables read by meta_col_bcd.c and scrn_ctrl.c
+ * META_COL_TBL.C  BCD weights and screen mode register tables
+ *
+ * bcd_weight holds the four-byte BCD values of 2^0 .. 2^15, which hex_to_bcd in META_COL_BCD.C
+ * reads backwards from bcd_weight_end; bcd_weight_end holds those of 2^16 .. 2^26. Per screen
+ * mode, screen_window_tbl gives the window register values, screen_origin_tbl the screen base
+ * position, screen_disp_reg_tbl the display register values and screen_flip_ofs_tbl the
+ * object, screen, scroll and zoom offsets used when the monitor is flipped; these are read by
+ * SCRN_CTRL.C, the screen mode, window and zoom registers.
  */
 
 #include "types.h"

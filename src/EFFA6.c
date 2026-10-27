@@ -14,6 +14,11 @@
 #include "SYS_sub.h"
 #include "EFFECT.h"
 #include "effect_2.h"
+
+/* routine_no[0] */
+#define R0_WAIT         0       /* wait a frame */
+#define R0_SCROLL       1       /* scroll BG 0 to the target */
+
 void effA6_set_target(WORK_Other* ewk);
 
 extern const s16 effA6_x_tbl[];   /* provisional name: 3 per country */
@@ -30,12 +35,12 @@ void effect_A6_move(WORK_Other* ewk) {
         return;
     }
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (--ewk->wu.dir_timer == 0) {
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 1:
+    case R0_SCROLL:
         bg_w.bgw[0].xy[0].cal += ewk->wu.mvxy.a[0].sp * sp;
         ewk->wu.mvxy.a[0].sp += ewk->wu.mvxy.d[0].sp * acc;
         if (ewk->wu.mvxy.a[0].sp > 0) {
@@ -86,7 +91,6 @@ void effA6_set_target(WORK_Other* ewk) {
     ewk->wu.hit_quake = effA6_x_tbl[Battle_Country * 3 + 2];
     if (Game_setting.mode) {
         ewk->wu.hit_quake = effA6_x_tbl_wide[Battle_Country * 3].x;
-target_set:;
     } else {
         ewk->wu.hit_quake = effA6_x_tbl[Battle_Country * 3 + 2];
     }

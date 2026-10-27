@@ -1,5 +1,9 @@
 /*
- * ABOUTSPR_TBL_B.C  tables read by aboutspr.c
+ * ABOUTSPR_TBL_B.C  hit mark frame table
+ *
+ * mark_index_tbl gives, for each of the five mark types, the index of each of its nine frames
+ * into the mark graphics tables (mark_gfx_cells, mark_gfx_ofs). Read by ABOUTSPR.C, the
+ * character sprite graphics and display lists.
  */
 
 #include "types.h"

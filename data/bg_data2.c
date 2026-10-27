@@ -1,5 +1,14 @@
 /*
- * BG_DATA2.C  tables read by aboutspr.c, bg000.c, end_5.c, manage_2.c and ta_sub.c
+ * BG_DATA2.C  screen quake, stage colour and mark graphics tables
+ *
+ * quake_x_tbl and quake_y_tbl are the screen shake offsets stepped by the quake index; read by
+ * BG000.C and TA_SUB.C, quake_y_tbl also by END_5.C. bg_palette_no_tbl and bg_color2_tbl give
+ * each background's palette numbers, read by BG000.C and MANAGE_2.C (which also fades in
+ * bg_color3_tbl), and etc_bg_color_tbl the palette of each special screen, read by BG000.C.
+ * mark_cg_tbl lists the cg numbers of the 45 mark graphics loaded by ABOUTSPR.C.
+ * ake_cell0_data .. ake_cell2_data place the cells of the three akebono screen layers, read by
+ * akebono_scr_write in BG000.C. The str_BG_ .. str_AREA labels are reached through
+ * bg_test_menu_scr in BG_DATA.C.
  */
 
 #include "types.h"

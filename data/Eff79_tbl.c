@@ -1,5 +1,8 @@
 /*
- * EFF79_TBL.C  tables read by EFF84.c: effect 84's time digits
+ * EFF79_TBL.C  centre-screen message times
+ *
+ * Time_Data gives the time each requested message stays on the screen, indexed by
+ * request_message. Read by EFF84.C, the centre-screen message controller.
  */
 
 #include "types.h"

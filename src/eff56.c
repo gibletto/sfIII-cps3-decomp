@@ -19,6 +19,15 @@
 #include "aboutspr.h"
 #include "eff56.h"
 
+/* routine_no[0]: routine, index of eff56_jp */
+#define R0_WAIT         0       /* hidden, count the wait down */
+#define R0_CROSS        1       /* cross the screen */
+
+/* routine_no[1] */
+#define R1_INIT         0       /* zoom it and set the speed */
+#define R1_MOVE         1       /* move right until past the edge */
+#define R1_RESET        2       /* back to the left to wait again */
+
 extern const u32 eff56_char_table[];    /* provisional name (061F9C34) */
 
 void eff56_0000(WORK_Other* ewk);
@@ -60,7 +69,7 @@ void eff56_0000(WORK_Other* ewk) {
 /* crosses the screen */
 void eff56_1000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.my_mr_flag = 1;
         ewk->wu.routine_no[1]++;
         ewk->wu.my_mr.size.x = 12;
@@ -68,7 +77,7 @@ void eff56_1000(WORK_Other* ewk) {
         ewk->wu.mvxy.a[0].sp = 0x2500;
         ewk->wu.mvxy.d[0].sp = 0;
         break;
-    case 1:
+    case R1_MOVE:
         char_move(&ewk->wu);
         if (ewk->wu.xyz[0].disp.pos > 0x1FE) {
             ewk->wu.routine_no[1]++;
@@ -76,9 +85,9 @@ void eff56_1000(WORK_Other* ewk) {
             add_x_sub(ewk);
         }
         break;
-    case 2:
-        ewk->wu.routine_no[0] = 0;
-        ewk->wu.routine_no[1] = 0;
+    case R1_RESET:
+        ewk->wu.routine_no[0] = R0_WAIT;
+        ewk->wu.routine_no[1] = R1_INIT;
         ewk->wu.xyz[0].disp.pos = -0x100;
         ewk->wu.xyz[1].disp.pos = 112;
         ewk->wu.disp_flag = 0;

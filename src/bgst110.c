@@ -24,6 +24,7 @@
 #include "EFF82.h"
 #include "EFF83.h"
 #include "aboutspr.h"
+#include "fighter.h"
 
 /* declarations the headers do not give */
 void zoom_ud_check(void);
@@ -112,8 +113,8 @@ void bg1102_init00(void) {
     switch (bg_w.area) {
     case 0:
         effect_82_init();
-        if ((plw[0].player_number == 7 && plw[0].wu.operator == 0)
-            || (plw[1].player_number == 7 && plw[1].wu.operator == 0)) {
+        if ((plw[0].player_number == PL_IBUKI && plw[0].wu.operator == 0)
+            || (plw[1].player_number == PL_IBUKI && plw[1].wu.operator == 0)) {
             if (Game_setting.mode == 0) {
                 bg_w.bg_f_x = bg_w.bg_f_y = 80;
                 Frame_Down(192, 224, 16, 16);

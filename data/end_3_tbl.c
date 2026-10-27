@@ -1,5 +1,9 @@
 /*
- * END_3_TBL.C  tables read by end_3.c: the ending panels, positions and timers of end_3
+ * END_3_TBL.C  Yun's and Yang's ending tables (ending 3)
+ *
+ * end_300_panel lists the BG0 cells (map offset, cell number) written by end_300_cell_set at
+ * the start of the ending, timer_3_tbl the length in frames of each of its scenes and
+ * end_3_pos the BG0 x and y of the scenes. Read by END_3.C, the ending both Yun and Yang play.
  */
 
 #include "types.h"

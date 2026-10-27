@@ -1,5 +1,8 @@
 /*
- * PLCNT_TBL_B.C  tables read by plcntset_2.c
+ * PLCNT_TBL_B.C  stun limits
+ *
+ * pl_piyo_tbl gives each character's stun limit. Read by PLCNTSET_2.C when it sets up a
+ * player's stun state; the recovery rates are pl_nr_piyo_tbl in PLCNT_TBL_C.C.
  */
 
 #include "types.h"

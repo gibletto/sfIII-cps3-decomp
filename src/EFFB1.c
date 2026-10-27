@@ -19,6 +19,12 @@
 #include "EFFB1.h"
 #include "EFFB1_INIT.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show the owner's pattern with a sound */
+#define R0_MOVE         1       /* draw a frame; hide if the owner is done */
+#define R0_END          2       /* one more frame */
+#define R0_KILL         3       /* (default) put the work back */
+
 void load_any_color();
 
 
@@ -26,22 +32,22 @@ void load_any_color();
 void effect_B1_move(WORK_Other* ewk) {
     WORK_Other* mwk = (WORK_Other*)ewk->my_master;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, mwk->wu.dir_step + 22);
         Sound_SE(105);
         disp_pos_trans_entry(ewk);
         break;
-    case 1:
+    case R0_MOVE:
         if (mwk->wu.routine_no[0] == 3) {
-            ewk->wu.routine_no[0] = 2;
+            ewk->wu.routine_no[0] = R0_END;
             ewk->wu.disp_flag = 0;
         }
         ewk->wu.routine_no[0]++;
         disp_pos_trans_entry(ewk);
         break;
-    case 2:
+    case R0_END:
         ewk->wu.routine_no[0]++;
         break;
     default:

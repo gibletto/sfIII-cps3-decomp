@@ -63,6 +63,10 @@
 #include "win_2.h"
 #include "fighter.h"
 
+/* M_No1 in Win_3rd and Lose_3rd */
+#define M1_COVER        0       /* after Cover_Timer, clear the screen and wipe in */
+#define M1_REVIVAL      1       /* finish the wipe */
+
 
 
 /* effect_95_init takes the kind and the player, effect_B8_init the player only */
@@ -133,7 +137,7 @@ bg_set:;
 
 void Win_3rd(void) {
     switch (M_No1) {
-    case 0:
+    case M1_COVER:
         if (--Cover_Timer) {
             break;
         }
@@ -141,18 +145,18 @@ void Win_3rd(void) {
         tilemap_fill_all(0, 32);
         Clear_Flash_No();
         commit_name_entry_row_both_players(Text_Page_Y);
-        if (G_No1 == 3) {
+        if (G_No1 == G1_WINNER) {
             Scrn_Move_Set(4, 0, 0x100);
         }
         Switch_Screen_Init(0, 1);
         break;
-    case 1:
+    case M1_REVIVAL:
         if (Switch_Screen_Revival()) {
             M_No0++;
             M_Timer = 30;
             Forbid_Break = -1;
             Ignore_Entry[LOSER] = 0;
-            if (Play_Type == 0) {
+            if (Play_Type == PLAY_VS_CPU) {
                 bgm_request(4);
             } else if (Check_Win_BGM()) {
                 bgm_request(4);

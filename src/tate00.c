@@ -124,26 +124,26 @@ void bg_debug_scroll_layers(void) {
     s16 i;
     for (i = 0; i < 6; i++) {
         bgw = &bg_w.bgw[i];
-        if (p1sw_0 & 0x10) {
+        if (p1sw_0 & BUTTON_LP) {
             dx = bgw->speed_x * 2;
             dy = bgw->speed_y * 2;
         } else {
             dx = bgw->speed_x;
             dy = bgw->speed_y;
         }
-        if (p1sw_0 & 4) {
+        if (p1sw_0 & LEVER_LEFT) {
             Bg_mv_tw_appoint(i, -dx, 0);
             bgw->hos_xy[0].cal = bgw->xy[0].cal;
         }
-        if (p1sw_0 & 8) {
+        if (p1sw_0 & LEVER_RIGHT) {
             Bg_mv_tw_appoint(i, dx, 0);
             bgw->hos_xy[0].cal = bgw->xy[0].cal;
         }
-        if (p1sw_0 & 1) {
+        if (p1sw_0 & LEVER_UP) {
             Bg_mv_tw_appoint(i, 0, dy);
             bgw->hos_xy[0].cal = bgw->xy[0].cal;
         }
-        if (p1sw_0 & 2) {
+        if (p1sw_0 & LEVER_DOWN) {
             Bg_mv_tw_appoint(i, 0, -dy);
             bgw->hos_xy[0].cal = bgw->xy[0].cal;
         }

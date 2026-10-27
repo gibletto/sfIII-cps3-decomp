@@ -1,5 +1,15 @@
 /*
- * BG000_TBL.C  tables read by bg000.c, CMD_MAIN.c and EffG0.c
+ * BG000_TBL.C  stage background set-up tables
+ *
+ * Per stage background (bg_index), and for the special screens drawn by bg_etc_write (the etc_
+ * tables, by screen type): the scroll graphics count (bg_scno_tbl), graphics transfer data
+ * (bg_gfx_tbl), layer scroll speeds (bg_speed_tbl), layer zoom split flags
+ * (etc_bg_zuubun_tbl), cell attributes, cell counts per layer and cell graphics sources in the
+ * scrn_ files (bg_attr_tbl, bg_cell_cnt_tbl, bg_cg_src_tbl). bg_scr_record_data and
+ * ake_scr_record_data are the screen map records of the layers, set up with sprite_list_setup
+ * and reached per stage through bg_map_tbl in BG_WORK.C. Read by BG000.C, the stage background
+ * services; the etc_ scroll count, speed, zoom split and graphics tables also by CMD_MAIN.C
+ * (debug menu screen), and bg_scr_record_data by EFFG0.C.
  */
 
 #include "types.h"

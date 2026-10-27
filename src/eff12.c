@@ -18,16 +18,20 @@
 #include "sys_config.h"
 #include "sys_test.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* write the tiles into both pages */
+#define R0_MOVE         1       /* cycle the four frames */
+
 extern const EFF12_FRAME eff12_frame_tbl[4];
 extern const EFF12_ROW eff12_tile_tbl[2];
-extern const u16 bg050_cell_data[];
+extern const u16 bg050_cell_data[66][16][32];
 void eff12_tile_put(void);
 void debug_bg_tile_put(s16 bg, s32 ofs, s32 page, s32 src);
 
 void effect_12_move(WORK_Other* ewk) {
     s16 y;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.cg_ix = 0;
         ewk->wu.cg_ctr = eff12_frame_tbl[0].timer;
@@ -36,7 +40,7 @@ void effect_12_move(WORK_Other* ewk) {
         y = eff12_frame_tbl[(s8)ewk->wu.cg_ix].y + bg_w.bgw[0].position_y;
         Scrn_Y_Set_R(0, y);
         break;
-    case 1:
+    case R0_MOVE:
         if (!EXE_flag && !Game_pause) {
             ewk->wu.cg_ctr--;
             if (!ewk->wu.cg_ctr) {
@@ -91,6 +95,8 @@ void debug_bg_tile_put(s16 bg, s32 ofs, s32 page, s32 src) {
     blit_16x16_tile(sp, (u16)x, dst, 0x240);
 }
 
+static void eff12_tile_disp(s32 ofs) {}
+
 void eff12_tile_put(void) {
     s16 i;
     s16 j;
@@ -99,11 +105,10 @@ void eff12_tile_put(void) {
 
     for (i = 0; i < 2; i++) {
         row = &eff12_tile_tbl[i] + 0;
-        (void)((WORK*)row)->id;
         for (j = 0; j < 16; j++) {
             tile = &row->t[j];
-            (void)((EFF12_ROW*)tile)->t[0].ofs;
             debug_bg_tile_put(i, tile->ofs, tile->page, (s32)bg050_cell_data);
+            eff12_tile_disp(tile->ofs);
         }
     }
 }

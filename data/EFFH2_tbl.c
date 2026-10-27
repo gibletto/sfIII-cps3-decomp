@@ -1,5 +1,9 @@
 /*
- * EFFH2_TBL.C  tables read by EFFH2.c and EFFH3.c
+ * EFFH2_TBL.C  vote panel marker path and ending pictures
+ *
+ * panel_guide is the eight { x, y } offsets the H2 marker steps through around the panel, one
+ * step every eight frames; read by EFFH2.C, the marker on a judge's vote panel. effH3_data_tbl
+ * gives the x, y and pattern of each of the five ending pictures; read by EFFH3.C.
  */
 
 #include "types.h"

@@ -78,7 +78,7 @@ void gamedata_show_counters(void) {
 
 /* provisional name */
 void gamedata_clear_card_counter(void) {
-    if ((p1sw_0 & 0x100) && (p1sw_0 & 0x200) && (p1sw_0 & 0x400)) {
+    if ((p1sw_0 & BUTTON_MK) && (p1sw_0 & BUTTON_HK) && (p1sw_0 & 0x400)) {
         book_card_count = 0;
         if (eeprom_write(2, (volatile u16*)(EEP_ROM + 0x170), (u16*)&book_card_count)) {
             eeprom_error_halt();
@@ -103,7 +103,7 @@ s32 gamedata_page(void) {
         gamedata_clear_card_counter();
         break;
     }
-    if ((p1sw_0 & 0x1000) && (p1sw_0 & 0x10)) {
+    if ((p1sw_0 & BUTTON_START) && (p1sw_0 & BUTTON_LP)) {
         rc = -1;
         backup_test_no = 0;
         return rc;

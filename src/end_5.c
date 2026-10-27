@@ -36,6 +36,13 @@
 #include "aboutspr.h"
 #include "end_5.h"
 
+/* end_w.r_no_1 in end_05000 */
+#define E5_INIT         0       /* set up the ending */
+#define E5_FADE         1       /* request the fade */
+#define E5_FADE_WAIT    2       /* until the fade is done */
+#define E5_SCENES       3       /* each scene for its timer, then the staff roll */
+#define E5_DONE         4       /* hold the last screen */
+
 
 
 extern const s16 quake_y_tbl[];
@@ -46,7 +53,7 @@ extern s8 end_etc_flag;
 
 void end_05000(u16 pl_num) {
     switch (end_w.r_no_1) {
-    case 0:
+    case E5_INIT:
         end_w.r_no_1++;
         end_w.r_no_2 = 0;
         common_end_init00(pl_num);
@@ -57,18 +64,18 @@ void end_05000(u16 pl_num) {
         load_any_color(0x91);
         bgm_request(22);
         break;
-    case 1:
+    case E5_FADE:
         if (Request_Fade(53, 0) == 0) {
             break;
         }
         end_w.r_no_1++;
         break;
-    case 2:
+    case E5_FADE_WAIT:
         if (end_fade_complete() == 0) {
             break;
         }
         end_w.r_no_1++;
-    case 3:
+    case E5_SCENES:
         end_w.timer--;
         if (end_w.timer < 0) {
             end_w.r_no_2++;
@@ -85,7 +92,7 @@ void end_05000(u16 pl_num) {
             end_500_move();
             end_501_move();
         }
-    case 4:
+    case E5_DONE:
         end_scn_pos_set2();
         end_bg_pos_hosei2();
         end_fam_set2();

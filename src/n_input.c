@@ -39,6 +39,25 @@
 #include "textsound_3.h"
 #include "n_input.h"
 
+/* name_wk[pl].r_no_0: the name entry step (Name_Jmp_scs) */
+#define NAME_INIT       0       /* set up the entry */
+#define NAME_LETTER1    1       /* the first letter */
+#define NAME_WAIT1      2       /* a short wait */
+#define NAME_LETTER2    3       /* the second letter */
+#define NAME_WAIT2      4       /* a short wait */
+#define NAME_LETTER3    5       /* the third letter */
+#define NAME_END        6       /* the name is in (or timed out) */
+#define NAME_FINISH     7       /* finished */
+
+/* nsc_ptr->r_no_0: a letter cell (Scs_move_sub) */
+#define NSC_EDIT        0       /* until this letter is entered */
+#define NSC_SET         1       /* entered; back to NSC_EDIT if it is erased */
+#define NSC_DONE        2       /* the name is finished */
+
+/* nsc_ptr->r_no_1 in current_sc_move2 */
+#define NSC1_INIT       0       /* show the letter */
+#define NSC1_BLINK      1       /* blink it until it is entered */
+
 
 
 s16 Name_00[2];  /* 020280B8 */
@@ -86,7 +105,7 @@ s32 Name_Input(s16 pl_id) {
     switch (Name_00[pl_id]) {
     case 0:
         Name_00[pl_id]++;
-        if (E_No0 != 8) {
+        if (E_No0 != E0_GAME_OVER) {
             name_ptr->type = 0;
         } else {
             name_ptr->type = 1;
@@ -96,7 +115,7 @@ s32 Name_Input(s16 pl_id) {
         all_name_display();
         break;
     default:
-        if (E_No0 != 8) {
+        if (E_No0 != E0_GAME_OVER) {
             if (name_ptr->type) {
                 name_ptr->type = 0;
                 break;
@@ -130,7 +149,7 @@ void Name_Input_comm(void) {
     s16 i;
     name_ptr->timer--;
     if (name_ptr->timer < 0) {
-        name_ptr->r_no_0 = 6;
+        name_ptr->r_no_0 = NAME_END;
         for (i = name_ptr->index; i < 4; i++) {
             name_ptr->code[i] = 0x2C;
         }
@@ -152,14 +171,14 @@ void Name_Input_comm(void) {
             name_ptr->r_no_0 -= 2;
             if (name_ptr->index < 0) {
                 name_ptr->index = 0;
-                name_ptr->r_no_0 = 0;
+                name_ptr->r_no_0 = NAME_INIT;
             } else {
                 name_ptr->code[name_ptr->index + 1] = 0x2F;
             }
             name_ptr->end_flag[name_ptr->index] = 0;
             break;
         case 3:
-            name_ptr->r_no_0 = 6;
+            name_ptr->r_no_0 = NAME_END;
             for (i = name_ptr->index; i < 4; i++) {
                 name_ptr->code[i] = 0x2C;
             }
@@ -234,7 +253,7 @@ void Name_Scs_Input_comm(void) {
     s16 i;
     name_ptr->timer--;
     if (name_ptr->timer < 0) {
-        name_ptr->r_no_0 = 6;
+        name_ptr->r_no_0 = NAME_END;
         for (i = name_ptr->index; i < 4; i++) {
             name_ptr->code[i] = 44;
         }
@@ -265,7 +284,7 @@ void Name_Scs_Input_comm(void) {
             name_ptr->r_no_0 -= 2;
             if (name_ptr->index < 0) {
                 name_ptr->index = 0;
-                name_ptr->r_no_0 = 0;
+                name_ptr->r_no_0 = NAME_INIT;
             } else {
                 name_ptr->code[name_ptr->index + 1] = 47;
                 naming_set(name_ptr->id, name_ptr->index, name_ptr->code[name_ptr->index]);
@@ -273,7 +292,7 @@ void Name_Scs_Input_comm(void) {
             name_ptr->end_flag[name_ptr->index] = 0;
             break;
         case 3:
-            name_ptr->r_no_0 = 6;
+            name_ptr->r_no_0 = NAME_END;
             naming_set(name_ptr->id, name_ptr->index, name_ptr->code[name_ptr->index]);
             for (i = name_ptr->index; i < 4; i++) {
                 name_ptr->code[i] = 44;
@@ -444,28 +463,28 @@ void define_name_input(void) {
 void ranking_state_check(void) {
     name_ptr->rank = -1;
     name_ptr->rank_sub = -1;
-    if (Rank_In[name_ptr->id][0] >= 0) {
-        name_ptr->rank = Rank_In[name_ptr->id][0];
+    if (Rank_In[name_ptr->id][RANK_SCORE] >= 0) {
+        name_ptr->rank = Rank_In[name_ptr->id][RANK_SCORE];
         name_ptr->status = 0;
-        if (Rank_In[name_ptr->id][1] >= 0) {
-            if (Rank_In[name_ptr->id][0] > Rank_In[name_ptr->id][1]) {
+        if (Rank_In[name_ptr->id][RANK_WINS] >= 0) {
+            if (Rank_In[name_ptr->id][RANK_SCORE] > Rank_In[name_ptr->id][RANK_WINS]) {
                 name_ptr->rank_status = 6;
-                name_ptr->rank_in = Rank_In[name_ptr->id][1];
+                name_ptr->rank_in = Rank_In[name_ptr->id][RANK_WINS];
                 name_ptr->status_sub = 6;
-                name_ptr->rank_sub = Rank_In[name_ptr->id][1];
+                name_ptr->rank_sub = Rank_In[name_ptr->id][RANK_WINS];
             } else {
                 name_ptr->rank_status = 0;
-                name_ptr->rank_in = Rank_In[name_ptr->id][0];
+                name_ptr->rank_in = Rank_In[name_ptr->id][RANK_SCORE];
             }
         } else {
             name_ptr->rank_status = 0;
-            name_ptr->rank_in = Rank_In[name_ptr->id][0];
+            name_ptr->rank_in = Rank_In[name_ptr->id][RANK_SCORE];
         }
-    } else if (Rank_In[name_ptr->id][1] >= 0) {
+    } else if (Rank_In[name_ptr->id][RANK_WINS] >= 0) {
         name_ptr->rank_status = 6;
-        name_ptr->rank_in = Rank_In[name_ptr->id][1];
+        name_ptr->rank_in = Rank_In[name_ptr->id][RANK_WINS];
         name_ptr->status_sub = 6;
-        name_ptr->rank_sub = Rank_In[name_ptr->id][1];
+        name_ptr->rank_sub = Rank_In[name_ptr->id][RANK_WINS];
     }
 }
 
@@ -576,7 +595,7 @@ void Scs_char_move(void) {
 
 s32 Scs_move_sub(void) {
     switch (nsc_ptr->r_no_0) {
-    case 0:
+    case NSC_EDIT:
     case_0:
         if (name_ptr->end_flag[nsc_ptr->type]) {
             nsc_ptr->r_no_0++;
@@ -585,16 +604,16 @@ s32 Scs_move_sub(void) {
             current_sc_move2();
         }
         break;
-    case 1:
-        if (name_ptr->r_no_0 == 7) {
-            nsc_ptr->r_no_0 = 2;
+    case NSC_SET:
+        if (name_ptr->r_no_0 == NAME_FINISH) {
+            nsc_ptr->r_no_0 = NSC_DONE;
         }
         if (name_ptr->end_flag[nsc_ptr->type] == 0) {
-            nsc_ptr->r_no_0 = 1;
+            nsc_ptr->r_no_0 = NSC_SET;
             goto case_0;
         }
         break;
-    case 2:
+    case NSC_DONE:
         break;
     }
     if (name_ptr->old_code[nsc_ptr->type] != name_ptr->code[nsc_ptr->type]) {
@@ -611,14 +630,14 @@ void current_sc_move2(void) {
         return;
     }
     switch (nsc_ptr->r_no_1) {
-    case 0:
+    case NSC1_INIT:
         nsc_ptr->r_no_1++;
         nsc_ptr->f_cnt = 0;
         nsc_ptr->n_disp_flag = 0;
         naming_set(name_ptr->id, nsc_ptr->type, name_ptr->code[nsc_ptr->type]);
         break;
-    case 1:
-        if (name_ptr->r_no_0 > 5) {
+    case NSC1_BLINK:
+        if (name_ptr->r_no_0 > NAME_LETTER3) {
             nsc_ptr->r_no_0++;
         } else {
             nsc_ptr->f_cnt++;
@@ -657,8 +676,8 @@ void start_cut_check(pl_id)
 s16 pl_id;
 {
     if (Naming_Cut[pl_id]) {
-        if (name_ptr->r_no_0 < 6) {
-            name_ptr->r_no_0 = 6;
+        if (name_ptr->r_no_0 < NAME_END) {
+            name_ptr->r_no_0 = NAME_END;
         }
         pl_id = 0;
         do {

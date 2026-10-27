@@ -19,29 +19,42 @@
 #include "aboutspr.h"
 #include "EFF53.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show and start the pattern */
+#define R0_WAIT         1       /* stand for a while */
+#define R0_WALK         2       /* walk to its place */
+#define R0_HIDE         3       /* play to the end, then hide */
+#define R0_IDLE         4       /* hidden until the victory */
+#define R0_RISE         5       /* take off, growing */
+#define R0_CLIMB        6       /* climb away to full size */
+#define R0_GLIDE        7       /* glide for a while */
+#define R0_SWOOP        8       /* swoop, growing, to the cue */
+#define R0_FLY          9       /* fly off past the layer */
+#define R0_KILL         99      /* (default) put the work back */
+
 extern const u32 eff54_char_table[];    /* provisional name */
 
 
 
 void effect_53_move(WORK_Other* ewk) {
     if (pcon_rno[0] == 2 && pcon_rno[1] == 3) {
-        ewk->wu.routine_no[0] = 99;
+        ewk->wu.routine_no[0] = R0_KILL;
     }
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 0);
         ewk->wu.direction = 120;
         break;
-    case 1:
+    case R0_WAIT:
         ewk->wu.direction--;
         if (ewk->wu.direction < 0) {
             ewk->wu.routine_no[0]++;
         }
         disp_pos_trans_entry(ewk);
         break;
-    case 2:
+    case R0_WALK:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             if (ewk->wu.cg_type == 2) {
@@ -51,7 +64,7 @@ void effect_53_move(WORK_Other* ewk) {
         }
         disp_pos_trans_entry(ewk);
         break;
-    case 3:
+    case R0_HIDE:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             if (ewk->wu.cg_type) {
@@ -61,7 +74,7 @@ void effect_53_move(WORK_Other* ewk) {
         }
         disp_pos_trans_entry(ewk);
         break;
-    case 4:
+    case R0_IDLE:
         if (complete_victory_check()) {
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 1;
@@ -78,7 +91,7 @@ void effect_53_move(WORK_Other* ewk) {
             ewk->wu.mvxy.d[1].sp = -0x140;
         }
         break;
-    case 5:
+    case R0_RISE:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             ewk->wu.direction++;
@@ -100,7 +113,7 @@ void effect_53_move(WORK_Other* ewk) {
         }
         eff53_disp(ewk);
         break;
-    case 6:
+    case R0_CLIMB:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             add_x_sub(ewk);
@@ -123,7 +136,7 @@ void effect_53_move(WORK_Other* ewk) {
         }
         eff53_disp(ewk);
         break;
-    case 7:
+    case R0_GLIDE:
         if (!EXE_flag && !Game_pause) {
             add_x_sub(ewk);
             ewk->wu.old_rno[0]--;
@@ -138,7 +151,7 @@ void effect_53_move(WORK_Other* ewk) {
         }
         eff53_disp(ewk);
         break;
-    case 8:
+    case R0_SWOOP:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             add_x_sub(ewk);
@@ -155,7 +168,7 @@ void effect_53_move(WORK_Other* ewk) {
         }
         eff53_disp(ewk);
         break;
-    case 9:
+    case R0_FLY:
         if (!EXE_flag && !Game_pause) {
             add_x_sub(ewk);
             add_y_sub(ewk);

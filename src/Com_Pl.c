@@ -83,6 +83,45 @@
 #include "fighter.h"
 #include "RANKING.h"
 
+/* CP_No[pl][1] under COM_DAMAGE: the Damage_Jmp_Tbl routine (2 and 3 only get up) */
+#define DMG_DECIDE      0       /* Damage_1st: dizzy, a plain hit or a knockdown; choose the get-up */
+#define DMG_HIT         1       /* Damage_2nd: a hit without a knockdown */
+#define DMG_GETUP_SP    4       /* Damage_5th: a special move (command 46) on getting up */
+#define DMG_GETUP_ATTACK 5      /* Damage_6th: an attack from Get_Up_Action_Tech_Data on getting up */
+#define DMG_GUARD_0     6       /* Damage_7th with Guard_Type 0 */
+#define DMG_GUARD_1     7       /* Damage_7th with Guard_Type 1 */
+#define DMG_GUARD_2     8       /* Damage_7th with Guard_Type 2 */
+#define DMG_FAINT       9       /* Damage_8th: dizzy, mash the lever */
+
+/* CP_No[pl][2] in Damage_1st */
+#define D1_DECIDE       0       /* decide on the hit */
+#define D1_DOWN         1       /* knocked down: when it ends, choose the get-up */
+
+/* CP_No[pl][2] in Damage_5th and Damage_6th */
+#define DG_DOWN         0       /* until the get-up (cg_type 9 or 12) */
+#define DG_COMMAND      1       /* enter the command */
+#define DG_ATTACK       2       /* (default) until the move is over */
+
+/* CP_No[pl][2] in Damage_7th */
+#define D7_INIT         0       /* set the guard type */
+#define D7_GUARD        1       /* (default) guard until free */
+
+/* CP_No[pl][2] in Damage_8th */
+#define D8_WAIT         0       /* until dizzy */
+#define D8_MASH         1       /* mash the lever */
+
+/* CP_No[pl][2] in Float_2nd, Float_3rd and Float_4th */
+#define FLOAT_INIT      0       /* set up the lever */
+#define FLOAT_RUN       1       /* (default) hold it until free */
+
+/* CP_No[pl][2] in Flip_Zero */
+#define FZ_WAIT         0       /* while the opponent attacks, until a parry is right */
+#define FZ_PARRY        1       /* parry for Timer_00 frames */
+
+/* CP_No[pl][1] in Com_Caught and Com_Catch */
+#define THROW_INIT      0       /* set up */
+#define THROW_WAIT      1       /* until the throw is over */
+
 s32 Check_Hamari(PLW* wk);
 
 
@@ -127,7 +166,7 @@ void Com_Initialize(PLW* wk) {
     const s16* xx;
     s16 i;
     register s16 j;
-    CP_No[wk->wu.id][0] = 1;
+    CP_No[wk->wu.id][0] = COM_FREE;
     CP_No[wk->wu.id][1] = 0;
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
@@ -174,7 +213,7 @@ void Com_Free(PLW* wk) {
     if (Check_Caught(wk)) {
         return;
     }
-    CP_No[wk->wu.id][0] = 2;
+    CP_No[wk->wu.id][0] = COM_ACTIVE;
     CP_No[wk->wu.id][1] = 0;
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
@@ -211,7 +250,7 @@ void Com_Before_Follow(PLW* wk) {
         return;
     }
     Decide_Follow_Menu(wk);
-    CP_No[wk->wu.id][0] = 4;
+    CP_No[wk->wu.id][0] = COM_FOLLOW;
     CP_No[wk->wu.id][1] = 0;
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
@@ -251,7 +290,7 @@ dec:
     if (--Timer_00[wk->wu.id] != 0) {
         return;
     }
-    CP_No[wk->wu.id][0] = 6;
+    CP_No[wk->wu.id][0] = COM_PASSIVE;
     CP_No[wk->wu.id][1] = 0;
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
@@ -271,7 +310,7 @@ void Com_Guard(PLW* wk) {
     if (Check_Flip(wk)) {
         return;
     }
-    if (wk->wu.routine_no[1] == 1 && PL_Blow_Off_Data[wk->wu.routine_no[2]] == 2) {
+    if (wk->wu.routine_no[1] == PLAYER_DAMAGE && PL_Blow_Off_Data[wk->wu.routine_no[2]] == 2) {
         Next_Be_Float(wk);
         return;
     }
@@ -352,7 +391,7 @@ void Check_No12_Shell_Guard(PLW* wk) {
     tmw = (WORK_Other*)Shell_Address[wk->wu.id];
     Check_Guard_Type(wk, &tmw->wu);
     if (Timer_00[wk->wu.id] == 0) {
-        if (wk->wu.routine_no[1] != 1) {
+        if (wk->wu.routine_no[1] != PLAYER_DAMAGE) {
             Exit_Damage_Sub(wk);
         }
         if (tmw->wu.routine_no[0] == 2) {
@@ -396,7 +435,7 @@ s32 Ck_Exit_Guard(PLW* wk, WORK* em) {
         return 1;
     }
     Timer_00[wk->wu.id] = 1;
-    if (wk->wu.routine_no[1] == 1) {
+    if (wk->wu.routine_no[1] == PLAYER_DAMAGE) {
         return 1;
     }
     if (Attack_Flag[wk->wu.id]) {
@@ -501,13 +540,13 @@ void Damage_1st(PLW* wk) {
     WORK* em;
     Lever_Buff[wk->wu.id] = 2;
     switch (CP_No[wk->wu.id][2]) {
-    case 0:
+    case D1_DECIDE:
         if (wk->py->flag) {
-            CP_No[wk->wu.id][1] = 9;
+            CP_No[wk->wu.id][1] = DMG_FAINT;
             break;
         }
         if (PL_Blow_Off_Data[wk->wu.routine_no[2]] == 0) {
-            CP_No[wk->wu.id][1] = 1;
+            CP_No[wk->wu.id][1] = DMG_HIT;
             break;
         }
         CP_No[wk->wu.id][2]++;
@@ -522,8 +561,8 @@ void Damage_1st(PLW* wk) {
         } else {
             break;
         }
-    case 1:
-        if (wk->wu.routine_no[3] == 0) {
+    case D1_DOWN:
+        if (wk->wu.routine_no[3] == RN3_START) {
             CP_No[wk->wu.id][2] = 0;
             break;
         }
@@ -537,7 +576,7 @@ void Damage_1st(PLW* wk) {
         if (Get_Up_Area_Data[wk->player_number][CP_No[wk->wu.id][1] - 1][Area_Number[wk->wu.id]] == 1) {
             CP_No[wk->wu.id][1] = *(((u8*)Get_Up_Area_Data[wk->player_number][CP_No[wk->wu.id][1]]) + 5);
         }
-        if (CP_No[wk->wu.id][1] != 0) {
+        if (CP_No[wk->wu.id][1] != DMG_DECIDE) {
             break;
         } else {
             Lv = Setup_Lv10(0);
@@ -559,15 +598,15 @@ void Damage_1st(PLW* wk) {
 void Damage_2nd(PLW* wk) {
     WORK* em = (WORK*)wk->wu.target_adrs;
     Check_Guard_Type(wk, em);
-    if (wk->wu.routine_no[2] == 0x19) {
-        CP_No[wk->wu.id][1] = 9;
+    if (wk->wu.routine_no[2] == DAMAGE_STUN) {
+        CP_No[wk->wu.id][1] = DMG_FAINT;
         CP_No[wk->wu.id][2] = 0;
         return;
     }
     if (Receive_Flag[wk->wu.id] != 0 && plw[wk->wu.id].uot_cd_ok_flag != 0) {
         Lever_Buff[wk->wu.id] = 2;
     }
-    if (wk->wu.routine_no[1] != 1) {
+    if (wk->wu.routine_no[1] != PLAYER_DAMAGE) {
         Exit_Damage_Sub(wk);
     }
 }
@@ -583,14 +622,14 @@ void Damage_4th(PLW* _p0) {}
 
 
 void Damage_5th(PLW* wk) {
-    if (wk->wu.routine_no[3] == 0) {
+    if (wk->wu.routine_no[3] == RN3_START) {
         CP_No[wk->wu.id][1] = 0;
         CP_No[wk->wu.id][2] = 0;
         return;
     }
     switch (CP_No[wk->wu.id][2]) {
-    case 0:
-        if (wk->wu.routine_no[1] != 1) {
+    case DG_DOWN:
+        if (wk->wu.routine_no[1] != PLAYER_DAMAGE) {
             Exit_Damage_Sub(wk);
             break;
         }
@@ -599,13 +638,13 @@ void Damage_5th(PLW* wk) {
             CP_Index[wk->wu.id][1] = 0;
         }
         break;
-    case 1:
+    case DG_COMMAND:
         if (Command_Attack_SP(wk, wk->player_number, 46, 8)) {
             CP_No[wk->wu.id][2]++;
         }
         break;
     default:
-        if (wk->wu.routine_no[1] != 4 || wk->wu.cg_type == 64) {
+        if (wk->wu.routine_no[1] != PLAYER_ATTACK || wk->wu.cg_type == 64) {
             Exit_Damage_Sub(wk);
         }
         break;
@@ -617,20 +656,20 @@ void Damage_5th(PLW* wk) {
 void Damage_6th(PLW* wk) {
     u8 Lv;
     u8 Rnd;
-    if (wk->wu.routine_no[3] == 0) {
+    if (wk->wu.routine_no[3] == RN3_START) {
         CP_No[wk->wu.id][1] = 0;
         CP_No[wk->wu.id][2] = 0;
         return;
     }
-    if (wk->wu.routine_no[2] == 0x19) {
-        CP_No[wk->wu.id][1] = 9;
+    if (wk->wu.routine_no[2] == DAMAGE_STUN) {
+        CP_No[wk->wu.id][1] = DMG_FAINT;
         CP_No[wk->wu.id][2] = 0;
         return;
     }
     Lever_Buff[wk->wu.id] = 2;
     switch (CP_No[wk->wu.id][2]) {
-    case 0:
-        if (wk->wu.routine_no[1] != 1) {
+    case DG_DOWN:
+        if (wk->wu.routine_no[1] != PLAYER_DAMAGE) {
             Exit_Damage_Sub(wk);
             break;
         }
@@ -656,7 +695,7 @@ void Damage_6th(PLW* wk) {
             }
         }
         break;
-    case 1:
+    case DG_COMMAND:
         if (Command_Attack_SP(wk, wk->player_number, CP_Index[wk->wu.id][0], 8)) {
             CP_No[wk->wu.id][2]++;
         }
@@ -674,8 +713,8 @@ void Damage_6th(PLW* wk) {
 void Damage_7th(PLW* wk) {
     WORK* em;
     switch (CP_No[wk->wu.id][2]) {
-    case 0:
-        if (wk->wu.routine_no[1] != 1) {
+    case D7_INIT:
+        if (wk->wu.routine_no[1] != PLAYER_DAMAGE) {
             Exit_Damage_Sub(wk);
             break;
         }
@@ -683,10 +722,10 @@ void Damage_7th(PLW* wk) {
             CP_No[wk->wu.id][2]++;
             Timer_00[wk->wu.id] = 3;
             switch (CP_No[wk->wu.id][1]) {
-            case 6:
+            case DMG_GUARD_0:
                 Guard_Type[wk->wu.id] = 0;
                 break;
-            case 7:
+            case DMG_GUARD_1:
                 Guard_Type[wk->wu.id] = 1;
                 break;
             default:
@@ -695,7 +734,7 @@ void Damage_7th(PLW* wk) {
             }
         }
         break;
-    case 1:
+    case D7_GUARD:
         if (--Timer_00[wk->wu.id]) {
             break;
         }
@@ -703,7 +742,7 @@ void Damage_7th(PLW* wk) {
     default:
         em = (WORK*)wk->wu.target_adrs;
         Check_Guard_Type(wk, em);
-        if (wk->wu.cg_type == 0x40 || wk->wu.routine_no[1] == 0) {
+        if (wk->wu.cg_type == 0x40 || wk->wu.routine_no[1] == PLAYER_NORMAL) {
             Exit_Damage_Sub(wk);
         }
         break;
@@ -714,18 +753,18 @@ void Damage_7th(PLW* wk) {
 
 void Damage_8th(PLW* wk) {
     s16 Rnd;
-    if (wk->wu.routine_no[1] != 1) {
+    if (wk->wu.routine_no[1] != PLAYER_DAMAGE) {
         Exit_Damage_Sub(wk);
     }
     switch (CP_No[wk->wu.id][2]) {
-    case 0:
-        if (wk->wu.routine_no[2] == 0x19) {
+    case D8_WAIT:
+        if (wk->wu.routine_no[2] == DAMAGE_STUN) {
             CP_No[wk->wu.id][2] += 1;
             Timer_00[wk->wu.id] = 1;
             Timer_01[wk->wu.id] = Faint_Rapid_Data[Setup_Lv08(0)][(Rnd = random_16_com() & 7)];
         }
         break;
-    case 1:
+    case D8_MASH:
         Lever_Buff[wk->wu.id] = Com_Rapid_Sub(wk, 0, &CP_No[wk->wu.id][3]);
         break;
     }
@@ -744,9 +783,9 @@ void Exit_Damage_Sub(PLW* wk) {
 
 
 s32 Check_Damage(PLW* wk) {
-    if (wk->wu.routine_no[1] == 1 && CP_No[wk->wu.id][0] != 7 && CP_No[wk->wu.id][0] != 9 &&
+    if (wk->wu.routine_no[1] == PLAYER_DAMAGE && CP_No[wk->wu.id][0] != COM_GUARD && CP_No[wk->wu.id][0] != COM_SHELL_GUARD &&
         Guard_Flag[wk->wu.id] == 0) {
-        CP_No[wk->wu.id][0] = 10;
+        CP_No[wk->wu.id][0] = COM_DAMAGE;
         CP_No[wk->wu.id][1] = 0;
         CP_No[wk->wu.id][2] = 0;
         CP_No[wk->wu.id][3] = 0;
@@ -775,12 +814,12 @@ void Com_Float(PLW* wk) {
 
 void Float_2nd(PLW* wk) {
     switch (CP_No[wk->wu.id][2]) {
-    case 0:
+    case FLOAT_INIT:
         CP_No[wk->wu.id][2]++;
         Lever_Buff[wk->wu.id] = 16;
         break;
     default:
-        if (wk->wu.routine_no[1] == 0) {
+        if (wk->wu.routine_no[1] == PLAYER_NORMAL) {
             Next_Be_Free(wk);
             break;
         }
@@ -792,11 +831,11 @@ void Float_2nd(PLW* wk) {
 
 
 void Float_3rd(register PLW* wk) {
-    if (wk->wu.routine_no[1] != 1) {
+    if (wk->wu.routine_no[1] != PLAYER_DAMAGE) {
         Next_Be_Free(wk);
     }
     switch (CP_No[wk->wu.id][2]) {
-    case 0:
+    case FLOAT_INIT:
         CP_No[wk->wu.id][2]++;
         Timer_00[wk->wu.id] = 4;
         Lever_Pool[wk->wu.id] = Setup_Guard_Lever(wk, 0);
@@ -814,11 +853,11 @@ void Float_3rd(register PLW* wk) {
 
 
 void Float_4th(PLW* wk) {
-    if (wk->wu.routine_no[1] != 1) {
+    if (wk->wu.routine_no[1] != PLAYER_DAMAGE) {
         Next_Be_Free(wk);
     }
     switch (CP_No[wk->wu.id][2]) {
-    case 0:
+    case FLOAT_INIT:
         CP_No[wk->wu.id][2]++;
         Timer_00[wk->wu.id] = 4;
         Lever_Pool[wk->wu.id] = Setup_Guard_Lever(wk, 1);
@@ -888,13 +927,13 @@ s32 Check_Flip(PLW* wk) {
     if (Flip_Flag[wk->wu.id]) {
         return 0;
     }
-    if (wk->wu.routine_no[1] != 0) {
+    if (wk->wu.routine_no[1] != PLAYER_NORMAL) {
         return 0;
     }
     if (PL_Damage_Data[wk->wu.routine_no[2]] == 0) {
         return 0;
     }
-    CP_No[wk->wu.id][0] = 12;
+    CP_No[wk->wu.id][0] = COM_FLIP;
     CP_No[wk->wu.id][1] = 2;
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
@@ -929,14 +968,14 @@ s32 Check_Flip_Attack(PLW* wk) {
 void Com_Caught(PLW* wk) {
     s16 Rnd;
     switch (CP_No[wk->wu.id][1]) {
-    case 0:
+    case THROW_INIT:
         CP_No[wk->wu.id][1]++;
         CP_No[wk->wu.id][2] = 0;
         Timer_00[wk->wu.id] = 1;
         Timer_01[wk->wu.id] = Rapid_Exit_Data[Setup_Lv08(0)][(Rnd = random_16_com() & 7)];
         break;
-    case 1:
-        if (wk->wu.routine_no[1] != 3) {
+    case THROW_WAIT:
+        if (wk->wu.routine_no[1] != PLAYER_CAUGHT) {
             Check_Damage(wk);
             break;
         }
@@ -978,8 +1017,8 @@ s32 Com_Rapid_Sub(PLW* wk, s16 Shot, s16* dir_step) {
 
 
 s32 Check_Caught(PLW* wk) {
-    if (wk->wu.routine_no[1] == 3) {
-        CP_No[wk->wu.id][0] = 13;
+    if (wk->wu.routine_no[1] == PLAYER_CAUGHT) {
+        CP_No[wk->wu.id][0] = COM_CAUGHT;
         CP_No[wk->wu.id][1] = 0;
         CP_No[wk->wu.id][2] = 0;
         CP_No[wk->wu.id][3] = 0;
@@ -995,15 +1034,15 @@ void Com_Catch(PLW* wk) {
     WORK* em;
     s16 Rnd;
     switch (CP_No[wk->wu.id][1]) {
-    case 0:
+    case THROW_INIT:
         CP_No[wk->wu.id][1]++;
         CP_No[wk->wu.id][2] = 0;
         Timer_00[wk->wu.id] = 1;
         Timer_01[wk->wu.id] = Rapid_Hit_Data[Setup_Lv04(0)][(Rnd = random_16_com() & 7)];
         break;
-    case 1:
+    case THROW_WAIT:
         em = (WORK*)wk->wu.target_adrs;
-        if (wk->wu.routine_no[1] != 2 || em->routine_no[1] != 3) {
+        if (wk->wu.routine_no[1] != PLAYER_CATCH || em->routine_no[1] != PLAYER_CAUGHT) {
             Next_Be_Free(wk);
             break;
         }
@@ -1015,7 +1054,7 @@ void Com_Catch(PLW* wk) {
 
 
 void Be_Catch(PLW* wk) {
-    CP_No[wk->wu.id][0] = 15;
+    CP_No[wk->wu.id][0] = COM_CATCH;
     CP_No[wk->wu.id][1] = 0;
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
@@ -1071,7 +1110,7 @@ s32 Command_Attack_SP(PLW* wk, s8 Pl_Number, s16 Tech_Number, s16 Power_Level) {
         }
     default:
         Rapid_Sub(wk);
-        if (wk->wu.routine_no[1] == 0 && plw[wk->wu.id].caution_flag == 0) {
+        if (wk->wu.routine_no[1] == PLAYER_NORMAL && plw[wk->wu.id].caution_flag == 0) {
             return 1;
         }
     }
@@ -1081,7 +1120,7 @@ s32 Command_Attack_SP(PLW* wk, s8 Pl_Number, s16 Tech_Number, s16 Power_Level) {
 /* provisional name */
 void Next_Be_Active(PLW* wk) {
     s16 xx;
-    CP_No[wk->wu.id][0] = 2;
+    CP_No[wk->wu.id][0] = COM_ACTIVE;
     CP_No[wk->wu.id][1] = 0;
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
@@ -1094,7 +1133,7 @@ void Next_Be_Active(PLW* wk) {
 void Next_Be_Free(wk)
 PLW* wk;
 {
-    CP_No[wk->wu.id][0] = 1;
+    CP_No[wk->wu.id][0] = COM_FREE;
     CP_No[wk->wu.id][1] = 0;
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
@@ -1106,7 +1145,7 @@ PLW* wk;
 void Next_Be_Float(PLW* wk) {
     s16 Rnd;
     s16 Lv;
-    CP_No[wk->wu.id][0] = 11;
+    CP_No[wk->wu.id][0] = COM_FLOAT;
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
     Clear_Com_Flag(wk);

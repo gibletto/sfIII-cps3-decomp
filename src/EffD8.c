@@ -17,6 +17,13 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* wait for the cursor to appear */
+#define R0_SELECT       1       /* follow the cursor */
+#define R0_DECIDE       2       /* flash for 20 frames */
+#define R0_HOLD         3       /* stay until the scene ends */
+#define R0_KILL         4       /* (default) put the work back */
+
 
 extern const s16 effD8_priority_tbl[];
 extern const s16 Face_Pos_Data[][2];
@@ -27,7 +34,7 @@ void effD8_colour_step(WORK_Other* ewk, s16 num, s16 time);
 
 void effect_D8_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (Appear_Cursor == 0) {
             return;
         }
@@ -36,7 +43,7 @@ void effect_D8_move(WORK_Other* ewk) {
         ewk->wu.char_index = ID_of_Face[ewk->master_id][Cursor_Y[ewk->master_id]][Cursor_X[ewk->master_id]];
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index + 37, ewk->wu.vital_new + 1, 0);
         break;
-    case 1:
+    case R0_SELECT:
         if (Sel_PL_Complete[ewk->master_id]) {
             ewk->wu.routine_no[0]++;
             ewk->wu.dir_timer = 20;
@@ -56,7 +63,7 @@ void effect_D8_move(WORK_Other* ewk) {
             effD8_colour_step(ewk, 3, 4);
         }
         break;
-    case 2:
+    case R0_DECIDE:
         if (--ewk->wu.dir_timer) {
             effD8_colour_step(ewk, 4, 2);
         } else {
@@ -71,7 +78,7 @@ void effect_D8_move(WORK_Other* ewk) {
             set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index + 37, ewk->wu.vital_new + 1, 0);
         }
         break;
-    case 3:
+    case R0_HOLD:
         if (Suicide != 0) {
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 0;
@@ -123,8 +130,8 @@ void effD8_char_set(WORK_Other* ewk) {
 }
 
 void effect_D8_init(WORK_Other* ewk) {
-    ewk->wu.xyz[0].disp.pos = Face_Pos_Data[ewk->wu.char_index][0] + DE_X[10] + 0x1C0;
-    ewk->wu.xyz[1].disp.pos = Face_Pos_Data[ewk->wu.char_index][1] + 65;
+    ewk->wu.xyz[0].disp.pos = Face_Pos_Data[ewk->wu.char_index][SEL_POS_X] + DE_X[10] + 0x1C0;
+    ewk->wu.xyz[1].disp.pos = Face_Pos_Data[ewk->wu.char_index][SEL_POS_Y] + 65;
 }
 
 void effD8_colour_step(WORK_Other* ewk, s16 num, s16 time) {

@@ -1,5 +1,9 @@
 /*
- * CMD_MAIN_CTBL.C  tables read by CMD_MAIN.c
+ * CMD_MAIN_CTBL.C  debug screen sign strings
+ *
+ * dbg_minus_str is the minus sign printed before a negative value on the debug screens, and
+ * dbg_space2_str the two blanks printed in place of a value. Read by CMD_MAIN.C, the debug
+ * menu.
  */
 
 #include "types.h"

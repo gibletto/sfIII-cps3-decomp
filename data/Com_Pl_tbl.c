@@ -1,5 +1,13 @@
 /*
- * COM_PL_TBL.C  tables read by mode_init.c and test_mode.c
+ * COM_PL_TBL.C  boot screen, region warning and default setting tables
+ *
+ * boot_title_str and boot_region_str lay out the title and region name of the boot screen, and
+ * the str_* strings are the boot, version, region warning and parental advisory text.
+ * sys_cfg_default_* are the default system settings by cabinet type and region, and
+ * game_cfg_default_tbl_row* the default game settings by region, reached through the lists in
+ * MODE_INIT.C that SYS_CONFIG.C uses. All read by MODE_INIT.C, the mode initialisation, except
+ * test_cursor_x_tbl and test_cursor_y_tbl, the test-mode cursor positions for each font type,
+ * read by TEST_MODE.C. boot_version_str (the version name lines) is not referred to by name.
  */
 
 #include "types.h"

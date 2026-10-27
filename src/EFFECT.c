@@ -221,21 +221,19 @@ s16 tid;
         aix = tail_ix[index];
         while (aix != -1) {
             c_addr = (WORK*)frw[aix];
-            if (c_addr->id != tid) {
-                aix = c_addr->before;
-            } else {
+            if (c_addr->id == tid) {
                 break;
             }
+            aix = c_addr->before;
         }
     } else {
         aix = head_ix[index];
         while (aix != -1) {
             c_addr = (WORK*)frw[aix];
-            if (c_addr->id != tid) {
-                aix = c_addr->behind;
-            } else {
+            if (c_addr->id == tid) {
                 break;
             }
+            aix = c_addr->behind;
         }
     }
     return aix;

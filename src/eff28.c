@@ -24,6 +24,13 @@
 #include "bg_sub_5.h"
 #include "eff28.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show and pick the first pattern */
+#define R0_START        1       /* play the opening pattern */
+#define R0_MOVE         2       /* loop while the master stays */
+#define R0_LEAVE        5       /* master gone: play the leaving pattern */
+#define R0_STAY         6       /* loop the last pattern */
+
 
 
 extern u32 eff28_char_table[];
@@ -34,17 +41,17 @@ static s32 eff28_master_check(WORK_Other* ewk);
 
 void effect_28_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         if (eff_hit_flag[1]) {
             set_char_move_init(&ewk->wu, 0, 5);
-            ewk->wu.routine_no[0] = 6;
+            ewk->wu.routine_no[0] = R0_STAY;
             break;
         }
         set_char_move_init(&ewk->wu, 0, 0);
         break;
-    case 1:
+    case R0_START:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             if (ewk->wu.cg_type) {
@@ -53,7 +60,7 @@ void effect_28_move(WORK_Other* ewk) {
             }
         }
         break;
-    case 2:
+    case R0_MOVE:
         if (!EXE_flag && !Game_pause) {
             if (!eff28_master_check(ewk)) {
                 char_move(&ewk->wu);
@@ -65,7 +72,7 @@ void effect_28_move(WORK_Other* ewk) {
             if (!eff28_master_check(ewk)) {
                 char_move(&ewk->wu);
                 if (ewk->wu.cg_type) {
-                    ewk->wu.routine_no[0] = 2;
+                    ewk->wu.routine_no[0] = R0_MOVE;
                     set_char_move_init(&ewk->wu, 0, 1);
                 }
             }
@@ -76,13 +83,13 @@ void effect_28_move(WORK_Other* ewk) {
             if (!eff28_master_check(ewk)) {
                 char_move(&ewk->wu);
                 if (ewk->wu.cg_type) {
-                    ewk->wu.routine_no[0] = 2;
+                    ewk->wu.routine_no[0] = R0_MOVE;
                     set_char_move_init(&ewk->wu, 0, 1);
                 }
             }
         }
         break;
-    case 5:
+    case R0_LEAVE:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             if (ewk->wu.cg_type) {
@@ -91,7 +98,7 @@ void effect_28_move(WORK_Other* ewk) {
             }
         }
         break;
-    case 6:
+    case R0_STAY:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
         }
@@ -109,7 +116,7 @@ void effect_28_move(WORK_Other* ewk) {
 static s32 eff28_master_check(WORK_Other* ewk) {
     WORK_Other* mwk = (WORK_Other*)ewk->my_master;
     if (mwk->wu.routine_no[1] > 1) {
-        ewk->wu.routine_no[0] = 5;
+        ewk->wu.routine_no[0] = R0_LEAVE;
         set_char_move_init(&ewk->wu, 0, 4);
         return 1;
     }

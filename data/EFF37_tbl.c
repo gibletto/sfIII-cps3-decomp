@@ -1,5 +1,9 @@
 /*
- * EFF37_TBL.C  tables read by EFF37.c
+ * EFF37_TBL.C  face panel position offsets
+ *
+ * panel_pos_hosei gives the x and y offset of the face panel from its master for each
+ * character set and the master's display type (cg_type). Read by EFF37.C, the face panel shown
+ * with a character.
  */
 
 #include "types.h"

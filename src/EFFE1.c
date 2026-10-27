@@ -21,11 +21,22 @@
 #include "charmove_2.h"
 #include "se_3.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* wait the delay, then show */
+#define R0_OPEN         1       /* fly in, play, rise at the end */
+#define R0_READY        2       /* start in the final place */
+#define R0_DELAY        3       /* wait the delay */
+#define R0_ANIM         4       /* animate */
+
+/* routine_no[1] */
+#define R1_FLY          0       /* shrink or fly to the centre */
+#define R1_PLAY         1       /* animate, rise at opening step 17 */
+
 extern s8 effE1_end_flag;
 
 void effect_E1_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (--ewk->wu.dir_timer) {
             return;
         }
@@ -38,9 +49,9 @@ void effect_E1_move(WORK_Other* ewk) {
         }
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.old_rno[0] + 1, 0);
         break;
-    case 1:
+    case R0_OPEN:
         switch (ewk->wu.routine_no[1]) {
-        case 0:
+        case R1_FLY:
             if (ewk->wu.old_rno[0]) {
                 if (ewk->wu.my_mr.size.x >= 67) {
                     ewk->wu.my_mr.size.x -= 4;
@@ -66,7 +77,7 @@ void effect_E1_move(WORK_Other* ewk) {
                 add_y_sub(ewk);
             }
             break;
-        case 1:
+        case R1_PLAY:
             char_move(&ewk->wu);
             if (op_w.r_no_0 != 17) {
                 break;
@@ -79,18 +90,18 @@ void effect_E1_move(WORK_Other* ewk) {
             break;
         }
         break;
-    case 2:
+    case R0_READY:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.old_rno[4]);
         break;
-    case 3:
+    case R0_DELAY:
         if (--ewk->wu.dir_timer) {
             break;
         }
         ewk->wu.routine_no[0]++;
         /* fall through */
-    case 4:
+    case R0_ANIM:
         char_move(&ewk->wu);
         break;
     }
@@ -126,7 +137,7 @@ s32 effect_E1_init(s16 id, s16 Time, s16 ready) {
         ewk->wu.my_priority = ewk->wu.position_z = 51;
         ewk->wu.old_rno[4] = 61;
         if (ready) {
-            ewk->wu.routine_no[0] = 2;
+            ewk->wu.routine_no[0] = R0_READY;
             ewk->wu.char_index = 61;
             ewk->wu.xyz[1].disp.pos = 72;
         } else {
@@ -143,7 +154,7 @@ s32 effect_E1_init(s16 id, s16 Time, s16 ready) {
         if (ready) {
             ewk->wu.xyz[0].disp.pos = 0x200;
             ewk->wu.xyz[1].disp.pos = 152;
-            ewk->wu.routine_no[0] = 2;
+            ewk->wu.routine_no[0] = R0_READY;
             ewk->wu.char_index = 59;
         } else {
             ewk->wu.xyz[0].disp.pos = 0x100;
@@ -160,7 +171,7 @@ s32 effect_E1_init(s16 id, s16 Time, s16 ready) {
         if (ready) {
             ewk->wu.xyz[0].disp.pos = 0x200;
             ewk->wu.xyz[1].disp.pos = 152;
-            ewk->wu.routine_no[0] = 2;
+            ewk->wu.routine_no[0] = R0_READY;
             ewk->wu.char_index = 60;
         } else {
             ewk->wu.old_rno[2] = 0x200;

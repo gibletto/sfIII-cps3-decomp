@@ -20,6 +20,11 @@
 #include "sc_sub.h"
 #include "cps3.h"
 
+/* win_mark_rno[pl]: the win marks (win_mark_control) */
+#define WMARK_INIT      0       /* place the marks, or wait when there are none */
+#define WMARK_BLINK     1       /* blink the marks */
+#define WMARK_NONE      99      /* (default) no marks: until a new one */
+
 
 
 s16 win_mark_rno[2];  /* 02028704 */
@@ -32,10 +37,10 @@ s16 win_mark_pos[2];  /* 02028714 */
 /* provisional name */
 void win_mark_control(s16 pl) {
     switch (win_mark_rno[pl]) {
-    case 0:
+    case WMARK_INIT:
         win_mark_new[pl] = 0;
         if (PL_Wins[pl] == 0) {
-            win_mark_rno[pl] = 99;
+            win_mark_rno[pl] = WMARK_NONE;
             return;
         } else {
             win_mark_rno[pl]++;
@@ -44,7 +49,7 @@ void win_mark_control(s16 pl) {
             win_mark_pos_set(pl);
         }
         return;
-    case 1:
+    case WMARK_BLINK:
         if (win_mark_new[pl]) {
             win_mark_new_check(pl);
         }
@@ -62,7 +67,7 @@ void win_mark_control(s16 pl) {
     default:
         if (win_mark_new[pl] != 0) {
             if (win_mark_phase[pl ^ 1] == 0) {
-                win_mark_rno[pl] = 1;
+                win_mark_rno[pl] = WMARK_BLINK;
                 win_mark_new[pl] = 0;
                 win_mark_timer[pl] = 1;
                 win_mark_phase[pl] = 0;

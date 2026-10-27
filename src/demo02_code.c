@@ -48,6 +48,22 @@
 #include "textsound_3.h"
 #include "demo02_code.h"
 
+/* D_No1 in Demo00 */
+#define DM_INIT         0       /* set up the demo fight */
+#define DM_COVER        1       /* until Cover_Timer, then wipe in */
+#define DM_REVIVAL      2       /* finish the wipe */
+#define DM_PLAY         3       /* the demo fight for D_Timer */
+#define DM_STOP         4       /* wait D_Timer, then wipe out */
+#define DM_WIPE         5       /* until the wipe is done */
+
+/* D_No1 in Demo01 */
+#define DS_INIT         0       /* set up the select demo */
+#define DS_SELECT       1       /* the select screen, until it stops */
+#define DS_COVER        2       /* until Cover_Timer, then wipe in */
+#define DS_REVIVAL      3       /* finish the wipe */
+#define DS_PLAY         4       /* the demo fight for D_Timer */
+#define DS_WIPE         5       /* until the wipe is done */
+
 
 
 s32 Play_Demo(void) {
@@ -59,25 +75,25 @@ s32 Play_Demo(void) {
 
 void Demo00(void) {
     switch (D_No1) {
-    case 0:
+    case DM_INIT:
         D_No1++;
         G_No2 = 0;
         Game_pause = 0;
-        appear_type = 1;
+        appear_type = APPEAR_ENTRY;
         Control_Time = 2048;
         Round_Level = 7;
         Text_Page_Y = 0;
         Weak_PL = random_16_com() & 1;
         scfont_page1_fill(0, 32);
         break;
-    case 1:
+    case DM_COVER:
         Game02();
         if (--Cover_Timer == 0) {
             D_No1++;
             Switch_Screen_Init(3, 3);
         }
         break;
-    case 2:
+    case DM_REVIVAL:
         Game02();
         if (Switch_Screen_Revival()) {
             D_No1++;
@@ -85,7 +101,7 @@ void Demo00(void) {
             Stop_SG = 0;
         }
         break;
-    case 3:
+    case DM_PLAY:
         Game02();
         if (--D_Timer == 1) {
             Stop_Combo = 1;
@@ -94,7 +110,7 @@ void Demo00(void) {
             D_Timer = 90;
         }
         break;
-    case 4:
+    case DM_STOP:
         Game02();
         if (--D_Timer == 0) {
             D_No1++;
@@ -103,7 +119,7 @@ void Demo00(void) {
             Switch_Screen_Init(3, 3);
         }
         break;
-    case 5:
+    case DM_WIPE:
         Game02();
         if (!Switch_Screen()) {
             break;
@@ -123,7 +139,7 @@ void Demo00(void) {
 
 void Demo01(void) {
     switch (D_No1) {
-    case 0:
+    case DS_INIT:
         D_No1++;
         Game_pause = 0;
         Demo_Time_Stop = 0;
@@ -134,7 +150,7 @@ void Demo01(void) {
         Setup_Demo_Arts();
         Weak_PL = random_16_com() & 1;
         break;
-    case 1:
+    case DS_SELECT:
         Game01();
         if (Demo_Time_Stop) {
             D_No1++;
@@ -142,7 +158,7 @@ void Demo01(void) {
             Text_Page_Y = 0;
         }
         break;
-    case 2:
+    case DS_COVER:
         Game02();
         if (--Cover_Timer != 0) {
             return;
@@ -150,7 +166,7 @@ void Demo01(void) {
         D_No1++;
         Switch_Screen_Init(3, 3);
         break;
-    case 3:
+    case DS_REVIVAL:
         Game02();
         if (Switch_Screen_Revival()) {
             D_No1++;
@@ -158,7 +174,7 @@ void Demo01(void) {
             Stop_SG = 0;
         }
         break;
-    case 4:
+    case DS_PLAY:
         Game02();
         if (--D_Timer == 1) {
             Stop_Combo = 1;
@@ -173,7 +189,7 @@ void Demo01(void) {
         sc_vram_to_ram();
         Switch_Screen_Init(3, 3);
         break;
-    case 5:
+    case DS_WIPE:
         Game02();
         if (Switch_Screen()) {
             D_No1++;

@@ -1,5 +1,8 @@
 /*
- * END_MAIN_TBL_B.C  tables read by end_main.c
+ * END_MAIN_TBL_B.C  opening demo BG0 step table
+ *
+ * op_prio_tbl gives the frame count and pattern value of each step of the BG0 pattern sequence
+ * the opening plays through oh_opening_demo. Read by END_MAIN.C, the opening demo.
  */
 
 #include "types.h"

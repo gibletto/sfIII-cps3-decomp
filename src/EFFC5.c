@@ -32,15 +32,25 @@
 #include "bg_sub_3.h"
 #include "bg_sub_5.h"
 #include "EFFC5.h"
+
+/* routine_no[0] */
+#define R0_INIT         0       /* start the engine sound */
+#define R0_DRIVE        1       /* drive in to the stop point */
+#define R0_DOOR         2       /* play the door pattern */
+#define R0_WAIT         3       /* wait 20 frames */
+#define R0_LEAVE        4       /* drive away */
+#define R0_END          5       /* clear the door flag */
+#define R0_KILL         6       /* (default) put the work back */
+
 void effect_C5_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         Sound_SE(0x134);
         break;
-    case 1:
+    case R0_DRIVE:
         char_move(&ewk->wu);
         ewk->wu.old_rno[0]--;
         if (ewk->wu.old_rno[0] <= 0) {
@@ -55,7 +65,7 @@ void effect_C5_move(WORK_Other* ewk) {
         suzi_sync_pos_set(ewk);
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_DOOR:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type == 1) {
             ewk->wu.routine_no[0]++;
@@ -66,7 +76,7 @@ void effect_C5_move(WORK_Other* ewk) {
         suzi_sync_pos_set(ewk);
         sort_push_request(&ewk->wu);
         break;
-    case 3:
+    case R0_WAIT:
         ewk->wu.old_rno[0]--;
         if (ewk->wu.old_rno[0] < 0) {
             ewk->wu.routine_no[0]++;
@@ -82,7 +92,7 @@ void effect_C5_move(WORK_Other* ewk) {
         suzi_sync_pos_set(ewk);
         sort_push_request(&ewk->wu);
         break;
-    case 4:
+    case R0_LEAVE:
         ewk->wu.old_rno[0]--;
         if (ewk->wu.old_rno[0] < 0) {
             ewk->wu.routine_no[0]++;
@@ -92,7 +102,7 @@ void effect_C5_move(WORK_Other* ewk) {
         suzi_sync_pos_set(ewk);
         sort_push_request(&ewk->wu);
         break;
-    case 5:
+    case R0_END:
         ewk->wu.routine_no[0]++;
         demo_car_flag[ewk->master_id] = 0;
         break;

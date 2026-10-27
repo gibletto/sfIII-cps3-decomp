@@ -23,6 +23,16 @@
 #include "spgauge.h"
 #include "fighter.h"
 
+/* spg_dat[pl].max_rno: the gauge flash when a stock is gained (sast_control, samoji_control) */
+#define SPG_MAX_START   0       /* a stock was gained: show it and start the flash */
+#define SPG_MAX_FLASH   1       /* flash the gauge for timer */
+#define SPG_MAX_IDLE    2       /* nothing to do */
+
+/* spg_dat[pl].time_rno: the gauge of a timer-type art (samoji_control) */
+#define SPG_TIME_FLASH  0       /* flash until the stock changes */
+#define SPG_TIME_SHOW   1       /* show the timer letters */
+#define SPG_TIME_DRAIN  2       /* while the art drains the gauge */
+
 void sc_chr_sheet_trans();
 void scfont_sqput();
 void scfont_fill();
@@ -82,10 +92,10 @@ void spgauge_cont_init(void) {
     spg_dat[0].kind = 0;
     spg_dat[0].max = 0;
     spg_dat[0].max_old = 0;
-    spg_dat[0].max_rno = 0;
-    spg_dat[0].time_rno = 0;
+    spg_dat[0].max_rno = SPG_MAX_START;
+    spg_dat[0].time_rno = SPG_TIME_FLASH;
     sa_gauge_flash[0] = 0;
-    if (super_arts[0].gauge_type == 1) {
+    if (super_arts[0].gauge_type == SA_GAUGE_TIMER) {
         spg_dat[0].time = 1;
         time_flag = 1;
     } else {
@@ -106,10 +116,10 @@ void spgauge_cont_init(void) {
     spg_dat[1].kind = 0;
     spg_dat[1].max = 0;
     spg_dat[1].max_old = 0;
-    spg_dat[1].max_rno = 0;
-    spg_dat[1].time_rno = 0;
+    spg_dat[1].max_rno = SPG_MAX_START;
+    spg_dat[1].time_rno = SPG_TIME_FLASH;
     sa_gauge_flash[1] = 0;
-    if (super_arts[1].gauge_type == 1) {
+    if (super_arts[1].gauge_type == SA_GAUGE_TIMER) {
         spg_dat[1].time = 1;
         time_flag = 1;
     } else {
@@ -158,10 +168,10 @@ void spgauge_cont_demo_init(void) {
     spg_dat[0].kind = 1;
     spg_dat[0].max = 1;
     spg_dat[0].max_old = 0;
-    spg_dat[0].max_rno = 2;
-    spg_dat[0].time_rno = 0;
+    spg_dat[0].max_rno = SPG_MAX_IDLE;
+    spg_dat[0].time_rno = SPG_TIME_FLASH;
     sa_gauge_flash[0] = 0;
-    if (super_arts[0].gauge_type == 1) {
+    if (super_arts[0].gauge_type == SA_GAUGE_TIMER) {
         spg_dat[0].time = 1;
         time_flag = 1;
     } else {
@@ -183,10 +193,10 @@ void spgauge_cont_demo_init(void) {
     spg_dat[1].kind = 1;
     spg_dat[1].max = 1;
     spg_dat[1].max_old = 0;
-    spg_dat[1].max_rno = 2;
-    spg_dat[1].time_rno = 0;
+    spg_dat[1].max_rno = SPG_MAX_IDLE;
+    spg_dat[1].time_rno = SPG_TIME_FLASH;
     sa_gauge_flash[1] = 0;
-    if (super_arts[1].gauge_type == 1) {
+    if (super_arts[1].gauge_type == SA_GAUGE_TIMER) {
         spg_dat[1].time = 1;
         time_flag = 1;
     } else {
@@ -247,7 +257,7 @@ void spgauge_control(s8 Spg_Num) {
         } else {
             spg_dat[Spg_Num].max = 0;
         }
-        spg_dat[Spg_Num].max_rno = 0;
+        spg_dat[Spg_Num].max_rno = SPG_MAX_START;
         spg_dat[Spg_Num].timer = 50;
         spg_dat[Spg_Num].timer2 = 2;
         spg_dat[Spg_Num].kind = 0;
@@ -339,12 +349,12 @@ void sast_control(Stpl_Num)
 s8 Stpl_Num;
 {
     switch (spg_dat[Stpl_Num].max_rno) {
-    case 0:
+    case SPG_MAX_START:
         max_mark_chr_trans(Stpl_Num, spg_dat[Stpl_Num].spg_maxlevel);
         sa_moji_trans(Stpl_Num, 0, 1);
-        spg_dat[Stpl_Num].max_rno = 1;
+        spg_dat[Stpl_Num].max_rno = SPG_MAX_FLASH;
         break;
-    case 1:
+    case SPG_MAX_FLASH:
         spg_dat[Stpl_Num].timer--;
         if (spg_dat[Stpl_Num].timer) {
             spg_dat[Stpl_Num].timer2--;
@@ -366,10 +376,10 @@ s8 Stpl_Num;
             sa_gauge_trans(Stpl_Num, 30);
             spg_dat[Stpl_Num].kind = 1;
             spg_dat[Stpl_Num].timer2 = 2;
-            spg_dat[Stpl_Num].max_rno = 2;
+            spg_dat[Stpl_Num].max_rno = SPG_MAX_IDLE;
         }
         break;
-    case 2:
+    case SPG_MAX_IDLE:
         break;
     }
 }
@@ -379,7 +389,7 @@ s8 Stpl_Num;
 {
     if (spg_dat[Stpl_Num].time) {
         switch (spg_dat[Stpl_Num].time_rno) {
-        case 0:
+        case SPG_TIME_FLASH:
             if (plw[Stpl_Num].sa->store == spg_dat[Stpl_Num].spg_level) {
                 spg_dat[Stpl_Num].timer2--;
                 if (spg_dat[Stpl_Num].kind == 0) {
@@ -399,10 +409,10 @@ s8 Stpl_Num;
                 spg_dat[Stpl_Num].time_rno++;
             }
             break;
-        case 1:
+        case SPG_TIME_SHOW:
             sa_moji_trans(Stpl_Num, 1, 1);
             spg_dat[Stpl_Num].time_rno++;
-        case 2:
+        case SPG_TIME_DRAIN:
             if (spg_dat[Stpl_Num].current_spg > 0 && plw[Stpl_Num].sa->ok == -1) {
                 spg_dat[Stpl_Num].timer2--;
                 if (spg_dat[Stpl_Num].kind == 0) {
@@ -422,7 +432,7 @@ s8 Stpl_Num;
                 sa_gauge_trans(Stpl_Num, col);
                 sa_waku_trans(Stpl_Num, Stpl_Num);
                 spg_dat[Stpl_Num].flag = 0;
-                spg_dat[Stpl_Num].time_rno = 0;
+                spg_dat[Stpl_Num].time_rno = SPG_TIME_FLASH;
                 spg_dat[Stpl_Num].flag2 = 0;
             }
             break;
@@ -716,8 +726,8 @@ void spgauge_work_clear(s8 Stpl_Num) {
     spg->kind = 0;
     spg->max = 0;
     spg->max_old = 0;
-    spg->max_rno = 0;
-    spg->time_rno = 0;
+    spg->max_rno = SPG_MAX_START;
+    spg->time_rno = SPG_TIME_FLASH;
     sa_gauge_flash[Stpl_Num] = 0;
     sa_color_chenge(Stpl_Num, 1);
 }

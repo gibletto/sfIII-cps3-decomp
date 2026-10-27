@@ -1,5 +1,9 @@
 /*
- * EFFB4_TBL.C  tables read by EFFB4.c and EFFB6.c
+ * EFFB4_TBL.C  ball spark patterns and palette cycle colours
+ *
+ * s_mark_tbl gives the pattern added to the spark's animation, picked at random; read by
+ * EFFB4.C, the ball hit spark. effB6_col_tbl gives the six colour numbers each of the three
+ * cycle types steps through; read by EFFB6.C, the palette cycle.
  */
 
 #include "types.h"

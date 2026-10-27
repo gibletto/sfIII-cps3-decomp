@@ -25,11 +25,15 @@
 #include "charmove_2.h"
 #include "EFFF4.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* wait out the delay, then show */
+#define R0_SLIDE        1       /* slide in to the stop position */
+
 
 
 void effect_F3_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (--ewk->wu.dir_timer != 0) {
             return;
         }
@@ -37,7 +41,7 @@ void effect_F3_move(WORK_Other* ewk) {
         ewk->wu.disp_flag = 1;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.vital_new + 1, 0);
         break;
-    case 1:
+    case R0_SLIDE:
         ewk->wu.xyz[0].cal += ewk->wu.mvxy.a[0].sp;
         ewk->wu.mvxy.a[0].sp += ewk->wu.mvxy.d[0].sp;
         if (ewk->wu.mvxy.a[0].sp > 0) {

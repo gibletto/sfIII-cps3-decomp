@@ -25,6 +25,12 @@
 #include "EFFE2.h"
 #include "PLPCU.h"
 
+/* routine_no[3], Caught_01000 */
+#define CU01_HELD       1       /* held: follow the thrower's catch data */
+
+/* routine_no[3], Caught_02000 */
+#define CU02_HELD       1       /* held: move the thrower by the catch data */
+
 void Player_caught(PLW* wk) {
     PLW* emwk = (PLW*)wk->wu.dmg_adrs;
     wk->wu.next_z = wk->wu.my_priority;
@@ -42,7 +48,7 @@ void Player_caught(PLW* wk) {
     wk->caution_flag = 0;
     wk->sa->saeff_ok = 0;
     wk->cancel_timer = 0;
-    if (wk->wu.routine_no[3] == 0) {
+    if (wk->wu.routine_no[3] == RN3_START) {
         wk->ukemi_ok_timer = wk->backup_ok_timer = emwk->wu.cmyd.koc;
         wk->uot_cd_ok_flag = 0;
         wk->ukemi_success = 0;
@@ -59,11 +65,11 @@ void Caught_00000(PLW* wk) {}
 
 void Caught_01000(PLW* wk, PLW* emwk) {
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init(&wk->wu, 3, emwk->wu.cmyd.ix);
         wk->wu.cmwk[11] = 0;
-    case 1:
+    case CU01_HELD:
         if (check_tsukamare_keizoku_check(wk, emwk) != 0) {
             break;
         }
@@ -96,11 +102,11 @@ void Caught_01000(PLW* wk, PLW* emwk) {
 
 void Caught_02000(PLW* wk, PLW* emwk) {
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init(&wk->wu, 3, emwk->wu.cmyd.ix);
         wk->wu.cmwk[11] = 0;
-    case 1:
+    case CU02_HELD:
         if (check_tsukamare_keizoku_check(wk, emwk) != 0) {
             break;
         }
@@ -207,9 +213,9 @@ void caught_cg_type_check(PLW* wk, PLW* emwk) {
 
 s32 check_tsukamare_keizoku_check(PLW* wk, PLW* emwk) {
     if (emwk->tsukami_f == 0) {
-        wk->wu.routine_no[1] = 1;
+        wk->wu.routine_no[1] = PLAYER_DAMAGE;
         wk->wu.routine_no[2] = 88;
-        wk->wu.routine_no[3] = 0;
+        wk->wu.routine_no[3] = RN3_START;
         wk->wu.dm_stop = wk->wu.hit_stop = 0;
         return 1;
     }

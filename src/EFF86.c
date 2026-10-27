@@ -18,20 +18,25 @@
 #include "aboutspr.h"
 #include "EFF86.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start pattern 13 */
+#define R0_MOVE         1       /* follow the master's state */
+#define R0_KILL         2       /* (default) put the work back */
+
 extern const u32 eff86_char_table[];   /* provisional name */
 
 
 /* pattern 13, then eff86_0000 every frame */
 void effect_86_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.routine_no[1] = 0;
         ewk->wu.routine_no[2] = 0;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 13);
         /* fall through */
-    case 1:
+    case R0_MOVE:
         eff86_0000(ewk);
         break;
     default:

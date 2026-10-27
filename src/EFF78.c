@@ -21,6 +21,10 @@
 #include "CALDIR.h"
 #include "bg_sub_5.h"
 
+/* routine_no[0], later areas */
+#define R0_INIT         0       /* show in place */
+#define R0_MOVE         1       /* animate */
+
 extern const u32 eff78_char_table[];
 void eff78_area0(WORK_Other* ewk);
 void eff78_area1(WORK_Other* ewk);
@@ -131,7 +135,7 @@ void eff78_0104(WORK_Other* ewk) {
 
 void eff78_area1(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 4);
@@ -139,7 +143,7 @@ void eff78_area1(WORK_Other* ewk) {
         ewk->wu.xyz[1].disp.pos = 51;
         ewk->wu.my_priority = ewk->wu.position_z = 71;
         break;
-    case 1:
+    case R0_MOVE:
         char_move(&ewk->wu);
         suzi_sync_pos_set(ewk);
         sort_push_request4(&ewk->wu);

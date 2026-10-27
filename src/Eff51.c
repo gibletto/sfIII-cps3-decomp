@@ -22,11 +22,25 @@
 #include "charmove_2.h"
 #include "Eff51.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* count the delay down, then show */
+#define R0_HOLD         1       /* one frame at double size */
+#define R0_SHRINK       2       /* shrink to normal size */
+#define R0_GATHER       3       /* wait until all have shrunk */
+#define R0_PAUSE        4       /* count the pause down */
+#define R0_FLASH        5       /* first colour flash */
+#define R0_SYNC         6       /* wait for the second flash signal */
+#define R0_FLASH2       7       /* second colour flash */
+#define R0_STAY         99      /* stay without flashing */
+
+/* routine_no[1]: colour flash */
+#define R1_IDLE         0       /* colour flash: wait for the start */
+
 
 
 void effect_51_move(WORK_Other_CONN* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (--ewk->wu.dir_timer) {
             return;
         }
@@ -36,12 +50,12 @@ void effect_51_move(WORK_Other_CONN* ewk) {
         ewk->wu.mvxy.a[0].sp = 0xC0000;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
         break;
-    case 1:
+    case R0_HOLD:
         if (--ewk->wu.dir_timer == 0) {
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 2:
+    case R0_SHRINK:
         if ((ewk->wu.my_mr.size.x -= *(s16*)&ewk->wu.mvxy.a[0]) <= 63) {
             ewk->wu.my_mr.size.x = 63;
         }
@@ -53,26 +67,26 @@ void effect_51_move(WORK_Other_CONN* ewk) {
             if (ewk->wu.dir_old) {
                 ewk->wu.routine_no[0]++;
             } else {
-                ewk->wu.routine_no[0] = 99;
+                ewk->wu.routine_no[0] = R0_STAY;
             }
             break;
         }
         ewk->wu.position_z++;
         break;
-    case 3:
+    case R0_GATHER:
         if (Flash_Sign[0] == 0) {
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 4:
+    case R0_PAUSE:
         if (--ewk->wu.dir_old == 0) {
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 5:
+    case R0_FLASH:
         if (Flash_Violent((WORK_Other*)ewk, 1)) {
             ewk->wu.routine_no[0]++;
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[1] = R1_IDLE;
             ewk->wu.routine_no[2] = 1;
             ewk->wu.routine_no[3] = 3;
             ewk->wu.routine_no[4] = 10;
@@ -82,12 +96,12 @@ void effect_51_move(WORK_Other_CONN* ewk) {
             set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
         }
         break;
-    case 6:
+    case R0_SYNC:
         if (Flash_Sign[1] == 0) {
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 7:
+    case R0_FLASH2:
         if (Flash_Violent((WORK_Other*)ewk, 1)) {
             ewk->wu.routine_no[0]++;
         }

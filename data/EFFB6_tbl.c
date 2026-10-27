@@ -1,5 +1,8 @@
 /*
- * EFFB6_TBL.C  tables read by effb9.c
+ * EFFB6_TBL.C  round number patterns
+ *
+ * effb9_round_char_tbl gives the pattern of the round number for each round (Round_num). Read
+ * by EFFB9.C, the round-call number sprite.
  */
 
 #include "types.h"

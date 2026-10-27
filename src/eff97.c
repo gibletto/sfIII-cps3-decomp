@@ -1,7 +1,7 @@
 /*
  * EFF97.C  Entrance prop thrown aside (effect 97)
  *
- * A prop that appears beside a fighter during his entrance (created from Appear_15000).
+ * A prop that appears beside a fighter during the entrance (created from Appear_15000).
  * effect_97_init places it 108 dots in front of the fighter; effect_97_move plays its
  * animation until the fighter's appearance reaches the right step, then switches to a
  * second pattern and throws it off the screen with speed and gravity before freeing it.
@@ -24,33 +24,39 @@
 #include "bg_sub_5.h"
 #include "eff97.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show the first pattern */
+#define R0_MOVE         1       /* animate until the entrance cue */
+#define R0_THROW        2       /* turn round and start the throw */
+#define R0_FLY          3       /* fly off for 16 frames, then hide */
+#define R0_END          4       /* one more frame */
+#define R0_KILL         5       /* (default) put the work back */
+
 
 
 /* not gated by EXE_flag/Game_pause, case 3 draws only while moving */
 void effect_97_move(WORK_Other* ewk) {
-    s32 kc = 16;
-
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 44);
-    case 1:
+    case R0_MOVE:
         char_move(&ewk->wu);
         if (plw[ewk->master_id].wu.routine_no[2] == 1 && plw[ewk->master_id].wu.routine_no[3] == 0) {
             ewk->wu.routine_no[0]++;
-            ewk->wu.old_rno[0] = kc;
+            ewk->wu.old_rno[0] = 16;
         }
         suzi_sync_pos_set(ewk);
         sort_push_request4(&ewk->wu);
         break;
-    case 2:
+    case R0_THROW:
         ewk->wu.old_rno[0]--;
         if (ewk->wu.old_rno[0] > 0) {
             ewk->wu.routine_no[0]++;
             ewk->wu.rl_flag ^= 1;
             set_char_move_init(&ewk->wu, 0, 45);
-            ewk->wu.old_rno[0] = kc;
+            ewk->wu.old_rno[0] = 16;
             ewk->wu.mvxy.a[1].sp = 0xE8000;
             ewk->wu.mvxy.d[1].sp = -0x6000;
             if (plw[ewk->master_id].wu.id) {
@@ -64,7 +70,7 @@ void effect_97_move(WORK_Other* ewk) {
         suzi_sync_pos_set(ewk);
         sort_push_request4(&ewk->wu);
         break;
-    case 3:
+    case R0_FLY:
         ewk->wu.old_rno[0]--;
         if (ewk->wu.old_rno[0] > 0) {
             add_x_sub(ewk);
@@ -75,7 +81,7 @@ void effect_97_move(WORK_Other* ewk) {
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 4:
+    case R0_END:
         break;
     default:
         all_cgps_put_back(&ewk->wu);

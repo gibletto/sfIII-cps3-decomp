@@ -1,5 +1,9 @@
 /*
- * SHELL12_TBL.C  tables read by SHELL12.c: the routine table of the shell patterns
+ * SHELL12_TBL.C  CPU anti-projectile pattern table 12 (Sean)
+ *
+ * Shell12_Tbl lists the pattern scripts Shell12_0000 .. Shell12_0010 the computer-controlled
+ * Sean runs when the opponent fires a projectile, indexed by Pattern_Index. Read by SHELL12.C,
+ * which Com_VS_Shell in COM_PL.C calls for Sean.
  */
 
 #include "types.h"

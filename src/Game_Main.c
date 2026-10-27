@@ -93,6 +93,44 @@
 #include "lose_pl.h"
 #include "PLS02.h"
 
+/* G_No2 under G1_TITLE: the Game00 routine */
+#define G2_TITLE        0       /* Game0_0: the title */
+#define G2_TITLE_WAIT   1       /* Game0_1: until a start button */
+#define G2_TITLE_WIPE   2       /* Game0_2: save the screen and start the wipe */
+#define G2_TITLE_OUT    3       /* Game0_3: finish the wipe, on to select */
+#define G2_TITLE_FREE   4       /* Game0_2 again: a free-play start skips the title */
+
+/* G_No2 under G1_SELECT */
+#define G2_SEL_INIT     0       /* set up */
+#define G2_SEL_MAIN     1       /* the select screen, until both have chosen */
+
+/* G_No2 under G1_NEXT_CPU */
+#define G2_NEXT_INIT    0       /* set up */
+#define G2_NEXT_MAIN    1       /* the next opponent screen */
+
+/* G_No2 under G1_GAME_OVER */
+#define G2_OVER_INIT    0       /* save the screen and wipe */
+#define G2_OVER_SETUP   1       /* set up the game-over screen */
+#define G2_OVER_COVER   2       /* wait out the cover, then wipe in */
+#define G2_OVER_REVIVAL 3       /* finish the wipe */
+#define G2_OVER_WAIT    4       /* wait G_Timer */
+#define G2_OVER_MESSAGE 5       /* wait G_Timer, then the ranking or the exit */
+#define G2_OVER_NAME    6       /* until the name entries are done */
+#define G2_OVER_RANK_SEL 7      /* choose the first ranking page */
+#define G2_OVER_RANKING 8       /* the first ranking page */
+#define G2_OVER_RANKING2 9      /* the second ranking page */
+#define G2_OVER_EXIT    10      /* wait G_Timer and wipe out */
+
+/* G_No2 under G1_ENDING */
+#define G2_END_INIT     0       /* set up */
+#define G2_END_MAIN     1       /* the ending, then game over */
+
+/* G_No3 in Disp_Ranking */
+#define G3_RANK_INIT    0       /* save the screen and wipe */
+#define G3_RANK_SETUP   1       /* set up the ranking */
+#define G3_RANK_COVER   2       /* wait out the cover, then wipe in */
+#define G3_RANK_REVIVAL 3       /* finish the wipe */
+
 void Basic_Sub_Suzi(void);
 void SF3_logo(s16 y);
 void sa_number_put(void);
@@ -121,7 +159,7 @@ void sound_reg_level_set(s16 level, s8 flag);
    until the next frame. */
 /* provisional name */
 void game_frame_task(void) {
-    if (0) {
+    if (DEBUG_SLOW) {
         task_sleep(1);
     }
 loop:
@@ -145,7 +183,7 @@ void match_state_0_fight(void) {
     if (Ck_Coin()) {
         tilemap_fill_all(0, 32);
         wipe_pattern_set(0, 7, 0);
-        if (G_No1 != 99) {
+        if (G_No1 != G1_DEMO_RESTART) {
             sound_driver_init();
         }
         sound_reg_level_set(0, 0);
@@ -154,8 +192,8 @@ void match_state_0_fight(void) {
         if (Demo_Flag == 0) {
             sound_request(115);
         }
-        G_No0 = 1;
-        G_No1 = 0;
+        G_No0 = G0_GAME;
+        G_No1 = G1_TITLE;
         G_No2 = 0;
         G_No3 = 0;
         D_No0 = 0;
@@ -166,11 +204,11 @@ void match_state_0_fight(void) {
         voice_all_off();
         Before_Select_Sub();
         if (Free_Play) {
-            G_No2 = 4;
+            G_No2 = G2_TITLE_FREE;
             Exit_Title_Sub_Entry();
             return;
         } else {
-            E_No0 = 1;
+            E_No0 = E0_TITLE;
             E_No1 = 0;
             E_No2 = 0;
             E_No3 = 0;
@@ -178,7 +216,7 @@ void match_state_0_fight(void) {
         return;
     }
     switch (G_No1) {
-    case 0:
+    case G1_DEMO_INIT:
         G_No1++;
         G_No2 = 0;
         G_No3 = 0;
@@ -198,7 +236,7 @@ wipe:
         wipe_pattern_set(0, 7, 0);
         scfont_page0_fill(0, 32);
         break;
-    case 1:
+    case G1_DEMO_LOGO:
         draw_operator_info(Text_Page_Y);
         Basic_Sub();
         if (CAPCOM_Logo()) {
@@ -211,11 +249,11 @@ wipe:
                 D_No0 = 1;
                 E_No1 = 99;
             } else {
-                G_No1 = 4;
+                G_No1 = G1_DEMO_TITLE;
             }
         }
         break;
-    case 2:
+    case G1_DEMO_WARNING:
         draw_operator_info(Text_Page_Y);
         if (CAPCOM_Logo()) {
             Loop_Demo_Sub();
@@ -223,7 +261,7 @@ wipe:
             E_No1 = 99;
         }
         break;
-    case 3:
+    case G1_DEMO_LOGO_ETC:
         draw_operator_info(Text_Page_Y);
         if (CAPCOM_Logo()) {
             Loop_Demo_Sub();
@@ -231,7 +269,7 @@ wipe:
             Insert_Y = 20;
         }
         break;
-    case 4:
+    case G1_DEMO_TITLE:
         draw_operator_info(Text_Page_Y);
         Basic_Sub();
         if (Title()) {
@@ -241,7 +279,7 @@ wipe:
             D_No0 = 1;
         }
         break;
-    case 5:
+    case G1_DEMO_PLAY:
         draw_operator_info(Text_Page_Y);
         if (Play_Demo()) {
             Loop_Demo_Sub();
@@ -252,7 +290,7 @@ wipe:
             sound_driver_init();
         }
         break;
-    case 6:
+    case G1_DEMO_RANKING:
         draw_operator_info(Text_Page_Y);
         Basic_Sub();
         if (Ranking_Main() == 0) {
@@ -260,7 +298,7 @@ wipe:
         }
         Loop_Demo_Sub();
         break;
-    case 7:
+    case G1_DEMO_PLAY2:
         draw_operator_info(Text_Page_Y);
         if (Play_Demo()) {
             Loop_Demo_Sub();
@@ -272,12 +310,12 @@ wipe:
             sound_driver_init();
         }
         break;
-    case 8:
+    case G1_DEMO_RANKING2:
         draw_operator_info(Text_Page_Y);
         Basic_Sub();
         if (Ranking_Main()) {
             Loop_Demo_Sub();
-            G_No1 = 1;
+            G_No1 = G1_DEMO_LOGO;
             E_No1 = 99;
         }
         break;
@@ -289,7 +327,7 @@ wipe:
             }
             break;
         default:
-            G_No1 = 1;
+            G_No1 = G1_DEMO_LOGO;
             G_No2 = 0;
             E_No3 = 0;
             E_No1 = 99;
@@ -348,14 +386,14 @@ void Before_Select_Sub(void) {
     Stock_Com_Color = -1;
     Stock_Com_Arts = -1;
     Straight_Lose_Count = 0;
-    Request_Disp_Rank[0][0] = -1;
-    Request_Disp_Rank[0][1] = -1;
-    Request_Disp_Rank[1][0] = -1;
-    Request_Disp_Rank[1][1] = -1;
-    Rank_In[0][0] = -1;
-    Rank_In[0][1] = -1;
-    Rank_In[1][0] = -1;
-    Rank_In[1][1] = -1;
+    Request_Disp_Rank[0][RANK_SCORE] = -1;
+    Request_Disp_Rank[0][RANK_WINS] = -1;
+    Request_Disp_Rank[1][RANK_SCORE] = -1;
+    Request_Disp_Rank[1][RANK_WINS] = -1;
+    Rank_In[0][RANK_SCORE] = -1;
+    Rank_In[0][RANK_WINS] = -1;
+    Rank_In[1][RANK_SCORE] = -1;
+    Rank_In[1][RANK_WINS] = -1;
     Clear_Personal_Data(0);
     Clear_Personal_Data(1);
     Last_Player_id = Player_Number = -1;
@@ -433,7 +471,7 @@ void Game0_3(void) {
 void Game01(void) {
     Basic_Sub_Suzi();
     switch (G_No2) {
-    case 0:
+    case G2_SEL_INIT:
         G_No2++;
         S_No = 0;
         S_Sub_No = 0;
@@ -446,7 +484,7 @@ void Game01(void) {
         load_char_gfx(0x5B30, 1);
         init_slow_flag();
         break;
-    case 1:
+    case G2_SEL_MAIN:
         if (Select_Player()) {
             G_No2++;
             Game01_Sub();
@@ -463,11 +501,11 @@ void Game01(void) {
         if (Switch_Screen()) {
             Cover_Timer = 24;
             Scrn_Move_Set(4, 0, 0);
-            appear_type = 1;
+            appear_type = APPEAR_ENTRY;
             if (Demo_Flag) {
-                G_No1 = 2;
+                G_No1 = G1_FIGHT;
                 G_No2 = 0;
-                E_No0 = 4;
+                E_No0 = E0_FIGHT;
                 E_No1 = 0;
                 E_No2 = 0;
                 E_No3 = 0;
@@ -486,9 +524,9 @@ void Game01(void) {
                 Sel_Arts_Complete[1] = -1;
             }
             if (plw[0].wu.operator != 0 && plw[1].wu.operator != 0) {
-                Play_Type = 1;
+                Play_Type = PLAY_VS_PLAYER;
             } else {
-                Play_Type = 0;
+                Play_Type = PLAY_VS_CPU;
             }
             voice_all_off();
         }
@@ -510,10 +548,10 @@ void Game01_Sub(void) {
     Setup_Play_Type();
     PL_Wins[0] = 0;
     PL_Wins[1] = 0;
-    Score[0][1] = 0;
-    Score[0][2] = 0;
-    Score[1][1] = 0;
-    Score[1][2] = 0;
+    Score[0][SCORE_VS] = 0;
+    Score[0][SCORE_ROUND] = 0;
+    Score[1][SCORE_VS] = 0;
+    Score[1][SCORE_ROUND] = 0;
     Score_Sub();
     Disp_Win_Record();
     Clear_Win_Type();
@@ -540,7 +578,7 @@ void Game01_Sub(void) {
 void Game05(void) {
     Basic_Sub_Suzi();
     switch (G_No2) {
-    case 0:
+    case G2_NEXT_INIT:
         G_No2++;
         S_No = 0;
         S_Sub_No = 0;
@@ -552,7 +590,7 @@ void Game05(void) {
         load_any_color(135);
         init_slow_flag();
         break;
-    case 1:
+    case G2_NEXT_MAIN:
         if (Next_CPU()) {
             G_No2++;
             Game01_Sub();
@@ -566,9 +604,9 @@ void Game05(void) {
         if (Switch_Screen()) {
             Cover_Timer = 24;
             Scrn_Move_Set(4, 0, 0);
-            G_No1 = 2;
+            G_No1 = G1_FIGHT;
             G_No2 = 0;
-            E_No0 = 4;
+            E_No0 = E0_FIGHT;
             E_No1 = 0;
             E_No2 = 0;
             E_No3 = 0;
@@ -599,7 +637,7 @@ void Game2_0(void) {
     C_No1 = 0;
     C_No2 = 0;
     C_No3 = 0;
-    G_No2 = 3;
+    G_No2 = G2_FIGHT_START;
     G_Timer = 10;
     Round_num = 0;
     Allow_a_battle_f = 0;
@@ -652,7 +690,7 @@ void Game2_3(void) {
     if (--G_Timer) {
         return;
     }
-    G_No2 = 1;
+    G_No2 = G2_FIGHT;
     Clear_Flash_No();
 }
 
@@ -668,8 +706,8 @@ void Game2_4(void) {
         stngauge_work_clear();
         combo_cont_init();
         count_cont_init(1);
-        Score[0][2] = 0;
-        Score[1][2] = 0;
+        Score[0][SCORE_ROUND] = 0;
+        Score[1][SCORE_ROUND] = 0;
         Score_Sub();
         win_mark_rno[0] = 0;
         win_mark_control(0);
@@ -680,7 +718,7 @@ void Game2_4(void) {
         pcon_rno[1] = 0;
         pcon_rno[2] = 0;
         pcon_rno[3] = 0;
-        appear_type = 2;
+        appear_type = APPEAR_ROUND;
         bg_work_clear();
         win_lose_work_clear();
         if (bg_w.area < 2) {
@@ -691,7 +729,7 @@ void Game2_4(void) {
     default:
         Game2_1();
         if (--G_Timer == 0) {
-            G_No2 = 1;
+            G_No2 = G2_FIGHT;
             Clear_Flash_No();
         }
         break;
@@ -707,10 +745,10 @@ void Game03(void)
     case 0:
         if (Winner_Scene()) {
             if (Game_setting.set5) {
-                G_No1 = 6;
+                G_No1 = G1_GAME_OVER;
                 G_No2 = 0;
                 G_No3 = 0;
-                E_No0 = 8;
+                E_No0 = E0_GAME_OVER;
                 E_No1 = 0;
                 E_No2 = 0;
                 E_No3 = 0;
@@ -724,10 +762,10 @@ void Game03(void)
     default:
         if (Switch_Screen()) {
             Cover_Timer = 24;
-            G_No1 = 5;
+            G_No1 = G1_NEXT_CPU;
             G_No2 = 0;
             G_No3 = 0;
-            E_No0 = 9;
+            E_No0 = E0_NEXT_CPU;
             E_No1 = 0;
             E_No2 = 0;
             E_No3 = 0;
@@ -736,7 +774,7 @@ void Game03(void)
                 break;
             }
             if (Round_Operator[LOSER]) {
-                E_Number[LOSER][0] = 1;
+                E_Number[LOSER][0] = ENTRY_CONTINUE;
                 E_Number[LOSER][1] = 0;
                 E_Number[LOSER][2] = 0;
                 E_Number[LOSER][3] = 0;
@@ -754,9 +792,9 @@ void Game04(void) {
     case 0:
         if (Loser_Scene()) {
             if (Continue_Flag) {
-                G_No1 = 7;
+                G_No1 = G1_CONTINUE;
                 G_No2 = 0;
-                E_No0 = 7;
+                E_No0 = E0_CONTINUE;
                 E_No1 = 0;
                 E_No2 = 0;
                 E_No3 = 0;
@@ -765,7 +803,7 @@ void Game04(void) {
                 Cont_Sub2_No = 0;
                 Cont_Sub3_No = 0;
                 if (Continue_Flag) {
-                    E_Number[LOSER][0] = 1;
+                    E_Number[LOSER][0] = ENTRY_CONTINUE;
                     E_Number[LOSER][1] = 0;
                     E_Number[LOSER][2] = 0;
                     E_Number[LOSER][3] = 0;
@@ -773,7 +811,7 @@ void Game04(void) {
                 while (create_task((void (*)())continue_task, 0, &task_tbl[1], 3, 0) == 0) {
                 }
             } else {
-                G_No1 = 6;
+                G_No1 = G1_GAME_OVER;
                 G_No2 = 0;
             }
         }
@@ -785,14 +823,14 @@ void Game04(void) {
 
 void Game08(void) {
     switch (G_No2) {
-    case 0:
-        G_No2 = 1;
+    case G2_END_INIT:
+        G_No2 = G2_END_MAIN;
         break;
-    case 1:
+    case G2_END_MAIN:
         if (Ending_main(plw[WINNER].player_number)) {
-            G_No1 = 6;
+            G_No1 = G1_GAME_OVER;
             G_No2 = 0;
-            E_No0 = 8;
+            E_No0 = E0_GAME_OVER;
             E_No1 = 0;
             E_No2 = 0;
             E_No3 = 0;
@@ -815,7 +853,7 @@ void Game06(void) {
         return;
     }
     switch (G_No2) {
-    case 0:
+    case G2_OVER_INIT:
         G_No2 += 1;
         Stock_Com_Color = -1;
         Stock_Com_Arts = -1;
@@ -824,7 +862,7 @@ void Game06(void) {
         sc_vram_to_ram();
         Switch_Screen_Init(0, 1);
         break;
-    case 1:
+    case G2_OVER_SETUP:
         if (Switch_Screen()) {
             G_No2 += 1;
             Cover_Timer = 24;
@@ -841,9 +879,9 @@ void Game06(void) {
             }
         }
         break;
-    case 2:
+    case G2_OVER_COVER:
         if (--Cover_Timer == 0) {
-            E_No0 = 8;
+            E_No0 = E0_GAME_OVER;
             E_No1 = 0;
             E_No2 = 0;
             E_No3 = 0;
@@ -852,7 +890,7 @@ void Game06(void) {
             Switch_Screen_Init(0, 1);
         }
         break;
-    case 3:
+    case G2_OVER_REVIVAL:
         if (Switch_Screen_Revival()) {
             G_No2 += 1;
             G_Timer = 29;
@@ -860,81 +898,81 @@ void Game06(void) {
             bgm_request(10);
         }
         break;
-    case 4:
+    case G2_OVER_WAIT:
         if (--G_Timer == 0) {
             G_No2 += 1;
             G_Timer = 150;
             Forbid_Break = 0;
         }
         break;
-    case 5:
+    case G2_OVER_MESSAGE:
         if (--G_Timer) {
             break;
         }
         if (Check_Disp_Rank_Request()) {
-            G_No2 = 6;
+            G_No2 = G2_OVER_NAME;
             effect_58_init(8, 40, 28);
         } else {
             G_Timer = 1;
-            G_No2 = 10;
+            G_No2 = G2_OVER_EXIT;
         }
         break;
-    case 6:
-        if (E_Number[0][0] != 2 && E_Number[1][0] != 2) {
+    case G2_OVER_NAME:
+        if (E_Number[0][0] != ENTRY_NAME && E_Number[1][0] != ENTRY_NAME) {
             G_No2 += 1;
             G_No3 = 0;
             G_Timer = 20;
         }
         break;
-    case 7:
+    case G2_OVER_RANK_SEL:
         if (--G_Timer) {
             break;
         }
-        if (Request_Disp_Rank[0][0] >= 0 || Request_Disp_Rank[1][0] >= 0) {
+        if (Request_Disp_Rank[0][RANK_SCORE] >= 0 || Request_Disp_Rank[1][RANK_SCORE] >= 0) {
             G_No2 += 1;
             Rank_Type = 0;
-            Present_Rank[0] = Rank_In[0][0];
-            Present_Rank[1] = Rank_In[1][0];
+            Present_Rank[0] = Rank_In[0][RANK_SCORE];
+            Present_Rank[1] = Rank_In[1][RANK_SCORE];
         } else {
-            G_No2 = 9;
+            G_No2 = G2_OVER_RANKING2;
             Rank_Type = 6;
-            Present_Rank[0] = Rank_In[0][1];
-            Present_Rank[1] = Rank_In[1][1];
+            Present_Rank[0] = Rank_In[0][RANK_WINS];
+            Present_Rank[1] = Rank_In[1][RANK_WINS];
         }
         break;
-    case 8:
+    case G2_OVER_RANKING:
         if (Disp_Ranking()) {
-            if (Request_Disp_Rank[0][1] >= 0 || Request_Disp_Rank[1][1] >= 0) {
+            if (Request_Disp_Rank[0][RANK_WINS] >= 0 || Request_Disp_Rank[1][RANK_WINS] >= 0) {
                 G_No2 += 1;
                 G_No3 = 0;
                 Rank_Type = 6;
-                Present_Rank[0] = Rank_In[0][1];
-                Present_Rank[1] = Rank_In[1][1];
+                Present_Rank[0] = Rank_In[0][RANK_WINS];
+                Present_Rank[1] = Rank_In[1][RANK_WINS];
             } else {
-                G_No2 = 10;
+                G_No2 = G2_OVER_EXIT;
                 G_Timer = 1;
             }
         }
         break;
-    case 9:
+    case G2_OVER_RANKING2:
         if (Disp_Ranking()) {
             G_No2 += 1;
             G_Timer = 1;
         }
         break;
-    case 10:
+    case G2_OVER_EXIT:
         if (--G_Timer) {
             break;
         }
         G_No2 += 1;
-        Request_Disp_Rank[0][0] = -1;
-        Request_Disp_Rank[0][1] = -1;
-        Request_Disp_Rank[1][0] = -1;
-        Request_Disp_Rank[1][1] = -1;
-        Rank_In[0][0] = -1;
-        Rank_In[0][1] = -1;
-        Rank_In[1][0] = -1;
-        Rank_In[1][1] = -1;
+        Request_Disp_Rank[0][RANK_SCORE] = -1;
+        Request_Disp_Rank[0][RANK_WINS] = -1;
+        Request_Disp_Rank[1][RANK_SCORE] = -1;
+        Request_Disp_Rank[1][RANK_WINS] = -1;
+        Rank_In[0][RANK_SCORE] = -1;
+        Rank_In[0][RANK_WINS] = -1;
+        Rank_In[1][RANK_SCORE] = -1;
+        Rank_In[1][RANK_WINS] = -1;
         for (xx = 0; xx <= 12; xx++) {
             Break_Com[0][xx] = 0;
             Break_Com[1][xx] = 0;
@@ -952,20 +990,20 @@ void Game06(void) {
             if (Request_Break[0] != 0 || Request_Break[1] != 0) {
                 Request_Break_Sub(0);
                 Request_Break_Sub(1);
-                G_No1 = 1;
+                G_No1 = G1_SELECT;
                 G_No2 = 0;
                 G_No3 = 0;
-                E_No0 = 2;
+                E_No0 = E0_SELECT;
                 E_No1 = 0;
                 E_No2 = 0;
                 E_No3 = 0;
                 break;
             }
-            G_No0 = 0;
-            G_No1 = 99;
+            G_No0 = G0_DEMO;
+            G_No1 = G1_DEMO_RESTART;
             G_No2 = 0;
             G_No3 = 0;
-            E_No0 = 0;
+            E_No0 = E0_DEMO;
             E_No1 = 99;
             E_No2 = 0;
             E_No3 = 0;
@@ -983,10 +1021,10 @@ void Game06(void) {
 
 /* provisional name */
 s32 Check_Disp_Rank_Request(void) {
-    if (Request_Disp_Rank[0][0] >= 0 || Request_Disp_Rank[0][1] >= 0) {
+    if (Request_Disp_Rank[0][RANK_SCORE] >= 0 || Request_Disp_Rank[0][RANK_WINS] >= 0) {
         return 1;
     }
-    if (Request_Disp_Rank[1][0] >= 0 || Request_Disp_Rank[1][1] >= 0) {
+    if (Request_Disp_Rank[1][RANK_SCORE] >= 0 || Request_Disp_Rank[1][RANK_WINS] >= 0) {
         return 1;
     }
     return 0;
@@ -1008,12 +1046,12 @@ s16 PL_id;
 
 s32 Disp_Ranking(void) {
     switch (G_No3) {
-    case 0:
+    case G3_RANK_INIT:
         G_No3++;
         sc_vram_to_ram();
         Switch_Screen_Init(0, 0);
         break;
-    case 1:
+    case G3_RANK_SETUP:
         if (Switch_Screen() != 0) {
             Cover_Timer = 24;
             G_No3++;
@@ -1025,7 +1063,7 @@ s32 Disp_Ranking(void) {
             Clear_Personal_Data(1);
         }
         break;
-    case 2:
+    case G3_RANK_COVER:
         Ranking_Main();
         if (--Cover_Timer) {
             break;
@@ -1033,7 +1071,7 @@ s32 Disp_Ranking(void) {
         G_No3++;
         Switch_Screen_Init(0, 0);
         break;
-    case 3:
+    case G3_RANK_REVIVAL:
         Ranking_Main();
         if (Switch_Screen_Revival() != 0) {
             G_No3++;
@@ -1061,11 +1099,11 @@ void Game07(void) {
     default:
         if (--G_Timer == 0) {
             Forbid_Break = 0;
-            G_No0 = 0;
-            G_No1 = 0;
+            G_No0 = G0_DEMO;
+            G_No1 = G1_DEMO_INIT;
             G_No2 = 0;
             G_No3 = 0;
-            E_No0 = 0;
+            E_No0 = E0_DEMO;
             E_No1 = 0;
             E_No2 = 0;
             E_No3 = 0;
@@ -1123,9 +1161,9 @@ s32 Ck_Coin(void) {
     s16 pl;
     if (Free_Play) {
         pl = -1;
-        if (~p1sw_1 & p1sw_0 & 0x1000) {
+        if (~p1sw_1 & p1sw_0 & BUTTON_START) {
             pl = 0;
-        } else if (~p2sw_1 & p2sw_0 & 0x1000) {
+        } else if (~p2sw_1 & p2sw_0 & BUTTON_START) {
             pl = 1;
         }
         if (pl == -1) {
@@ -1158,7 +1196,7 @@ s32 Ck_Coin(void) {
 /* provisional name */
 void draw_operator_info(s32 y) {
     if (Country == 6 || Country == 5) {
-        if (p1sw_0 & 0x10) {
+        if (p1sw_0 & BUTTON_LP) {
             tilemap_print_string_attr(34, y + 16, 18, Game_Data_msg);
             tilemap_print_string_attr(29, y + 17, 18, Income_msg);
             tilemap_print_string_attr(29, y + 18, 18, Service_msg);

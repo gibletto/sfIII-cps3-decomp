@@ -21,6 +21,7 @@
 #include "color3rd.h"
 #include "eff06.h"
 #include "eff65.h"
+#include "fighter.h"
 
 /* declarations the headers do not give */
 void zoom_ud_check(void);
@@ -205,10 +206,10 @@ s32 bg070_check(void) {
     if (bg_w.area) {
         return 1;
     }
-    if (plw[0].player_number != 4 && plw[1].player_number != 4) {
+    if (plw[0].player_number != PL_DUDLEY && plw[1].player_number != PL_DUDLEY) {
         return 1;
     }
-    if (plw[0].player_number == 4 && plw[1].player_number == 4) {
+    if (plw[0].player_number == PL_DUDLEY && plw[1].player_number == PL_DUDLEY) {
         return 1;
     }
     return 0;

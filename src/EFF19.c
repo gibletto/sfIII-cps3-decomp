@@ -17,6 +17,12 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 #include "aboutspr.h"
+
+/* routine_no[0] */
+#define R0_INIT         0       /* hidden, note the parent's step */
+#define R0_MOVE         1       /* show on the parent's step */
+#define R0_KILL         99      /* (default) put the work back */
+
 void eff19_char_move(WORK_Other* ewk);
 extern const s16 eff19_data_tbl[7][3];
 extern const u32 eff19_char_table[];
@@ -24,17 +30,17 @@ extern const u32 eff19_char_table[];
 void effect_19_move(WORK_Other* ewk) {
     WORK_Other* oya = (WORK_Other*)ewk->my_master;
     if (compel_dead_check(ewk)) {
-        ewk->wu.routine_no[0] = 99;
+        ewk->wu.routine_no[0] = R0_KILL;
     } else {
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_INIT:
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 0;
             set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
             ewk->wu.direction = oya->wu.cg_ix;
             ewk->wu.dead_f = 1;
             break;
-        case 1:
+        case R0_MOVE:
             if (!EXE_flag && !Game_pause) {
                 if (ewk->wu.type == 0) {
                     ewk->wu.disp_flag = 0;

@@ -21,6 +21,11 @@
 #include "charmove_2.h"
 #include "effg8.h"
 
+/* routine_no[1] */
+#define R1_INIT         0       /* start the pattern and the climb */
+#define R1_FLY          1       /* fly across, speeding up */
+#define R1_KILL         99      /* (default) put the work back */
+
 extern const s16 effg8_data_tbl[16][5];
 extern const s32 effg8_speed_tbl[4][2];
 extern const s8 effg8_pos_ix_tbl[4][4][4];
@@ -31,10 +36,10 @@ extern const s16 effg8_pos_tbl[8];
 void effect_G8_move(WORK_Other* ewk) {
     s8 ix;
     if (end_w.r_no_2 > 7) {
-        ewk->wu.routine_no[1] = 99;
+        ewk->wu.routine_no[1] = R1_KILL;
     }
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         ewk->wu.mvxy.d[1].sp = 0;
         ewk->wu.disp_flag = 1;
@@ -45,7 +50,7 @@ void effect_G8_move(WORK_Other* ewk) {
         break;
     default:
         goto kill;
-    case 1:
+    case R1_FLY:
         ewk->wu.old_rno[3]++;
         if (ewk->wu.old_rno[3] > 60) {
             if (ewk->wu.dir_step < 3) {

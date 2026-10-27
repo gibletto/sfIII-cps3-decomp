@@ -1,5 +1,8 @@
 /*
- * MANAGE_TBL.C  tables read by RANKING.c: the default ranking
+ * MANAGE_TBL.C  default score ranking
+ *
+ * Rank_Default_Data is the 12 default RANK_DATA entries { initials, mark, character, flag,
+ * colour, score } that Ranking_Init copies into the ranking. Read by RANKING.C.
  */
 
 #include "types.h"

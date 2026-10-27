@@ -32,6 +32,12 @@
 #include "eff89.h"
 #include "cps3.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* load the step data */
+#define R0_MOVE         1       /* step the palette script */
+#define R0_DONE         2       /* (default) script over: put the work back */
+#define R0_KILL         99      /* (default) cut by a wipe or break-in */
+
 
 
 void effect_89_move(WORK_Other* ewk)
@@ -39,16 +45,16 @@ void effect_89_move(WORK_Other* ewk)
     u16 attr;
 
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.dir_timer = 1;
         ewk->wu.dir_step = ewk->wu.vitality;
         ewk->wu.step_xy_table = &EFF89_Step_Data[ewk->wu.direction];
         ewk->wu.move_xy_table = ewk->wu.step_xy_table;
         /* fall through */
-    case 1:
+    case R0_MOVE:
         if (Exec_Wipe || Break_Into) {
-            ewk->wu.routine_no[0] = 99;
+            ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
         if (--ewk->wu.dir_timer != 0) {
@@ -62,7 +68,7 @@ void effect_89_move(WORK_Other* ewk)
                 ewk->wu.dir_step = ewk->wu.vitality;
                 ewk->wu.move_xy_table = ewk->wu.step_xy_table;
             } else {
-                ewk->wu.routine_no[0] = 2;
+                ewk->wu.routine_no[0] = R0_DONE;
             }
         }
         break;
@@ -118,8 +124,8 @@ s16 d;
     ewk->wu.vital_old = b;
     ewk->wu.dm_vital = c;
     ewk->wu.dmcal_m = d;
-    ewk->wu.direction = EFF89_Init_Data[type][0];
-    ewk->wu.dir_old = EFF89_Init_Data[type][1];
-    ewk->wu.vitality = EFF89_Init_Data[type][2];
+    ewk->wu.direction = EFF89_Init_Data[type][STEP_INIT_START];
+    ewk->wu.dir_old = EFF89_Init_Data[type][STEP_INIT_LOOP];
+    ewk->wu.vitality = EFF89_Init_Data[type][STEP_INIT_STEPS];
     return 0;
 }

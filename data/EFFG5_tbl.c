@@ -1,5 +1,10 @@
 /*
- * EFFG5_TBL.C  tables read by EFFG5.c
+ * EFFG5_TBL.C  flying drop burst tables for effect G5
+ *
+ * num_of_ase gives how many drops each burst size spawns (2, 4, 6 or 6); ase_dir_hosei,
+ * ase_speed_hosei and ase_delta_hosei are four random sets of the drops' direction offsets,
+ * speeds and slow-down, six per set. Read by EFFG5.C (setup_ase_extra), the burst of small
+ * flying drops.
  */
 
 #include "types.h"

@@ -20,18 +20,24 @@
 #include "aboutspr.h"
 #include "EFFD1.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* aim at the landing point */
+#define R0_FALL         1       /* fly toward it */
+#define R0_DROP         2       /* last part of the drop, in front */
+#define R0_LAND         3       /* animate on the floor */
+
 
 
 void effect_D1_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, (s16)(ewk->wu.char_index));
         fall_data_set(ewk);
         pl_eff_trans_entry(ewk);
         break;
-    case 1:
+    case R0_FALL:
         if (!ewk->wu.cg_type) {
             char_move(&ewk->wu);
         }
@@ -44,7 +50,7 @@ void effect_D1_move(WORK_Other* ewk) {
         add_y_sub(ewk);
         pl_eff_trans_entry(ewk);
         break;
-    case 2:
+    case R0_DROP:
         if (!ewk->wu.cg_type) {
             char_move(&ewk->wu);
         }
@@ -57,7 +63,7 @@ void effect_D1_move(WORK_Other* ewk) {
         }
         pl_eff_trans_entry(ewk);
         break;
-    case 3:
+    case R0_LAND:
         char_move(&ewk->wu);
         pl_eff_trans_entry(ewk);
         break;

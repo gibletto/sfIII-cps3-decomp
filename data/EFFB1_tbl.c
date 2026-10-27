@@ -1,5 +1,10 @@
 /*
- * EFFB1_TBL.C  tables read by effb3.c
+ * EFFB1_TBL.C  round call letter tables
+ *
+ * effb3_round_tbl gives the pattern and goal x of each ROUND letter and effb3_final_tbl those
+ * of the ten FINAL ROUND letters; effb3_fight_tbl gives each FIGHT letter its pattern, the x
+ * it stops at and the x it starts from, both from BG 1. Read by EFFB3.C, the round / FIGHT
+ * display.
  */
 
 #include "types.h"
@@ -20,6 +25,10 @@ const s16 effb3_final_tbl[10][2] = {
     { 9, 68 }, { 10, 92 },
 };
 
+/*
+ * One row per letter of FIGHT (vital_new): pattern, x to stop at and x to start from,
+ * both from BG 1.
+ */
 const s16 effb3_fight_tbl[6][3] = {
     { 1, -48, -64 }, { 2, -32, -47 }, { 3, -16, -42 }, { 4, 0, 4 },
     { 5, 16, 58 }, { 6, 32, 63 },

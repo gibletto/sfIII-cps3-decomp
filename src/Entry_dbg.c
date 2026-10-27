@@ -140,7 +140,8 @@ void dbg_disasm_rows(u16* tbl) {
 
 
 /* provisional name */
-void disasm_sh_opcode(u16 code, char* str) {
+void disasm_sh_opcode(u16 code, char* out) {
+    char* str = out;
     char buf[128];
     const MoveName* p;
     u32 masked;
@@ -164,13 +165,11 @@ void disasm_sh_opcode(u16 code, char* str) {
     (void)&((WORK*)buf)->id;
     kind = code & 0xF000;
     names = reg_name_tbl;
-    (void)&((WORK*)names)->be_flag;
     if (kind == 0x4000) {
     ldm:;
         p = sh_op_ldm_tbl;
         masked = code & 0xF0FF;
-        while (0) {
-        }
+        if (0) goto ldm;
         side = &names[(s32)(code & 0xF00) >> 8];
         for (; p->name != 0; p++) {
             if (0) {

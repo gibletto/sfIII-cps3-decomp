@@ -25,6 +25,11 @@
 #include "eff06.h"
 #include "EFF23.h"
 
+/* bgw r_no_0 of a layer with an entrance demo: its bg*_jmp routine */
+#define R0_INIT         0       /* set up the layer */
+#define R0_DEMO         1       /* the entrance demo */
+#define R0_MOVE         2       /* follow the fight */
+
 void load_any_color();
 s32 effect_18_init();
 s32 effect_25_init();
@@ -76,7 +81,7 @@ void bg170_layer0_init(void) {
     bgw_ptr->hos_xy[0].disp.pos = bgw_ptr->wxy[0].disp.pos - bg_w.pos_offset;
     bgw_ptr->hos_xy[0].disp.low = 0;
     if (bg170_appear_check()) {
-        bgw_ptr->r_no_0 = 2;
+        bgw_ptr->r_no_0 = R0_MOVE;
     } else {
         bgw_ptr->r_no_0++;
         if (bg_w.area == 0) {
@@ -113,7 +118,7 @@ void bg170_layer1_init(void) {
     bgw_ptr->hos_xy[0].disp.pos = bgw_ptr->wxy[0].disp.pos - bg_w.pos_offset;
     bgw_ptr->hos_xy[0].disp.low = 0;
     if (bg170_appear_check()) {
-        bgw_ptr->r_no_0 = 2;
+        bgw_ptr->r_no_0 = R0_MOVE;
     } else {
         bgw_ptr->r_no_0++;
         if (bg_w.area == 0) {
@@ -174,7 +179,7 @@ void bg170_layer2_init(void) {
     bgw_ptr->hos_xy[0].disp.pos = bgw_ptr->wxy[0].disp.pos - bg_w.pos_offset;
     bgw_ptr->hos_xy[0].disp.low = 0;
     if (bg170_appear_check()) {
-        bgw_ptr->r_no_0 = 2;
+        bgw_ptr->r_no_0 = R0_MOVE;
     } else {
         bgw_ptr->r_no_0++;
         if (bg_w.area == 0) {

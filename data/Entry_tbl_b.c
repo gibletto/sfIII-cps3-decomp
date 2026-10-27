@@ -1,5 +1,11 @@
 /*
- * ENTRY_TBL_B.C  tables read by entry_2.c and mode_init.c
+ * ENTRY_TBL_B.C  insert-coin messages and region tables
+ *
+ * str_INSERT_COIN and str_INSERT_COINS .. str_INSERT_COINS_8 are the insert-coin messages, the
+ * plural ones carrying the coin count, 2 to 9, as a code between the words; placed through the
+ * message lists of ENTRY_2.C, the player entry and credit task. region_type_tbl turns the
+ * Country into the area type, region_cc_type_tbl gives the CC type of each country and
+ * region_param_tbl the two CC values of each CC type; read by MODE_INIT.C.
  */
 
 #include "types.h"
@@ -22,35 +28,37 @@ extern const s8 region_param_tbl[][2];
 
 const s8 str_INSERT_COIN[12] = "INSERT COIN";
 
-const s8 str_INSERT_COINS[16] = {
+/* Messages whose digits are the font's glyph numbers 0-9 (not ASCII) are written as numbers; the comment
+   after each name is the text it shows. */
+const s8 str_INSERT_COINS[16] = {  /* "INSERT 2 COINS" */
     73, 78, 83, 69, 82, 84, 32, 2, 32, 67, 79, 73, 78, 83, 0, 10,
 };
 
-const s8 str_INSERT_COINS_2[16] = {
+const s8 str_INSERT_COINS_2[16] = {  /* "INSERT 3 COINS" */
     73, 78, 83, 69, 82, 84, 32, 3, 32, 67, 79, 73, 78, 83, 0, 48,
 };
 
-const s8 str_INSERT_COINS_3[16] = {
+const s8 str_INSERT_COINS_3[16] = {  /* "INSERT 4 COINS" */
     73, 78, 83, 69, 82, 84, 32, 4, 32, 67, 79, 73, 78, 83, 0, 48,
 };
 
-const s8 str_INSERT_COINS_4[16] = {
+const s8 str_INSERT_COINS_4[16] = {  /* "INSERT 5 COINS" */
     73, 78, 83, 69, 82, 84, 32, 5, 32, 67, 79, 73, 78, 83, 0, 48,
 };
 
-const s8 str_INSERT_COINS_5[16] = {
+const s8 str_INSERT_COINS_5[16] = {  /* "INSERT 6 COINS" */
     73, 78, 83, 69, 82, 84, 32, 6, 32, 67, 79, 73, 78, 83, 0, 48,
 };
 
-const s8 str_INSERT_COINS_6[16] = {
+const s8 str_INSERT_COINS_6[16] = {  /* "INSERT 7 COINS" */
     73, 78, 83, 69, 82, 84, 32, 7, 32, 67, 79, 73, 78, 83, 0, 17,
 };
 
-const s8 str_INSERT_COINS_7[16] = {
+const s8 str_INSERT_COINS_7[16] = {  /* "INSERT 8 COINS" */
     73, 78, 83, 69, 82, 84, 32, 8, 32, 67, 79, 73, 78, 83, 0, 0,
 };
 
-const s8 str_INSERT_COINS_8[16] = {
+const s8 str_INSERT_COINS_8[16] = {  /* "INSERT 9 COINS" */
     73, 78, 83, 69, 82, 84, 32, 9, 32, 67, 79, 73, 78, 83, 0, 96,
 };
 

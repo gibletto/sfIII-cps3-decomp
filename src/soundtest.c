@@ -22,6 +22,10 @@
 #include "sys_test_2.h"
 #include "cps3.h"
 
+/* soundtest_no: the sound test page step */
+#define SOUND_TITLE     0       /* soundtest_draw_title */
+#define SOUND_SELECT    1       /* soundtest_code_select: choose and play codes */
+
 s16 soundtest_rep_timer = 30;  /* 02007C98 */
 s16 soundtest_code = 0;  /* 02007C9A */
 s16 soundtest_no = 0;  /* 02007C9C */
@@ -78,16 +82,16 @@ void soundtest_code_select(void) {
 s32 soundtest_page(void) {
     register s32 rc;
     switch (soundtest_no) {
-    case 0:
+    case SOUND_TITLE:
         soundtest_draw_title();
         break;
-    case 1:
+    case SOUND_SELECT:
         soundtest_code_select();
         break;
     }
-    if ((p1sw_0 & 0x1000) && (p1sw_0 & 0x10)) {
+    if ((p1sw_0 & BUTTON_START) && (p1sw_0 & BUTTON_LP)) {
         rc = -1;
-        soundtest_no = 0;
+        soundtest_no = SOUND_TITLE;
         soundtest_code = 0;
         soundtest_rep_timer = 30;
         sound_driver_init();
@@ -128,21 +132,21 @@ void soundtest_monitor_task(void) {
         if ((p1sw_0 & 0x1010) == 0x1010) {
             break;
         }
-        if ((p1sw_0 & 4) == 4 && (p1sw_1 & 4) != 4) {
+        if ((p1sw_0 & LEVER_LEFT) == LEVER_LEFT && (p1sw_1 & LEVER_LEFT) != LEVER_LEFT) {
             req--;
             tilemap_print_hex(30, 3, 2, req, 4, 0);
-        } else if ((p1sw_0 & 8) == 8 && (p1sw_1 & 8) != 8) {
+        } else if ((p1sw_0 & LEVER_RIGHT) == LEVER_RIGHT && (p1sw_1 & LEVER_RIGHT) != LEVER_RIGHT) {
             req++;
             tilemap_print_hex(30, 3, 2, req, 4, 0);
-        } else if ((p1sw_0 & 1) == 1 && (p1sw_1 & 1) != 1) {
+        } else if ((p1sw_0 & LEVER_UP) == LEVER_UP && (p1sw_1 & LEVER_UP) != LEVER_UP) {
             req += 16;
             tilemap_print_hex(30, 3, 2, req, 4, 0);
-        } else if ((p1sw_0 & 2) == 2 && (p1sw_1 & 2) != 2) {
+        } else if ((p1sw_0 & LEVER_DOWN) == LEVER_DOWN && (p1sw_1 & LEVER_DOWN) != LEVER_DOWN) {
             req -= 16;
             tilemap_print_hex(30, 3, 2, req, 4, 0);
-        } else if ((p1sw_0 & 0x10) == 0x10 && (p1sw_1 & 0x10) != 0x10) {
+        } else if ((p1sw_0 & BUTTON_LP) == BUTTON_LP && (p1sw_1 & BUTTON_LP) != BUTTON_LP) {
             sound_request((s16)req);
-        } else if ((p1sw_0 & 0x20) == 0x20 && (p1sw_1 & 0x20) != 0x20) {
+        } else if ((p1sw_0 & BUTTON_MP) == BUTTON_MP && (p1sw_1 & BUTTON_MP) != BUTTON_MP) {
             sound_driver_init();
         }
         status = sound_status_read();

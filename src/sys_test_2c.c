@@ -23,6 +23,10 @@
 #include "sys_test_2c.h"
 #include "cps3.h"
 
+/* config_menu_no: the configuration page step */
+#define CONFIG_INIT     0       /* set up */
+#define CONFIG_RUN      1       /* config_menu_run */
+
 
 
 s16 config_menu_no = 0;  /* 02007CAC */
@@ -32,17 +36,17 @@ s16 config_menu_no = 0;  /* 02007CAC */
 s16 config_menu_page(void) {
     register s16 rc;
     switch (config_menu_no) {
-    case 0:
+    case CONFIG_INIT:
         Config_No_0 = 0;
         rc = 0;
         config_menu_no++;
         break;
-    case 1:
+    case CONFIG_RUN:
         rc = config_menu_run();
         break;
     }
     if (rc != 0) {
-        config_menu_no = 0;
+        config_menu_no = CONFIG_INIT;
     }
     return rc;
 }

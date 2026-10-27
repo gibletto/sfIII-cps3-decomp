@@ -1,5 +1,8 @@
 /*
- * END_9_TBL.C  tables read by end_9.c
+ * END_9_TBL.C  Oro's ending scene tables (ending 9)
+ *
+ * timer_9_tbl is the length in frames of each of the seven scenes of the ending and end_9_pos
+ * the BG x and y of each scene; the BG0 cells are in END_8_TBL.C. Read by END_9.C.
  */
 
 #include "types.h"

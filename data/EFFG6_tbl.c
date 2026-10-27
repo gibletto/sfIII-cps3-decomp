@@ -1,5 +1,11 @@
 /*
- * EFFG6_TBL.C  tables read by EFFG6.c and EFFG7.c
+ * EFFG6_TBL.C  trail particle emitter data and drifting ending objects
+ *
+ * effg6_data has a row per emitter type: end flags, life, x and y offset, particle x and y
+ * speed, emit mask and display flag, and particle pattern (the columns are described beside
+ * the table); read by EFFG6.C, which spawns G9 particles from it. effg7_data_tbl gives the x,
+ * y, priority, pattern and first state of the ten ending objects, and effg7_speed_tbl the five
+ * drift speeds, two objects to each; read by EFFG7.C.
  */
 
 #include "types.h"
@@ -11,6 +17,12 @@ extern const s16 effg6_data[][8];
 extern const s16 effg7_data_tbl[][5];
 extern const s32 effg7_speed_tbl[];
 
+/*
+ * One row per trail emitter (effect_G6_init's data): end flags (1 the work's height
+ * changed, 2 hidden, 4 hit again, 8 state changed, 0x10 life over, 0x20 stopped), life,
+ * x offset (mirrored by rl_flag), y offset, particle x and y speed, emit mask (low byte:
+ * emit on frames whose count masks to 0) and display flag (high byte), particle pattern.
+ */
 const s16 effg6_data[44][8] = {
     { 46, 0, 0, 0, -32, 32, 515, 31 }, { 46, 0, 0, 0, -64, 40, 513, 31 },
     { 46, 0, 0, 0, -128, 48, 513, 30 }, { 46, 0, 0, 0, -192, 64, 513, 30 },

@@ -1,5 +1,8 @@
 /*
- * INTR_TBL.C  tables read by intr.src
+ * INTR_TBL.C  vertical blank frame mask table
+ *
+ * vbl_frame_mask_tbl is a 16-entry table of frame masks. Its only reference is the vertical
+ * blank interrupt in INTR.SRC, which copies it into a local array.
  */
 
 #include "types.h"

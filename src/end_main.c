@@ -158,6 +158,8 @@ void opning_init_00000(void) {
 
 
 
+static void op_tile_disp(s32 ofs) {}
+
 /* draws the five maps, then waits 8 frames with the music started */
 void opning_init_01000(void) {
     s16 i;
@@ -167,17 +169,14 @@ void opning_init_01000(void) {
     switch (op_w.r_no_1) {
     case 0:
         op_w.r_no_1++;
-        for (i = 0; i < 5; i++) {
+        for (i = 0; i < 5; i = i + 1) {
             t = &op_tile_tbl[i] + 0;
             for (j = 0; j < 8; j++) {
                 q = &t->tile[j];
-                (void)((WORK*)q)->id;
                 debug_bg_tile_put(i, q->ofs, q->cell, (u32)&op_bg_scrn_data);
+                op_tile_disp(q->ofs);
             }
         }
-        (void)((WORK*)t)->id;
-        (void)((WORK*)debug_bg_tile_put)->id;
-        (void)op_w.r_no_0;
         Bg_On_R(1);
         Bg_On_W(1);
         Bg_Off_R(0xFE);
@@ -188,7 +187,7 @@ void opning_init_01000(void) {
         bgm_request(1);
         break;
     case 1:
-        op_w.free_work--;
+        op_w.free_work = op_w.free_work - 1;
         if (op_w.free_work < 0) {
             op_w.r_no_0++;
             op_w.r_no_1 = 0;

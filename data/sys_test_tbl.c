@@ -1,5 +1,16 @@
 /*
- * SYS_TEST_TBL.C  tables read by coin_sw.c, colortest.c, end_sub_2.c, game_config_en.c, game_config_jp.c, iotest_out.c, mode_init.c, soundtest.c, sys_test.c, sys_test_2.c, sys_test_2a.c, sys_test_2b.c, sys_test_3.c, sys_test_4.c and test_mode.c
+ * SYS_TEST_TBL.C  test mode screens, test data and the system palette
+ *
+ * Screen layouts (x, y, attribute and text, the strings following each) and test data of the
+ * test mode pages: the input test with its switch positions and bit masks (SYS_TEST_2.C), the
+ * output test (IOTEST_OUT.C), the sound and voice test with its status texts (SOUNDTEST.C),
+ * the colour test and its palette (COLORTEST.C), the screen test (SYS_TEST_2A.C), the game
+ * data page (SYS_TEST_2B.C), the memory and SIMM checks with the SIMM checksum offsets and the
+ * CD-ROM command blocks (SYS_TEST_3.C) and the CD-ROM rewrite menu (SYS_TEST_4.C).
+ * scroll_enable_bit_tbl gives the enable bits of each scroll layer, read by SYS_TEST.C;
+ * sys_palette is the system text palette loaded by TEST_MODE.C, MODE_INIT.C, the game
+ * configuration pages and END_SUB_2.C; coin_counter_bit_tbl holds the coin counter output
+ * bits, read by COIN_SW.C.
  */
 
 #include "types.h"

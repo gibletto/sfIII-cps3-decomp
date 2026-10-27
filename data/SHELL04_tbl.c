@@ -1,5 +1,9 @@
 /*
- * SHELL04_TBL.C  tables read by SHELL04.c: the routine table of the shell patterns
+ * SHELL04_TBL.C  CPU anti-projectile pattern table 04 (Dudley)
+ *
+ * Shell04_Tbl lists the pattern scripts Shell04_0000 .. Shell04_0011 the computer-controlled
+ * Dudley runs when the opponent fires a projectile, indexed by Pattern_Index. Read by
+ * SHELL04.C, which Com_VS_Shell in COM_PL.C calls for Dudley.
  */
 
 #include "types.h"

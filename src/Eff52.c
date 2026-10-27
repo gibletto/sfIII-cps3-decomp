@@ -18,6 +18,12 @@
 #include "bg_sub_5.h"
 #include "Eff52.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* count the delay down, then show */
+#define R0_PLAY         1       /* play the pattern, then step on */
+#define R0_MOVE         2       /* stay until told to go */
+#define R0_KILL         3       /* (default) put the work back */
+
 extern const s16 eff52_pos_tbl[];
 
 void load_any_color();
@@ -26,7 +32,7 @@ void load_any_color();
 
 void effect_52_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (--ewk->wu.dir_timer) {
             return;
         }
@@ -34,7 +40,7 @@ void effect_52_move(WORK_Other* ewk) {
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R0_PLAY:
         if (ewk->wu.cg_type) {
             ewk->wu.routine_no[0]++;
             Next_Step = 1;
@@ -42,7 +48,7 @@ void effect_52_move(WORK_Other* ewk) {
             char_move(&ewk->wu);
         }
         break;
-    case 2:
+    case R0_MOVE:
         if (Suicide) {
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 0;

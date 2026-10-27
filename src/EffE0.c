@@ -17,12 +17,18 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 
+/* routine_no[0] */
+#define R0_DELAY        0       /* wait the delay, then show */
+#define R0_SHRINK       1       /* shrink to normal size */
+#define R0_END          2       /* count off and hide */
+#define R0_KILL         3       /* (default) put the work back */
+
 extern s8 vs_object_count;
 s32 effE0_shrink(WORK_Other* ewk);
 
 void effect_E0_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_DELAY:
         if (--ewk->wu.dir_timer != 0) {
             return;
         }
@@ -31,7 +37,7 @@ void effect_E0_move(WORK_Other* ewk) {
         ewk->wu.dir_timer = 5;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_old + 1, 0);
         break;
-    case 1:
+    case R0_SHRINK:
         if (effE0_shrink(ewk)) {
             if (--ewk->wu.dir_timer != 0) {
                 ewk->wu.my_mr.size.x = 127;
@@ -43,7 +49,7 @@ void effect_E0_move(WORK_Other* ewk) {
             }
         }
         break;
-    case 2:
+    case R0_END:
         vs_object_count--;
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 0;

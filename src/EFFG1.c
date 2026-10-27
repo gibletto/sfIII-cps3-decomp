@@ -12,6 +12,13 @@
 #include "work.h"
 #include "extern.h"
 #include "EFFG1.h"
+
+/* routine_no[0] */
+#define R0_INIT         0       /* make the follower parts */
+#define R0_MOVE         1       /* track the player during the round */
+#define R0_AFTER        2       /* track the player after the round */
+#define R0_KILL         3       /* (default) put the work back */
+
 s32 push_effect_work(WORK* wkhd);
 void effect_work_kill();
 
@@ -22,7 +29,7 @@ s32 effect_G2_init();
 void effect_G1_move(WORK_Other* ewk) {
     PLW* pwk = (PLW*)ewk->my_master;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         effG1_sync(&ewk->wu, pwk);
         ewk->wu.cmwk[0] = ewk->wu.cmwk[1] = ewk->wu.cmwk[2] = ewk->wu.cmwk[3] = 0;
@@ -37,9 +44,9 @@ void effect_G1_move(WORK_Other* ewk) {
             effect_G2_init(ewk, 3);
         }
         break;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_KILL;
             effect_work_kill(3, 162);
             break;
         }
@@ -48,12 +55,12 @@ void effect_G1_move(WORK_Other* ewk) {
         ewk->wu.routine_no[1] = pwk->wu.routine_no[1];
         ewk->wu.routine_no[2] = pwk->wu.routine_no[2];
         if (pcon_dp_flag) {
-            ewk->wu.routine_no[0] = 2;
+            ewk->wu.routine_no[0] = R0_AFTER;
         }
         break;
-    case 2:
+    case R0_AFTER:
         if (ewk->wu.dead_f == 1) {
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_KILL;
             effect_work_kill(3, 162);
             break;
         }

@@ -30,12 +30,29 @@
 #include "color3rd.h"
 #include "EffG0.h"
 
+/* routine_no[0], effG0_judge_move */
+#define R0_INIT         0       /* set up on the first frame */
+#define R0_MOVE         1       /* play the judge's steps */
+#define R0_KILL         2       /* put the work back */
+
+/* routine_no[1] */
+#define R1_INIT         0       /* start the first pattern */
+#define R1_FIRST        1       /* first pattern, then open the sign */
+#define R1_SECOND       2       /* second pattern, then count in */
+#define R1_WAIT         3       /* wait for all the judges */
+
+/* routine_no[0], effG0_obj_move */
+#define R0_ANIM         1       /* animate the sprite */
+
+/* routine_no[0], effG0_akebono_move */
+#define R0_SCROLL       1       /* step the scroll every 8 frames */
+
 extern s8 Select_Flow_Akebono;   /* provisional name (sel_flow.c): the akebono form of the select flow scene */
 extern s16 effg0_judge_count;   /* provisional name: initialised work RAM */
 extern u32* effg0_char_tbl[];   /* provisional name: initialised work RAM */
 extern const s16 effg0_col_tbl[7];
 extern const s16 effg0_pos_tbl[7][3];
-extern const s16 effg0_flash_tbl[7][4];
+extern const s16 effg0_flash_tbl[40][4];
 extern const s16 effg0_name_tbl[53][3];
 extern const s16 effg0_name_tbl2[][3];   /* provisional name: the names of the akebono version */
 void akebono_scrn_move();
@@ -47,11 +64,11 @@ s32 effG0_flash_init(s16 step, s16 x, s16 y, s16 timer, s16 dir_old, s16 col_ofs
 /* provisional name */
 void effG0_akebono_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.dir_timer = 8;
         ewk->wu.dir_step = 0;
         ewk->wu.routine_no[0]++;
-    case 1:
+    case R0_SCROLL:
         if (!ewk->wu.dir_timer) {
             akebono_scrn_move(ewk->wu.dir_step);
             ewk->wu.dir_timer = 8;
@@ -73,12 +90,12 @@ void effG0_akebono_move(WORK_Other* ewk) {
 /* provisional name */
 void effG0_obj_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R0_ANIM:
         char_move(&ewk->wu);
         disp_pos_trans_entry(ewk);
         break;
@@ -100,7 +117,7 @@ void effG0_names_move(WORK_Other* ewk) {
     s16 nx;
     s16 ny;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         x = bg_w.bgw[0].xy[0].disp.pos - 0xC0;
         if (Select_Flow_Akebono == 0) {
             p = effg0_name_tbl[0];
@@ -133,9 +150,9 @@ void effG0_judge_move(WORK_Other* ewk) {
     s16 ny;
     s16 nt;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
-        ewk->wu.routine_no[1] = 0;
+        ewk->wu.routine_no[1] = R1_INIT;
         ewk->wu.disp_flag = 1;
         x = bg_w.bgw[1].xy[0].disp.pos - 0xC0;
         ewk->wu.xyz[0].disp.pos = x + effg0_pos_tbl[ewk->wu.type][0];
@@ -149,14 +166,14 @@ void effG0_judge_move(WORK_Other* ewk) {
         ewk->wu.old_pos[1] = 0;
         sort_push_request(&ewk->wu);
         break;
-    case 1:
+    case R0_MOVE:
         char_move(&ewk->wu);
         switch (ewk->wu.routine_no[1]) {
-        case 0:
+        case R1_INIT:
             set_char_move_init(&ewk->wu, 0, 1);
             ewk->wu.routine_no[1]++;
             break;
-        case 1:
+        case R1_FIRST:
             if (ewk->wu.cg_type == 0xFF) {
                 set_char_move_init(&ewk->wu, 0, 2);
                 nx = ewk->wu.position_x + effg0_flash_tbl[ewk->wu.type][0];
@@ -167,13 +184,13 @@ void effG0_judge_move(WORK_Other* ewk) {
                 ewk->wu.routine_no[1]++;
             }
             break;
-        case 2:
+        case R1_SECOND:
             if (ewk->wu.cg_type == 0xFF) {
                 effg0_judge_count++;
                 ewk->wu.routine_no[1]++;
             }
             break;
-        case 3:
+        case R1_WAIT:
             if (effg0_judge_count > 7) {
                 ewk->wu.routine_no[1]++;
             }
@@ -181,7 +198,7 @@ void effG0_judge_move(WORK_Other* ewk) {
         }
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(ewk);
         push_effect_work(&ewk->wu);

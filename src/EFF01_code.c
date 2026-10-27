@@ -16,16 +16,21 @@
 #include "EFF00.h"
 #include "fighter.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* set up from the master */
+#define R0_MOVE         1       /* follow the master's parts animation */
+#define R0_KILL         2       /* put the work back */
+
 void effect_01_move(WORK_Other* ewk) {
     WORK* mwk = (WORK*)ewk->my_master;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.cgromtype = mwk->cgromtype;
         ewk->wu.cg_number = ewk->wu.old_cgnum = 0;
         ewk->wu.blink_timing = mwk->blink_timing;
         goto clear_ix;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1 || mwk->olc_work_ix[ewk->wu.type] != ewk->wu.myself) {
             ewk->wu.routine_no[0]++;
             break;
@@ -84,7 +89,7 @@ void effect_01_move(WORK_Other* ewk) {
         }
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);

@@ -50,6 +50,36 @@
 #include "win_pl.h"
 #include "fighter.h"
 
+/* routine_no[3], Win_01000 */
+#define W01_POSE        1       /* run the pose win_rno[0] chose */
+
+/* routine_no[3], win_stage8_action */
+#define WIN_STAGE8_ACT_NEXT 1   /* start the next animation */
+
+/* wk->wu.routine_no[3] in a win or lose pose */
+#define POSE_RUN        1       /* the pose runs until its script sets RN3_DONE */
+
+/* win_rno[0] in Win_01000: Oro's win */
+#define OW_NORMAL       0       /* the plain pose */
+#define OW_FLY_UP       1       /* jijii_fly_up */
+#define OW_JUMP         2       /* jijii_jump */
+
+/* win_rno[1] in jijii_fly_up */
+#define JF_START        0       /* until the take-off frame */
+#define JF_RISE         1       /* rise off the top of the screen */
+#define JF_END          2       /* the last pose */
+
+/* win_rno[1] in jijii_jump */
+#define JJ_START        0       /* until the jump frame */
+#define JJ_JUMP         1       /* jump off the side of the screen */
+#define JJ_SETUP        2       /* set up the return */
+#define JJ_WAIT         3       /* wait win_free, then come in from the far side */
+#define JJ_RETURN       4       /* walk back in */
+
+/* win_rno[1] in Win_05000 */
+#define W5_FALL         0       /* fall to the ground */
+#define W5_LAND         1       /* landed */
+
 #pragma inline(win_select)
 
 s16 win_rno[2];  /* 0201D6C0 */
@@ -69,7 +99,7 @@ void win_player(PLW* wk) {
 
 /* Win pose type 0: the standard winning pose. */
 void Win_00000(PLW* wk) {
-    if (pcon_rno[0] == 2 && pcon_rno[1] == 3) {
+    if (pcon_rno[0] == PCON_DIE && pcon_rno[1] == SETTLE_JUDGE) {
         Judge_normal_winner(wk);
     } else {
         Normal_normal_Winner(wk);
@@ -83,14 +113,14 @@ void Win_01000(PLW* wk) {
         return;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         a_rno = win_rno[0] = win_rno[1] = 0;
         wk->wu.routine_no[3]++;
 
         if (bg_w.stage == 9) {
             if ((Round_num >= Game_setting.set4 * 2) || (PL_Wins[wk->wu.id] >= Game_setting.set4 + 1)) {
                 set_char_move_init(&wk->wu, 9, 41);
-                win_rno[0] = 1;
+                win_rno[0] = OW_FLY_UP;
                 break;
             } else {
             }
@@ -98,19 +128,19 @@ void Win_01000(PLW* wk) {
         work = win_select(wk, 7);
         set_char_move_init(&wk->wu, 9, work + 32);
         if (work == 4) {
-            win_rno[0] = 2;
+            win_rno[0] = OW_JUMP;
         }
         break;
-    case 1:
-    case 9:
+    case W01_POSE:
+    case RN3_DONE:
         switch (win_rno[0]) {
-        case 0:
+        case OW_NORMAL:
             char_move(&wk->wu);
             break;
-        case 1:
+        case OW_FLY_UP:
             jijii_fly_up(wk);
             break;
-        case 2:
+        case OW_JUMP:
             jijii_jump(wk);
             break;
         }
@@ -121,7 +151,7 @@ void Win_01000(PLW* wk) {
 void jijii_fly_up(PLW* wk) {
     bg_stop = 1;
     switch (win_rno[1]) {
-    case 0:
+    case JF_START:
         char_move(&wk->wu);
         if (wk->wu.cg_type == 1) {
             win_rno[1]++;
@@ -130,7 +160,7 @@ void jijii_fly_up(PLW* wk) {
             wk->wu.mvxy.d[1].sp = -0x600;
         }
         break;
-    case 1:
+    case JF_RISE:
         if (wk->wu.cg_type != 2) {
             char_move(&wk->wu);
         }
@@ -142,7 +172,7 @@ void jijii_fly_up(PLW* wk) {
             wk->wu.xyz[1].disp.pos = 200;
         }
         break;
-    case 2:
+    case JF_END:
         char_move(&wk->wu);
         break;
     }
@@ -155,7 +185,7 @@ void jijii_jump(PLW* wk) {
     wk->wu.position_z = plw[id_w].wu.position_z - 1;
     wk->wu.my_priority = wk->wu.position_z;
     switch (win_rno[1]) {
-    case 0:
+    case JJ_START:
         char_move(&wk->wu);
         if (wk->wu.cg_type == 9) {
             win_rno[1]++;
@@ -170,7 +200,7 @@ void jijii_jump(PLW* wk) {
             wk->wu.mvxy.d[1].sp = -0x600;
         }
         break;
-    case 1:
+    case JJ_JUMP:
         if (wk->wu.cg_type != 99) {
             char_move(&wk->wu);
         }
@@ -188,12 +218,12 @@ void jijii_jump(PLW* wk) {
             effect_work_kill(3, 13);
         }
         break;
-    case 2:
+    case JJ_SETUP:
         win_rno[1]++;
         set_char_move_init2(&wk->wu, 9, 36, 7, 0);
         win_free[wk->wu.id] = 48;
         break;
-    case 3:
+    case JJ_WAIT:
         win_free[wk->wu.id]--;
         if (win_free[wk->wu.id] > 0) {
             break;
@@ -208,7 +238,7 @@ void jijii_jump(PLW* wk) {
         }
         wk->wu.mvxy.d[0].sp = 0;
         wk->wu.xyz[1].cal = 0;
-    case 4:
+    case JJ_RETURN:
         add_x_sub((WORK_Other*)wk);
         char_move(&wk->wu);
         break;
@@ -221,7 +251,7 @@ void Win_02000(PLW* wk) {
         return;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         a_rno = win_rno[0] = win_rno[1] = 0;
         if ((Round_num >= Game_setting.set4 * 2) || (PL_Wins[wk->wu.id] >= Game_setting.set4 + 1)) {
             if (win_2000_tbl[bg_w.bg_index]) {
@@ -243,7 +273,7 @@ void Win_03000(PLW* wk) {
         return;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         a_rno = win_rno[0] = win_rno[1] = 0;
         work = win_select(wk, 3);
@@ -266,7 +296,7 @@ void Win_04000(PLW* wk) {
         return;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         a_rno = win_rno[0] = win_rno[1] = 0;
         if ((Round_num >= Game_setting.set4 * 2) || (PL_Wins[wk->wu.id] >= Game_setting.set4 + 1)) {
@@ -281,7 +311,7 @@ void Win_04000(PLW* wk) {
         }
         break;
     default:
-    case 1:
+    case POSE_RUN:
         char_move(&wk->wu);
         break;
     }
@@ -295,13 +325,13 @@ void Normal_normal_Winner(PLW* wk) {
         return;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         work = win_select(wk, 7);
         set_char_move_init(&wk->wu, 9, work + 32);
         break;
-    case 1:
-    case 9:
+    case POSE_RUN:
+    case RN3_DONE:
         char_move(&wk->wu);
         break;
     }
@@ -315,21 +345,21 @@ void Judge_normal_winner(PLW* wk) {
         return;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         a_rno = win_rno[0] = win_rno[1] = 0;
         wk->wu.routine_no[3]++;
         work = win_select(wk, 3);
         set_char_move_init(&wk->wu, 9, work + 52);
         break;
-    case 1:
-    case 9:
+    case POSE_RUN:
+    case RN3_DONE:
         char_move(&wk->wu);
         break;
     }
 }
 
 s32 win_special_check(PLW* wk) {
-    if (pcon_rno[0] == 2 && pcon_rno[1] == 3) {
+    if (pcon_rno[0] == PCON_DIE && pcon_rno[1] == SETTLE_JUDGE) {
         Judge_normal_winner(wk);
         return 1;
     }
@@ -347,7 +377,7 @@ void Win_05000(PLW* wk) {
     }
     bg_stop = 0;
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         a_rno = win_rno[0] = win_rno[1] = 0;
         wk->wu.routine_no[3]++;
         if ((Round_num >= Game_setting.set4 * 2) || (PL_Wins[wk->wu.id] >= Game_setting.set4 + 1)) {
@@ -373,7 +403,7 @@ void Win_05000(PLW* wk) {
             break;
         } else {
             switch (win_rno[1]) {
-            case 0:
+            case W5_FALL:
                 if (0) {
                 }
                 goto win_fall_move;
@@ -387,7 +417,7 @@ void Win_05000(PLW* wk) {
                     char_move_z(&wk->wu);
                 }
                 break;
-            case 1:
+            case W5_LAND:
                 char_move(&wk->wu);
                 break;
             }
@@ -402,7 +432,7 @@ void Win_06000(PLW* wk) {
         return;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         a_rno = win_rno[0] = win_rno[1] = 0;
         wk->wu.routine_no[3]++;
         if ((Round_num >= Game_setting.set4 * 2) || (PL_Wins[wk->wu.id] >= Game_setting.set4 + 1)) {
@@ -422,14 +452,14 @@ void Win_06000(PLW* wk) {
 void win_stage8_action(PLW* wk) {
     bg_stop = 1;
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         complete_victory_pause();
         wk->wu.routine_no[3]++;
         exset_char_move_init(&wk->wu, 9, 60);
         a_rno = 0;
         break;
-    case 1:
-    case 9:
+    case WIN_STAGE8_ACT_NEXT:
+    case RN3_DONE:
         switch (a_rno) {
         case 0:
             if (bg_w.bgw[1].r_no_1 >= 1) {

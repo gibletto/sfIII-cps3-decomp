@@ -24,6 +24,14 @@
 #include "eff73.h"
 #include "EFF72.h"
 
+/* routine_no[0] */
+#define R0_IDLE         0       /* idle until a super art */
+#define R0_REACT        1       /* play the reaction once */
+
+/* routine_no[1], eff72_00 */
+#define R1_INIT         0       /* start the animation */
+#define R1_PLAY         1       /* play it */
+
 
 
 void eff72_00(WORK_Other* ewk);
@@ -46,15 +54,15 @@ void effect_72_move(WORK_Other* ewk) {
 /* provisional name */
 void eff72_00(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 13);
         break;
-    case 1:
+    case R1_PLAY:
         if (either_pl_hissatsu_check()) {
-            ewk->wu.routine_no[0] = 1;
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[0] = R0_REACT;
+            ewk->wu.routine_no[1] = R1_INIT;
             break;
         }
         char_move(&ewk->wu);
@@ -68,15 +76,15 @@ void eff72_00(WORK_Other* ewk) {
 /* provisional name */
 void eff72_01(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         set_char_move_init(&ewk->wu, 0, 51);
         break;
-    case 1:
+    case R1_PLAY:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
-            ewk->wu.routine_no[0] = 0;
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[0] = R0_IDLE;
+            ewk->wu.routine_no[1] = R1_INIT;
         }
         break;
     }

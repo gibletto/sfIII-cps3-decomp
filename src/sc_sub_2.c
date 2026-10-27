@@ -16,6 +16,10 @@
 #include "sc_sub_2.h"
 #include "cps3.h"
 
+/* fade_cont_rno: the colour fade (fade_cont_main) */
+#define FADE_RUN        0       /* step each layer's colours until all are done */
+#define FADE_END        1       /* wait fade_end_timer, then clear the fade */
+
 
 
 
@@ -104,15 +108,15 @@ void fade_cont_init(void) {
         fade_layer[i].adrs = fade_adrs_tbl[tbl[0]];
         fade_layer[i].cur = fade_layer[i].adrs;
         dat = fade_param_tbl[tbl[1]];
-        fade_layer[i].v8 = dat[0];
-        fade_layer[i].v10 = dat[1];
-        fade_layer[i].v12 = fade_layer[i].v10;
-        fade_layer[i].v14 = fade_layer[i].v10;
-        fade_layer[i].v16 = dat[2];
+        fade_layer[i].count = dat[0];
+        fade_layer[i].r = dat[1];
+        fade_layer[i].g = fade_layer[i].r;
+        fade_layer[i].b = fade_layer[i].r;
+        fade_layer[i].target = dat[2];
         fade_layer[i].kind = dat[3];
-        fade_layer[i].v20 = dat[4];
-        fade_layer[i].v22 = fade_layer[i].v20;
-        fade_layer[i].v24 = dat[5];
+        fade_layer[i].timer = dat[4];
+        fade_layer[i].interval = fade_layer[i].timer;
+        fade_layer[i].speed = dat[5];
         fade_layer[i].on = 1;
         switch (fade_layer[i].kind) {
         case 0:
@@ -139,45 +143,45 @@ s32 fade_cont_main(void)
     FADE_LAYER* fl;
 
     switch (fade_cont_rno) {
-    case 0:
+    case FADE_RUN:
         for (i = 0; i < fade_layer_num; i += 1) {
             if (0) {
                 fade_layer_num = 0;
             }
             if (fade_layer[i].on != 0) {
-                fade_layer[i].v20--;
-                if (fade_layer[i].v20 == 0) {
-                    fade_layer[i].v20 = fade_layer[i].v22;
+                fade_layer[i].timer--;
+                if (fade_layer[i].timer == 0) {
+                    fade_layer[i].timer = fade_layer[i].interval;
                     fl = &fade_layer[i];
-                    for (j = 0; j < fl->v8; j++) {
-                        load_any_color_req(*(u32 *)fl->adrs, fl->v10 + fl->step, fl->v12 + fl->step, fl->v14 + fl->step);
+                    for (j = 0; j < fl->count; j++) {
+                        load_any_color_req(*(u32 *)fl->adrs, fl->r + fl->step, fl->g + fl->step, fl->b + fl->step);
                         fl->adrs += 4;
                     }
-                    if (fade_layer[i].v10 == fade_layer[i].v16) {
+                    if (fade_layer[i].r == fade_layer[i].target) {
                         fade_layer[i].on = 0;
                     } else {
                         fade_layer[i].adrs = fade_layer[i].cur;
-                        fade_layer[i].v10 += fade_layer[i].v24;
-                        fade_layer[i].v12 = fade_layer[i].v10;
-                        fade_layer[i].v14 = fade_layer[i].v10;
+                        fade_layer[i].r += fade_layer[i].speed;
+                        fade_layer[i].g = fade_layer[i].r;
+                        fade_layer[i].b = fade_layer[i].r;
                         switch (fade_layer[i].kind) {
                         case 0:
                         case 2:
-                            if (fade_layer[i].v10 < fade_layer[i].v16) {
+                            if (fade_layer[i].r < fade_layer[i].target) {
                                 fl = &fade_layer[i];
-                                fl->v10 = fl->v16;
-                                fl->v12 = fl->v10;
-                                fl->v14 = fl->v10;
+                                fl->r = fl->target;
+                                fl->g = fl->r;
+                                fl->b = fl->r;
                             }
                             break;
                         case 1:
                         case 3:
                             fl = &fade_layer[i];
-                            if (fl->v10 > fl->v16) {
+                            if (fl->r > fl->target) {
                                 fl = &fade_layer[i];
-                                fl->v10 = fl->v16;
-                                fl->v12 = fl->v10;
-                                fl->v14 = fl->v10;
+                                fl->r = fl->target;
+                                fl->g = fl->r;
+                                fl->b = fl->r;
                             }
                             break;
                         default:
@@ -194,10 +198,10 @@ s32 fade_cont_main(void)
             }
         }
         if (done == fade_layer_num) {
-            fade_cont_rno = 1;
+            fade_cont_rno = FADE_END;
         }
         break;
-    case 1:
+    case FADE_END:
         fade_end_timer--;
         if (fade_end_timer != 0) {
             break;

@@ -1,5 +1,9 @@
 /*
- * EFFG4_TBL.C  tables read by EFFG4.c
+ * EFFG4_TBL.C  placement records of effect G4
+ *
+ * gill_eff_data has 34 records { x, y, z offset, pattern }; the entry number given to effect
+ * G4 picks a record, and the record after it is used when the master faces left. Read by
+ * EFFG4.C, the one-shot effect placed at its master.
  */
 
 #include "types.h"

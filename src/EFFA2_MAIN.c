@@ -16,6 +16,10 @@
 #include "effect_2.h"
 #include "sc_trans.h"
 #include "sc_clear.h"
+
+/* routine_no[0] */
+#define R0_INIT         0       /* clear the banner area, start the cells */
+
 s32 effect_A3_init();
 s32 effect_A4_init();
 
@@ -23,7 +27,7 @@ s32 effect_A4_init();
 
 void effect_A2_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         tilemap_clear_rect(DE_X[3] + 10, Text_Page_Y + 8, DE_X[0] + 36, Text_Page_Y + 18);
         effect_A3_init(0, DE_X[0] + 3, Text_Page_Y + 9, 6, 2, 2, 0, 5, 0);

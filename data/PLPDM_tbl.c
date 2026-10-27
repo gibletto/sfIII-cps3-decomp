@@ -1,5 +1,15 @@
 /*
- * PLPDM_TBL.C  tables read by PLPDM.c, PLPNM.c and PLS02.c
+ * PLPDM_TBL.C  player damage tables
+ *
+ * plpdm_lv_00 lists the damage routines Damage_00000 - Damage_29000. dm_reaction_table holds
+ * the reaction data (routine, animation and data index) of each of the 111 damage codes, and
+ * dd_convert changes a damage code by attack level when the hit is a KO. hok_table gives the
+ * extra animation steps per frame of a stunned player by lever and button mashing,
+ * sky_dm_zuru_ix and sky_dm_zuru_table the zuru_timer set on each air hit, oki_select_table2
+ * the get-up routine after a recovery roll, tama_select the projectile hit count by projectile
+ * type, and exdm_ix_data the per-character placement data of the special damage set against
+ * the attacker. Read by PLPDM.C; guard_kind (guard kind per guard routine) also by PLPNM.C,
+ * and atsagct (KO voice choice per damage routine) by PLS02.C.
  */
 
 #include "types.h"

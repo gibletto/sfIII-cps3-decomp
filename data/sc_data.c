@@ -1,5 +1,13 @@
 /*
- * SC_DATA.C  tables read by manage_2.c and sc_trans.c
+ * SC_DATA.C  text layer HUD tables
+ *
+ * sc_celllist_scr_tbl gives the screen column base of each text-layer cell list,
+ * sc_player_name_chr_tbl the first character of each character's name, tone_down_tbl the
+ * character transfers of each screen tone-down, and bcount_mark_chr the characters of each
+ * centre message; these are read by SC_TRANS.C, the text layer transfer and put routines.
+ * nwdata_tbl gives each character's winner name plate (characters, size and the positions of
+ * the name and its second block); read by SC_TRANS.C and MANAGE_2.C (round and match
+ * management).
  */
 
 #include "types.h"

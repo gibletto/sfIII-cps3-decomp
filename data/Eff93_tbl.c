@@ -1,5 +1,12 @@
 /*
- * EFF93_TBL.C  tables read by eff88.c and eff90.c
+ * EFF93_TBL.C  stage background object records and BG1 display positions
+ *
+ * eff88_loop_tbl gives the number of effect 88 objects by type and compel flag, and
+ * scr_obj_data88_0 their records (family, colour, position, priority, animation and settings),
+ * reached through the record lists of EFF88.C, the stage background object. scr_obj_unref_0 ..
+ * scr_obj_unref_6 are object lists that only the unread scr_obj_data_unref table of
+ * EFFB8_MES.C points at. eff90_pos_y_tbl gives the y position of each of the nine effect 90
+ * works; read by EFF90.C, the BG1 display object.
  */
 
 #include "types.h"

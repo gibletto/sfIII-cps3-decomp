@@ -20,9 +20,18 @@
 #include "PLS01.h"
 #include "PLPAT00.h"
 
+/* routine_no[3], Att_MOONSALT_KNEE_DROP */
+#define MOONSALT_KNEE__MOVE 1   /* move and run the animation to cue 20 */
+#define MOONSALT_KNEE__AIR 2    /* in the air until it lands */
+#define MOONSALT_KNEE__LAND 3   /* the landing */
+
+/* routine_no[3], Att_RESURRECTION */
+#define RESURRECTION_CUE 1      /* run the animation to its next cue */
+#define RESURRECTION_AIR 2      /* in the air until it lands */
+
 
 void pl00_extra_attack(PLW* wk) {
-    pl00_exatt_table[wk->wu.routine_no[2] - 16](wk);
+    pl00_exatt_table[wk->wu.routine_no[2] - ATTACK_SPECIAL](wk);
 }
 
 
@@ -32,7 +41,7 @@ void Att_MOONSALT_KNEE_DROP(PLW* wk) {
     s16 ex;
     s16 ey;
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         wk->wu.rl_flag = wk->wu.rl_waza;
         set_char_move_init(&wk->wu, 5, wk->as->char_ix);
@@ -51,7 +60,7 @@ void Att_MOONSALT_KNEE_DROP(PLW* wk) {
             wk->wu.mvxy.d[0].sp = -wk->wu.mvxy.d[0].sp;
         }
         break;
-    case 1:
+    case MOONSALT_KNEE__MOVE:
         char_move(&wk->wu);
         if (wk->wu.cg_type == 20) {
             wk->wu.routine_no[3]++;
@@ -59,10 +68,10 @@ void Att_MOONSALT_KNEE_DROP(PLW* wk) {
             add_mvxy_speed(&wk->wu);
         }
         break;
-    case 2:
+    case MOONSALT_KNEE__AIR:
         jumping_union_process(&wk->wu, 3);
         break;
-    case 3:
+    case MOONSALT_KNEE__LAND:
         char_move(&wk->wu);
         break;
     }
@@ -73,14 +82,14 @@ void Att_MOONSALT_KNEE_DROP(PLW* wk) {
 void Att_RESURRECTION(PLW* wk) {
     wk->scr_pos_set_flag = 0;
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         wk->wu.direction = 0;
         reset_mvxy_data((WORK*)wk);
         set_char_move_init((WORK*)wk, 5, wk->as->char_ix);
         round_slow_flag = 0;
         break;
-    case 1:
+    case RESURRECTION_CUE:
         char_move((WORK*)wk);
         if (wk->wu.cg_type) {
             wk->wu.direction = get_life_add_point(wk->wu.cg_type, wk->wu.direction);
@@ -100,7 +109,7 @@ void Att_RESURRECTION(PLW* wk) {
         }
         char_move_cmja((WORK*)wk);
         break;
-    case 2:
+    case RESURRECTION_AIR:
         jumping_union_process((WORK*)wk, 3);
         break;
     default:

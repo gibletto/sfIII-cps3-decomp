@@ -18,19 +18,27 @@
 #include "effect_2.h"
 #include "EFF84.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* wait for a message request */
+#define R0_SHOW         1       /* show the message for its time */
+
+/* routine_no[1] */
+#define R1_DRAW         0       /* draw the message when it may */
+#define R1_HOLD         1       /* hold, then clear and resume play */
+
 void bcount_mark_trans(u8 ix);
 
 void effect_84_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (request_message) {
             ewk->wu.routine_no[0]++;
             ewk->wu.dir_timer = Time_Data[request_message];
         }
         break;
-    case 1:
+    case R0_SHOW:
         switch (ewk->wu.routine_no[1]) {
-        case 0:
+        case R1_DRAW:
             switch (message_index) {
             case 0:
                 Game_pause = -1;
@@ -59,7 +67,7 @@ void effect_84_move(WORK_Other* ewk) {
             }
             ewk->wu.routine_no[1]++;
             break;
-        case 1:
+        case R1_HOLD:
             if (--ewk->wu.dir_timer == 0) {
                 tilemap_clear_rect(DE_X[3] + 11, 9, DE_X[3] + 36, 16);
                 dead_voice_request();

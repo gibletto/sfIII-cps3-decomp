@@ -1,5 +1,9 @@
 /*
- * EFFE2_TBL_B.C  tables read by EFFE5.c, EFFE7.c and EFFE8.c
+ * EFFE2_TBL_B.C  after-image settings and colours
+ *
+ * after_image_data holds the after-image parameter sets (eight words each) that the effect E5
+ * controller loads for a move; read by EFFE5.C. after_image_color is the { 1P, 2P } colour of
+ * each image step; read by EFFE7.C and EFFE8.C, the single and burst-trail after-images.
  */
 
 #include "types.h"

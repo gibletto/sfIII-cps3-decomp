@@ -171,7 +171,7 @@ void Select_Flow_6th(void) {
 
 /* provisional name */
 s32 Check_Select_Flow_Entry(void) {
-    if (E_Number[0][0] == 2 || E_Number[1][0] == 2) {
+    if (E_Number[0][0] == ENTRY_NAME || E_Number[1][0] == ENTRY_NAME) {
         return 0;
     }
     return 1;

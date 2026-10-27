@@ -1,5 +1,8 @@
 /*
- * EFFF8_CODE_TBL.C  tables read by efff8_code.c
+ * EFFF8_CODE_TBL.C  after-image type table
+ *
+ * effF8_type_tbl gives, for each after-image type, its free flag, display flag and animation
+ * index. Read by EFFF8_CODE.C, the after-image of a character.
  */
 
 #include "types.h"

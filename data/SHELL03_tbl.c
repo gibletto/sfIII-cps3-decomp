@@ -1,5 +1,9 @@
 /*
- * SHELL03_TBL.C  tables read by SHELL03.c: the routine table of the shell patterns
+ * SHELL03_TBL.C  CPU anti-projectile pattern table 03 (Yun and Yang)
+ *
+ * Shell03_Tbl lists the pattern scripts Shell03_0000 .. Shell03_0010 the computer-controlled
+ * Yun and Yang run when the opponent fires a projectile, indexed by Pattern_Index. Read by
+ * SHELL03.C, which Com_VS_Shell in COM_PL.C calls for characters 3 and 10.
  */
 
 #include "types.h"

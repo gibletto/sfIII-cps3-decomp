@@ -1,5 +1,11 @@
 /*
- * PLS03_TBL.C  tables read by PLS03.c
+ * PLS03_TBL.C  attack button check tables
+ *
+ * shot_prio turns pressed buttons into an attack strength in priority order and shot_refresh
+ * gives the button bit of each strength; catch_kos_table gives the throw strength from the
+ * buttons pressed; meoshi_off_shot holds the buttons that cancel a press-and-release move, and
+ * renda_status_table the postures checked for the rapid-fire cancel. Read by PLS03.C, the
+ * special move, super art and normal attack command checks.
  */
 
 #include "types.h"

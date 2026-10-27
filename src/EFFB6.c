@@ -16,7 +16,11 @@
 #include "effect_2.h"
 #include "EFFB6.h"
 
-extern const u16 effB6_col_tbl[2][6];    /* provisional name */
+/* routine_no[0] */
+#define R0_MOVE         0       /* step through the colours */
+#define R0_KILL         1       /* put the work back */
+
+extern const u16 effB6_col_tbl[3][6];    /* provisional name */
 
 void load_any_color();
 
@@ -42,7 +46,7 @@ s32 effect_B6_init(s8 type) {
 
 void effect_B6_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
@@ -63,7 +67,7 @@ void effect_B6_move(WORK_Other* ewk) {
             }
         } else {
             load_any_color_fade(effB6_col_tbl[ewk->wu.rl_flag][ewk->wu.weight_level],
-                                fade_layer[0].v10, fade_layer[0].v12, fade_layer[0].v14);
+                                fade_layer[0].r, fade_layer[0].g, fade_layer[0].b);
         }
         if (ewk->wu.weight_level == 5) {
             ewk->wu.weight_level = 0;
@@ -71,7 +75,7 @@ void effect_B6_move(WORK_Other* ewk) {
             ewk->wu.weight_level++;
         }
         break;
-    case 1:
+    case R0_KILL:
     default:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);

@@ -1,5 +1,12 @@
 /*
- * END_MAIN_TBL2.C  tables read by end_main_c.c
+ * END_MAIN_TBL2.C  ending background set-up tables
+ *
+ * Indexed by the ending's character number: end_bg_index_tbl picks the ending's entry in
+ * end_bg_gfx_tbl (scroll graphics preparation data, size and source) and end_scno_tbl gives
+ * its number of BG layers; read by END_MAIN_C.C, the ending main control. end_map_data_0 .. 3
+ * are the screen map records of the four ending BG layers, reached through end_map_tbl in
+ * OP_END_WORK.C. end_cg_src_tbl, the screen maps of end_bg_gfx_tbl's entries, is not referred
+ * to.
  */
 
 #include "types.h"

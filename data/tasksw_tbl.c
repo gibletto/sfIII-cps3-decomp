@@ -1,5 +1,9 @@
 /*
- * TASKSW_TBL.C  tables read by tasksw.src
+ * TASKSW_TBL.C  boot settings and region table
+ *
+ * boot_setting_defaults gives the starting free play, area type and alternate area flag, and
+ * region_area_tbl maps the BIOS region code to the area type. Read by _reset_entry in
+ * TASKSW.SRC.
  */
 
 #include "types.h"

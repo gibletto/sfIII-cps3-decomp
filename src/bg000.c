@@ -490,10 +490,9 @@ void bg_pos_hosei_deff2(void) {
     s16 i;
 
     for (i = 0; i < bg_w.scno; i++) {
-        (void)((XY*)quake_x_tbl)->disp.pos;
         bg_frame_deff_set2(i);
         pos2 = (&bg_w.bgw[i] + 0)->frame_deff +
-               (pos = (&bg_w.bgw[i] + 0)->xy[0].disp.pos, (void)((BGW*)(s32)pos)->be_flag, pos);
+               (pos = (&bg_w.bgw[i] + 0)->xy[0].disp.pos, (void)&((BGW*)(s32)pos)->be_flag, pos);
         pos = pos2;
         pos &= 0x3FF;
         pos -= bg_w.pos_offset;
@@ -509,7 +508,7 @@ void bg_pos_hosei_deff2(void) {
             pos2 = (&bg_w.bgw[i] + 0)->xy[1].disp.pos;
         }
         pos = pos2 & 0x3FF;
-        pos = pos + quake_y_tbl[bg_w.quake_y_index];
+        pos += quake_y_tbl[bg_w.quake_y_index];
         (&bg_w.bgw[i] + 0)->position_y = pos & 0x3FF;
     }
 }
@@ -1894,7 +1893,8 @@ void compel_bg_init_position(void) {
 
 
 
-void bg_etc_write(s16 type) {
+void bg_etc_write(s16 kind) {
+    s16 type = kind;
     const BG_GFX* gfx;
     s32 n;
     u32 blocks;
@@ -1968,7 +1968,6 @@ void bg_etc_write(s16 type) {
     bg_w.y_limit = *ptr++;
     bg_w.y_limit2 = *ptr;
     bg_w.scr_stop = 0;
-    (void)((WORK*)1)->id;
     bg_w.frame_flag = 0;
     bg_w.dmm0[0] = 0;
     bg_land_flag = 0;
@@ -2071,6 +2070,8 @@ s16 capcom_logo_anim(void) {
 
 
 
+static void bg_work_disp(s16 id, s8 be_flag) {}
+
 /* provisional name */
 void check_cg_zoom(void) {
     s16 i;
@@ -2082,8 +2083,7 @@ void check_cg_zoom(void) {
         if (plw[i].scr_pos_set_flag) {
             plw[i].wu.scr_mv_x = plw[i].wu.xyz[0].disp.pos;
             wk = &plw[i].wu;
-            (void)wk->id;
-            (void)wk->be_flag;
+            bg_work_disp(wk->id, wk->be_flag);
             wk->scr_mv_y = wk->xyz[1].disp.pos;
         }
     }

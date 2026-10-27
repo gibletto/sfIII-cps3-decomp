@@ -19,6 +19,11 @@
 #include "EFFE5.h"
 #include "efff8_code.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* set up from the type table */
+#define R0_MOVE         1       /* follow the master until it ends */
+#define R0_KILL         2       /* put the work back */
+
 
 extern const EFFF8_TYPE effF8_type_tbl[];    /* provisional name */
 
@@ -27,7 +32,7 @@ extern const EFFF8_TYPE effF8_type_tbl[];    /* provisional name */
 void effect_F8_move(WORK_Other* ewk) {
     WORK* mwk = (WORK*)ewk->my_master;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = effF8_type_tbl[ewk->wu.type].disp;
         ewk->wu.blink_timing = ewk->master_id;
@@ -39,7 +44,7 @@ void effect_F8_move(WORK_Other* ewk) {
         }
         set_char_move_init(&ewk->wu, 0, effF8_type_tbl[ewk->wu.type].index);
         break;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
@@ -57,7 +62,7 @@ void effect_F8_move(WORK_Other* ewk) {
         ewk->wu.position_z = mwk->position_z - 1;
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);

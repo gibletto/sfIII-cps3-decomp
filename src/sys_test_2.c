@@ -22,6 +22,10 @@
 #include "sys_test_2.h"
 #include "cps3.h"
 
+/* iotest_in_no: the input test page step */
+#define IOIN_INIT       0       /* draw the page */
+#define IOIN_SHOW       1       /* iotest_draw_sw_grid: show the switches */
+
 s16 iotest_in_no = 0;  /* 02007C90 */
 
 
@@ -94,18 +98,18 @@ void iotest_draw_sw_grid(void) {
 s32 iotest_input_page(void) {
     register s32 rc;
     switch (iotest_in_no) {
-    case 0:
+    case IOIN_INIT:
         tilemap_fill_all(0, 32);
         tilemap_print_string(0, 0, 0xFFFF, iotest_input_scr);
         iotest_in_no++;
         break;
-    case 1:
+    case IOIN_SHOW:
         iotest_draw_sw_grid();
         break;
     }
-    if ((p1sw_0 & 0x1000) && (p1sw_0 & 0x10)) {
+    if ((p1sw_0 & BUTTON_START) && (p1sw_0 & BUTTON_LP)) {
         rc = -1;
-        iotest_in_no = 0;
+        iotest_in_no = IOIN_INIT;
         return rc;
     }
     rc = 0;

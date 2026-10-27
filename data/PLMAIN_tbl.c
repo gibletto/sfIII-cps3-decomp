@@ -1,5 +1,13 @@
 /*
- * PLMAIN_TBL.C  tables read by PLMAIN.c and PLS00.c
+ * PLMAIN_TBL.C  player move routine tables
+ *
+ * plmain_lv_00 is the five routine_no[0] steps of the player move (player_mv_0000 .. 4000),
+ * plmain_lv_02 the routine_no[1] states (normal, damage, catch, caught, attack) and
+ * sag_jmp_tbl the super art gauge process by gauge type; read by PLMAIN.C, the player move
+ * routine. sag_jmp_tbl_tail and sag_jmp_tbl_tail_2 follow it and are not referred to by name.
+ * lvdir_conv swaps the lever and jump direction when the player turns round, and
+ * defense_cg_ix_table gives, by character and defence kind, the cg script step the player goes
+ * to; read by PLS00.C, the player lever and button check.
  */
 
 #include "types.h"
@@ -95,6 +103,20 @@ const s8 lvdir_conv[4] = {
 };
 
 const s16 defense_cg_ix_table[16][3] = {
-    { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 }, { 2, 2, 2 }, { 3, 3, 3 }, { 1, 1, 1 }, { 0, 0, 0 }, { 2, 2, 2 },
-    { 1, 1, 1 }, { 1, 1, 1 }, { 2, 2, 2 }, { 1, 1, 1 }, { 1, 1, 1 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 },
+    { 1, 1, 1 },  /* Gill */
+    { 1, 1, 1 },  /* Alex */
+    { 1, 1, 1 },  /* Ryu */
+    { 2, 2, 2 },  /* Yun */
+    { 3, 3, 3 },  /* Dudley */
+    { 1, 1, 1 },  /* Necro */
+    { 0, 0, 0 },  /* Hugo */
+    { 2, 2, 2 },  /* Ibuki */
+    { 1, 1, 1 },  /* Elena */
+    { 1, 1, 1 },  /* Oro */
+    { 2, 2, 2 },  /* Yang */
+    { 1, 1, 1 },  /* Ken */
+    { 1, 1, 1 },  /* Sean */
+    { 0, 0, 0 },  /* 13 */
+    { 0, 0, 0 },  /* 14 */
+    { 0, 0, 0 },  /* 15 */
 };

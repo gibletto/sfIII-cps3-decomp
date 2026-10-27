@@ -1,5 +1,8 @@
 /*
- * BG_SUB_TBL_C.C  a line table after bg000's text; nothing in the program refers to it
+ * BG_SUB_TBL_C.C  an unused line table
+ *
+ * bg_line_tbl is a table of 136 line values (zeros, then 0x17F) placed after the background
+ * tables; nothing in the program refers to it.
  */
 
 #include "types.h"

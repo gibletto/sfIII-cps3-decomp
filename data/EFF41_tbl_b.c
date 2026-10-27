@@ -1,5 +1,14 @@
 /*
- * EFF41_TBL_B.C  tables read by EFF44.c, EFF46.c, EFF47.c and EFF48.c
+ * EFF41_TBL_B.C  animated stage object, blinking mark and background page tables
+ *
+ * eff44_obj_data holds the 14 objects of effect 44 (family, colour, position, priority,
+ * animation, animate flag and line-scroll sync); read by EFF44.C. eff46_char_tbl is the eight
+ * patterns effect 46 picks from at random; read by EFF46.C. eff47_init_data gives the colour,
+ * position and priority of the five blinking marks and eff47_timer_tbl their cell times; read
+ * by EFF47.C. eff48_tile_tbl0 and eff48_tile_tbl1 are the tiles written into the BG 0 and BG 1
+ * pages (eff48_tile_jp_tbl1 in place of eff48_tile_tbl1 for Country 8), and eff48_frame_tbl0
+ * and eff48_frame_tbl1 the 20 frames (page, y offset, time) of each type; read by EFF48.C, the
+ * animated background pages.
  */
 
 #include "types.h"

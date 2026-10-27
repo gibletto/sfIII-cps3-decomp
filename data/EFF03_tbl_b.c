@@ -1,5 +1,12 @@
 /*
- * EFF03_TBL_B.C  tables read by eff06.c, EFF07.c and EFF09.c
+ * EFF03_TBL_B.C  stage scenery, background object and character prop tables
+ *
+ * scr_obj_num6 starts with the number of scenery objects of each stage and area, followed by
+ * the object rows reached through scr_obj_data6; read by EFF06.C, the second set of stage
+ * scenery objects. eff07_char_index_tbl is the animation sequence the effect 07 stage object
+ * cycles through; read by EFF07.C. eff09_data holds the rows effect_09_init places a prop from
+ * (routine, family, colour, position, priority, animation, animate flag and line-scroll sync);
+ * read by EFF09.C, the character props for appearances and win poses.
  */
 
 #include "types.h"

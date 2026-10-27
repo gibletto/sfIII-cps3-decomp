@@ -21,6 +21,19 @@
 #include "bg_sub_5.h"
 #include "eff66.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* clear the sub-state */
+#define R0_MOVE         1       /* react to the players until retired */
+#define R0_KILL         2       /* (default) put the work back */
+
+/* routine_no[2], eff66_00 */
+#define R2_INIT         0       /* start the idle animation */
+#define R2_IDLE         1       /* idle until a player comes near */
+#define R2_REACT        2       /* play the reaction */
+
+/* routine_no[2], eff66_03 */
+#define R2_GONE         3       /* wait to leave the screen, then reset */
+
 
 
 /* 02006D78 */
@@ -34,11 +47,11 @@ void (*eff66_jp_tbl[4])(WORK_Other*) = {
 
 void effect_66_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
-        ewk->wu.routine_no[2] = 0;
+        ewk->wu.routine_no[2] = R2_INIT;
         break;
-    case 1:
+    case R0_MOVE:
         if (compel_dead_check(ewk)) {
             ewk->wu.routine_no[0]++;
             break;
@@ -62,12 +75,12 @@ void effect_66_move(WORK_Other* ewk) {
 /* provisional name */
 void eff66_00(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.old_rno[0]);
         break;
-    case 1:
+    case R2_IDLE:
         if (ewk->wu.hit_stop) {
             char_move(&ewk->wu);
         }
@@ -77,10 +90,10 @@ void eff66_00(WORK_Other* ewk) {
             set_char_move_init(&ewk->wu, 0, ewk->wu.old_rno[1]);
         }
         break;
-    case 2:
+    case R2_REACT:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
-            ewk->wu.routine_no[2] = 0;
+            ewk->wu.routine_no[2] = R2_INIT;
         }
         break;
     }
@@ -102,12 +115,12 @@ void eff66_03(WORK_Other* ewk) {
     s16 right;
     s16 left;
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.old_rno[0]);
         break;
-    case 1:
+    case R2_IDLE:
         char_move(&ewk->wu);
         if (range_abs_check(plw[0].wu.xyz[0].disp.pos, ewk->wu.xyz[0].disp.pos, 16) ||
             range_abs_check(plw[1].wu.xyz[0].disp.pos, ewk->wu.xyz[0].disp.pos, 16)) {
@@ -115,18 +128,18 @@ void eff66_03(WORK_Other* ewk) {
             set_char_move_init(&ewk->wu, 0, ewk->wu.old_rno[1]);
         }
         break;
-    case 2:
+    case R2_REACT:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
             ewk->wu.routine_no[2]++;
         }
         break;
-    case 3:
+    case R2_GONE:
         bg_x = bg_w.bgw[ewk->wu.my_family - 1].xy[0].disp.pos;
         right = bg_x + 288;
         left = bg_x - 288;
         if (ewk->wu.xyz[0].disp.pos > right || ewk->wu.xyz[0].disp.pos < left) {
-            ewk->wu.routine_no[2] = 0;
+            ewk->wu.routine_no[2] = R2_INIT;
         }
         break;
     }

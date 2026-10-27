@@ -24,6 +24,18 @@
 #include "effb3.h"
 #include "EFFB4.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* clear the counters */
+#define R0_ROUND        1       /* wait for the ROUND letters */
+#define R0_NUMBER       2       /* wait for the round number */
+#define R0_ROUND_HOLD   3       /* hold the round display */
+#define R0_ROUND_OUT    4       /* wait for the letters to shrink away */
+#define R0_FIGHT        5       /* wait for FIGHT to fly in */
+#define R0_FIGHT_HOLD   6       /* hold FIGHT */
+#define R0_GO           7       /* let the round start */
+#define R0_END          8       /* one more frame */
+#define R0_BREAK        99      /* broken into: one frame */
+
 
 
 
@@ -39,14 +51,14 @@ s16 b2_curr_no;
 void effect_B2_move(WORK_Other* ewk) {
     s16 work = rf_b2_flag;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.old_rno[0] = ewk->wu.old_rno[1] = ewk->wu.old_rno[2] = 0;
         rf_b2_flag = 0;
         b2_curr_no = 0;
         b3_Break_Into_check(ewk);
         break;
-    case 1:
+    case R0_ROUND:
         if (ewk->wu.type) {
             if (work > 9) {
                 ewk->wu.routine_no[0] += 2;
@@ -60,14 +72,14 @@ void effect_B2_move(WORK_Other* ewk) {
         }
         b3_Break_Into_check(ewk);
         break;
-    case 2:
+    case R0_NUMBER:
         if (work) {
             ewk->wu.routine_no[0]++;
             ewk->wu.hit_stop = 24;
         }
         b3_Break_Into_check(ewk);
         break;
-    case 3:
+    case R0_ROUND_HOLD:
         ewk->wu.hit_stop--;
         if (ewk->wu.hit_stop < 0) {
             ewk->wu.routine_no[0]++;
@@ -77,7 +89,7 @@ void effect_B2_move(WORK_Other* ewk) {
         }
         b3_Break_Into_check(ewk);
         break;
-    case 4:
+    case R0_ROUND_OUT:
         if (ewk->wu.type) {
             if (work > 9) {
                 ewk->wu.routine_no[0]++;
@@ -89,28 +101,28 @@ void effect_B2_move(WORK_Other* ewk) {
         }
         b3_Break_Into_check(ewk);
         break;
-    case 5:
+    case R0_FIGHT:
         if (work) {
             ewk->wu.routine_no[0]++;
             rf_b2_flag = 0;
             ewk->wu.hit_stop = 24;
         }
         break;
-    case 6:
+    case R0_FIGHT_HOLD:
         ewk->wu.hit_stop--;
         if (ewk->wu.hit_stop < 0) {
             ewk->wu.routine_no[0]++;
             ewk->wu.hit_stop = 24;
         }
         break;
-    case 7:
+    case R0_GO:
         Next_Step = 1;
         ewk->wu.routine_no[0]++;
         break;
-    case 8:
+    case R0_END:
         ewk->wu.routine_no[0]++;
         break;
-    case 99:
+    case R0_BREAK:
         ewk->wu.routine_no[0]++;
         break;
     default:
@@ -124,7 +136,7 @@ void effect_B2_move(WORK_Other* ewk) {
 
 s32 b3_Break_Into_check(WORK_Other* ewk) {
     if (Break_Into) {
-        ewk->wu.routine_no[0] = 99;
+        ewk->wu.routine_no[0] = R0_BREAK;
         return 1;
     }
     return 0;

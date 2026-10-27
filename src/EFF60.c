@@ -22,6 +22,11 @@
 #include "bg_sub_5.h"
 #include "EFF60.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start the animation */
+#define R0_FLASH        1       /* blink and animate until retired */
+#define R0_KILL         2       /* put the work back */
+
 extern const s16 flash_obj_data60_0[9];
 extern const s16 flash_obj_data60_1[9];
 
@@ -34,13 +39,13 @@ const s16* flash_obj_data60[2] = {
 
 void effect_60_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         ewk->wu.disp_flag = 2;
         ewk->wu.blink_timing = 1;
         break;
-    case 1:
+    case R0_FLASH:
         if (compel_dead_check(ewk)) {
             ewk->wu.routine_no[0]++;
             break;
@@ -50,7 +55,7 @@ void effect_60_move(WORK_Other* ewk) {
         }
         disp_pos_trans_entry_rs(ewk);
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(ewk);
         push_effect_work(&ewk->wu);

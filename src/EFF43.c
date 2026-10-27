@@ -26,6 +26,15 @@
 #include "se_3.h"
 #include "EFF43.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* count the wait down, then show */
+#define R0_HOLD         1       /* one frame at double size */
+#define R0_SLIDE_IN     2       /* slide in, shrinking to normal size */
+#define R0_PLAY         3       /* play the pattern once all are in */
+#define R0_STOP         4       /* stop; the second side goes on */
+#define R0_PAUSE        5       /* count the pause down */
+#define R0_EXIT         6       /* let a button end the screen */
+
 extern s8 vs_object_count;  /* provisional name (02012E75): objects of the VS screen still moving in */
 
 void effect_43_slide();
@@ -35,7 +44,7 @@ void effect_43_slide();
 void effect_43_move(WORK_Other* ewk) {
     u16 speed = Cut_Cut_Sub(3);
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (--ewk->wu.dir_timer != 0) {
             return;
         }
@@ -47,12 +56,12 @@ void effect_43_move(WORK_Other* ewk) {
             Sound_SE(104);
         }
         break;
-    case 1:
+    case R0_HOLD:
         if (--ewk->wu.dir_timer == 0) {
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 2:
+    case R0_SLIDE_IN:
         for (;;) {
             effect_43_slide(ewk, speed);
             break;
@@ -71,7 +80,7 @@ void effect_43_move(WORK_Other* ewk) {
             }
         }
         break;
-    case 3:
+    case R0_PLAY:
         if (vs_object_count == 0) {
             char_move(&ewk->wu);
             if (ewk->wu.extra_col == 0x2066) {
@@ -82,18 +91,18 @@ void effect_43_move(WORK_Other* ewk) {
             }
         }
         break;
-    case 4:
+    case R0_STOP:
         if (ewk->master_id) {
             ewk->wu.routine_no[0]++;
             ewk->wu.dir_timer = 25;
         }
         break;
-    case 5:
+    case R0_PAUSE:
         if (--ewk->wu.dir_timer == 0) {
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 6:
+    case R0_EXIT:
         if (Cut_Cut_Cut()) {
             Sel_Exit_Flag = 1;
         }

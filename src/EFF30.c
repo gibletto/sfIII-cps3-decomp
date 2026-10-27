@@ -16,6 +16,11 @@
 #include "effect_2.h"
 #include "EFF30.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* place from the type and start */
+#define R0_MOVE         1       /* animate until it ends or is retired */
+#define R0_KILL         2       /* put the work back */
+
 
 extern const EFF30_DATA eff30_data_tbl[];    /* provisional name */
 
@@ -23,7 +28,7 @@ extern const EFF30_DATA eff30_data_tbl[];    /* provisional name */
 
 void effect_30_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         ewk->wu.my_col_mode = 0x4200;
@@ -37,7 +42,7 @@ void effect_30_move(WORK_Other* ewk) {
         ewk->wu.position_z = ewk->wu.xyz[2].disp.pos + eff30_data_tbl[ewk->wu.type].z;
         set_char_move_init(&ewk->wu, 0, eff30_data_tbl[ewk->wu.type].index);
         /* fall through */
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
@@ -52,7 +57,7 @@ void effect_30_move(WORK_Other* ewk) {
         }
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);

@@ -14,6 +14,16 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 #include "aboutspr.h"
+
+/* routine_no[0] */
+#define R0_INIT         0       /* show */
+#define R0_MOVE         1       /* take hits until retired */
+#define R0_KILL         99      /* (default) put the work back */
+
+/* routine_no[2] */
+#define R2_INIT         0       /* play the broken pattern */
+#define R2_STAY         1       /* stay broken */
+
 void eff69_2000(WORK_Other* ewk);
 void eff69_wait(WORK_Other* ewk);
 void eff69_break(WORK_Other* ewk);
@@ -23,14 +33,14 @@ extern const u32 stg01_char_table[];
 
 void effect_69_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 16);
         break;
-    case 1:
+    case R0_MOVE:
         if (compel_dead_check(ewk)) {
-            ewk->wu.routine_no[0] = 99;
+            ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
         if (!EXE_flag && !Game_pause) {
@@ -55,7 +65,7 @@ void eff69_wait(WORK_Other* ewk) {
         if (eff_hit_check(ewk, 0)) {
             if (eff_hit_flag[6] > (s8)ewk->wu.routine_no[1]) {
                 ewk->wu.routine_no[1]++;
-                ewk->wu.routine_no[2] = 0;
+                ewk->wu.routine_no[2] = R2_INIT;
                 ewk->wu.hit_stop = 96;
             }
         }
@@ -66,12 +76,12 @@ void eff69_wait(WORK_Other* ewk) {
 
 void eff69_break(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         set_char_move_init(&ewk->wu, 0, 19);
         effect_60_init(1);
         break;
-    case 1:
+    case R2_STAY:
     default:
         break;
     }

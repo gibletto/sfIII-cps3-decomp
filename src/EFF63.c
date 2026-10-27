@@ -21,6 +21,16 @@
 #include "EFF27.h"
 #include "EFF63.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* pick the pattern by the hit state */
+#define R0_WAIT         1       /* wait for the first hit */
+#define R0_SHAKE        2       /* play the hit pattern */
+#define R0_HIT          3       /* take hits until broken */
+#define R0_BREAK        4       /* break, set off the blast */
+#define R0_SETTLE       5       /* play on to the last signal */
+#define R0_BROKEN       6       /* stay broken */
+#define R0_KILL         99      /* (default) put the work back */
+
 extern const u32 stg06_char_table[];    /* provisional name (06353034, eff05.c) */
 
 
@@ -28,12 +38,12 @@ extern const u32 stg06_char_table[];    /* provisional name (06353034, eff05.c) 
 /* Update the breakable stage object. */
 void effect_63_move(WORK_Other* ewk) {
     if (compel_dead_check(ewk) != 0) {
-        ewk->wu.routine_no[0] = 99;
+        ewk->wu.routine_no[0] = R0_KILL;
     } else if (EXE_flag || Game_pause) {
         disp_pos_trans_entry_rs(ewk);
     } else {
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_INIT:
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 1;
             switch (eff_hit_flag[ewk->wu.type]) {
@@ -44,26 +54,26 @@ void effect_63_move(WORK_Other* ewk) {
                 set_char_move_init(&ewk->wu, 0, 33);
                 break;
             case 2:
-                ewk->wu.routine_no[0] = 6;
+                ewk->wu.routine_no[0] = R0_BROKEN;
                 set_char_move_init(&ewk->wu, 0, 37);
                 break;
             }
             break;
-        case 1:
+        case R0_WAIT:
             if (eff_hit_check(ewk, 0)) {
                 ewk->wu.routine_no[0]++;
                 set_char_move_init(&ewk->wu, 0, 32);
             }
             disp_pos_trans_entry_rs(ewk);
             break;
-        case 2:
+        case R0_SHAKE:
             char_move(&ewk->wu);
             if (ewk->wu.cg_type) {
                 ewk->wu.routine_no[0]++;
             }
             disp_pos_trans_entry_rs(ewk);
             break;
-        case 3:
+        case R0_HIT:
             eff_hit_check(ewk, 0);
             if (eff_hit_flag[7] == 2) {
                 ewk->wu.routine_no[0]++;
@@ -71,7 +81,7 @@ void effect_63_move(WORK_Other* ewk) {
             }
             disp_pos_trans_entry_rs(ewk);
             break;
-        case 4:
+        case R0_BREAK:
             char_move(&ewk->wu);
             if (ewk->wu.cg_type == 2) {
                 ewk->wu.routine_no[0]++;
@@ -80,13 +90,13 @@ void effect_63_move(WORK_Other* ewk) {
             }
             disp_pos_trans_entry_rs(ewk);
             break;
-        case 5:
+        case R0_SETTLE:
             char_move(&ewk->wu);
             if (ewk->wu.cg_type == 1) {
                 ewk->wu.routine_no[0]++;
             }
             /* fall through */
-        case 6:
+        case R0_BROKEN:
             disp_pos_trans_entry_rs(ewk);
             break;
         default:

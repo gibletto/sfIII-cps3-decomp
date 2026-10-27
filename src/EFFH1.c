@@ -21,11 +21,18 @@
 #include "bg_sub.h"
 #include "EFFH1.h"
 
+/* routine_no[1] */
+#define R1_WAIT         0       /* wait for the scroll */
+#define R1_SET_1        1       /* set the speeds for the first pass */
+#define R1_FLY_1        2       /* fly the first pass */
+#define R1_SET_2        3       /* set the speeds for the second pass */
+#define R1_FLY_2        4       /* fly the second pass */
+
 
 
 void effect_H1_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_WAIT:
         if (bg_w.bgw[0].xy[0].disp.pos < 0x1E0) {
             ewk->wu.routine_no[1]++;
             ewk->wu.disp_flag = 2;
@@ -33,8 +40,8 @@ void effect_H1_move(WORK_Other* ewk) {
             set_char_move_init2(&ewk->wu, 0, ewk->wu.old_rno[1], ewk->wu.char_index, 0);
         }
         break;
-    case 1:
-    case 3:
+    case R1_SET_1:
+    case R1_SET_2:
         ewk->wu.routine_no[1]++;
         ewk->wu.mvxy.a[0].sp = effh1_speed_tbl[ewk->wu.type][0];
         ewk->wu.mvxy.d[0].sp = effh1_speed_tbl[ewk->wu.type][1];
@@ -42,8 +49,8 @@ void effect_H1_move(WORK_Other* ewk) {
         ewk->wu.mvxy.d[1].sp = effh1_speed_tbl[ewk->wu.type][3];
         disp_pos_trans_entry(ewk);
         break;
-    case 2:
-    case 4:
+    case R1_FLY_1:
+    case R1_FLY_2:
         add_x_sub(ewk);
         add_y_sub(ewk);
         if (ewk->wu.xyz[1].disp.pos > 0x100) {
@@ -62,6 +69,8 @@ void effect_H1_move(WORK_Other* ewk) {
 }
 
 
+
+static void end_rno_disp(s16 r_no_2) {}
 
 s32 effect_H1_init(void) {
     WORK_Other* ewk;
@@ -90,6 +99,6 @@ s32 effect_H1_init(void) {
         ewk->wu.my_priority = ewk->wu.position_z = *data_ptr++;
         ewk->wu.old_rno[0] = ewk->wu.char_index - 1;
     }
-    (void)end_w.r_no_2;
+    end_rno_disp(end_w.r_no_2);
     return 0;
 }

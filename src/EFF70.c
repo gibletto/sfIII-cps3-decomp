@@ -13,6 +13,16 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 #include "aboutspr.h"
+
+/* routine_no[0] */
+#define R0_INIT         0       /* start the animation */
+#define R0_MOVE         1       /* follow the parent's state */
+#define R0_KILL         99      /* (default) put the work back */
+
+/* routine_no[2], eff70_react */
+#define R2_INIT         0       /* start the state's animation */
+#define R2_STAY         1       /* hold it */
+
 void eff70_wait(WORK_Other* ewk);
 void eff70_react(WORK_Other* ewk);
 void eff70_broken(WORK_Other* ewk);
@@ -24,20 +34,20 @@ void (*eff70_jp[4])(WORK_Other*) = { eff70_wait, eff70_react, eff70_broken, eff7
 void effect_70_move(WORK_Other* ewk) {
     WORK_Other* oya = (WORK_Other*)ewk->my_master;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = ewk->wu.type == 0 ? 0 : 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         ewk->wu.routine_no[1] = oya->wu.routine_no[1];
         break;
-    case 1:
+    case R0_MOVE:
         if (compel_dead_check(ewk)) {
-            ewk->wu.routine_no[0] = 99;
+            ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
         if (!EXE_flag && !Game_pause) {
             if (oya->wu.routine_no[1] != ewk->wu.routine_no[1]) {
-                ewk->wu.routine_no[2] = 0;
+                ewk->wu.routine_no[2] = R2_INIT;
                 ewk->wu.routine_no[1] = oya->wu.routine_no[1];
             }
             eff70_jp[ewk->wu.routine_no[1]](ewk);
@@ -56,7 +66,7 @@ void eff70_wait(WORK_Other* ewk) {
 
 void eff70_react(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         switch (ewk->wu.type) {
         case 0:
@@ -67,7 +77,7 @@ void eff70_react(WORK_Other* ewk) {
             break;
         }
         break;
-    case 1:
+    case R2_STAY:
     default:
         break;
     }
@@ -75,11 +85,11 @@ void eff70_react(WORK_Other* ewk) {
 
 void eff70_broken(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         ewk->wu.routine_no[2]++;
         set_char_move_init(&ewk->wu, 0, eff70_char_tbl[ewk->wu.type][ewk->wu.routine_no[1]]);
         break;
-    case 1:
+    case R2_STAY:
     default:
         break;
     }

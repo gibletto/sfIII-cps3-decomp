@@ -20,6 +20,10 @@
 #include "end_main.h"
 #include "EFF48.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* write the pages, show the first frame */
+#define R0_MOVE         1       /* step through the animation frames */
+
 
 
 extern const EFF48_FRAME eff48_frame_tbl0[20];
@@ -27,16 +31,15 @@ extern const EFF48_FRAME eff48_frame_tbl1[20];
 extern const EFF48_ROW eff48_tile_tbl0[2];
 extern const s32 eff48_tile_tbl1[4][16];
 extern const s32 eff48_tile_jp_tbl1[4][16];
-extern const u16 eff48_scrn_data[];
+extern const u16 eff48_scrn_data[46][16][32];
 void debug_bg_tile_put(s16 bg, s32 ofs, s32 page, s32 src);
 
-void effect_48_move(WORK_Other* ewk) {
+void effect_48_move(WORK_Other* wk) {
+    WORK_Other* ewk = wk;
     s16 y;
-    s16 ty;
-    (void)eff48_frame_tbl1;
-    (void)eff48_frame_tbl0;
+    register s16 ty;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.cg_ix = 0;
         if (ewk->wu.type) {
@@ -55,7 +58,7 @@ void effect_48_move(WORK_Other* ewk) {
             Scrn_Y_Set_R(0, y);
         }
         break;
-    case 1:
+    case R0_MOVE:
         if (!EXE_flag && !Game_pause) {
             ewk->wu.cg_ctr--;
             if (!ewk->wu.cg_ctr) {
@@ -136,6 +139,8 @@ void eff48_set_wait(WORK_Other* ewk) {
     }
 }
 
+static void eff48_tile_disp(s32 ofs) {}
+
 void eff48_page0_write(void) {
     s16 i;
     s16 j;
@@ -145,11 +150,11 @@ void eff48_page0_write(void) {
         row = &eff48_tile_tbl0[(u8)i] + 0;
         for (j = 0; j < 12; j++) {
             tile = &row->t[j];
-            (void)((EFF48_ROW*)tile)->t[0].ofs;
             debug_bg_tile_put(i, tile->ofs, tile->page, (s32)eff48_scrn_data);
+            eff48_tile_disp(tile->ofs);
         }
     }
-    (void)((WORK*)tile)->id;
+    (void)&((WORK*)tile)->id;
 }
 
 void eff48_page1_write(void) {

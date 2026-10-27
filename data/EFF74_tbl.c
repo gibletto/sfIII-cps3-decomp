@@ -1,5 +1,10 @@
 /*
- * EFF74_TBL.C  tables read by EFF74.c: the birds of effect 74: their placement and flight
+ * EFF74_TBL.C  bird perches and flight paths
+ *
+ * eff74_data_tbl gives the perch position and priority of each of the four birds, and
+ * eff74_move_tbl the eight flight paths: flight routine (flap, off to the right, off to the
+ * left), animation, and x and y speeds and accelerations. Read by EFF74.C, the birds on the
+ * stage.
  */
 
 #include "types.h"

@@ -23,18 +23,25 @@
 #include "bg_sub_5.h"
 #include "EFFC6.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start pattern 10 */
+#define R0_DRIVE        1       /* ride with the car */
+#define R0_STOP         2       /* play the stop pattern */
+#define R0_END          3       /* one more frame */
+#define R0_KILL         4       /* (default) put the work back */
+
 
 
 /* not gated by EXE_flag/Game_pause, always pattern 11 */
 void effect_C6_move(WORK_Other* ewk) {
     WORK_Other* oya = (WORK_Other*)ewk->my_master;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 10);
         break;
-    case 1:
+    case R0_DRIVE:
         if (oya->wu.routine_no[0] >= 2) {
             ewk->wu.routine_no[0]++;
             set_char_move_init(&ewk->wu, 0, 11);
@@ -45,7 +52,7 @@ void effect_C6_move(WORK_Other* ewk) {
         suzi_sync_pos_set(ewk);
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_STOP:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type == 1) {
             ewk->wu.routine_no[0]++;
@@ -54,7 +61,7 @@ void effect_C6_move(WORK_Other* ewk) {
         suzi_sync_pos_set(ewk);
         sort_push_request(&ewk->wu);
         break;
-    case 3:
+    case R0_END:
         ewk->wu.routine_no[0]++;
         break;
     default:

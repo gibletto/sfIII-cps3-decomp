@@ -1,5 +1,9 @@
 /*
- * PASS0003_B.C  tables read by sel_pl.c: the demonstration's lever input
+ * PASS0003_B.C  character select demonstration lever input
+ *
+ * Demo_Lever_Data holds the lever input, frame by frame, played on the character select screen
+ * in each of the four select demonstrations, picked by Select_Demo_Index. Read by SEL_PL.C,
+ * the player select screen.
  */
 
 #include "types.h"

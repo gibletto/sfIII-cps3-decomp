@@ -32,6 +32,14 @@
 #include "fighter.h"
 #include "PLMAIN.h"
 
+/* sa->sa_rno: the super art stock (sag_normal, sag_timer, sag_rebirth) */
+#define SA_NONE         0       /* no stock */
+#define SA_READY        1       /* a stock is ready (ok) */
+#define SA_USED         2       /* the art was started: spend the stock once it takes */
+#define SA_TIMER_WAIT   3       /* sag_timer: it took, wait out the freeze */
+#define SA_TIMER_RUN    4       /* sag_timer: the gauge runs down */
+#define SA_REBIRTH      3       /* sag_rebirth: it took */
+
 void Player_move(PLW* wk, u16 lv_data) {
     s16 i;
     if (wk->wu.operator) {
@@ -97,7 +105,7 @@ void player_mv_0000(PLW* wk) {
     wk->kezurijini_flag = 0;
     wk->wu.extra_col = wk->wu.extra_col_2 = 0;
     wk->sa_stop_flag = 0;
-    wk->wu.routine_no[0] = 1;
+    wk->wu.routine_no[0] = PLAYER_MV_PLACE;
     if (wk->player_number == PL_ELENA) {
         effect_G1_init(wk);
     }
@@ -109,21 +117,21 @@ void player_mv_1000(PLW* wk) {
     APPEAR_DATA* dtbl;
     s16 ap_work;
     switch (appear_type) {
-    case 0:
+    case APPEAR_STAND:
         plmv_1010(wk);
         plmv_1020(wk, 0x60);
         Appear_end++;
         break;
-    case 3:
+    case APPEAR_JUDGE:
         plmv_1010(wk);
         plmv_1020(wk, 0x80);
         break;
-    case 1:
-    case 2:
-        wk->wu.routine_no[0] = 2;
-        wk->wu.routine_no[1] = 0;
-        wk->wu.routine_no[2] = 0;
-        wk->wu.routine_no[3] = 0;
+    case APPEAR_ENTRY:
+    case APPEAR_ROUND:
+        wk->wu.routine_no[0] = PLAYER_MV_APPEAR;
+        wk->wu.routine_no[1] = PLAYER_NORMAL;
+        wk->wu.routine_no[2] = NORMAL_APPEAR;
+        wk->wu.routine_no[3] = RN3_START;
         wk->wu.disp_flag = 1;
         Appear_hv[wk->wu.id] = home_visitor_check(wk);
         if (Appear_hv[wk->wu.id]) {
@@ -140,10 +148,10 @@ void player_mv_1000(PLW* wk) {
 
 
 void plmv_1010(PLW* wk) {
-    wk->wu.routine_no[0] = 3;
-    wk->wu.routine_no[1] = 0;
-    wk->wu.routine_no[2] = 1;
-    wk->wu.routine_no[3] = 0;
+    wk->wu.routine_no[0] = PLAYER_MV_READY;
+    wk->wu.routine_no[1] = PLAYER_NORMAL;
+    wk->wu.routine_no[2] = NORMAL_STAND;
+    wk->wu.routine_no[3] = RN3_START;
     wk->wu.disp_flag = 1;
 }
 
@@ -164,8 +172,8 @@ void plmv_1020(PLW* wk, s16 step) {
 
 
 void player_mv_2000(PLW* wk) {
-    if (wk->wu.routine_no[2] == 1) {
-        wk->wu.routine_no[0] = 3;
+    if (wk->wu.routine_no[2] == NORMAL_STAND) {
+        wk->wu.routine_no[0] = PLAYER_MV_READY;
         wk->wu.disp_flag = 1;
         wk->wu.cg_type = 0;
     }
@@ -208,17 +216,15 @@ void player_mv_4000(PLW* wk) {
 
 
 s32 check_hit_stop(PLW* wk) {
-    s32 zero = 0;
     WORK* emwk = (WORK*)wk->wu.target_adrs;
-    s16 num = zero;
-    s32 rno;
+    s16 num = 0;
     if (wk->wu.dm_stop != 0 && wk->wu.hit_stop != 0) {
-        if (wk->wu.routine_no[3] != 0) {
+        if (wk->wu.routine_no[3] != RN3_START) {
             wk->wu.hit_stop = select_hit_stop(wk->wu.hit_stop, wk->wu.dm_stop);
-            wk->wu.dm_stop = zero;
+            wk->wu.dm_stop = 0;
         } else {
             wk->wu.dm_stop = select_hit_stop(wk->wu.dm_stop, wk->wu.hit_stop);
-            wk->wu.hit_stop = zero;
+            wk->wu.hit_stop = 0;
             return 0;
         }
     }
@@ -234,17 +240,15 @@ s32 check_hit_stop(PLW* wk) {
             wk->wu.hit_stop++;
             char_move(&wk->wu);
         }
-        if (wk->wu.routine_no[3] == 0) {
-            rno = wk->wu.routine_no[1];
-            if (rno == 1 || rno == 3) {
-                rno = emwk->routine_no[1];
-                if (rno != 1 && rno != 3) {
-                    num = zero;
+        if (wk->wu.routine_no[3] == RN3_START) {
+            if (wk->wu.routine_no[1] == 1 || wk->wu.routine_no[1] == 3) {
+                if (emwk->routine_no[1] != 1 && emwk->routine_no[1] != 3) {
+                    num = 0;
                 }
             }
         }
     }
-    Timer_Freeze = zero;
+    Timer_Freeze = 0;
     if (wk->sa_stop_flag) {
         Timer_Freeze = 1;
     }
@@ -310,22 +314,22 @@ void look_after_timers(PLW* wk) {
 
 void demo_set_sa_full(SA_WORK* sa) {
     switch (sa->gauge_type) {
-    case 0:
-        sa->sa_rno = 1;
+    case SA_GAUGE_STOCK:
+        sa->sa_rno = SA_READY;
         sa->ok = 1;
         sa->store = sa->store_max;
         sa->id_arts++;
         break;
-    case 1:
-        sa->sa_rno = 1;
+    case SA_GAUGE_TIMER:
+        sa->sa_rno = SA_READY;
         sa->ok = 1;
         sa->store = sa->store_max;
         sa->id_arts++;
         break;
-    case 2:
+    case SA_GAUGE_STOCK2:
         break;
-    case 3:
-        sa->sa_rno = 1;
+    case SA_GAUGE_REBIRTH:
+        sa->sa_rno = SA_READY;
         sa->ok = 1;
         sa->store = sa->store_max;
         break;
@@ -337,44 +341,44 @@ void demo_set_sa_full(SA_WORK* sa) {
 /* provisional name */
 void sag_normal(PLW* wk) {
     switch (wk->sa->sa_rno) {
-    case 0:
+    case SA_NONE:
         if (wk->sa->store) {
-            wk->sa->sa_rno = 1;
+            wk->sa->sa_rno = SA_READY;
             wk->sa->ok = 1;
             wk->sa->id_arts++;
         }
         wk->sa->saeff_ok = 0;
         break;
-    case 1:
+    case SA_READY:
         if (wk->sa->ok == -1) {
-            wk->sa->sa_rno = 2;
+            wk->sa->sa_rno = SA_USED;
             wk->sa->saeff_ok = 1;
             sa_gauge_flash[wk->wu.id] = 1;
         }
         break;
-    case 2:
+    case SA_USED:
         switch (wk->sa->saeff_ok) {
         case -1:
             if (pcon_dp_flag == 0) {
                 wk->sa->store--;
             }
             wk->sa->saeff_ok = 0;
-            wk->sa->sa_rno = 0;
+            wk->sa->sa_rno = SA_NONE;
             wk->sa->ok = 0;
             break;
         case 1:
-            if (wk->wu.routine_no[1] == 4) {
+            if (wk->wu.routine_no[1] == PLAYER_ATTACK) {
                 break;
             }
         default:
             wk->sa->saeff_ok = 0;
-            wk->sa->sa_rno = 0;
+            wk->sa->sa_rno = SA_NONE;
             wk->sa->ok = 0;
             break;
         }
         break;
     default:
-        wk->sa->sa_rno = 0;
+        wk->sa->sa_rno = SA_NONE;
         wk->sa->ok = 0;
         wk->sa->store = 0;
         wk->sa->saeff_ok = 0;
@@ -387,22 +391,22 @@ void sag_normal(PLW* wk) {
 /* provisional name */
 void sag_timer(PLW* wk) {
     switch (wk->sa->sa_rno) {
-    case 0:
+    case SA_NONE:
         if (wk->sa->store) {
-            wk->sa->sa_rno = 1;
+            wk->sa->sa_rno = SA_READY;
             wk->sa->ok = 1;
             wk->sa->id_arts++;
         }
         wk->sa->saeff_ok = 0;
         break;
-    case 1:
+    case SA_READY:
         if (wk->sa->ok == -1) {
-            wk->sa->sa_rno = 2;
+            wk->sa->sa_rno = SA_USED;
             wk->sa->saeff_ok = 1;
             sa_gauge_flash[wk->wu.id] = 1;
         }
         break;
-    case 2:
+    case SA_USED:
         switch (wk->sa->saeff_ok) {
         case -1:
             if (pcon_dp_flag == 0) {
@@ -410,30 +414,30 @@ void sag_timer(PLW* wk) {
             }
             wk->sa->gauge.s.h = wk->sa->gauge_len;
             wk->sa->gauge.s.l = -1;
-            wk->sa->sa_rno = 3;
+            wk->sa->sa_rno = SA_TIMER_WAIT;
             wk->sa->saeff_ok = 0;
             break;
         case 1:
-            if (wk->wu.routine_no[1] == 4) {
+            if (wk->wu.routine_no[1] == PLAYER_ATTACK) {
                 break;
             }
         default:
             wk->sa->saeff_ok = 0;
-            wk->sa->sa_rno = 0;
+            wk->sa->sa_rno = SA_NONE;
             wk->sa->ok = 0;
             break;
         }
         break;
-    case 3:
+    case SA_TIMER_WAIT:
         wk->sa->gauge.i -= wk->sa->dtm;
         if (wk->sa->gauge.s.h < 1) {
             wk->sa->gauge.i = 0;
             wk->sa->ok = 0;
-            wk->sa->sa_rno = 0;
+            wk->sa->sa_rno = SA_NONE;
         }
         break;
     default:
-        wk->sa->sa_rno = 0;
+        wk->sa->sa_rno = SA_NONE;
         wk->sa->ok = 0;
         wk->sa->store = 0;
         break;
@@ -449,41 +453,41 @@ void sag_timer_dummy(void) {}
 /* provisional name */
 void sag_rebirth(PLW* wk) {
     switch (wk->sa->sa_rno) {
-    case 0:
+    case SA_NONE:
         if (wk->sa->store) {
-            wk->sa->sa_rno = 1;
+            wk->sa->sa_rno = SA_READY;
             wk->sa->ok = 1;
         }
         wk->sa->saeff_ok = 0;
         break;
-    case 1:
+    case SA_READY:
         if (wk->sa->ok == -1) {
-            wk->sa->sa_rno = 2;
+            wk->sa->sa_rno = SA_USED;
             wk->sa->saeff_ok = 1;
             sa_gauge_flash[wk->wu.id] = 1;
         }
         break;
-    case 2:
+    case SA_USED:
         switch (wk->sa->saeff_ok) {
         case -1:
             wk->sa->store--;
             wk->sa->gauge.i = 0;
             wk->sa->saeff_ok = 0;
-            wk->sa->sa_rno = 3;
+            wk->sa->sa_rno = SA_REBIRTH;
             break;
         case 1:
             return;
         default:
             wk->sa->saeff_ok = 0;
-            wk->sa->sa_rno = 0;
+            wk->sa->sa_rno = SA_NONE;
             wk->sa->ok = 0;
             break;
         }
         break;
-    case 3:
+    case SA_REBIRTH:
         return;
     default:
-        wk->sa->sa_rno = 0;
+        wk->sa->sa_rno = SA_NONE;
         wk->sa->ok = 0;
         wk->sa->store = 0;
         wk->sa->saeff_ok = 0;

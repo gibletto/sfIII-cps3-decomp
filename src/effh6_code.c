@@ -14,10 +14,14 @@
 #include "effect_2.h"
 #include "effh6_code.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show the line */
+#define R0_MOVE         1       /* show until it scrolls away */
+
 void effect_H6_move(WORK_Other* ewk) {
     s16 y;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         if (!ewk->wu.dir_step) {
@@ -28,7 +32,7 @@ void effect_H6_move(WORK_Other* ewk) {
         ewk->wu.position_x = ewk->wu.xyz[0].disp.pos & 0x3FF;
         ewk->wu.position_y = ewk->wu.xyz[1].disp.pos & 0x3FF;
         break;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dir_step) {
             y = (ewk->wu.xyz[1].disp.pos - bg_w.bgw[5].position_y) & 0x3FF;
             if (y > 248) {

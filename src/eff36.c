@@ -18,6 +18,15 @@
 #include "aboutspr.h"
 #include "eff36.h"
 
+/* routine_no[0], type 0 */
+#define R0_INIT         0       /* show and start the zoom */
+#define R0_ZOOM         1       /* zoom in to full size */
+#define R0_HOLD         2       /* hold until the opening clears it */
+#define R0_KILL         99      /* (default) put the work back */
+
+/* routine_no[0], types 1 and 2 */
+#define R0_PAUSE        2       /* hold for a moment */
+
 extern s16 op_obj_disp;
 extern const s16 eff36_data_num[3];
 extern const s16* eff36_data_adrs[3];
@@ -28,7 +37,7 @@ void effect_36_move(WORK_Other* ewk) {
     switch (ewk->wu.type) {
     case 0:
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_INIT:
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 1;
             set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
@@ -37,7 +46,7 @@ void effect_36_move(WORK_Other* ewk) {
             ewk->wu.my_mr.size.y = 0;
             disp_pos_trans_entry5(ewk);
             break;
-        case 1:
+        case R0_ZOOM:
             if (eff36_op_check(ewk)) {
                 if (ewk->wu.my_mr.size.x < 63) {
                     ewk->wu.my_mr.size.x += 6;
@@ -50,7 +59,7 @@ void effect_36_move(WORK_Other* ewk) {
             }
             disp_pos_trans_entry5(ewk);
             break;
-        case 2:
+        case R0_HOLD:
             if (eff36_op_check(ewk)) {
                 disp_pos_trans_entry5(ewk);
             }
@@ -63,7 +72,7 @@ void effect_36_move(WORK_Other* ewk) {
         break;
     case 1:
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_INIT:
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 1;
             set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
@@ -72,7 +81,7 @@ void effect_36_move(WORK_Other* ewk) {
             ewk->wu.my_mr.size.y = 63;
             disp_pos_trans_entry5(ewk);
             break;
-        case 1:
+        case R0_ZOOM:
             if (eff36_op_check(ewk)) {
                 ewk->wu.my_mr.size.x += 16;
                 if (ewk->wu.my_mr.size.x >= 63) {
@@ -84,7 +93,7 @@ void effect_36_move(WORK_Other* ewk) {
             }
             disp_pos_trans_entry5(ewk);
             break;
-        case 2:
+        case R0_PAUSE:
             ewk->wu.old_rno[1]--;
             if (ewk->wu.old_rno[1] < 0) {
                 ewk->wu.routine_no[0]++;
@@ -99,7 +108,7 @@ void effect_36_move(WORK_Other* ewk) {
         break;
     case 2:
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_INIT:
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 1;
             set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
@@ -108,7 +117,7 @@ void effect_36_move(WORK_Other* ewk) {
             ewk->wu.my_mr.size.y = 63;
             disp_pos_trans_entry5(ewk);
             break;
-        case 1:
+        case R0_ZOOM:
             if (eff36_op_check(ewk)) {
                 ewk->wu.my_mr.size.x += 16;
                 if (ewk->wu.my_mr.size.x >= 63) {
@@ -120,7 +129,7 @@ void effect_36_move(WORK_Other* ewk) {
             }
             disp_pos_trans_entry5(ewk);
             break;
-        case 2:
+        case R0_PAUSE:
             ewk->wu.old_rno[1]--;
             if (ewk->wu.old_rno[1] < 0) {
                 ewk->wu.routine_no[0]++;
@@ -144,7 +153,7 @@ s32 eff36_op_check(WORK_Other* ewk) {
     if (op_obj_disp) {
         return 1;
     } else {
-        ewk->wu.routine_no[0] = 99;
+        ewk->wu.routine_no[0] = R0_KILL;
         ewk->wu.disp_flag = 0;
         return 0;
     }

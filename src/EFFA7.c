@@ -29,6 +29,11 @@
 #include "PLS02.h"
 #include "EFFA7.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* read the hit data and set the mark up */
+#define R0_MOVE         1       /* animate until the pattern ends */
+#define R0_KILL         2       /* put the work back */
+
 
 
 /* no directional pattern, explem2 rows of 16 */
@@ -37,7 +42,7 @@ void effect_A7_move(WORK_Other* ewk) {
     const EXPLEM* edt;
     s32 index;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         *ewk->wu.char_table = ef01_char_table;
         tad = &hmdt[ewk->wu.kohm];
@@ -91,8 +96,8 @@ void effect_A7_move(WORK_Other* ewk) {
             ewk->wu.xyz[0].disp.pos += random_16_com() - 7;
             ewk->wu.xyz[1].disp.pos += (random_16_com() & 7) - 3;
         }
-        ewk->wu.scr_mv_x = gqdt[tad->quake][0];
-        ewk->wu.scr_mv_y = gqdt[tad->quake][1];
+        ewk->wu.scr_mv_x = gqdt[tad->quake][GQ_DELAY];
+        ewk->wu.scr_mv_y = gqdt[tad->quake][GQ_INDEX];
         ewk->wu.position_x = ewk->wu.xyz[0].disp.pos;
         ewk->wu.position_y = ewk->wu.xyz[1].disp.pos;
         ewk->wu.position_z = ewk->wu.xyz[2].disp.pos;
@@ -104,7 +109,7 @@ void effect_A7_move(WORK_Other* ewk) {
         set_char_move_init(&ewk->wu, 0, index);
         sort_push_request8(&ewk->wu);
         break;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
@@ -121,7 +126,7 @@ void effect_A7_move(WORK_Other* ewk) {
         }
         sort_push_request8(&ewk->wu);
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);

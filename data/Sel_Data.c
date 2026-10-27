@@ -1,5 +1,12 @@
 /*
- * SEL_DATA.C  tables read by Eff52.c, EFFA6.c and sel_pl.c
+ * SEL_DATA.C  character select screen position tables
+ *
+ * Face_Cursor_Data is the face grid of the select screen (character per cell, a second grid
+ * with Yang in Yun's cell) and EM_Cursor_Data the grid cell of each character for the computer
+ * opponent's cursor; both are read by SEL_PL.C. Face_Pos_Data is the x, y of each face, read
+ * by EFFD5.C (face plates) and EFFD8.C (face cursor). effA6_x_tbl holds three BG 0 scroll
+ * targets per battle country, read by EFFA6.C, and eff52_pos_tbl the x, y of the stage marker
+ * per battle country, read by EFF52.C. sel_digit_tbl is not read.
  */
 
 #include "types.h"
@@ -25,9 +32,21 @@ const s8 Face_Cursor_Data[2][2][5] = {
     { { 2, 4, 1, 10, 11 }, { 7, 5, 12, 9, 8 } },
 };
 
+/* x, y of each face on the character select screen. */
 const s16 Face_Pos_Data[13][2] = {
-    { 0, 0 }, { 0, 20 }, { -72, 20 }, { 40, 20 }, { -40, 20 }, { -32, 57 }, { 0, 0 }, { -71, 57 },
-    { 72, 57 }, { 32, 57 }, { 40, 20 }, { 72, 20 }, { 0, 57 },
+    { 0, 0 },  /* Gill */
+    { 0, 20 },  /* Alex */
+    { -72, 20 },  /* Ryu */
+    { 40, 20 },  /* Yun */
+    { -40, 20 },  /* Dudley */
+    { -32, 57 },  /* Necro */
+    { 0, 0 },  /* Hugo */
+    { -71, 57 },  /* Ibuki */
+    { 72, 57 },  /* Elena */
+    { 32, 57 },  /* Oro */
+    { 40, 20 },  /* Yang */
+    { 72, 20 },  /* Ken */
+    { 0, 57 },  /* Sean */
 };
 
 /* provisional name */

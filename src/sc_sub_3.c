@@ -111,7 +111,7 @@ void stngauge_control(s32 player) {
         stun_put(pl);
         return;
     }
-    if ((plw[pl].wu.routine_no[1] == 1 && plw[pl].wu.routine_no[2] == 25 && plw[pl].wu.routine_no[3] != 0) ||
+    if ((plw[pl].wu.routine_no[1] == PLAYER_DAMAGE && plw[pl].wu.routine_no[2] == DAMAGE_STUN && plw[pl].wu.routine_no[3] != 0) ||
         plw[pl].py->flag == 1) {
         sdat[pl].sflag = 1;
         if (sdat[pl].osflag == 0) {
@@ -163,12 +163,12 @@ s8 pl;
         if (stn_work >= sdat[pl].cstn) {
             if (sdat[pl].cstn >= stn_work - 8) {
                 stn_offset = sdat[pl].cstn - i * 8;
-                tilemap_put_cell(BAR_WORD(sdat[pl].stnptbl_ptr, stn_number), 3, sdat[pl].stncol_number, BAR_WORD(sdat[pl].stntbl_ptr, stn_offset));
+                tilemap_put_cell((s16)sdat[pl].stnptbl_ptr[stn_number], 3, sdat[pl].stncol_number, (s16)sdat[pl].stntbl_ptr[stn_offset]);
             } else {
-                tilemap_put_cell(BAR_WORD(sdat[pl].stnptbl_ptr, stn_number), 3, sdat[pl].stncol_number, BAR_WORD(sdat[pl].stntbl_ptr, 0));
+                tilemap_put_cell((s16)sdat[pl].stnptbl_ptr[stn_number], 3, sdat[pl].stncol_number, (s16)sdat[pl].stntbl_ptr[0]);
             }
         } else {
-            tilemap_put_cell(BAR_WORD(sdat[pl].stnptbl_ptr, stn_number), 3, sdat[pl].stncol_number, BAR_WORD(sdat[pl].stntbl_ptr, 8));
+            tilemap_put_cell((s16)sdat[pl].stnptbl_ptr[stn_number], 3, sdat[pl].stncol_number, *(s16*)(sdat[pl].stntbl_ptr + 8));
         }
         stn_number++;
     }

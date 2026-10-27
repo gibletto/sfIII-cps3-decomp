@@ -14,6 +14,12 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 #include "aboutspr.h"
+#include "fighter.h"
+
+/* routine_no[0] */
+#define R0_WAIT         0       /* wait for a perfect victory */
+#define R0_SCENE        1       /* the companions play their scene */
+#define R0_CLEAR        2       /* the companions free themselves */
 
 s32 effect_77_init(WORK_Other* ewk);
 
@@ -22,14 +28,14 @@ void effect_82_move(WORK_Other* ewk) {
         return;
     }
     switch (ewk->wu.routine_no[0]) {
-    case 0:
-        if (Conclusion_Flag && Complete_Victory != 0 && plw[Loser_id].player_number == 7) {
+    case R0_WAIT:
+        if (Conclusion_Flag && Complete_Victory != 0 && plw[Loser_id].player_number == PL_IBUKI) {
             ewk->wu.routine_no[0]++;
             ewk->master_id = Loser_id;
         }
         break;
-    case 1:
-    case 2:
+    case R0_SCENE:
+    case R0_CLEAR:
         break;
     default:
         all_cgps_put_back(&ewk->wu);

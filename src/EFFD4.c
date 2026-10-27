@@ -19,6 +19,11 @@
 #include "effect_2.h"
 #include "EFFD4.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start pulling */
+#define R0_MOVE         1       /* pull while the attack lasts */
+#define R0_KILL         2       /* put the work back */
+
 
 
 void effect_D4_move(WORK_Other* ewk) {
@@ -34,14 +39,14 @@ void effect_D4_move(WORK_Other* ewk) {
     ewk->wu.position_y = mwk->wu.position_y;
     ewk->wu.position_z = mwk->wu.position_z;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
         }
-        if (mwk->wu.routine_no[1] != 4) {
+        if (mwk->wu.routine_no[1] != PLAYER_ATTACK) {
             ewk->wu.dir_timer = 0;
             ewk->wu.routine_no[0]++;
             break;
@@ -111,7 +116,7 @@ void effect_D4_move(WORK_Other* ewk) {
             }
         }
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(ewk);
         push_effect_work(&ewk->wu);

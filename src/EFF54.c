@@ -18,6 +18,13 @@
 #include "aboutspr.h"
 #include "EFF54.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show and take the first course row */
+#define R0_FLY          1       /* fly the row for its time */
+#define R0_REST         2       /* rest, then take the last row */
+#define R0_LEAVE        3       /* fly off the top */
+#define R0_KILL         4       /* (default) put the work back */
+
 extern const s32 eff54_move_tbl[3][5];      /* provisional name */
 extern const u32 eff54_char_table[];        /* provisional name */
 
@@ -28,7 +35,7 @@ extern const u32 eff54_char_table[];        /* provisional name */
 void effect_54_move(WORK_Other* ewk) {
     const s32* p;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 2);
         p = eff54_move_tbl[ewk->wu.routine_no[0]];
@@ -41,7 +48,7 @@ void effect_54_move(WORK_Other* ewk) {
         ewk->wu.routine_no[0]++;
         disp_pos_trans_entry(ewk);
         break;
-    case 1:
+    case R0_FLY:
         if (!EXE_flag && !Game_pause) {
             ewk->wu.direction--;
             if (ewk->wu.direction < 0) {
@@ -55,7 +62,7 @@ void effect_54_move(WORK_Other* ewk) {
         }
         disp_pos_trans_entry(ewk);
         break;
-    case 2:
+    case R0_REST:
         if (!EXE_flag && !Game_pause) {
             ewk->wu.direction--;
             if (ewk->wu.direction < 0) {
@@ -71,7 +78,7 @@ void effect_54_move(WORK_Other* ewk) {
         }
         disp_pos_trans_entry(ewk);
         break;
-    case 3:
+    case R0_LEAVE:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             add_x_sub(ewk);

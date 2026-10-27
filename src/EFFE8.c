@@ -20,39 +20,45 @@
 #include "effect_2.h"
 #include "EFFE8.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start at its slot of the trail */
+#define R0_MOVE         1       /* keep its slot while the controller runs */
+#define R0_RETURN       2       /* walk back to the head of the trail */
+#define R0_KILL         3       /* (default) put the work back */
+
 
 
 void effect_E8_move(WORK_Other* ewk) {
     PLW* mwk = (PLW*)ewk->my_master;
     WORK_Other* cwk = (WORK_Other*)ewk->wu.target_adrs;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.type = ewk->wu.charset_id;
         ewk->wu.cg_att_ix = 0;
         ewk->wu.cg_hit_ix = 0;
         if (ewk->wu.type >= ewk->wu.charset_id) {
             ewk->wu.type = ewk->wu.charset_id;
-            ewk->wu.routine_no[0] = 1;
+            ewk->wu.routine_no[0] = R0_MOVE;
         }
         effe8_zanzou_process(ewk, mwk);
         sort_push_request(&ewk->wu);
         break;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
         effe8_zanzou_process(ewk, mwk);
         if (cwk->wu.routine_no[0] != 1 || cwk->wu.routine_no[1] != 1) {
-            ewk->wu.routine_no[0] = 2;
+            ewk->wu.routine_no[0] = R0_RETURN;
         }
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_RETURN:
         ewk->wu.type -= ewk->wu.rl_waza;
         if (ewk->wu.type <= 0) {
             ewk->wu.disp_flag = 0;
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_KILL;
         } else {
             effe8_zanzou_process(ewk, mwk);
         }

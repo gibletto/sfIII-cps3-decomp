@@ -25,9 +25,29 @@
 #include "effd2.h"
 #include "EFFB0.h"
 
+/* routine_no[0] */
+#define R0_SCENE1       0       /* first scene */
+#define R0_SCENE2       1       /* second scene */
+#define R0_SCENE3       2       /* third scene */
+#define R0_BGM_OUT      3       /* fade the BGM out if cut short */
+#define R0_WAIT         4       /* count down, then flag the end */
+#define R0_DONE         5       /* finished */
+
+/* routine_no[1]: step of a scene */
+#define R1_FADE_OUT     0       /* start the fade out */
+#define R1_BG_ON        1       /* at black, switch the BGs on */
+#define R1_FADE_IN      2       /* start the fade in */
+#define R1_WIPE         3       /* faded in: start the wipe */
+#define R1_HOLD         4       /* count down, then end the scene */
+
+/* routine_no[1], effB0_1000 and effB0_2000 */
+#define R1_BLACK        1       /* at black, start the fade in */
+#define R1_FADING_IN    2       /* wait for the fade in */
+#define R1_COUNT        3       /* count down, then end the scene */
+
 extern s16 END_OF_B0;
 extern s8 Forbid_Break;
-extern const u32 effb0_scrn_data[];          /* provisional name */
+extern const u16 effb0_scrn_data[10][16][32]; /* provisional name */
 extern const s16 effb0_scr_record_data[];    /* provisional name */
 
 s32 effB0_0000(WORK_Other* ewk);
@@ -44,42 +64,42 @@ void end_ake_cell_put(s16 map, s32 ofs, s32 cell, u32 src);
 /* Run the ending scene sequence. */
 void effect_B0_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_SCENE1:
         if (effB0_0000(ewk)) {
             break;
         }
         ewk->wu.routine_no[0]++;
         effB0_check(ewk);
         break;
-    case 1:
+    case R0_SCENE2:
         if (effB0_1000(ewk)) {
             break;
         }
         ewk->wu.routine_no[0]++;
         effB0_check(ewk);
         break;
-    case 2:
+    case R0_SCENE3:
         if (effB0_2000(ewk)) {
             break;
         }
-        ewk->wu.routine_no[0] = 3;
+        ewk->wu.routine_no[0] = R0_BGM_OUT;
         ewk->wu.dir_old = 8;
         effect_D2_init(ewk);
         break;
-    case 3:
+    case R0_BGM_OUT:
         ewk->wu.routine_no[0]++;
         if (ewk->wu.dir_timer) {
             bgm_fade_out(0x222);
         }
         /* fall through */
-    case 4:
+    case R0_WAIT:
         ewk->wu.dir_old--;
         if (ewk->wu.dir_old < 0) {
             ewk->wu.routine_no[0]++;
             END_OF_B0 = 2;
         }
         break;
-    case 5:
+    case R0_DONE:
         break;
     }
 }
@@ -90,7 +110,7 @@ void effect_B0_move(WORK_Other* ewk) {
 /* provisional name */
 void effB0_check(WORK_Other* ewk) {
     if (ewk->wu.dir_timer) {
-        ewk->wu.routine_no[0] = 3;
+        ewk->wu.routine_no[0] = R0_BGM_OUT;
         ewk->wu.dir_old = 8;
     }
 }
@@ -110,13 +130,13 @@ void effB0_cut_check(WORK_Other* ewk) {
 s32 effB0_0000(WORK_Other* ewk) {
     effB0_cut_check(ewk);
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_FADE_OUT:
         if (!Request_Fade(43, 0)) {
             break;
         }
         ewk->wu.routine_no[1]++;
         break;
-    case 1:
+    case R1_BG_ON:
         if (Check_Fade_Complete()) {
             ewk->wu.routine_no[1]++;
             Bg_On_R(1);
@@ -124,13 +144,13 @@ s32 effB0_0000(WORK_Other* ewk) {
         }
         Forbid_Break = 0;
         break;
-    case 2:
+    case R1_FADE_IN:
         if (!Request_Fade(39, 0)) {
             break;
         }
         ewk->wu.routine_no[1]++;
         break;
-    case 3:
+    case R1_WIPE:
         if (Check_Fade_Complete()) {
             ewk->wu.routine_no[1]++;
             ewk->wu.dir_old = 4;
@@ -138,10 +158,10 @@ s32 effB0_0000(WORK_Other* ewk) {
         }
         Forbid_Break = 0;
         break;
-    case 4:
+    case R1_HOLD:
         ewk->wu.dir_old--;
         if (ewk->wu.dir_old < 0) {
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[1] = R1_FADE_OUT;
             ewk->wu.dir_step = 1;
             effect_B1_init((PLW*)ewk);
             effect_D2_init2(ewk);
@@ -159,14 +179,14 @@ s32 effB0_0000(WORK_Other* ewk) {
 s32 effB0_1000(WORK_Other* ewk) {
     effB0_cut_check(ewk);
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_FADE_OUT:
         if (!Request_Fade(43, 0)) {
             break;
         }
         Forbid_Break = 0;
         ewk->wu.routine_no[1]++;
         break;
-    case 1:
+    case R1_BLACK:
         if (Check_Fade_Complete()) {
             if (Request_Fade(44, 0) == 0) {
                 break;
@@ -175,19 +195,19 @@ s32 effB0_1000(WORK_Other* ewk) {
         }
         Forbid_Break = 0;
         break;
-    case 2:
+    case R1_FADING_IN:
         if (Check_Fade_Complete()) {
             ewk->wu.routine_no[1]++;
             ewk->wu.dir_old = 1;
         }
         Forbid_Break = 0;
         break;
-    case 3:
+    case R1_COUNT:
         ewk->wu.dir_old--;
         if (ewk->wu.dir_old < 0) {
             ewk->wu.dir_step = 2;
             effect_B1_init((PLW*)ewk);
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[1] = R1_FADE_OUT;
             return 0;
         }
         break;
@@ -201,14 +221,14 @@ s32 effB0_1000(WORK_Other* ewk) {
 /* provisional name */
 s32 effB0_2000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_FADE_OUT:
         if (!Request_Fade(43, 0)) {
             break;
         }
         Forbid_Break = 0;
         ewk->wu.routine_no[1]++;
         break;
-    case 1:
+    case R1_BLACK:
         if (Check_Fade_Complete()) {
             if (Request_Fade(39, 0) == 0) {
                 break;
@@ -217,7 +237,7 @@ s32 effB0_2000(WORK_Other* ewk) {
         }
         Forbid_Break = 0;
         break;
-    case 2:
+    case R1_FADING_IN:
         if (Check_Fade_Complete()) {
             ewk->wu.routine_no[1]++;
             ewk->wu.dir_old = 2;
@@ -225,10 +245,10 @@ s32 effB0_2000(WORK_Other* ewk) {
         }
         Forbid_Break = 0;
         break;
-    case 3:
+    case R1_COUNT:
         ewk->wu.dir_old--;
         if (ewk->wu.dir_old < 0) {
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[1] = R1_FADE_OUT;
             return 0;
         }
         break;
@@ -257,7 +277,7 @@ s32 effect_B0_init(void) {
     ewk->wu.direction = 0;
     load_any_color_fade(9, 0, 0, 0);
     Bg_Off_R(16);
-    (void)((WORK*)2)->id;
+    (void)&((WORK*)2)->id;
     bg_w.bgw[0].zuubun = 0;
     bg_w.quake_x_index = 0;
     bg_w.quake_y_index = 0;
@@ -275,9 +295,9 @@ s32 effect_B0_init(void) {
         bg_w.bgw[n].position_x = (0x200 - bg_w.pos_offset) & 0x3FF;
         bg_w.bgw[n].position_y = 0;
     }
-    (void)((WORK*)0x200)->id;
+    (void)&((WORK*)0x200)->id;
     scrn_reg_w[0].ctrl &= 0xFE7F;
-    (void)((WORK*)0x2000000)->id;
+    (void)&((WORK*)0x2000000)->id;
     
     end_ake_cell_put(0, 0x3040, 6, (u32)effb0_scrn_data);
     end_ake_cell_put(0, 0x3080, 7, (u32)effb0_scrn_data);

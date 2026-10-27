@@ -1,5 +1,11 @@
 /*
- * WIN_2_TBL.C  tables read by EFFA3.c, Game_Main.c, manage_2.c and pow_pow.c: positions of the win screen's texts
+ * WIN_2_TBL.C  win screen text positions
+ *
+ * Score_X_Pos_Data gives the score column of each side by screen mode, read by POW_POW.C
+ * (damage and score) and MANAGE_2.C; Loser_X_Pos_Data the loser's text column by screen mode,
+ * read by MANAGE_2.C (round and match management); EFFA3_Area_Data the text rectangle effect
+ * A3 clears, by area and screen mode, read by EFFA3.C. Entry_Screen_X_Pairs, column pairs by
+ * screen mode, is not referred to.
  */
 
 #include "types.h"
@@ -27,6 +33,10 @@ const s16 Loser_X_Pos_Data[6][2] = {
     { 5, 12 }, { 42, 51 }, { 8, 15 }, { 31, 40 }, { 7, 7 }, { 32, 41 },
 };
 
+/*
+ * Indexed by area (kage_hx) and screen mode: the text rectangle effect A3 clears, as left,
+ * top, right and bottom cells (rows counted from Text_Page_Y).
+ */
 const s16 EFFA3_Area_Data[2][2][4] = {
     { { 0, 9, 48, 10 }, { 8, 9, 62, 10 } }, { { 0, 15, 48, 16 }, { 8, 15, 62, 16 } },
 };

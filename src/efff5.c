@@ -20,6 +20,11 @@
 #include "effect_2.h"
 #include "efff5.h"
 
+/* routine_no[1]: states of the picture routines */
+#define R1_INIT         0       /* start the animation */
+#define R1_MOVE         1       /* the type's main state */
+#define R1_KILL         2       /* (default) put the work back */
+
 /* routine, x, y, priority, pattern, hit_stop */
 const s16 efff5_data_tbl[14][6] = {
     { 0, 512, 48, 50, 52, 1 },
@@ -49,12 +54,12 @@ void effect_F5_move(WORK_Other* ewk) {
 
 void efff5_0000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R1_MOVE:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type == 0xFF) {
             ewk->wu.routine_no[1]++;
@@ -76,12 +81,12 @@ void efff5_0000(WORK_Other* ewk) {
 
 void efff5_0001(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R1_MOVE:
         char_move(&ewk->wu);
         if (op_w.r_no_0 == 15) {
             ewk->wu.routine_no[1]++;
@@ -103,12 +108,12 @@ void efff5_0001(WORK_Other* ewk) {
 
 void efff5_0002(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R1_MOVE:
         ewk->wu.xyz[1].disp.pos += 2;
         if (ewk->wu.xyz[1].disp.pos > 96) {
             ewk->wu.xyz[1].disp.pos = 0;
@@ -124,12 +129,12 @@ void efff5_0002(WORK_Other* ewk) {
 
 void efff5_0003(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R1_MOVE:
         char_move(&ewk->wu);
         ewk->wu.position_x = ewk->wu.xyz[0].disp.pos & 0x3FF;
         ewk->wu.position_y = ewk->wu.xyz[1].disp.pos & 0x3FF;
@@ -146,14 +151,14 @@ void efff5_0003(WORK_Other* ewk) {
 
 void efff5_0004(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         ewk->wu.position_x = ewk->wu.xyz[0].disp.pos & 0x3FF;
         ewk->wu.position_y = ewk->wu.xyz[1].disp.pos & 0x3FF;
         break;
-    case 1:
+    case R1_MOVE:
         sort_push_request4(&ewk->wu);
         break;
     default:
@@ -167,12 +172,12 @@ void efff5_0004(WORK_Other* ewk) {
 
 void efff5_0005(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R1_MOVE:
         char_move(&ewk->wu);
         char_move(&ewk->wu);
         char_move(&ewk->wu);

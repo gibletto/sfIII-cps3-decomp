@@ -108,18 +108,16 @@ s16 bg_no;
 
 s32 range_x_check(WORK* wk) {
     s16 x;
-    s16 w;
     if ((s8)bg_w.chase_flag & 0xF) {
         x = bg_w.bgw[wk->my_family - 1].chase_xy[0].disp.pos;
     } else {
         x = bg_w.bgw[wk->my_family - 1].wxy[0].disp.pos;
     }
-    w = 272;
-    x -= w;
+    x -= 272;
     if (x > wk->xyz[0].disp.pos) {
         return 0;
     }
-    x = bg_w.bgw[wk->my_family - 1].wxy[0].disp.pos + w;
+    x = bg_w.bgw[wk->my_family - 1].wxy[0].disp.pos + 272;
     if (wk->xyz[0].disp.pos > x) {
         return 0;
     }
@@ -258,8 +256,8 @@ s32 eff_hit_check(WORK_Other* ewk, s16 type) {
 
 
 s32 eff_hit_check_sub(WORK_Other* ewk, PLW* pl) {
-    if (pl->wu.routine_no[1] == 1) {
-        if (pl->wu.routine_no[2] < 14 || pl->wu.routine_no[2] >= 24) {
+    if (pl->wu.routine_no[1] == PLAYER_DAMAGE) {
+        if (pl->wu.routine_no[2] < DAMAGE_AIR || pl->wu.routine_no[2] >= DAMAGE_AIR_END) {
             return 0;
         }
         if (hit_check_subroutine(
@@ -282,7 +280,7 @@ void eff_hit_flag_clear(void) {
 
 
 s32 complete_victory_check(void) {
-    if (!Allow_a_battle_f && Conclusion_Flag == 1 && C_No0 >= 2 && Complete_Victory) {
+    if (!Allow_a_battle_f && Conclusion_Flag == 1 && C_No0 >= C0_FIGHT && Complete_Victory) {
         return 1;
     }
     return 0;
@@ -314,10 +312,10 @@ u32 range_abs_check(s16 a, s16 b, s16 range)
 
 
 s32 either_pl_hissatsu_check(void) {
-    if (plw[0].wu.routine_no[1] == 4 && plw[0].wu.routine_no[2] >= 16) {
+    if (plw[0].wu.routine_no[1] == PLAYER_ATTACK && plw[0].wu.routine_no[2] >= ATTACK_SPECIAL) {
         return 1;
     }
-    if (plw[1].wu.routine_no[1] == 4 && plw[1].wu.routine_no[2] >= 16) {
+    if (plw[1].wu.routine_no[1] == PLAYER_ATTACK && plw[1].wu.routine_no[2] >= ATTACK_SPECIAL) {
         return 1;
     }
     return 0;
@@ -364,24 +362,22 @@ void win_lose_work_clear(void) {
 }
 
 
+#pragma inline(bg_speed_disp)
+static void bg_speed_disp(s8 r1, s8 r2, s8 stage, s8 area) {}
+
+static void chase_xy_disp(s32 cal, s16 pos, s16 low) {}
+
 void cal_bg_speed_data(bg_num, tm)
 s16 bg_num;
 s16 tm;
 {
     MotionState ms;
     XY* xy = bg_w.bgw[bg_num].chase_xy;
-    (void)bg_w.bg_routine;
-    (void)bg_w.bg_r_1;
-    (void)bg_w.bg_r_2;
-    (void)bg_w.stage;
-    (void)bg_w.area;
+    bg_speed_disp(bg_w.bg_r_1, bg_w.bg_r_2, bg_w.stage, bg_w.area);
     if (0) {
         return;
     }
-    (void)&((WORK*)xy)->disp_flag;
-    (void)&((WORK*)xy)->blink_timing;
-    (void)&((WORK*)xy)->operator;
-    (void)&((WORK*)xy)->type;
+    chase_xy_disp(xy->cal, xy->disp.pos, xy->disp.low);
     xy[0].disp.low = xy[1].disp.low = 0;
     (void)&((WORK*)bg_num)->be_flag;
     ms.timer = tm;

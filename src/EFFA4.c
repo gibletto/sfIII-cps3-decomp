@@ -24,9 +24,12 @@
 #include "sc_trans.h"
 #include "EFFA3.h"
 
+/* routine_no[0] */
+#define R0_MOVE         0       /* start the objects one by one */
+
 void effect_A4_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_MOVE:
         if (--ewk->wu.dir_timer) {
             break;
         }

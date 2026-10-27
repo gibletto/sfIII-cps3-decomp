@@ -1,5 +1,9 @@
 /*
- * END_5_TBL.C  tables read by end_5.c
+ * END_5_TBL.C  Necro's ending BG0 cells (ending 5)
+ *
+ * end_500_bg0_cell_tbl lists the BG0 cells (map offset, cell number) written by
+ * end_500_cell_set at the start of the ending; its BG1 cells and scene tables are in
+ * END_5_TBL_B.C. Read by END_5.C.
  */
 
 #include "types.h"

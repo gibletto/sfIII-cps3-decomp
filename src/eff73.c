@@ -19,6 +19,14 @@
 #include "bg_sub_5.h"
 #include "eff73.h"
 
+/* routine_no[0]: copy of the parent's state */
+#define R0_IDLE         0       /* parent idle: pattern 17 */
+#define R0_REACT        1       /* parent reacting: pattern 18 */
+
+/* routine_no[1], eff73_0000 */
+#define R1_INIT         0       /* start the animation */
+#define R1_PLAY         1       /* play it */
+
 void eff73_0000(WORK_Other* ewk);
 void eff73_1000(WORK_Other* ewk);
 
@@ -34,14 +42,14 @@ void effect_73_move(WORK_Other* ewk) {
     mwk = (WORK_Other*)ewk->my_master;
     if (mwk->wu.routine_no[0] != ewk->wu.routine_no[0]) {
         ewk->wu.routine_no[0] = mwk->wu.routine_no[0];
-        ewk->wu.routine_no[1] = 0;
+        ewk->wu.routine_no[1] = R1_INIT;
     }
     if (!EXE_flag && !Game_pause) {
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_IDLE:
             eff73_0000(ewk);
             break;
-        case 1:
+        case R0_REACT:
             eff73_1000(ewk);
             break;
         }
@@ -57,12 +65,12 @@ void effect_73_move(WORK_Other* ewk) {
 /* provisional name */
 void eff73_0000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 17);
         break;
-    case 1:
+    case R1_PLAY:
         char_move(&ewk->wu);
         break;
     }
@@ -76,11 +84,11 @@ void eff73_1000(WORK_Other* ewk) {
         return;
     }
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         set_char_move_init(&ewk->wu, 0, 18);
         break;
-    case 1:
+    case R1_PLAY:
         char_move(&ewk->wu);
         break;
     }

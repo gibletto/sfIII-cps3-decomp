@@ -41,6 +41,37 @@
 #include "bg000.h"
 #include "textsound.h"
 #include "sel_pl.h"
+#include "fighter.h"
+
+/* Sel_Sub_No[1] in PL_Sel_2nd, both playing */
+#define PS2_WAIT        0       /* until one or both have chosen a character */
+#define PS2_PLATES      1       /* move both plates into order */
+
+/* Sel_Sub_No[1] in PL_Sel_3rd */
+#define PS3_START       0       /* both choosing super arts: order the plates, else finish */
+#define PS3_CHALLENGER  1       /* until the challenger's character is chosen */
+#define PS3_BOTH        2       /* until that and the champion's super art are chosen */
+#define PS3_ARTS        3       /* (default) until the challenger's super art is chosen */
+
+/* Face_No[1]: the face panel move (Move_Face_BG) */
+#define FACE_MOVE_IDLE  0       /* until a move is requested */
+#define FACE_MOVING     1       /* (default) until the move is done */
+
+/* Select_Status[0]: who is playing; Select_Status[1]: who has chosen a super art (bits) */
+#define SEL_1P          1       /* player 1 */
+#define SEL_2P          2       /* player 2 */
+#define SEL_BOTH        3       /* both players */
+
+/* SP_No[pl][0]: a player's select routine (Sel_PL_Jmp_Tbl) */
+#define SP_INIT         0       /* Sel_PL_1st: set up the cursor */
+#define SP_WAIT         1       /* Sel_PL_2nd: until the select starts */
+#define SP_CHAR         2       /* Sel_PL_3rd: choose a character */
+#define SP_ARTS_WAIT    3       /* Sel_PL_4th: until the super art select opens */
+#define SP_ARTS         4       /* Sel_PL_5th: choose a super art */
+#define SP_DONE         5       /* Sel_PL_6th: done */
+
+/* Face_No[0]: the face panel routine (Face_Tbl) */
+#define FACE_DONE       3       /* Face_4th: the face panel is done */
 
 /* declarations the headers do not give */
 extern s16 Sel_Arts_Pos[2];
@@ -167,7 +198,7 @@ void Sel_PL_Cont_1st(void) {
 void Sel_PL_Cont_2nd(void) {
     if (--Cover_Timer == 0) {
         S_No++;
-        if (G_No1 == 1) {
+        if (G_No1 == G1_SELECT) {
             Request_E_No = 1;
         }
         Clear_Flash_No();
@@ -185,9 +216,9 @@ void Sel_PL_Cont_3rd(void) {
     if (Switch_Screen_Revival()) {
         S_No++;
         Forbid_Break = 0;
-        if (G_No1 == 1 || !Demo_Flag) {
+        if (G_No1 == G1_SELECT || !Demo_Flag) {
             bgm_request(2);
-            if (E_Number[0][0] != 2 && E_Number[1][0] != 2) {
+            if (E_Number[0][0] != ENTRY_NAME && E_Number[1][0] != ENTRY_NAME) {
                 Ranking_00_6th(0);
             }
         }
@@ -462,7 +493,7 @@ u16 sw;
     case 128:
         if (Player_Color[PL_id ^ 1] == 3 && id_0 == id_1) {
             Player_Color[PL_id] = 0;
-        } else if (My_char[PL_id] == 3 || My_char[PL_id] == 10) {
+        } else if (My_char[PL_id] == PL_YUN || My_char[PL_id] == PL_YANG) {
             Player_Color[PL_id] = 0;
         } else {
             Player_Color[PL_id] = 3;
@@ -471,7 +502,7 @@ u16 sw;
     case 256:
         if (Player_Color[PL_id ^ 1] == 4 && id_0 == id_1) {
             Player_Color[PL_id] = 1;
-        } else if (My_char[PL_id] == 3 || My_char[PL_id] == 10) {
+        } else if (My_char[PL_id] == PL_YUN || My_char[PL_id] == PL_YANG) {
             Player_Color[PL_id] = 1;
         } else {
             Player_Color[PL_id] = 4;
@@ -480,7 +511,7 @@ u16 sw;
     default:
         if (Player_Color[PL_id ^ 1] == 5 && id_0 == id_1) {
             Player_Color[PL_id] = 2;
-        } else if (My_char[PL_id] == 3 || My_char[PL_id] == 10) {
+        } else if (My_char[PL_id] == PL_YUN || My_char[PL_id] == PL_YANG) {
             Player_Color[PL_id] = 2;
         } else {
             Player_Color[PL_id] = 5;
@@ -589,8 +620,8 @@ void sel_pl_face_control(void) {
 
 void Face_1st(void) {
     switch (Select_Status[1]) {
-    case 1:
-    case 2:
+    case SEL_1P:
+    case SEL_2P:
         if (Sel_Arts_Complete[Select_Status[1] - 1] < 0) {
             Face_MV_Request = 2;
             Face_MV_Time = 5;
@@ -601,7 +632,7 @@ void Face_1st(void) {
         if (Sel_Arts_Complete[0] < 0 && Sel_Arts_Complete[1] < 0) {
             Face_MV_Request = 2;
             Face_MV_Time = 5;
-            Face_No[0] = 3;
+            Face_No[0] = FACE_DONE;
         }
         break;
     }
@@ -610,7 +641,7 @@ void Face_1st(void) {
 
 
 void Face_2nd(void) {
-    if (Move_Super_Arts[0] == 0 && Move_Super_Arts[1] == 0 && Select_Status[1] == 3 && Face_Move == 0) {
+    if (Move_Super_Arts[0] == 0 && Move_Super_Arts[1] == 0 && Select_Status[1] == SEL_BOTH && Face_Move == 0) {
         Face_MV_Request = 1;
         Face_MV_Time = 20;
         Face_No[0]++;
@@ -623,7 +654,7 @@ void Face_3rd(void) {
     if (Sel_PL_Complete[0] < 0 && Sel_PL_Complete[1] < 0) {
         Face_MV_Request = 2;
         Face_MV_Time = 5;
-        Face_No[0] = 3;
+        Face_No[0] = FACE_DONE;
     }
 }
 
@@ -635,7 +666,7 @@ void Face_4th(void) {}
 
 void Move_Face_BG(void) {
     switch (Face_No[1]) {
-    case 0:
+    case FACE_MOVE_IDLE:
         if (Face_MV_Request == 0) {
             break;
         }
@@ -647,7 +678,7 @@ void Move_Face_BG(void) {
         if (Face_MV_Request = Face_Move) {
             break;
         }
-        Face_No[1] = 0;
+        Face_No[1] = FACE_MOVE_IDLE;
         break;
     }
 }
@@ -674,14 +705,14 @@ void PL_Sel_Begin(void) {
 /* provisional name */
 void PL_Sel_2nd(void) {
     switch (Select_Status[1]) {
-    case 1:
-    case 2:
+    case SEL_1P:
+    case SEL_2P:
         if (Sel_PL_Complete[Select_Status[1] - 1] < 0) {
             Order[0] = 3;
             Order_Timer[0] = 1;
             Order[3] = 2;
             Order_Timer[3] = 1;
-            if (Select_Status[1] == 1) {
+            if (Select_Status[1] == SEL_1P) {
                 Order_Dir[0] = 8;
                 Order_Dir[3] = 8;
             } else {
@@ -693,7 +724,7 @@ void PL_Sel_2nd(void) {
             Plate_Step[0] = 0;
             Plate_Step[1] = 0;
             sel_pl_disp_char_effect_trio(Select_Status[1] - 1);
-            if (Select_Status[0] == 3) {
+            if (Select_Status[0] == SEL_BOTH) {
                 Move_Super_Arts[Champion] = 1;
                 effect_D7_init(Champion, Super_Arts[Champion], 0, 30, 0);
                 effect_D7_init(Champion, Super_Arts[Champion], 0, 30, 1);
@@ -703,7 +734,7 @@ void PL_Sel_2nd(void) {
         break;
     default:
         switch (Sel_Sub_No[1]) {
-        case 0:
+        case PS2_WAIT:
             if ((Sel_PL_Complete[0] < 0 && Sel_PL_Complete[1] != 0) || (Sel_PL_Complete[1] < 0 && Sel_PL_Complete[0] != 0)) {
                 Order[0] = 3;
                 Order_Timer[0] = 1;
@@ -735,7 +766,7 @@ void PL_Sel_2nd(void) {
                 Sel_Sub_No[1]++;
             }
             break;
-        case 1:
+        case PS2_PLATES:
             Sel_Plate_Order_Step(Sel_Second_PL);
             Sel_Plate_Order_Step(Sel_First_PL);
             if (Plate_Step[0] == 99 && Plate_Step[1] == 99) {
@@ -836,8 +867,8 @@ s8 PL_id;
 /* provisional name */
 void PL_Sel_3rd(void) {
     switch (Sel_Sub_No[1]) {
-    case 0:
-        if (Select_Status[1] == 3) {
+    case PS3_START:
+        if (Select_Status[1] == SEL_BOTH) {
             Order[3] = 4;
             Order[New_Challenger + 1] = 2;
             Order_Timer[3] = 1;
@@ -864,7 +895,7 @@ void PL_Sel_3rd(void) {
             Sel_Sub_No[0] = 4;
         }
         break;
-    case 1:
+    case PS3_CHALLENGER:
         if (Sel_Arts_Complete[Champion] < 0) {
             Order[Champion + 4] = 3;
             Order_Timer[Champion + 4] = 1;
@@ -891,7 +922,7 @@ void PL_Sel_3rd(void) {
         }
         sel_pl_disp_char_effect_trio(New_Challenger);
         /* fall through */
-    case 2:
+    case PS3_BOTH:
         if (Sel_Arts_Complete[Champion] < 0) {
             Order[Champion + 4] = 3;
             Order_Timer[Champion + 4] = 1;
@@ -944,20 +975,20 @@ void PL_Sel_5th(void) {}
 
 void Setup_Select_Status(void) {
     if (plw[0].wu.operator) {
-        Select_Status[0] = 1;
+        Select_Status[0] = SEL_1P;
     } else {
         Select_Status[0] = 0;
     }
     if (plw[1].wu.operator) {
-        Select_Status[0] |= 2;
+        Select_Status[0] |= SEL_2P;
     }
     if (Sel_Arts_Complete[0] != -1 && plw[0].wu.operator) {
-        Select_Status[1] = 1;
+        Select_Status[1] = SEL_1P;
     } else {
         Select_Status[1] = 0;
     }
     if (Sel_Arts_Complete[1] != -1 && plw[1].wu.operator) {
-        Select_Status[1] |= 2;
+        Select_Status[1] |= SEL_2P;
     }
 }
 
@@ -1071,14 +1102,13 @@ void Setup_BG_Layer2(void) {
 
 /* provisional name */
 void Setup_BG_Layer3(void) {
-    s16 i = 1;
-    bg_w.bgw[i].xy[0].disp.pos = 256;
-    bg_w.bgw[i].xy[1].disp.pos = 128;
-    bg_w.bgw[i].xy[0].disp.low = 0;
-    bg_w.bgw[i].xy[1].disp.low = 0;
-    bg_w.bgw[i].position_x = 256;
-    bg_w.bgw[i].position_y = 128;
-    bg_w.bgw[i].hos_xy[0].disp.pos = bg_w.bgw[i].wxy[0].disp.pos = bg_w.bgw[i].xy[0].disp.pos;
+    bg_w.bgw[1].xy[0].disp.pos = 256;
+    bg_w.bgw[1].xy[1].disp.pos = 128;
+    bg_w.bgw[1].xy[0].disp.low = 0;
+    bg_w.bgw[1].xy[1].disp.low = 0;
+    bg_w.bgw[1].position_x = 256;
+    bg_w.bgw[1].position_y = 128;
+    bg_w.bgw[1].hos_xy[0].disp.pos = bg_w.bgw[1].wxy[0].disp.pos = bg_w.bgw[1].xy[0].disp.pos;
 }
 
 
@@ -1262,13 +1292,14 @@ void Next_CPU_4th(void) {
 
 
 
+#pragma inline(exit_check_disp)
+static void exit_check_disp(s8* em_id, PLW* pl, s8* arts) {}
+
 void Check_Exit(void) {
     s16 b0;
     s16 cx;
     s16 cy;
-    (void)Super_Arts;
-    (void)plw;
-    (void)&EM_id;
+    exit_check_disp(&EM_id, plw, Super_Arts);
     switch (b0 = END_OF_B0, Exit_No) {
     case 0:
         if (plw[0].wu.operator && Sel_Arts_Complete[0] >= 0) {
@@ -1281,7 +1312,7 @@ void Check_Exit(void) {
         if (Demo_Flag == 0) {
             break;
         }
-        E_No0 = 3;
+        E_No0 = E0_SELECTED;
         E_No1 = 0;
         E_No2 = 0;
         E_No3 = 0;
@@ -1305,9 +1336,9 @@ void Check_Exit(void) {
         Super_Arts[COM_id] = Stock_Com_Arts = Setup_Com_Arts();
         Setup_Com_Color();
         Setup_PL_Color(COM_id, Com_Color_Shot);
-        Request_Disp_Rank[COM_id][0] = -1;
-        Request_Disp_Rank[COM_id][1] = -1;
-        if (EM_id == 0) {
+        Request_Disp_Rank[COM_id][RANK_SCORE] = -1;
+        Request_Disp_Rank[COM_id][RANK_WINS] = -1;
+        if (EM_id == PL_GILL) {
             break;
         }
         effect_50_init(1 ^ COM_id);
@@ -1340,7 +1371,7 @@ void Check_Exit(void) {
             break;
         }
         if (plw[0].wu.operator) {}
-        if (EM_id == 0) {
+        if (EM_id == PL_GILL) {
             effect_38_init(COM_id, 30);
             effect_39_init(COM_id, 30);
             effect_D7_init(COM_id, Super_Arts[COM_id], 0, 40, 0);
@@ -1439,14 +1470,14 @@ void Setup_Face_ID(void) {
     s16 i, j;
     const s8* cell;
 
-    (void)((WORK*)&Face_Cursor_Data)->routine_no[0];
+    (void)&((WORK*)&Face_Cursor_Data)->routine_no[0];
     for (i = 0; i <= 1; i++) {
         for (j = 0; j <= 4; j++) {
             ID_of_Face[0][i][j] = *(cell = &Face_Cursor_Data.id[i][j]);
             ID_of_Face[1][i][j] = *cell;
         }
     }
-    (void)((WORK*)4)->routine_no[0];
+    (void)&((WORK*)4)->routine_no[0];
 }
 
 
@@ -1457,10 +1488,10 @@ void Setup_Yun_Yang_Face(pl)
 s16 pl;
 {
     if (plw[pl].wu.operator != 0 && Sel_PL_Complete[pl] != 0) {
-        if (My_char[pl] == 10) {
+        if (My_char[pl] == PL_YANG) {
             ID_of_Face[pl][0][3] = 10;
             ID_of_Face[pl ^ 1][0][3] = 3;
-        } else if (My_char[pl] == 3) {
+        } else if (My_char[pl] == PL_YUN) {
             ID_of_Face[pl ^ 1][0][3] = 10;
         }
     }
@@ -1473,9 +1504,9 @@ void Yun_Yang_Face_Other(pl)
 s16 pl;
 {
     if (!Sel_PL_Complete[pl ^ 1]) {
-        if (My_char[pl] == 3) {
+        if (My_char[pl] == PL_YUN) {
             ID_of_Face[pl ^ 1][0][3] = 10;
-        } else if (My_char[pl] == 10) {
+        } else if (My_char[pl] == PL_YANG) {
             ID_of_Face[pl ^ 1][0][3] = 3;
         }
     }
@@ -1489,8 +1520,8 @@ s16 pl;
 u16 sw;
 {
     if (sw & 0x380) {
-        if (My_char[pl] == 3) {
-            if (plw[pl ^ 1].wu.operator && Sel_PL_Complete[pl ^ 1] != 0 && My_char[pl ^ 1] == 10) {
+        if (My_char[pl] == PL_YUN) {
+            if (plw[pl ^ 1].wu.operator && Sel_PL_Complete[pl ^ 1] != 0 && My_char[pl ^ 1] == PL_YANG) {
                 return;
             }
             My_char[pl] = (s8)10;
@@ -1503,7 +1534,7 @@ u16 sw;
 
 /* provisional name: a player on Yang keeps Yang in the shared cell (nothing calls it) */
 void Yun_Yang_Face_Keep(s16 pl) {
-    if (plw[pl].wu.operator != 0 && My_char[pl] == 10) {
+    if (plw[pl].wu.operator != 0 && My_char[pl] == PL_YANG) {
         ID_of_Face[pl][0][3] = 10;
     }
 }
@@ -1517,8 +1548,8 @@ const s16 Com_Color_Data[16] = {
 
 
 void Setup_Com_Color(void) {
-    if (EM_id == 0) {
-        if (My_char[COM_id] == 0) {
+    if (EM_id == PL_GILL) {
+        if (My_char[COM_id] == PL_GILL) {
             Com_Color_Shot = 16;
         } else if (COM_id == 0) {
             Com_Color_Shot = 16;
@@ -1545,7 +1576,7 @@ s16 PL_id;
 {
     u8 xx;
     u8 zz;
-    if (Play_Type == 1) {
+    if (Play_Type == PLAY_VS_PLAYER) {
         return;
     }
     if (Continue_Coin[PL_id] == 0) {

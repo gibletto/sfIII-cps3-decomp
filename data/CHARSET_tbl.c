@@ -1,5 +1,11 @@
 /*
- * CHARSET_TBL.C  tables read by CHARMOVE.c
+ * CHARSET_TBL.C  cg script interpreter tables
+ *
+ * comm_jmp_tbl is the jump table of the 102 cg script commands (comm_*), indexed by command
+ * code, and comm_if_jmp_tbl that of the targets of a conditional jump. jphos_table gives the
+ * height correction picked by the low nibble of a cg line's overlap index, and acatkoa_table
+ * the attack kind bits (at_koa) for each kind of move. Read by CHARMOVE.C, the cg script
+ * interpreter.
  */
 
 #include "types.h"

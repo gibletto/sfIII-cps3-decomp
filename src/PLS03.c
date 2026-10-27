@@ -24,6 +24,8 @@
 #include "ta_sub.h"
 #include "PLPAT.h"
 #include "PLS03.h"
+#include "cmd_data.h"
+#include "fighter.h"
 #include "PLS03ATT.h"
 
 #pragma inline(shot_data_refresh)
@@ -53,13 +55,13 @@ s32 check_super_arts_attack(PLW* wk) {
         if (wk->cp->waza_flag[wk->sa->nmsa_g_ix] == -1) {
             return 0;
         }
-        if (wk->cp->btix[wk->sa->nmsa_g_ix] != 0x4000) {
+        if (wk->cp->btix[wk->sa->nmsa_g_ix] != CMD_BT_NONE) {
             if (wk->cp->waza_flag[wk->sa->nmsa_g_ix] != 0) {
                 cusw = conpane[wk->cp->btix[wk->sa->nmsa_g_ix]];
                 for (j = 3; j >= 0; j--) {
                     exsw = wk->cp->exdt[wk->sa->nmsa_g_ix][j];
-                    if (exsw & 0x1000) {
-                        exsw &= 0x3F0;
+                    if (exsw & CMD_EX_ALL) {
+                        exsw &= CMD_SW_SHOT;
                         if (exsw != (cusw & exsw)) {
                             continue;
                         }
@@ -68,9 +70,9 @@ s32 check_super_arts_attack(PLW* wk) {
                     }
                     setup_comm_back(&wk->wu);
                     wk->as = &asstbl_sa_ground[wk->player_number][wk->sa->nmsa_g_ix - 16][j].as;
-                    wk->wu.routine_no[1] = 4;
+                    wk->wu.routine_no[1] = PLAYER_ATTACK;
                     wk->wu.routine_no[2] = wk->cp->waza_r[wk->sa->nmsa_g_ix][j];
-                    wk->wu.routine_no[3] = 0;
+                    wk->wu.routine_no[3] = RN3_START;
                     wk->wu.cg_cancel = 0;
                     wk->cancel_timer = 0;
                     wk->wu.cg_type = 0;
@@ -99,13 +101,13 @@ s32 check_super_arts_attack(PLW* wk) {
     if (wk->cp->waza_flag[wk->sa->nmsa_g_ix] == -1) {
         return 0;
     }
-    if (wk->cp->btix[wk->sa->nmsa_g_ix] != 0x4000) {
+    if (wk->cp->btix[wk->sa->nmsa_g_ix] != CMD_BT_NONE) {
         if (wk->cp->waza_flag[wk->sa->nmsa_g_ix] != 0) {
             cusw = conpane[wk->cp->btix[wk->sa->nmsa_g_ix]];
             for (j = 3; j >= 0; j--) {
                 exsw = wk->cp->exdt[wk->sa->nmsa_g_ix][j];
-                if (exsw & 0x1000) {
-                    exsw &= 0x3F0;
+                if (exsw & CMD_EX_ALL) {
+                    exsw &= CMD_SW_SHOT;
                     if (exsw != (cusw & exsw)) {
                         continue;
                     }
@@ -114,9 +116,9 @@ s32 check_super_arts_attack(PLW* wk) {
                 }
                 setup_comm_back(&wk->wu);
                 wk->as = &asstbl_sa_air[wk->player_number][wk->sa->nmsa_g_ix - 33][j].as;
-                wk->wu.routine_no[1] = 4;
+                wk->wu.routine_no[1] = PLAYER_ATTACK;
                 wk->wu.routine_no[2] = wk->cp->waza_r[wk->sa->nmsa_g_ix][j];
-                wk->wu.routine_no[3] = 0;
+                wk->wu.routine_no[3] = RN3_START;
                 wk->wu.cg_cancel = 0;
                 wk->cancel_timer = 0;
                 wk->wu.cg_type = 0;
@@ -138,7 +140,7 @@ s32 execute_super_arts(PLW* wk) {
     if (wk->cancel_timer == 0) {
         wk->permited_koa |= 1;
     }
-    if ((wk->sa->gauge_type != 3) && pcon_dp_flag) {
+    if ((wk->sa->gauge_type != SA_GAUGE_REBIRTH) && pcon_dp_flag) {
         return 0;
     }
     if (wk->wu.xyz[1].disp.pos > 0) {
@@ -155,9 +157,9 @@ s32 execute_super_arts(PLW* wk) {
     }
     setup_comm_back(&wk->wu);
     wk->as = &asstbl_sa_ground[wk->player_number][wk->sa->nmsa_g_ix - 16][0].as;
-    wk->wu.routine_no[1] = 4;
+    wk->wu.routine_no[1] = PLAYER_ATTACK;
     wk->wu.routine_no[2] = wk->cp->waza_r[wk->sa->nmsa_g_ix][0];
-    wk->wu.routine_no[3] = 0;
+    wk->wu.routine_no[3] = RN3_START;
     wk->wu.cg_cancel = 0;
     wk->cancel_timer = 0;
     wk->wu.cg_type = 0;
@@ -180,9 +182,9 @@ air:
     }
     setup_comm_back(&wk->wu);
     wk->as = &asstbl_sa_air[wk->player_number][wk->sa->nmsa_g_ix - 33][0].as;
-    wk->wu.routine_no[1] = 4;
+    wk->wu.routine_no[1] = PLAYER_ATTACK;
     wk->wu.routine_no[2] = wk->cp->waza_r[wk->sa->nmsa_g_ix][0];
-    wk->wu.routine_no[3] = 0;
+    wk->wu.routine_no[3] = RN3_START;
     wk->wu.cg_cancel = 0;
     wk->cancel_timer = 0;
     wk->wu.cg_type = 0;
@@ -221,23 +223,23 @@ s32 check_special_attack(PLW* wk) {
             continue;
         }
         if (wk->wu.shell_ix[0] != -1) {
-            if ((wk->player_number == 2 || wk->player_number == 11) && i == 23) {
+            if ((wk->player_number == PL_RYU || wk->player_number == PL_KEN) && i == 23) {
                 continue;
             }
-            if (wk->player_number == 0 && i == 24) {
+            if (wk->player_number == PL_GILL && i == 24) {
                 continue;
             }
-            if (wk->player_number == 9 && i == 24) {
+            if (wk->player_number == PL_ORO && i == 24) {
                 continue;
             }
         }
-        if (wk->cp->btix[i] != 0x4000) {
+        if (wk->cp->btix[i] != CMD_BT_NONE) {
             if (wk->cp->waza_flag[i]) {
                 cusw = conpane[wk->cp->btix[i]];
                 for (j = 3; j >= 0; j--) {
                     exsw = wk->cp->exdt[i][j];
-                    if (exsw & 0x1000) {
-                        exsw &= 0x3F0;
+                    if (exsw & CMD_EX_ALL) {
+                        exsw &= CMD_SW_SHOT;
                         if (exsw != (cusw & exsw)) {
                             continue;
                         }
@@ -246,9 +248,9 @@ s32 check_special_attack(PLW* wk) {
                     }
                     setup_comm_back(&wk->wu);
                     wk->as = &asstbl_sa_ground[wk->player_number][i - 16][j].as;
-                    wk->wu.routine_no[1] = 4;
+                    wk->wu.routine_no[1] = PLAYER_ATTACK;
                     wk->wu.routine_no[2] = wk->cp->waza_r[i][j];
-                    wk->wu.routine_no[3] = 0;
+                    wk->wu.routine_no[3] = RN3_START;
                     wk->wu.cg_cancel &= 0x40;
                     wk->cancel_timer = 0;
                     wk->wu.cg_type = 0;
@@ -274,13 +276,13 @@ air:
         if (wk->cp->waza_flag[i] == -1) {
             continue;
         }
-        if (wk->cp->btix[i] != 0x4000) {
+        if (wk->cp->btix[i] != CMD_BT_NONE) {
             if (wk->cp->waza_flag[i]) {
                 cusw = conpane[wk->cp->btix[i]];
                 for (j = 3; j >= 0; j--) {
                     exsw = wk->cp->exdt[i][j];
-                    if (exsw & 0x1000) {
-                        exsw &= 0x3F0;
+                    if (exsw & CMD_EX_ALL) {
+                        exsw &= CMD_SW_SHOT;
                         if (exsw != (cusw & exsw)) {
                             continue;
                         }
@@ -289,9 +291,9 @@ air:
                     }
                     setup_comm_back(&wk->wu);
                     wk->as = &asstbl_sa_air[wk->player_number][i - 33][j].as;
-                    wk->wu.routine_no[1] = 4;
+                    wk->wu.routine_no[1] = PLAYER_ATTACK;
                     wk->wu.routine_no[2] = wk->cp->waza_r[i][j];
-                    wk->wu.routine_no[3] = 0;
+                    wk->wu.routine_no[3] = RN3_START;
                     wk->wu.cg_cancel &= 0x40;
                     wk->cancel_timer = 0;
                     wk->wu.cg_type = 0;
@@ -324,13 +326,13 @@ s32 check_leap_attack(PLW* wk) {
         if (wk->cp->waza_flag[i] == -1) {
             continue;
         }
-        if (wk->cp->btix[i] != 0x4000) {
+        if (wk->cp->btix[i] != CMD_BT_NONE) {
             if (wk->cp->waza_flag[i]) {
                 cusw = conpane[wk->cp->btix[i]];
                 for (j = 3; j >= 0; j--) {
                     exsw = wk->cp->exdt[i][j];
-                    if (exsw & 0x1000) {
-                        exsw &= 0x3F0;
+                    if (exsw & CMD_EX_ALL) {
+                        exsw &= CMD_SW_SHOT;
                         if (exsw != (cusw & exsw)) {
                             continue;
                         }
@@ -339,9 +341,9 @@ s32 check_leap_attack(PLW* wk) {
                     }
                     setup_comm_back(&wk->wu);
                     wk->as = &asstbl_lv_D010[wk->player_number][i - 14][j].as;
-                    wk->wu.routine_no[1] = 4;
+                    wk->wu.routine_no[1] = PLAYER_ATTACK;
                     wk->wu.routine_no[2] = wk->cp->waza_r[i][j];
-                    wk->wu.routine_no[3] = 0;
+                    wk->wu.routine_no[3] = RN3_START;
                     wk->wu.cg_type = 0;
                     wk->wu.att_hit_ok = 0;
                     wk->wu.hf.hit_flag = 0;
@@ -376,13 +378,13 @@ s32 check_leap_attack2(PLW* wk) {
         if (wk->cp->waza_flag[i] == -1) {
             continue;
         }
-        if (wk->cp->btix[i] != 0x4000) {
+        if (wk->cp->btix[i] != CMD_BT_NONE) {
             if (wk->cp->waza_flag[i]) {
                 cusw = conpane[wk->cp->btix[i]];
                 for (j = 3; j >= 0; j--) {
                     exsw = wk->cp->exdt[i][j];
-                    if (exsw & 0x1000) {
-                        exsw &= 0x3F0;
+                    if (exsw & CMD_EX_ALL) {
+                        exsw &= CMD_SW_SHOT;
                         if (exsw != (cusw & exsw)) {
                             continue;
                         }
@@ -391,9 +393,9 @@ s32 check_leap_attack2(PLW* wk) {
                     }
                     setup_comm_back(&wk->wu);
                     wk->as = &asstbl_lv_D020[wk->player_number][i - 46][j].as;
-                    wk->wu.routine_no[1] = 4;
+                    wk->wu.routine_no[1] = PLAYER_ATTACK;
                     wk->wu.routine_no[2] = wk->cp->waza_r[i][j];
-                    wk->wu.routine_no[3] = 0;
+                    wk->wu.routine_no[3] = RN3_START;
                     wk->wu.cg_type = 0;
                     wk->wu.att_hit_ok = 0;
                     wk->wu.hf.hit_flag = 0;
@@ -463,7 +465,7 @@ again:
         if (wk->wu.xyz[1].disp.pos > 0) {
             return 0;
         }
-        if (wk->cp->sw_lvbt & 2) {
+        if (wk->cp->sw_lvbt & LEVER_DOWN) {
             koa = waza_select(wk, kos, 1);
             wk->as = &asstbl_lv_1010[wk->player_number][kos][koa].as;
         } else {
@@ -486,7 +488,7 @@ again:
 
 
 s32 check_jump_pat_status(PLW* wk) {
-    if (!(wk->cp->sw_lvbt & 1)) {
+    if (!(wk->cp->sw_lvbt & LEVER_UP)) {
         return 0;
     }
     if (wk->wu.xyz[1].disp.pos <= 0) {
@@ -545,7 +547,7 @@ s32 check_lever_up_attack(PLW* wk) {
     if (wk->spmv_ng_flag & 0x4000) {
         return 0;
     }
-    if (!(wk->cp->sw_new & 1)) {
+    if (!(wk->cp->sw_new & CMD_LV_UP)) {
         return 0;
     }
     if ((kos = shot_data_convert(wk->cp->sw_now)) < 0) {
@@ -571,9 +573,9 @@ s32 check_catch_attack(PLW* wk) {
 
 
 void set_attack_routine_number(PLW* wk) {
-    wk->wu.routine_no[1] = 4;
+    wk->wu.routine_no[1] = PLAYER_ATTACK;
     wk->wu.routine_no[2] = wk->as->r_no;
-    wk->wu.routine_no[3] = 0;
+    wk->wu.routine_no[3] = RN3_START;
     wk->wu.cg_type = 0;
 }
 
@@ -672,7 +674,7 @@ s16 cmd_ex;
         rnum = wk->cp->sw_new & lever;
         break;
     case 0x8000:
-        rnum = (lever == (wk->cp->sw_new & 0xF));
+        rnum = (lever == (wk->cp->sw_new & CMD_LV_MASK));
         break;
     case 0x3000:
         rnum = cmd_ex_check(wk->wu.xyz[1].disp.pos, cmd_ex);
@@ -685,7 +687,7 @@ s16 cmd_ex;
         }
         break;
     case 0xB000:
-        if ((lever == (wk->cp->sw_new & 0xF))) {
+        if ((lever == (wk->cp->sw_new & CMD_LV_MASK))) {
             if ((cmd_ex_check(wk->wu.xyz[1].disp.pos, cmd_ex))) {
                 rnum = 1;
             }
@@ -702,14 +704,14 @@ s16 cmd_ex;
         }
         break;
     case 0xA000:
-        if ((wk->wu.mvxy.a[1].sp > 0) && (lever == (wk->cp->sw_new & 0xF))) {
+        if ((wk->wu.mvxy.a[1].sp > 0) && (lever == (wk->cp->sw_new & CMD_LV_MASK))) {
             if (cmd_ex_check(wk->wu.xyz[1].disp.pos, cmd_ex)) {
                 rnum = 1;
             }
         }
         break;
     case 0x9000:
-        if ((wk->wu.mvxy.a[1].sp <= 0) && (lever == (wk->cp->sw_new & 0xF))) {
+        if ((wk->wu.mvxy.a[1].sp <= 0) && (lever == (wk->cp->sw_new & CMD_LV_MASK))) {
             if (cmd_ex_check(wk->wu.xyz[1].disp.pos, cmd_ex)) {
                 rnum = 1;
             }
@@ -837,7 +839,7 @@ s32 get_catch_kos(PLW* wk) {
     if (kos == 0) {
         return -1;
     }
-    return catch_kos_table[kos] + ((wk->cp->sw_lvbt & 2) != 0) * 3;
+    return catch_kos_table[kos] + ((wk->cp->sw_lvbt & LEVER_DOWN) != 0) * 3;
 }
 
 
@@ -850,12 +852,12 @@ s32 check_meoshi_cancel(PLW* wk) {
     }
     switch (tdat = wk->wu.cg_eftype & 0xF) {
     case 0:
-        if (wk->cp->sw_new & 0xF) {
+        if (wk->cp->sw_new & CMD_LV_MASK) {
             return 0;
         }
         break;
     case 3:
-        if (!(wk->cp->sw_new & 0xF)) {
+        if (!(wk->cp->sw_new & CMD_LV_MASK)) {
             return 0;
         }
         break;
@@ -892,7 +894,7 @@ s32 check_meoshi_cancel(PLW* wk) {
 s32 check_renda_cancel(PLW* wk) {
     wk->permited_koa |= 32;
     if (wk->wu.pat_status == renda_status_table[(wk->cp->sw_new & 3)]) {
-        if ((wk->cp->sw_now & 0x3F0) == wk->current_attack) {
+        if ((wk->cp->sw_now & CMD_SW_SHOT) == wk->current_attack) {
             setup_comm_back((WORK*)wk);
             wk->wu.cg_ix = wk->wu.cg_eftype * wk->wu.cgd_type - (wk->wu.cgd_type * 2);
             wk->wu.cg_next_ix = 0;

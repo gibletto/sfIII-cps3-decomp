@@ -1,5 +1,9 @@
 /*
- * POW_DATA.C  tables read by pow_pow.c
+ * POW_DATA.C  score award table
+ *
+ * Score_Data is the list of score amounts a player can be awarded (0, 10, ... 100, 200, ...
+ * 3400), indexed by score kind. Read by POW_POW.C, damage and score, which adds them to the
+ * players' scores.
  */
 
 #include "types.h"

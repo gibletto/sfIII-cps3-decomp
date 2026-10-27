@@ -44,11 +44,15 @@
 #include "eff57.h"
 #include "sc_logo.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* count the delay down, then show */
+#define R0_SHOW         1       /* (default) stay on screen */
+
 
 
 void effect_57_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (--ewk->wu.dir_timer != 0) {
             return;
         }

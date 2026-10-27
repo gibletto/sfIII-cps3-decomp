@@ -18,6 +18,11 @@
 #include "aboutspr.h"
 #include "EFFG7.h"
 
+/* routine_no[1] */
+#define R1_INIT         0       /* start the pattern */
+#define R1_DRIFT        1       /* drift and wrap until the scene moves on */
+#define R1_FALL         2       /* fall off the screen */
+
 
 
 extern const s16 effg7_data_tbl[10][5];
@@ -27,7 +32,7 @@ extern const s32 effg7_speed_tbl[5];
 
 void effect_G7_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         if (ewk->wu.type > 1) {
             ewk->wu.disp_flag = 1;
@@ -40,7 +45,7 @@ void effect_G7_move(WORK_Other* ewk) {
         ewk->wu.mvxy.d[1].sp = 0;
         disp_pos_trans_entry(ewk);
         break;
-    case 1:
+    case R1_DRIFT:
         if (end_w.r_no_2 > 2) {
             ewk->wu.routine_no[1]++;
         } else {
@@ -51,7 +56,7 @@ void effect_G7_move(WORK_Other* ewk) {
             disp_pos_trans_entry(ewk);
         }
         break;
-    case 2:
+    case R1_FALL:
         add_x_sub(ewk);
         if (ewk->wu.xyz[0].disp.pos > 0x330) {
             ewk->wu.xyz[0].disp.pos = effg7_data_tbl[ewk->wu.type][1];
@@ -70,6 +75,8 @@ void effect_G7_move(WORK_Other* ewk) {
 }
 
 
+
+static void end_rno_disp(s16 r_no_2) {}
 
 s32 effect_G7_init(void) {
     WORK_Other* ewk;
@@ -101,6 +108,6 @@ s32 effect_G7_init(void) {
         ewk->wu.mvxy.a[0].sp = effg7_speed_tbl[i / 2];
         ewk->wu.mvxy.d[0].sp = 0;
     }
-    (void)end_w.r_no_2;
+    end_rno_disp(end_w.r_no_2);
     return 0;
 }

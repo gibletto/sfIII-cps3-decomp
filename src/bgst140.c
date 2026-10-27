@@ -29,6 +29,12 @@
 #include "eff56.h"
 #include "EFFC2.h"
 #include "EFF45.h"
+#include "fighter.h"
+
+/* bgw r_no_0 of a layer with an entrance demo: its bg*_jmp routine */
+#define R0_INIT         0       /* set up the layer */
+#define R0_DEMO         1       /* the entrance demo */
+#define R0_MOVE         2       /* follow the fight */
 
 /* declarations the headers do not give */
 void zoom_ud_check(void);
@@ -154,7 +160,7 @@ void bg140_layer1_init(void) {
 
 /* provisional name */
 void bg140_layer1_move(void) {
-    if (C_No0 >= 8) {
+    if (C_No0 >= C0_NEXT) {
         if (Round_num < Game_setting.set4 * 2 || PL_Wins[Winner_id] < Game_setting.set4 + 1) {
             bg_land_flag = 1;
             bgw_ptr->r_no_0++;
@@ -258,7 +264,7 @@ void bg140_fall4(void) {
 /* provisional name */
 void bg140_layer2(void) {
     switch (bgw_ptr->r_no_0) {
-    case 0:
+    case R0_INIT:
         bgw_ptr->r_no_0++;
         bgw_ptr->old_pos_x = bgw_ptr->xy[0].disp.pos = bgw_ptr->pos_x_work = 0x200;
         bgw_ptr->hos_xy[0].cal = bgw_ptr->wxy[0].cal = bgw_ptr->xy[0].cal;
@@ -276,11 +282,11 @@ void bg140_layer2(void) {
         }
         sync_fam_set3(2);
         break;
-    case 1:
+    case R0_DEMO:
         bg140_demo();
         sync_fam_set3(2);
         break;
-    case 2:
+    case R0_MOVE:
         bg_x_move_check();
         bg_y_move_check();
         sync_fam_set3(2);
@@ -292,7 +298,7 @@ void bg140_layer2(void) {
 
 /* provisional name */
 void bg140_demo(void) {
-    if (plw[0].player_number == 8 && plw[1].player_number == 8) {
+    if (plw[0].player_number == PL_ELENA && plw[1].player_number == PL_ELENA) {
         bgw_ptr->xy[1].cal -= bgw_ptr->speed_y * 4;
     } else if (Cut_Cut_Cut()) {
         bgw_ptr->xy[1].cal -= bgw_ptr->speed_y * 4;

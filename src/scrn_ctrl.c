@@ -74,6 +74,8 @@ s32 mode;
 
 
 
+static void screen_mode_disp(s32 mode) {}
+
 /* provisional name */
 void screen_window_regs_update(void) {
     u16 ctrl;
@@ -95,7 +97,7 @@ void screen_window_regs_update(void) {
     *(u16*)(VIDEO_REG + 0x72) = screen_window[1].t;
     *(u16*)(VIDEO_REG + 0x74) = screen_window[1].r;
     *(u16*)(VIDEO_REG + 0x76) = screen_window[1].b;
-    (void)screen_mode;
+    screen_mode_disp(screen_mode);
     ctrl = screen_disp_ctrl;
     if (Monitor_Flip) {
         *(u16*)(VIDEO_REG + 0x80) = ctrl | 24;

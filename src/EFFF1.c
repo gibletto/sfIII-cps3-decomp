@@ -22,17 +22,22 @@
 #include "aboutspr.h"
 #include "EFFF1.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* load the table and switch the BG */
+#define R0_MOVE         1       /* hold the BG until an end condition */
+#define R0_KILL         2       /* put the work back */
+
 
 
 void effect_F1_move(WORK_Other* ewk) {
     PLW* mwk = (PLW*)ewk->my_master;
     s32 rno;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         effF1_data_set(ewk, mwk);
         another_bg[ewk->master_id] = ewk->wu.type;
         ewk->wu.routine_no[0]++;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             goto end;
         }
@@ -50,13 +55,13 @@ void effect_F1_move(WORK_Other* ewk) {
         }
         if (ewk->wu.dir_old & 8) {
             rno = ((WORK*)mwk->wu.target_adrs)->routine_no[1];
-            if (rno != 4 && rno != 2) {
+            if (rno != PLAYER_ATTACK && rno != PLAYER_CATCH) {
                 goto end;
             }
         }
         if (ewk->wu.dir_old & 0x10) {
             rno = mwk->wu.routine_no[1];
-            if (rno != 4 && rno != 2) {
+            if (rno != PLAYER_ATTACK && rno != PLAYER_CATCH) {
                 goto end;
             }
         }
@@ -84,7 +89,7 @@ void effect_F1_move(WORK_Other* ewk) {
         ewk->wu.routine_no[0]++;
         another_bg[ewk->master_id] = 0;
         break;
-    case 2:
+    case R0_KILL:
     default:
         push_effect_work((WORK*)ewk);
         break;

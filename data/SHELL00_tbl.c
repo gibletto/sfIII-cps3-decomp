@@ -1,5 +1,9 @@
 /*
- * SHELL00_TBL.C  tables read by SHELL00.c: the routine table of the shell patterns
+ * SHELL00_TBL.C  CPU anti-projectile pattern table 00 (Gill)
+ *
+ * Shell00_Tbl lists the pattern scripts Shell00_0000 .. Shell00_0010, indexed by
+ * Pattern_Index. Read by SHELL00.C; Com_VS_Shell in COM_PL.C gives Gill SHELL11's patterns, so
+ * nothing calls SHELL00 and these patterns are not run.
  */
 
 #include "types.h"

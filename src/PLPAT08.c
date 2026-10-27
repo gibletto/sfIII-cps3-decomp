@@ -24,10 +24,14 @@
 #include "PLPAT.h"
 #include "PLS01.h"
 #include "PLPAT09.h"
+#include "cmd_data.h"
+
+/* routine_no[3], Att_PL08_HEALING */
+#define HEALING_RUN     1       /* run the animation */
 
 
 void pl08_extra_attack(PLW* wk) {
-    pl08_exatt_table[wk->wu.routine_no[2] - 16](wk);
+    pl08_exatt_table[wk->wu.routine_no[2] - ATTACK_SPECIAL](wk);
 }
 
 
@@ -36,14 +40,14 @@ void Att_PL08_HEALING(PLW* wk) {
     u16 cpsw;
     wk->scr_pos_set_flag = 0;
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init(&wk->wu, 5, wk->as->char_ix);
         break;
-    case 1:
+    case HEALING_RUN:
         char_move(&wk->wu);
         if (wk->wu.cmwk[0]) {
-            cpsw = (wk->cp->sw_now & 0x3F0);
+            cpsw = (wk->cp->sw_now & CMD_SW_SHOT);
             cpsw >>= 4;
             if (pl08_hcs_tbl[cpsw & 7] || pl08_hcs_tbl[(cpsw & 0x38) >> 3]) {
                 wk->wu.cmwk[0] = 0;

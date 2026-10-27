@@ -49,6 +49,7 @@
 #include "PLCNTDAT.h"
 #include "plcntdat_2.h"
 #include "cmd_main_2.h"
+#include "cmd_data.h"
 #include "cps3.h"
 
 extern const u16 rot_lvr_tbl_r[4];    /* provisional name (06409750): 1, 8, 2, 4 */
@@ -57,7 +58,7 @@ extern const u16 rot_lvr_tbl_l[4];    /* provisional name (06409758): 1, 4, 2, 8
 
 
 /* 02004FB4 */
-void (*chk_move_jp[27])() = {
+void (*chk_move_jp[CMD_END])() = {
     check_init,
     check_0,
     check_1,
@@ -121,34 +122,31 @@ void cmd_data_set(PLW* _p0, s16 i) {
 
 
 void cmd_init(PLW* pl) {
-    WORK *wp;
     s16 i2;
     s16 i;
     s16 j;
     s32* ptr;
-    wp = &pl->wu;
     cmd_id = pl->wu.id;
-    (*pl).cp = &wcp[cmd_id];
+    pl->cp = &wcp[cmd_id];
     pl->wu.routine_no[7]++;
     ptr = (s32*)&waza_work[cmd_id][0];
-    for (i = 0; i < 48; i++) {
+    for (i = 0; i < CMD_SLOTS; i++) {
         for (j = 0; j < 6; j = j + 1) {
             *ptr++ = 0;
         }
     }
     i2 = 0;
-    for (;;) {
-        (&wcp[cmd_id].waza_flag[0])[i2] =0;
+    do {
+        (&wcp[cmd_id].waza_flag[0])[i2] = 0;
         j = 0;
         while (j < 4) {
             (&wcp[cmd_id].waza_r[i2][0])[j] = 0;
-            j = j + 1;
+            j++;
             (&wcp[cmd_id].waza_r[i2][0])[j] = 0;
             j++;
         }
         i2 = i2 + 1;
-        if (i2 >= 48) break;
-    }
+    } while (i2 < CMD_SLOTS);
     waza_compel_all_init(pl);
 }
 
@@ -160,7 +158,7 @@ void cmd_move(void) {
     intptr_t* adrs;
     cmd_id = cmd_pl->wu.id;
     adrs = pl_CMD[cmd_pl->player_number];
-    for (j = 0; j < 48; j++) {
+    for (j = 0; j < CMD_SLOTS; j++) {
         if (wcp[cmd_id].waza_flag[j] != -1) {
             waza_type[cmd_id] = j;
             cmd_tbl_ptr = (s16*)adrs[j];
@@ -168,7 +166,7 @@ void cmd_move(void) {
             chk_move_jp[waza_ptr->w_type]();
         }
     }
-    for (i = 0; i < 48; i++) {
+    for (i = 0; i < CMD_SLOTS; i++) {
         if ((wcp[cmd_id].waza_flag[i] != -1) && (wcp[cmd_id].waza_flag[i] != 0)) {
             command_ok_move(i);
         }
@@ -178,7 +176,7 @@ void cmd_move(void) {
 
 
 void check_init(void) {
-    cmd_tbl_ptr += 12;
+    cmd_tbl_ptr += CMD_HEAD_WORDS;
     waza_ptr->w_type = *cmd_tbl_ptr++;
     waza_ptr->w_int = *cmd_tbl_ptr++;
     waza_ptr->free1 = *cmd_tbl_ptr;
@@ -203,7 +201,7 @@ void check_next(void) {
     waza_ptr->free2 = *next_ptr++;
     waza_ptr->w_lvr = *next_ptr++;
     waza_ptr->w_ptr = next_ptr;
-    if (waza_ptr->w_type != 10) {
+    if (waza_ptr->w_type != CK_LEVER_CHANGE) {
         chk_move_jp[waza_ptr->w_type]();
     }
 }
@@ -216,12 +214,12 @@ void check_0(void) {
     if (waza_ptr->w_int < 0) {
         waza_ptr->w_type = 0;
     }
-    sw_lever = chk_pl->sw_lever & 0xF;
+    sw_lever = chk_pl->sw_lever & CMD_LV_MASK;
     if (dead_lvr_check() == 0) {
-        if (waza_ptr->w_lvr & 0x8000) {
-            sw_work = waza_ptr->w_lvr & 0xF;
+        if (waza_ptr->w_lvr & CMD_LV_EXACT) {
+            sw_work = waza_ptr->w_lvr & CMD_LV_MASK;
             if (sw_lever == sw_work) {
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
@@ -229,15 +227,15 @@ void check_0(void) {
             }
         } else if (waza_ptr->w_lvr == 0) {
             if (sw_lever == 0) {
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
                 }
             }
-        } else if (chk_pl->now_lvbt & 0xF) {
+        } else if (chk_pl->now_lvbt & CMD_LV_MASK) {
             if (sw_lever & waza_ptr->w_lvr) {
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
@@ -251,8 +249,8 @@ void check_0(void) {
 
 void check_1(void) {
     if (dead_lvr_check() == 0) {
-        sw_work = waza_ptr->w_lvr & 0xF;
-        if (waza_ptr->w_lvr & 0x8000) {
+        sw_work = waza_ptr->w_lvr & CMD_LV_MASK;
+        if (waza_ptr->w_lvr & CMD_LV_EXACT) {
             if (sw_work == chk_pl->sw_lever) {
                 waza_ptr->free2--;
                 if (waza_ptr->uni0.tame.flag) {
@@ -264,7 +262,7 @@ void check_1(void) {
             } else {
                 if (waza_ptr->uni0.tame.flag) {
                     waza_ptr->uni0.tame.flag = 0;
-                    if (*waza_ptr->w_ptr == 0x1B) {
+                    if (*waza_ptr->w_ptr == CMD_END) {
                         command_ok();
                     } else {
                         check_next();
@@ -289,7 +287,7 @@ void check_1(void) {
             } else {
                 if (waza_ptr->uni0.tame.flag) {
                     waza_ptr->uni0.tame.flag = 0;
-                    if (*waza_ptr->w_ptr == 0x1B) {
+                    if (*waza_ptr->w_ptr == CMD_END) {
                         command_ok();
                     } else {
                         check_next();
@@ -322,7 +320,7 @@ void check_2(void) {
         if (waza_ptr->uni0.tame.flag) {
             if (sw_work == 0) {
                 waza_ptr->uni0.tame.flag = 0;
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
@@ -348,12 +346,12 @@ void check_3(void) {
     waza_ptr->uni0.tame.shot_flag2 = waza_ptr->uni0.tame.shot_flag;
     waza_ptr->uni0.tame.shot_flag = 0;
     shot_cnt_adrs = &chk_pl->s1_cnt;
-    w_flag = 0x10;
+    w_flag = CMD_SW_LP;
     for (i = 0; i < 6; i++) {
         if (*shot_cnt_adrs >= waza_ptr->w_int) {
             waza_ptr->uni0.tame.shot_flag |= w_flag;
         }
-        *shot_cnt_adrs++;
+        shot_cnt_adrs++;
         if (chk_pl->shot_down & w_flag) {
             if (waza_ptr->uni0.tame.shot_flag2 & w_flag) {
                 waza_ptr->shot_ok++;
@@ -371,7 +369,7 @@ void check_3(void) {
     if (waza_ptr->shot_ok >= waza_ptr->w_lvr) {
         waza_ptr->shot_ok = 0;
         waza_ptr->free2 = waza_ptr->free1;
-        if (*waza_ptr->w_ptr == 27) {
+        if (*waza_ptr->w_ptr == CMD_END) {
             command_ok();
             return;
         }
@@ -382,24 +380,24 @@ void check_3(void) {
 
 
 void check_4(void) {
-    if (waza_ptr->w_lvr == 0x10) {
-        if (chk_pl->sw_now & 0x10) {
+    if (waza_ptr->w_lvr == CMD_SW_LP) {
+        if (chk_pl->sw_now & CMD_SW_LP) {
             waza_ptr->uni0.tame.flag++;
         }
-        if (chk_pl->sw_now & 0x20) {
+        if (chk_pl->sw_now & CMD_SW_MP) {
             waza_ptr->uni0.tame.shot_flag++;
         }
-        if (chk_pl->sw_now & 0x40) {
+        if (chk_pl->sw_now & CMD_SW_HP) {
             waza_ptr->uni0.tame.shot_flag2++;
         }
     } else {
-        if (chk_pl->sw_now & 0x80) {
+        if (chk_pl->sw_now & CMD_SW_LK) {
             waza_ptr->uni0.tame.flag++;
         }
-        if (chk_pl->sw_now & 0x100) {
+        if (chk_pl->sw_now & CMD_SW_MK) {
             waza_ptr->uni0.tame.shot_flag++;
         }
-        if (chk_pl->sw_now & 0x200) {
+        if (chk_pl->sw_now & CMD_SW_HK) {
             waza_ptr->uni0.tame.shot_flag2++;
         }
     }
@@ -464,7 +462,7 @@ void check_5(void) {
     }
     if (!dead_lvr_check()) {
         if (waza_ptr->w_lvr == chk_pl->sw_now) {
-            if (*waza_ptr->w_ptr == 0x1B) {
+            if (*waza_ptr->w_ptr == CMD_END) {
                 command_ok();
                 return;
             }
@@ -535,14 +533,14 @@ void check_7(void) {
     s16 w_flag;
     s16* shot_cnt_adrs;
     waza_ptr->w_int--;
-    if (waza_ptr->w_type == 8) {
-        sw_work = chk_pl->sw_new & 0x70;
+    if (waza_ptr->w_type == CK_SHOT_P) {
+        sw_work = chk_pl->sw_new & CMD_SW_PUNCH;
         shot_cnt_adrs = &chk_pl->s1_cnt;
-        w_flag = 0x10;
+        w_flag = CMD_SW_LP;
     } else {
         sw_work = chk_pl->sw_new & 0x780;
         shot_cnt_adrs = &chk_pl->s4_cnt;
-        w_flag = 0x80;
+        w_flag = CMD_SW_LK;
     }
     waza_ptr->uni0.tame.shot_flag2 = waza_ptr->uni0.tame.shot_flag;
     waza_ptr->uni0.tame.shot_flag = 0;
@@ -550,13 +548,13 @@ void check_7(void) {
         if (*shot_cnt_adrs & waza_ptr->w_lvr) {
             waza_ptr->uni0.tame.shot_flag |= w_flag;
         }
-        *shot_cnt_adrs++;
+        shot_cnt_adrs++;
         if (chk_pl->shot_down & w_flag) {
             if (waza_ptr->uni0.tame.shot_flag2 & w_flag) {
-                waza_ptr->shot_ok += 1;
+                waza_ptr->shot_ok++;
             }
         }
-        w_flag *= 2;
+        w_flag <<= 1;
     }
     if (waza_ptr->shot_ok) {
         waza_ptr->free2--;
@@ -569,7 +567,7 @@ void check_7(void) {
     if (waza_ptr->shot_ok >= waza_ptr->w_lvr) {
         waza_ptr->shot_ok = 0;
         waza_ptr->free2 = waza_ptr->free1;
-        if (*waza_ptr->w_ptr == 27) {
+        if (*waza_ptr->w_ptr == CMD_END) {
             command_ok();
             return;
         }
@@ -584,19 +582,19 @@ void check_9(void) {
     if (waza_ptr->w_int < 0) {
         waza_ptr->w_type = 0;
     }
-    if (waza_ptr->w_lvr & 0x8000) {
-        sw_work = waza_ptr->w_lvr & 0xF;
+    if (waza_ptr->w_lvr & CMD_LV_EXACT) {
+        sw_work = waza_ptr->w_lvr & CMD_LV_MASK;
         if (waza_ptr->w_lvr == 0) {
             if (chk_pl->new_lvbt == 0) {
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
                 }
             }
-        } else if ((chk_pl->old_lvbt & 0xF) != (chk_pl->new_lvbt & 0xF)) {
+        } else if ((chk_pl->old_lvbt & CMD_LV_MASK) != (chk_pl->new_lvbt & CMD_LV_MASK)) {
             if (chk_pl->sw_lever == sw_work) {
-                if (*waza_ptr->w_ptr == 0x1B) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
@@ -607,17 +605,17 @@ void check_9(void) {
         }
     } else if (waza_ptr->w_lvr == 0) {
         if (chk_pl->new_lvbt == 0) {
-            if (*waza_ptr->w_ptr == 27) {
+            if (*waza_ptr->w_ptr == CMD_END) {
                 command_ok();
             } else {
                 check_next();
             }
-        } else if ((chk_pl->old_lvbt & 0xF) != (chk_pl->new_lvbt & 0xF)) {
+        } else if ((chk_pl->old_lvbt & CMD_LV_MASK) != (chk_pl->new_lvbt & CMD_LV_MASK)) {
             waza_ptr->w_type = 0;
         }
-    } else if ((chk_pl->old_lvbt & 0xF) != (chk_pl->new_lvbt & 0xF)) {
+    } else if ((chk_pl->old_lvbt & CMD_LV_MASK) != (chk_pl->new_lvbt & CMD_LV_MASK)) {
         if (chk_pl->sw_lever & waza_ptr->w_lvr) {
-            if (*waza_ptr->w_ptr == 27) {
+            if (*waza_ptr->w_ptr == CMD_END) {
                 command_ok();
             } else {
                 check_next();
@@ -647,10 +645,10 @@ void check_10(void) {
         }
         break;
     case 1:
-        if (chk_pl->now_lvbt & 0xF) {
+        if (chk_pl->now_lvbt & CMD_LV_MASK) {
             if (chk_pl->sw_lever == waza_ptr->w_lvr) {
                 waza_ptr->shot_ok++;
-                (&wcp[cmd_id].waza_flag[0])[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
+                wcp[cmd_id].waza_flag[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
                 waza_ptr->free3 = wcp[cmd_id].reset[waza_type[cmd_id]] + 8;
                 waza_ptr->w_int = 6;
             }
@@ -664,7 +662,7 @@ void check_10(void) {
                 waza_ptr->shot_ok++;
                 break;
             }
-            if (chk_pl->sw_lever & 8) {
+            if (chk_pl->sw_lever & CMD_LV_BACK) {
                 (&wcp[cmd_id].waza_flag[0])[waza_type[cmd_id]] = 0;
                 waza_ptr->shot_ok++;
             } else if (chk_pl->sw_lever != waza_ptr->w_lvr) {
@@ -682,11 +680,11 @@ void check_10(void) {
             waza_ptr->w_type = 0;
             break;
         }
-        if ((chk_pl->sw_now & 8) || !(chk_pl->sw_now != waza_ptr->w_lvr)) {
+        if (chk_pl->sw_now & CMD_LV_BACK || chk_pl->sw_now == waza_ptr->w_lvr) {
             wcp[cmd_id].waza_flag[waza_type[cmd_id]] = 0;
             break;
         }
-        if (chk_pl->sw_now & 0xF) {
+        if (chk_pl->sw_now & CMD_LV_MASK) {
             (&wcp[cmd_id].waza_flag[0])[waza_type[cmd_id]] = 0;
             waza_ptr->w_type = 0;
         }
@@ -703,18 +701,18 @@ void check_11(void) {
     }
     switch (waza_ptr->uni0.tame.flag) {
     case 0:
-        if (chk_pl->sw_lever & 8) {
+        if (chk_pl->sw_lever & CMD_LV_BACK) {
             waza_ptr->uni0.tame.flag = 1;
             break;
         }
         waza_ptr->uni0.tame.flag = 0;
         break;
     case 1:
-        if (chk_pl->sw_lever == 2) {
+        if (chk_pl->sw_lever == CMD_LV_DOWN) {
             check_next();
             break;
         }
-        if (!(chk_pl->sw_lever & 8)) {
+        if (!(chk_pl->sw_lever & CMD_LV_BACK)) {
             waza_ptr->uni0.tame.flag = 0;
         }
         break;
@@ -731,10 +729,10 @@ void check_12(void) {
         }
         break;
     case 1:
-        if ((chk_pl->old_lvbt & 0xF) != (chk_pl->new_lvbt & 0xF)) {
+        if ((chk_pl->old_lvbt & CMD_LV_MASK) != (chk_pl->new_lvbt & CMD_LV_MASK)) {
             if (chk_pl->sw_lever == waza_ptr->w_lvr) {
                 waza_ptr->shot_ok++;
-                (&wcp[cmd_id].waza_flag[0])[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
+                wcp[cmd_id].waza_flag[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
                 waza_ptr->free3 = wcp[cmd_id].reset[waza_type[cmd_id]] + 8;
                 waza_ptr->w_int = 6;
             }
@@ -748,7 +746,7 @@ void check_12(void) {
                 waza_ptr->shot_ok++;
                 break;
             }
-            if (chk_pl->sw_lever & 4) {
+            if (chk_pl->sw_lever & CMD_LV_FORWARD) {
                 (&wcp[cmd_id].waza_flag[0])[waza_type[cmd_id]] = 0;
                 waza_ptr->shot_ok++;
             } else if (chk_pl->sw_lever != waza_ptr->w_lvr) {
@@ -766,11 +764,11 @@ void check_12(void) {
             waza_ptr->w_type = 0;
             break;
         }
-        if ((chk_pl->sw_now & 4) || !(chk_pl->sw_now != waza_ptr->w_lvr)) {
+        if ((chk_pl->sw_now & CMD_LV_FORWARD) || chk_pl->sw_now == waza_ptr->w_lvr) {
             wcp[cmd_id].waza_flag[waza_type[cmd_id]] = 0;
             break;
         }
-        if (chk_pl->sw_now & 0xF) {
+        if (chk_pl->sw_now & CMD_LV_MASK) {
             (&wcp[cmd_id].waza_flag[0])[waza_type[cmd_id]] = 0;
             waza_ptr->w_type = 0;
         }
@@ -788,15 +786,15 @@ void check_13(void) {
             waza_ptr->w_type = 0;
         }
     }
-    if ((chk_pl->old_lvbt & 0xF) != (chk_pl->new_lvbt & 0xF) && (chk_pl->sw_lever) == 2) {
-        wcp[cmd_id].waza_flag[waza_type[cmd_id]] = 0x10 - ukemi_time_tbl[wcp[cmd_id].waza_flag[waza_type[cmd_id]]];
-        waza_ptr->free3 = 0x10;
+    if ((chk_pl->old_lvbt & CMD_LV_MASK) != (chk_pl->new_lvbt & CMD_LV_MASK) && chk_pl->sw_lever == CMD_LV_DOWN) {
+        wcp[cmd_id].waza_flag[waza_type[cmd_id]] = 16 - ukemi_time_tbl[wcp[cmd_id].waza_flag[waza_type[cmd_id]]];
+        waza_ptr->free3 = 16;
         chk_pl->waza_no = waza_type[cmd_id];
     }
-    sw_w = (chk_pl->sw_now | chk_pl->old_now) & 0x70;
-    if (sw_w == 0x70) {
-        wcp[cmd_id].waza_flag[waza_type[cmd_id]] = 0x10 - ukemi_time_tbl[wcp[cmd_id].waza_flag[waza_type[cmd_id]]];
-        waza_ptr->free3 = 0x10;
+    sw_w = (chk_pl->sw_now | chk_pl->old_now) & CMD_SW_PUNCH;
+    if (sw_w == CMD_SW_PUNCH) {
+        wcp[cmd_id].waza_flag[waza_type[cmd_id]] = 16 - ukemi_time_tbl[wcp[cmd_id].waza_flag[waza_type[cmd_id]]];
+        waza_ptr->free3 = 16;
         chk_pl->waza_no = waza_type[cmd_id];
     }
 }
@@ -806,12 +804,12 @@ void check_13(void) {
 void check_14(void) {
     s16 id;
     waza_ptr->w_int--;
-    if (waza_ptr->w_lvr == 0x10) {
-        if (chk_pl->sw_now & 0x70) {
+    if (waza_ptr->w_lvr == CMD_SW_LP) {
+        if (chk_pl->sw_now & CMD_SW_PUNCH) {
             waza_ptr->uni0.tame.flag++;
         }
-    } else if (chk_pl->sw_now & 0x380) {
-        waza_ptr->uni0.tame.flag += 1;
+    } else if (chk_pl->sw_now & CMD_SW_KICK) {
+        waza_ptr->uni0.tame.flag++;
     }
     id = cmd_id;
     if (wcp[id].waza_flag[waza_type[id]]) {
@@ -834,7 +832,7 @@ void check_14(void) {
         if (waza_ptr->uni0.tame.flag >= 3) {
             wcp[id].waza_flag[waza_type[id]] = wcp[id].reset[waza_type[id]];
             waza_ptr->uni0.tame.flag = 0;
-            waza_ptr->w_int = 0xA;
+            waza_ptr->w_int = 10;
             chk_pl->waza_no = waza_type[cmd_id];
             return;
         } else if (waza_ptr->w_int < 0) {
@@ -864,12 +862,12 @@ void check_15(void) {
         return;
     }
     if (!dead_lvr_check()) {
-        if (waza_ptr->w_lvr & 0x8000) {
-            sw_work = waza_ptr->w_lvr & 0xF;
+        if (waza_ptr->w_lvr & CMD_LV_EXACT) {
+            sw_work = waza_ptr->w_lvr & CMD_LV_MASK;
             if (chk_pl->sw_lever == sw_work) {
                 waza_ptr->shot_ok++;
                 if (waza_ptr->shot_ok >= waza_ptr->free1) {
-                    if (*waza_ptr->w_ptr == 27) {
+                    if (*waza_ptr->w_ptr == CMD_END) {
                         command_ok();
                     } else {
                         check_next();
@@ -878,20 +876,20 @@ void check_15(void) {
             }
         } else if (waza_ptr->w_lvr == 0) {
             if (chk_pl->sw_lever == 0) {
-                waza_ptr->shot_ok += 1;
+                waza_ptr->shot_ok++;
                 if (waza_ptr->shot_ok >= waza_ptr->free1) {
-                    if (*waza_ptr->w_ptr == 27) {
+                    if (*waza_ptr->w_ptr == CMD_END) {
                         command_ok();
                     } else {
                         check_next();
                     }
                 }
             }
-        } else if ((chk_pl->old_lvbt & 0xF) != (chk_pl->new_lvbt & 0xF)) {
+        } else if ((chk_pl->old_lvbt & CMD_LV_MASK) != (chk_pl->new_lvbt & CMD_LV_MASK)) {
             if (chk_pl->sw_lever & waza_ptr->w_lvr) {
                 waza_ptr->shot_ok++;
                 if (waza_ptr->shot_ok >= waza_ptr->free1) {
-                    if (*waza_ptr->w_ptr == 27) {
+                    if (*waza_ptr->w_ptr == CMD_END) {
                         command_ok();
                     } else {
                         check_next();
@@ -913,12 +911,12 @@ void check_16(void) {
         waza_ptr->shot_ok = 0;
         return;
     }
-    if (waza_ptr->w_type == 17) {
-        sw_work = chk_pl->sw_now & 0x70;
-        w_flag = 0x10;
+    if (waza_ptr->w_type == CK_PRESS_P) {
+        sw_work = chk_pl->sw_now & CMD_SW_PUNCH;
+        w_flag = CMD_SW_LP;
     } else {
-        sw_work = chk_pl->sw_now & 0x380;
-        w_flag = 0x80;
+        sw_work = chk_pl->sw_now & CMD_SW_KICK;
+        w_flag = CMD_SW_LK;
     }
     waza_ptr->uni0.tame.shot_flag2 = waza_ptr->uni0.tame.shot_flag;
     waza_ptr->uni0.tame.shot_flag = 0;
@@ -926,11 +924,11 @@ void check_16(void) {
         if (sw_work & w_flag) {
             waza_ptr->shot_ok++;
         }
-        w_flag *= 2;
+        w_flag <<= 1;
     }
     if (waza_ptr->shot_ok >= waza_ptr->w_lvr) {
         waza_ptr->shot_ok = 0;
-        if (*waza_ptr->w_ptr == 0x1B) {
+        if (*waza_ptr->w_ptr == CMD_END) {
             command_ok();
         } else {
             check_next();
@@ -947,11 +945,11 @@ void check_18(void) {
         waza_ptr->w_type = 0;
         return;
     }
-    sw_lever = chk_pl->sw_lever & 0xF;
+    sw_lever = chk_pl->sw_lever & CMD_LV_MASK;
     if (!dead_lvr_check()) {
-        if (waza_ptr->w_lvr & 0x8000) {
-            if ((chk_pl->old_lvbt & 0xF) != (chk_pl->new_lvbt & 0xF)) {
-                sw_work = waza_ptr->w_lvr & 0xF;
+        if (waza_ptr->w_lvr & CMD_LV_EXACT) {
+            if ((chk_pl->old_lvbt & CMD_LV_MASK) != (chk_pl->new_lvbt & CMD_LV_MASK)) {
+                sw_work = waza_ptr->w_lvr & CMD_LV_MASK;
                 if (sw_lever == sw_work) {
                     waza_ptr->w_int = waza_ptr->free1;
                     (&wcp[cmd_id].waza_flag[0])[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
@@ -962,7 +960,7 @@ void check_18(void) {
                 waza_ptr->w_int = waza_ptr->free1;
                 wcp[cmd_id].waza_flag[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
             }
-        } else if ((chk_pl->old_lvbt & 0xF) != (chk_pl->new_lvbt & 0xF)) {
+        } else if ((chk_pl->old_lvbt & CMD_LV_MASK) != (chk_pl->new_lvbt & CMD_LV_MASK)) {
             if (sw_lever & waza_ptr->w_lvr) {
                 waza_ptr->w_int = waza_ptr->free1;
                 wcp[cmd_id].waza_flag[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
@@ -979,11 +977,11 @@ void check_19(void) {
     if (waza_ptr->w_int < 0) {
         waza_ptr->w_type = 0;
     }
-    sw_lever = chk_pl->sw_lever & 0xF;
+    sw_lever = chk_pl->sw_lever & CMD_LV_MASK;
     if (!dead_lvr_check()) {
-        if (waza_ptr->w_lvr & 0x8000) {
-            if (chk_pl->now_lvbt & 0xF) {
-                sw_work = waza_ptr->w_lvr & 0xF;
+        if (waza_ptr->w_lvr & CMD_LV_EXACT) {
+            if (chk_pl->now_lvbt & CMD_LV_MASK) {
+                sw_work = waza_ptr->w_lvr & CMD_LV_MASK;
                 if (sw_lever == sw_work) {
                     (&wcp[cmd_id].waza_flag[0])[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
                     check_next();
@@ -994,7 +992,7 @@ void check_19(void) {
                 (&wcp[cmd_id].waza_flag[0])[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
                 check_next();
             }
-        } else if (chk_pl->now_lvbt & 0xF) {
+        } else if (chk_pl->now_lvbt & CMD_LV_MASK) {
             if (sw_lever & waza_ptr->w_lvr) {
                 wcp[cmd_id].waza_flag[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
                 check_next();
@@ -1016,21 +1014,21 @@ void check_21(void) {
     if (waza_ptr->w_int < 0) {
         waza_ptr->w_type = 0;
     }
-    sw_lever = chk_pl->sw_lever & 0xF;
+    sw_lever = chk_pl->sw_lever & CMD_LV_MASK;
     if (!dead_lvr_check()) {
-        if (waza_ptr->w_lvr & 0x8000) {
-            sw_work = waza_ptr->w_lvr & 0xF;
+        if (waza_ptr->w_lvr & CMD_LV_EXACT) {
+            sw_work = waza_ptr->w_lvr & CMD_LV_MASK;
             if (sw_work == 0) {
                 if (sw_lever == 0) {
-                    if (*waza_ptr->w_ptr == 0x1B) {
+                    if (*waza_ptr->w_ptr == CMD_END) {
                         command_ok();
                     } else {
                         check_next();
                     }
                 }
-            } else if (chk_pl->now_lvbt & 0xF) {
+            } else if (chk_pl->now_lvbt & CMD_LV_MASK) {
                 if (sw_lever == sw_work) {
-                    if (*waza_ptr->w_ptr == 27) {
+                    if (*waza_ptr->w_ptr == CMD_END) {
                         command_ok();
                     } else {
                         check_next();
@@ -1039,15 +1037,15 @@ void check_21(void) {
             }
         } else if (!waza_ptr->w_lvr) {
             if (sw_lever == 0) {
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
                 }
             }
-        } else if (chk_pl->now_lvbt & 0xF) {
+        } else if (chk_pl->now_lvbt & CMD_LV_MASK) {
             if (sw_lever & waza_ptr->w_lvr) {
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
@@ -1087,27 +1085,27 @@ void check_23(void) {
         }
         break;
     case 1:
-        if ((chk_pl->old_lvbt & 0xF) != (chk_pl->new_lvbt & 0xF) && chk_pl->sw_lever == waza_ptr->w_lvr) {
+        if ((chk_pl->old_lvbt & CMD_LV_MASK) != (chk_pl->new_lvbt & CMD_LV_MASK) && chk_pl->sw_lever == waza_ptr->w_lvr) {
             waza_ptr->shot_ok++;
             wcp[cmd_id].waza_flag[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
-            waza_ptr->free3 = (s16)(((((wcp[cmd_id].reset[(waza_type[cmd_id])])) + 3)));
+            waza_ptr->free3 = (s16)(wcp[cmd_id].reset[waza_type[cmd_id]] + 3);
             waza_ptr->w_int = 6;
         }
         break;
     case 2:
-        waza_ptr->w_int -= 1;
-        waza_ptr->free3 -= 1;
-        if (((waza_ptr->w_int)) > 0) {
+        waza_ptr->w_int--;
+        waza_ptr->free3--;
+        if (waza_ptr->w_int > 0) {
             if (chk_pl->sw_lever == 0) {
                 waza_ptr->shot_ok++;
                 break;
             }
-            if (chk_pl->sw_lever & 8) {
+            if (chk_pl->sw_lever & CMD_LV_BACK) {
                 (&wcp[cmd_id].waza_flag[0])[waza_type[cmd_id]] = 0;
                 waza_ptr->shot_ok++;
                 break;
             }
-            if (chk_pl->sw_lever != ((waza_ptr->w_lvr))) {
+            if (chk_pl->sw_lever != waza_ptr->w_lvr) {
                 (&wcp[cmd_id].waza_flag[0])[waza_type[cmd_id]] = 0;
                 waza_ptr->w_type = 0;
             }
@@ -1122,11 +1120,11 @@ void check_23(void) {
             waza_ptr->w_type = 0;
             break;
         }
-        if ((chk_pl->sw_now & 8) || !(chk_pl->sw_now != waza_ptr->w_lvr)) {
+        if (chk_pl->sw_now & CMD_LV_BACK || chk_pl->sw_now == waza_ptr->w_lvr) {
             wcp[cmd_id].waza_flag[waza_type[cmd_id]] = 0;
             break;
         }
-        if (chk_pl->sw_now & 0xF) {
+        if (chk_pl->sw_now & CMD_LV_MASK) {
             (&wcp[cmd_id].waza_flag[0])[waza_type[cmd_id]] = 0;
             waza_ptr->w_type = 0;
         }
@@ -1141,12 +1139,12 @@ void check_24(void) {
     if (waza_ptr->w_int < 0) {
         waza_ptr->w_type = 0;
     }
-    sw_lever = chk_pl->now_lvbt & 0xF;
+    sw_lever = chk_pl->now_lvbt & CMD_LV_MASK;
     if (!dead_lvr_check()) {
-        if (waza_ptr->w_lvr & 0x8000) {
-            sw_work = waza_ptr->w_lvr & 0xF;
+        if (waza_ptr->w_lvr & CMD_LV_EXACT) {
+            sw_work = waza_ptr->w_lvr & CMD_LV_MASK;
             if (sw_lever == sw_work) {
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
@@ -1154,7 +1152,7 @@ void check_24(void) {
             }
         } else if (waza_ptr->w_lvr == 0) {
             if (sw_lever == 0) {
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
@@ -1162,7 +1160,7 @@ void check_24(void) {
             }
         } else {
             if (sw_lever & waza_ptr->w_lvr) {
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
@@ -1179,12 +1177,12 @@ void check_25(void) {
     if (waza_ptr->w_int < 0) {
         waza_ptr->w_type = 0;
     }
-    sw_lever = chk_pl->sw_lever & 0xF;
+    sw_lever = chk_pl->sw_lever & CMD_LV_MASK;
     if (!dead_lvr_check()) {
-        if (waza_ptr->w_lvr & 0x8000) {
-            sw_work = waza_ptr->w_lvr & 0xF;
+        if (waza_ptr->w_lvr & CMD_LV_EXACT) {
+            sw_work = waza_ptr->w_lvr & CMD_LV_MASK;
             if (sw_lever == sw_work) {
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
@@ -1192,7 +1190,7 @@ void check_25(void) {
             }
         } else if (waza_ptr->w_lvr == 0) {
             if (sw_lever == 0) {
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
@@ -1200,7 +1198,7 @@ void check_25(void) {
             }
         } else {
             if (sw_lever & waza_ptr->w_lvr) {
-                if (*waza_ptr->w_ptr == 27) {
+                if (*waza_ptr->w_ptr == CMD_END) {
                     command_ok();
                 } else {
                     check_next();
@@ -1216,7 +1214,7 @@ void check_25(void) {
 
 void command_ok(void) {
     wcp[cmd_id].waza_flag[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
-    if (waza_ptr->w_type != 14) {
+    if (waza_ptr->w_type != CK_UKEMI) {
         waza_ptr->w_type = 0;
         chk_pl->waza_no = waza_type[cmd_id];
     }
@@ -1271,31 +1269,31 @@ void pl_lvr_set(void) {
     chk_pl->new_lvbt = wcp[cmd_id].sw_lvbt;
     chk_pl->sw_old = chk_pl->sw_new;
     chk_pl->sw_new = sw_0;
-    chk_pl->sw_now = sw_0 & ~(chk_pl->sw_old);
+    chk_pl->sw_now = sw_0 & ~chk_pl->sw_old;
     chk_pl->now_lvbt = wcp[cmd_id].sw_lvbt & ~chk_pl->old_lvbt;
-    chk_pl->sw_chg = (chk_pl->sw_now) | (chk_pl->sw_old & ~(sw_0));
-    chk_pl->sw_lever = sw_0 & 0xF;
-    chk_pl->shot_up = chk_pl->sw_now & 0x3F0;
-    chk_pl->shot_down = chk_pl->sw_old & ~(sw_0) & 0x3F0;
-    chk_pl->shot_ud = ((chk_pl->shot_up) | (chk_pl->shot_down));
+    chk_pl->sw_chg = chk_pl->sw_now | (chk_pl->sw_old & ~sw_0);
+    chk_pl->sw_lever = sw_0 & CMD_LV_MASK;
+    chk_pl->shot_up = chk_pl->sw_now & CMD_SW_SHOT;
+    chk_pl->shot_down = chk_pl->sw_old & ~sw_0 & CMD_SW_SHOT;
+    chk_pl->shot_ud = chk_pl->shot_up | chk_pl->shot_down;
     sw_work = wcp[cmd_id].old_now | chk_pl->sw_now;
-    if ((sw_work & 0x90) == 0x90) {
+    if ((sw_work & (CMD_SW_LP | CMD_SW_LK)) == (CMD_SW_LP | CMD_SW_LK)) {
         wcp[cmd_id].ca14 = 1;
     } else {
         wcp[cmd_id].ca14 = 0;
     }
-    if ((sw_work & 0x120) == 0x120) {
+    if ((sw_work & (CMD_SW_MP | CMD_SW_MK)) == (CMD_SW_MP | CMD_SW_MK)) {
         wcp[cmd_id].ca25 = 1;
     } else {
         wcp[cmd_id].ca25 = 0;
     }
-    if ((sw_work & 0x240) == 0x240) {
+    if ((sw_work & (CMD_SW_HP | CMD_SW_HK)) == (CMD_SW_HP | CMD_SW_HK)) {
         wcp[cmd_id].ca36 = 1;
     } else {
         wcp[cmd_id].ca36 = 0;
     }
-    wcp[cmd_id].lgp = lever_gacha_tbl[cmd_pl->cp->sw_now & 0xF] * 4;
-    wcp[cmd_id].lgp += lever_gacha_tbl[cmd_pl->cp->sw_off & 0xF] * 2;
+    wcp[cmd_id].lgp = lever_gacha_tbl[cmd_pl->cp->sw_now & CMD_LV_MASK] * 4;
+    wcp[cmd_id].lgp += lever_gacha_tbl[cmd_pl->cp->sw_off & CMD_LV_MASK] * 2;
     wcp[cmd_id].lgp += lever_gacha_tbl[(cmd_pl->cp->sw_now / 16) & 7] * 2;
     wcp[cmd_id].lgp += lever_gacha_tbl[(cmd_pl->cp->sw_now / 128) & 7];
 }
@@ -1310,47 +1308,47 @@ void sw_pick_up(void) {
     cnt_address1 = &chk_pl->up_cnt;
     for (i = 0; i < 10; i++) {
         if (chk_pl->sw_new & sw_work) {
-            *cnt_address1 += 1;
+            (*cnt_address1)++;
         } else {
             *cnt_address1 = 0;
         }
-        *cnt_address1++;
-        sw_work *= 2;
+        cnt_address1++;
+        sw_work <<= 1;
     }
     for (i = 0; i < 4; i++) {
         if (lvr_chk_tbl[0][i] & chk_pl->sw_new) {
-            *cnt_address1 += 1;
+            (*cnt_address1)++;
         } else {
             *cnt_address1 = 0;
         }
-        *cnt_address1++;
+        cnt_address1++;
     }
     wcp[cmd_id].sw_new = chk_pl->sw_new;
     wcp[cmd_id].sw_old = chk_pl->sw_old;
     wcp[cmd_id].sw_chg = chk_pl->sw_chg;
     wcp[cmd_id].sw_now = chk_pl->sw_now;
     wcp[cmd_id].sw_off = chk_pl->shot_down;
-    if ((i = wcp[cmd_id].sw_lvbt & 0xC)) {
+    if ((i = wcp[cmd_id].sw_lvbt & LEVER_LR)) {
         if (cmd_pl->wu.rl_flag) {
-            if (i & 8) {
-                wcp[cmd_id].lever_dir = 1;
+            if (i & LEVER_RIGHT) {
+                wcp[cmd_id].lever_dir = LVDIR_FORWARD;
             } else {
-                wcp[cmd_id].lever_dir = 2;
+                wcp[cmd_id].lever_dir = LVDIR_BACK;
             }
-        } else if (i & 4) {
-            wcp[cmd_id].lever_dir = 1;
+        } else if (i & LEVER_LEFT) {
+            wcp[cmd_id].lever_dir = LVDIR_FORWARD;
         } else {
-            wcp[cmd_id].lever_dir = 2;
+            wcp[cmd_id].lever_dir = LVDIR_BACK;
         }
     } else {
-        wcp[cmd_id].lever_dir = 0;
+        wcp[cmd_id].lever_dir = LVDIR_NEUTRAL;
     }
-    if ((chk_pl->left_cnt != 0) && (chk_pl->left_cnt < 12)) {
+    if (chk_pl->left_cnt != 0 && chk_pl->left_cnt < 12) {
         wcp[cmd_id].calf = 1;
     } else {
         wcp[cmd_id].calf = 0;
     }
-    if ((chk_pl->right_cnt != 0) && (chk_pl->right_cnt < 12)) {
+    if (chk_pl->right_cnt != 0 && chk_pl->right_cnt < 12) {
         wcp[cmd_id].calr = 1;
     } else {
         wcp[cmd_id].calr = 0;
@@ -1418,60 +1416,60 @@ void waza_compel_all_init(PLW* pl) {
     s16 i;
     intptr_t* adrs;
     adrs = pl_CMD[pl->player_number];
-    for (i = 0; i < (pl_cmd_num[pl->player_number][0]); i++) {
+    for (i = 0; i < pl_cmd_num[pl->player_number][0]; i++) {
         cmd_tbl_ptr = (s16*)adrs[i];
         cmd_data_set(pl, i);
     }
-    for (i = (pl_cmd_num[pl->player_number][0]); i < 16; i++) {
+    for (i = pl_cmd_num[pl->player_number][0]; i < 16; i++) {
         (&wcp[cmd_id].waza_flag[0])[i] = -1;
     }
-    for (i = 16; i < (pl_cmd_num[pl->player_number][1]); i++) {
+    for (i = 16; i < pl_cmd_num[pl->player_number][1]; i++) {
         cmd_tbl_ptr = (s16*)adrs[i];
         cmd_data_set(pl, i);
     }
-    for (i = (pl_cmd_num[pl->player_number][1]); i < 22; i++) {
+    for (i = pl_cmd_num[pl->player_number][1]; i < 22; i++) {
         (&wcp[cmd_id].waza_flag[0])[i] = -1;
     }
-    for (i = 22; i < (pl_cmd_num[pl->player_number][2]); i++) {
+    for (i = 22; i < pl_cmd_num[pl->player_number][2]; i++) {
         cmd_tbl_ptr = (s16*)adrs[i];
         cmd_data_set(pl, i);
     }
-    for (i = (pl_cmd_num[pl->player_number][2]); i < 30; i++) {
+    for (i = pl_cmd_num[pl->player_number][2]; i < 30; i++) {
         (&wcp[cmd_id].waza_flag[0])[i] = -1;
     }
-    for (i = 30; i < (pl_cmd_num[pl->player_number][3]); i++) {
+    for (i = 30; i < pl_cmd_num[pl->player_number][3]; i++) {
         cmd_tbl_ptr = (s16*)adrs[i];
         cmd_data_set(pl, i);
     }
-    for (i = (pl_cmd_num[pl->player_number][3]); i < 33; i++) {
+    for (i = pl_cmd_num[pl->player_number][3]; i < 33; i++) {
         (&wcp[cmd_id].waza_flag[0])[i] = -1;
     }
-    for (i = 33; i < (pl_cmd_num[pl->player_number][4]); i++) {
+    for (i = 33; i < pl_cmd_num[pl->player_number][4]; i++) {
         cmd_tbl_ptr = (s16*)adrs[i];
         cmd_data_set(pl, i);
     }
-    for (i = (pl_cmd_num[pl->player_number][4]); i < 37; i++) {
+    for (i = pl_cmd_num[pl->player_number][4]; i < 37; i++) {
         (&wcp[cmd_id].waza_flag[0])[i] = -1;
     }
-    for (i = 37; i < (pl_cmd_num[pl->player_number][5]); i++) {
+    for (i = 37; i < pl_cmd_num[pl->player_number][5]; i++) {
         cmd_tbl_ptr = (s16*)adrs[i];
         cmd_data_set(pl, i);
     }
-    for (i = (pl_cmd_num[pl->player_number][5]); i < 43; i++) {
+    for (i = pl_cmd_num[pl->player_number][5]; i < 43; i++) {
         (&wcp[cmd_id].waza_flag[0])[i] = -1;
     }
-    for (i = 43; i < (pl_cmd_num[pl->player_number][6]); i++) {
+    for (i = 43; i < pl_cmd_num[pl->player_number][6]; i++) {
         cmd_tbl_ptr = (s16*)adrs[i];
         cmd_data_set(pl, i);
     }
-    for (i = (pl_cmd_num[pl->player_number][6]); i < 46; i++) {
+    for (i = pl_cmd_num[pl->player_number][6]; i < 46; i++) {
         (&wcp[cmd_id].waza_flag[0])[i] = -1;
     }
-    for (i = 46; i < (pl_cmd_num[pl->player_number][7]); i++) {
+    for (i = 46; i < pl_cmd_num[pl->player_number][7]; i++) {
         cmd_tbl_ptr = (s16*)adrs[i];
         cmd_data_set(pl, i);
     }
-    for (i = (pl_cmd_num[pl->player_number][7]); i < 48; i++) {
+    for (i = pl_cmd_num[pl->player_number][7]; i < CMD_SLOTS; i++) {
         (&wcp[cmd_id].waza_flag[0])[i] = -1;
     }
 }
@@ -1479,7 +1477,7 @@ void waza_compel_all_init(PLW* pl) {
 
 void waza_compel_all_init2(PLW* pl) {
     s16 j;
-    for (j = 0; j < 48; j++) {
+    for (j = 0; j < CMD_SLOTS; j++) {
         if (wcp[pl->wu.id].waza_flag[j] != -1) {
             waza_work[pl->wu.id][j].w_type = 0;
         }

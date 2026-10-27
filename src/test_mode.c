@@ -79,6 +79,25 @@
 #include "fighter.h"
 #include "RANKING.h"
 
+/* test_rno: the test mode task's routine */
+#define TEST_WAIT       0       /* test_mode_wait: wait for the test switch */
+#define TEST_MENU_INIT  1       /* test_menu_init: draw the test menu */
+#define TEST_MENU       2       /* test_menu_run: the menu and its pages */
+#define TEST_EXIT       3       /* test_mode_exit: leave the test mode */
+
+/* test_menu_no: the test menu page */
+#define MENU_SELECT     0       /* test_menu_select: move the cursor */
+#define MENU_INPUT      1       /* iotest_input_page */
+#define MENU_OUTPUT     2       /* iotest_output_page */
+#define MENU_SOUND      3       /* soundtest_page */
+#define MENU_COLOR      4       /* colortest_page */
+#define MENU_SCREEN     5       /* screentest_page */
+#define MENU_GAMEDATA   6       /* gamedata_page */
+#define MENU_CONFIG     7       /* config_menu_page */
+#define MENU_MEMORY     8       /* memtest_page */
+#define MENU_REWRITE    9       /* rewrite_page, or leave in Country 2 */
+#define MENU_EXIT       10      /* leave the test mode */
+
 s16 test_rno;  /* 0200DC94 */
 s16 test_menu_no;  /* 0200DC96 */
 s16 test_cursor;  /* 0200DC98 */
@@ -97,18 +116,18 @@ void test_mode_task(void) {
     test_rno = test_cursor = 0;
     do {
         switch (test_rno) {
-        case 0:
+        case TEST_WAIT:
             test_mode_wait();
             break;
-        case 1:
+        case TEST_MENU_INIT:
             test_menu_init();
             sprite_bank_flip();
             break;
-        case 2:
+        case TEST_MENU:
             test_menu_run();
             sprite_bank_flip();
             break;
-        case 3:
+        case TEST_EXIT:
             test_mode_exit();
             break;
         }
@@ -137,7 +156,7 @@ void test_mode_wait(void)
         palette_bank_set(0x3FC00);
         tilemap_fill_all(0, 32);
         config_menu_load_settings();
-        kill_tasks_by_func((void (*)())mode_init_task);
+        kill_tasks_by_func(mode_init_task);
         kill_tasks_by_priority(3, 1);
         test_rno += 1;
     }
@@ -148,7 +167,7 @@ void test_mode_wait(void)
 /* provisional name */
 void test_menu_init(void) {
     test_rno += 1;
-    test_menu_no = 0;
+    test_menu_no = MENU_SELECT;
     se_voice_stop_all();
     bg_vbl_trans_flag = Debug_R_No = Debug_Select_No = Debug_Menu_No = 0;
     tilemap_fill_all(0, 32);
@@ -197,46 +216,46 @@ void test_menu_init(void) {
 void test_menu_run(void) {
     s16 done = 0;
     switch (test_menu_no) {
-    case 0:
+    case MENU_SELECT:
         test_menu_select();
         break;
-    case 1:
+    case MENU_INPUT:
         done = iotest_input_page();
         break;
-    case 2:
+    case MENU_OUTPUT:
         done = iotest_output_page();
         break;
-    case 3:
+    case MENU_SOUND:
         done = soundtest_page();
         break;
-    case 4:
+    case MENU_COLOR:
         done = colortest_page();
         break;
-    case 5:
+    case MENU_SCREEN:
         done = screentest_page();
         break;
-    case 6:
+    case MENU_GAMEDATA:
         done = gamedata_page();
         break;
-    case 7:
+    case MENU_CONFIG:
         done = config_menu_page();
         break;
-    case 8:
+    case MENU_MEMORY:
         done = memtest_page();
         break;
-    case 9:
+    case MENU_REWRITE:
         if (Country == 2) {
             test_rno++;
         } else {
             done = rewrite_page();
         }
         break;
-    case 10:
+    case MENU_EXIT:
         test_rno += 1;
         break;
     }
     if (done != 0) {
-        test_rno = 1;
+        test_rno = TEST_MENU_INIT;
     }
 }
 
@@ -245,7 +264,7 @@ void test_menu_run(void) {
 /* provisional name */
 void test_menu_select(void) {
     u16 sw = ~p1sw_1 & p1sw_0;
-    if (sw & 1) {
+    if (sw & LEVER_UP) {
         tilemap_put_block(test_cursor_x_tbl[test_font_type], test_cursor_y_tbl[test_font_type][test_cursor], 2,
                                  test_cursor_off);
         test_cursor--;
@@ -254,7 +273,7 @@ void test_menu_select(void) {
         }
         tilemap_put_block(test_cursor_x_tbl[test_font_type], test_cursor_y_tbl[test_font_type][test_cursor], 2,
                                  test_cursor_on);
-    } else if (sw & 2) {
+    } else if (sw & LEVER_DOWN) {
         tilemap_put_block(test_cursor_x_tbl[test_font_type], test_cursor_y_tbl[test_font_type][test_cursor], 2,
                                  test_cursor_off);
         test_cursor++;
@@ -263,7 +282,7 @@ void test_menu_select(void) {
         }
         tilemap_put_block(test_cursor_x_tbl[test_font_type], test_cursor_y_tbl[test_font_type][test_cursor], 2,
                                  test_cursor_on);
-    } else if (sw & 16) {
+    } else if (sw & BUTTON_LP) {
         test_menu_no = test_cursor + 1;
         tilemap_chunk_copy_16b((s16*)(SS_RAM + 0x8000), (char*)sys_font_cg, 140);
         tilemap_fill_all(0, 32);

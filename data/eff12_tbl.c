@@ -1,5 +1,10 @@
 /*
- * EFF12_TBL.C  tables read by EFF13.c
+ * EFF12_TBL.C  projectile data tables
+ *
+ * tama_data holds the data of each of the 81 projectile kinds: attack kind, the kind-of-tama
+ * process, the animations of flight, hit, defeat and explosion, the colours for each side,
+ * defence power, life time and launch offset. tcct gives the colour code picked by a
+ * projectile's colour number. Read by EFF13.C, the projectile (shell) effect.
  */
 
 #include "types.h"

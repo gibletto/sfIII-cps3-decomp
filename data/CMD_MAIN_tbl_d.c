@@ -1,5 +1,16 @@
 /*
- * CMD_MAIN_TBL_D.C  tables read by CMD_MAIN.c and cmd_main_2.c
+ * CMD_MAIN_TBL_D.C  debug screen text and tables, and command input lever tables
+ *
+ * The dbg_*_str and str_* strings are the labels of the debug screens: menu titles, cg data
+ * and judgement field names, stage, character and motion names; CMD_MAIN.C, the debug menu,
+ * prints the dbg_* ones and the str_* ones through the text lines of DBG_WORK.C.
+ * dbg_obj_color_tbl, dbg_char_color_tbl, dbg_cg_group_top_tbl, dbg_col_code_tbl and
+ * dbg_col_no_tbl give the colours of debug objects and of each player's preview, the first cg
+ * number of each cg group, and the colour codes and numbers of the colour select, read by
+ * CMD_MAIN.C; dbg_stage_area_tbl (stage and area pairs) is not referred to by name.
+ * rot_lvr_tbl_r and rot_lvr_tbl_l are the lever sequences of a rotation in each direction, and
+ * chk22_tbl the eight lever directions that must all be met for check_22; read by
+ * CMD_MAIN_2.C, the command input.
  */
 
 #include "types.h"

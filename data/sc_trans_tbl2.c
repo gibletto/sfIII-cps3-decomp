@@ -1,5 +1,13 @@
 /*
- * SC_TRANS_TBL2.C  tables read by sc_trans.c
+ * SC_TRANS_TBL2.C  round win mark, stun mark and combo window tables
+ *
+ * vmark_tbl places the two cells of each round win mark; smark_pos_tbl gives the stun mark
+ * position per character, side and screen mode and smark_kind_tbl its kind per character;
+ * combo_mtbl gives each combo message's characters and size, combo_mpos_tbl and
+ * combo_mclr_pos_tbl its column and the column cleared beside it per side, combo_hitpos_tbl
+ * the column of the hit count, and combo_erase_pos_tbl and combo_erase_len_tbl where and how
+ * far the combo window is erased; sa_number_attr_tbl is the attribute of each super art
+ * number. Read by SC_TRANS.C, the text layer transfer and put routines.
  */
 
 #include "types.h"
@@ -25,10 +33,19 @@ const s16 vmark_tbl[48] = {
 };
 
 const s16 smark_pos_tbl[13][2][2] = {
-    { { 12, 19 }, { 29, 36 } }, { { 13, 20 }, { 29, 36 } }, { { 14, 21 }, { 28, 35 } }, { { 14, 21 }, { 28, 35 } },
-    { { 13, 20 }, { 28, 35 } }, { { 14, 21 }, { 28, 35 } }, { { 12, 19 }, { 29, 36 } }, { { 14, 21 }, { 28, 35 } },
-    { { 14, 21 }, { 28, 35 } }, { { 13, 20 }, { 28, 35 } }, { { 14, 21 }, { 28, 35 } }, { { 14, 21 }, { 28, 35 } },
-    { { 14, 21 }, { 28, 35 } },
+    { { 12, 19 }, { 29, 36 } },  /* Gill */
+    { { 13, 20 }, { 29, 36 } },  /* Alex */
+    { { 14, 21 }, { 28, 35 } },  /* Ryu */
+    { { 14, 21 }, { 28, 35 } },  /* Yun */
+    { { 13, 20 }, { 28, 35 } },  /* Dudley */
+    { { 14, 21 }, { 28, 35 } },  /* Necro */
+    { { 12, 19 }, { 29, 36 } },  /* Hugo */
+    { { 14, 21 }, { 28, 35 } },  /* Ibuki */
+    { { 14, 21 }, { 28, 35 } },  /* Elena */
+    { { 13, 20 }, { 28, 35 } },  /* Oro */
+    { { 14, 21 }, { 28, 35 } },  /* Yang */
+    { { 14, 21 }, { 28, 35 } },  /* Ken */
+    { { 14, 21 }, { 28, 35 } },  /* Sean */
 };
 
 const u16 smark_kind_tbl[13] = {

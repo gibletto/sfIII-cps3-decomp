@@ -1,5 +1,9 @@
 /*
- * EFF76_TBL.C  tables read by EFF76.c: stage object 76's directions and priorities
+ * EFF76_TBL.C  speeds and priorities of the second crossing figure
+ *
+ * eff76_dir_tbl and eff76_prio_tbl give, for each animation step from cg type 13 on, the speed
+ * at which the second figure moves in that step's direction and its priority. Read by EFF76.C,
+ * the second figure crossing the far left of the stage.
  */
 
 #include "types.h"

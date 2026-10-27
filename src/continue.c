@@ -3,7 +3,7 @@
  *
  * continue_task runs Continue_Scene once a frame: it puts up the countdown objects and the continue
  * music, waits for the loser's countdown to run out, asks Check_Exit_Continue whether the scene may end
- * and then hands over to the game flow (G_No1 = 6) and ends the task. Check_Count_Cut and Check_Coin_In
+ * and then hands over to the game flow (G_No1 = G1_GAME_OVER) and ends the task. Check_Count_Cut and Check_Coin_In
  * read the buttons and the coin chutes; Disp_Personal_Count, Clear_Personal_Data and Clear_Win_Type are
  * small helpers for the player number display, the per-player records and the win-type marks.
  */
@@ -60,6 +60,11 @@
 #include "fighter.h"
 #include "Entry.h"
 
+/* Cont_No: the Continue_Scene step (the last one, default, waits Cont_Timer and ends the task) */
+#define CONT_INIT       0       /* start the count */
+#define CONT_COUNT      1       /* until the continue count runs out */
+#define CONT_EXIT       2       /* until Check_Exit_Continue gives the time left */
+
 
 
 /* effect_49_init takes two arguments */
@@ -86,7 +91,7 @@ void continue_task(void) {
 void Continue_Scene(void) {
     s16 i;
     switch (Cont_No) {
-    case 0:
+    case CONT_INIT:
         Cont_No++;
         Clear_Flash_No();
         for (i = 0; i < 10; i++) {
@@ -95,19 +100,19 @@ void Continue_Scene(void) {
         sound_request(0x99);
         bgm_request(9);
         break;
-    case 1:
+    case CONT_COUNT:
         if (Continue_Count[LOSER] < 0) {
             Cont_No++;
         }
         break;
-    case 2:
+    case CONT_EXIT:
         if (Cont_Timer = Check_Exit_Continue()) {
             Cont_No++;
         }
         break;
     default:
         if (--Cont_Timer == 0) {
-            G_No1 = 6;
+            G_No1 = G1_GAME_OVER;
             G_No2 = 0;
             destroy_current_task();
         }
@@ -120,18 +125,18 @@ void Continue_Scene(void) {
 s32 Check_Exit_Continue(void) {
     s16* p;
     s8 id;
-    if (E_Number[0][0] == 2 || E_Number[1][0] == 2) {
+    if (E_Number[0][0] == ENTRY_NAME || E_Number[1][0] == ENTRY_NAME) {
         return 0;
     }
     id = LOSER;
     p = E_Number[id ^ 1];
-    if (p[0] == 0) {
+    if (p[0] == ENTRY_NONE) {
         return 60;
     }
-    if (p[0] != 3 && p[0] != 0) {
+    if (p[0] != ENTRY_NAME_WAIT && p[0] != ENTRY_NONE) {
         return 0;
     }
-    if (E_Number[id][0] != 3 && E_Number[id][0] != 0) {
+    if (E_Number[id][0] != ENTRY_NAME_WAIT && E_Number[id][0] != ENTRY_NONE) {
         return 0;
     }
     return 1;
@@ -174,7 +179,7 @@ s32 Clear_Personal_Data(PL_id)
 s16 PL_id;
 {
     s16 xx;
-    Score[PL_id][0] = 0;
+    Score[PL_id][SCORE_CPU] = 0;
     Continue_Coin[PL_id] = 0;
     Win_Record[PL_id] = 0;
     VS_Index[PL_id] = -1;
@@ -192,7 +197,7 @@ s16 PL_id;
     paring_ctr_vs[1][PL_id] = 0;
     SC_Personal_Time[PL_id] = 481;
     card_pl_work_clear(PL_id);
-    E_Number[PL_id][0] = 0;
+    E_Number[PL_id][0] = ENTRY_NONE;
     E_Number[PL_id][1] = 0;
     E_Number[PL_id][2] = 0;
     E_Number[PL_id][3] = 0;

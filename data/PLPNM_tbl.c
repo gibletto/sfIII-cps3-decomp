@@ -1,5 +1,11 @@
 /*
- * PLPNM_TBL.C  tables read by PLPNM.c
+ * PLPNM_TBL.C  player normal-state tables
+ *
+ * plpnm_lv_00 lists the normal routines Normal_00000 - Normal_41000 (with Normal_air_paring),
+ * indexed by normal routine number. normal_05 and normal_06 pick each character's forward and
+ * back dash routine (by player number), and jpdat_tbl holds the animation and movement data
+ * numbers of the nine jumps started by Normal_18000. Read by PLPNM.C, the player normal (free
+ * movement) process.
  */
 
 #include "types.h"

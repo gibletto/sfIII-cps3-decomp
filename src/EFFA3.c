@@ -28,29 +28,40 @@
 #include "sc_clear.h"
 #include "EFFA3.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* load the step data */
+#define R0_MOVE         1       /* put the cells frame by frame */
+#define R0_KILL         2       /* (default) clear the area, put the work back */
+
+/* EFFA3_Area_Data columns */
+#define AREA_X1         0       /* left cell */
+#define AREA_Y1         1       /* top cell, from Text_Page_Y */
+#define AREA_X2         2       /* right cell */
+#define AREA_Y2         3       /* bottom cell, from Text_Page_Y */
+
 
 
 void effect_A3_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.dir_timer = 1;
         ewk->wu.dir_step = ewk->wu.vitality;
         ewk->wu.step_xy_table = &EFF91_Step_Data[ewk->wu.direction];
         ewk->wu.move_xy_table = ewk->wu.step_xy_table;
-    case 1:
+    case R0_MOVE:
         if (--ewk->wu.dir_timer == 0) {
             effA3_cell_put(ewk);
             if (--ewk->wu.dir_step == 0) {
                 if (ewk->wu.dir_old) {
                     if (--ewk->wu.hit_quake == 0) {
-                        ewk->wu.routine_no[0] = 2;
+                        ewk->wu.routine_no[0] = R0_KILL;
                     } else {
                         ewk->wu.dir_step = ewk->wu.vitality;
                         ewk->wu.move_xy_table = ewk->wu.step_xy_table;
                     }
                 } else {
-                    ewk->wu.routine_no[0] = 2;
+                    ewk->wu.routine_no[0] = R0_KILL;
                 }
             }
         }
@@ -70,10 +81,10 @@ void effA3_area_clear(WORK_Other* ewk) {
     s16 y1;
     s16 x2;
     s16 y2;
-    x1 = EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.mode][0];
-    y1 = Text_Page_Y + EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.mode][1];
-    x2 = EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.mode][2];
-    y2 = Text_Page_Y + EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.mode][3];
+    x1 = EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.mode][AREA_X1];
+    y1 = Text_Page_Y + EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.mode][AREA_Y1];
+    x2 = EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.mode][AREA_X2];
+    y2 = Text_Page_Y + EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.mode][AREA_Y2];
     tilemap_clear_rect(x1, y1, x2, y2);
 }
 
@@ -122,8 +133,8 @@ s32 effect_A3_init(s16 type, s16 a, s16 b, s16 c, s16 d, s16 e, s16 f, s16 g, s1
     ewk->wu.hit_stop = f;
     ewk->wu.hit_quake = g;
     ewk->wu.kage_hx = h;
-    ewk->wu.direction = EFF91_Init_Data[type][0];
-    ewk->wu.dir_old = EFF91_Init_Data[type][1];
-    ewk->wu.vitality = EFF91_Init_Data[type][2];
+    ewk->wu.direction = EFF91_Init_Data[type][STEP_INIT_START];
+    ewk->wu.dir_old = EFF91_Init_Data[type][STEP_INIT_LOOP];
+    ewk->wu.vitality = EFF91_Init_Data[type][STEP_INIT_STEPS];
     return 0;
 }

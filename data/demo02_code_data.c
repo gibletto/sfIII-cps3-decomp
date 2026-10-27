@@ -1,5 +1,11 @@
 /*
- * DEMO02_CODE_DATA.C  tables read by demo02_code.c: the demonstration's players, super arts and stages
+ * DEMO02_CODE_DATA.C  demonstration play characters, super arts and stages
+ *
+ * Demo_PL_Play_Data lists the character pairs of the demonstration fights (two per fight, five
+ * fights), Demo_Stage_Play_Data the stage of each fight, and Arts_Rnd_Demo_Data the super arts
+ * a demonstration fighter is given at random. Demo_PL_Data is the player side that takes the
+ * controls in each character select demonstration. Read by DEMO02_CODE.C, the attract mode
+ * demonstration play.
  */
 
 #include "types.h"

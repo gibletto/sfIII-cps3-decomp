@@ -15,6 +15,10 @@ extern const u8 eff59_name_tbl[][39];
 extern const s16 flash_obj_data60_0[];
 extern const s16 flash_obj_data60_1[];
 
+/*
+ * One row per Battle_Country: the row of eff59_name_tbl / eff59_name_x_tbl with its
+ * name, and the number of letters.
+ */
 const u8 eff59_country_tbl[13][2] = {
     { 0, 0x14 }, { 1, 0xB }, { 2, 8 }, { 3, 0xC }, { 4, 9 }, { 5, 9 }, { 6, 9 }, { 7, 8 },
     { 8, 0xA }, { 9, 9 }, { 3, 0xC }, { 2, 8 }, { 1, 0xB },

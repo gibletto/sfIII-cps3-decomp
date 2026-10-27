@@ -22,6 +22,21 @@
 #include "bg_sub_5.h"
 #include "eff64.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* one frame */
+#define R0_MOVE         1       /* run the passer-by until retired */
+#define R0_KILL         2       /* (default) put the work back */
+
+/* routine_no[2], one crossing */
+#define R2_INIT         0       /* set up from eff64_data_tbl */
+#define R2_DELAY        1       /* count the start wait down */
+#define R2_ONCE         2       /* cross once, then end */
+
+/* routine_no[2], repeated crossings */
+#define R2_AGAIN        1       /* set up again, keeping the wait */
+#define R2_WAIT         2       /* count the wait down */
+#define R2_WALK         3       /* cross, then go round again */
+
 
 
 /* 02006D54 */
@@ -40,10 +55,10 @@ void (*eff64_jp_tbl[9])(WORK_Other*) = {
 
 void effect_64_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         break;
-    case 1:
+    case R0_MOVE:
         if (compel_dead_check(ewk)) {
             ewk->wu.routine_no[0]++;
             break;
@@ -62,12 +77,12 @@ void effect_64_move(WORK_Other* ewk) {
 /* provisional name */
 void eff64_00(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         eff64_data_set(ewk, 0);
-    case 1:
+    case R2_DELAY:
         eff64_wait(ewk);
         break;
-    case 2:
+    case R2_ONCE:
         if (!EXE_flag && !Game_pause) {
             if (ewk->wu.hit_stop) {
                 char_move(&ewk->wu);
@@ -75,7 +90,7 @@ void eff64_00(WORK_Other* ewk) {
             add_x_sub(ewk);
             add_y_sub(ewk);
             if (eff64_goal_check(ewk)) {
-                ewk->wu.routine_no[0] = 2;
+                ewk->wu.routine_no[0] = R0_KILL;
             }
         }
         disp_pos_trans_entry_rs(ewk);
@@ -88,17 +103,17 @@ void eff64_00(WORK_Other* ewk) {
 /* provisional name */
 void eff64_02(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         eff64_data_set(ewk, 0);
-        ewk->wu.routine_no[2] = 2;
+        ewk->wu.routine_no[2] = R2_WAIT;
         break;
-    case 1:
+    case R2_AGAIN:
         eff64_data_set(ewk, 1);
         break;
-    case 2:
+    case R2_WAIT:
         eff64_wait(ewk);
         break;
-    case 3:
+    case R2_WALK:
         if (!EXE_flag && !Game_pause) {
             if (ewk->wu.hit_stop) {
                 char_move(&ewk->wu);
@@ -106,7 +121,7 @@ void eff64_02(WORK_Other* ewk) {
             add_x_sub(ewk);
             add_y_sub(ewk);
             if (eff64_goal_check(ewk)) {
-                ewk->wu.routine_no[2] = 1;
+                ewk->wu.routine_no[2] = R2_AGAIN;
                 ewk->wu.old_rno[1] = ewk->wu.old_rno[2];
             }
         }
@@ -121,17 +136,17 @@ void eff64_02(WORK_Other* ewk) {
 void eff64_04(WORK_Other* ewk) {
     s16 ix;
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         eff64_data_set(ewk, 0);
-        ewk->wu.routine_no[2] = 2;
+        ewk->wu.routine_no[2] = R2_WAIT;
         break;
-    case 1:
+    case R2_AGAIN:
         eff64_data_set(ewk, 1);
         break;
-    case 2:
+    case R2_WAIT:
         eff64_wait(ewk);
         break;
-    case 3:
+    case R2_WALK:
         if (!EXE_flag && !Game_pause) {
             if (ewk->wu.hit_stop) {
                 char_move(&ewk->wu);
@@ -139,7 +154,7 @@ void eff64_04(WORK_Other* ewk) {
             add_x_sub(ewk);
             add_y_sub(ewk);
             if (eff64_goal_check(ewk)) {
-                ewk->wu.routine_no[2] = 1;
+                ewk->wu.routine_no[2] = R2_AGAIN;
                 ix = random_16_com();
                 if (ewk->wu.routine_no[1] > 5) {
                     ewk->wu.old_rno[1] = eff64_move2_tbl[ix];
@@ -160,25 +175,25 @@ void eff64_08(WORK_Other* ewk) {
     s16 ix;
     BGW* bgwp = &bg_w.bgw[1];
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         if (bgwp->xy[0].disp.pos < -64) {
             eff64_data_set(ewk, 0);
         }
-        ewk->wu.routine_no[2] = 2;
+        ewk->wu.routine_no[2] = R2_WAIT;
         break;
-    case 1:
+    case R2_AGAIN:
         if (bgwp->xy[0].disp.pos < -64) {
             eff64_data_set(ewk, 1);
         }
         break;
-    case 2:
+    case R2_WAIT:
         eff64_wait(ewk);
         break;
-    case 3:
+    case R2_WALK:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             if (ewk->wu.xyz[0].disp.pos < ewk->wu.old_rno[0]) {
-                ewk->wu.routine_no[2] = 1;
+                ewk->wu.routine_no[2] = R2_AGAIN;
                 ix = random_16_com();
                 ewk->wu.old_rno[1] = eff64_move2_tbl[ix];
             }

@@ -19,15 +19,20 @@
 #include "effect_2.h"
 #include "EFF96.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start the pattern */
+#define R0_MOVE         1       /* animate until the pattern ends */
+#define R0_KILL         2       /* put the work back */
+
 
 
 void effect_96_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.char_table[0] = ef13_char_table;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.disp_flag = 0;
             ewk->wu.routine_no[0]++;
@@ -43,7 +48,7 @@ void effect_96_move(WORK_Other* ewk) {
         }
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);

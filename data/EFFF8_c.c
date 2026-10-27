@@ -1,5 +1,12 @@
 /*
- * EFFF8_C.C  tables read by EFFG1.c and EFFG2.c
+ * EFFF8_C.C  follower controller and follower part tables
+ *
+ * effG1_x_offsets gives, by facing, the x offsets of the four follow points beside the player;
+ * read by EFFG1.C, the follower controller, whose init is empty. effG2_char_tbl gives each
+ * part its pattern while the player is not hit, while hit or thrown, and at the end;
+ * effG2_speed_tbl and effG2_distance_tbl its running speed by distance to the follow point;
+ * and effG2_fall_tbl its speeds when the parts fall away on stage 8. Read by EFFG2.C, the
+ * follower parts.
  */
 
 #include "types.h"
@@ -21,6 +28,10 @@ const s16 effG2_fall_tbl[4][2] = {
     { 512, -64 }, { 512, -64 }, { 512, -64 }, { 512, -64 },
 };
 
+/*
+ * One row per part (type): pattern while the player is not hit, pattern while hit or
+ * thrown, and the pattern played once at the end.
+ */
 const s16 effG2_char_tbl[4][3] = {
     { 36, 37, 159 }, { 38, 39, 160 }, { 40, 41, 161 }, { 42, 43, 162 },
 };

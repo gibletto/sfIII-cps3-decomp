@@ -23,12 +23,23 @@
 #include "PLS02.h"
 #include "CHARMOVE.h"
 #include "charmove_2.h"
+#include "fighter.h"
+
+/* routine_no[0] */
+#define R0_INIT         0       /* show and start the pose */
+#define R0_MOVE         1       /* slide with the win screen */
+
+/* eff95_ofs_tbl columns */
+#define E95_WIN_X       0       /* x offset of the winner's picture */
+#define E95_LOSE_X      1       /* x offset of the loser's picture */
+
 s32 eff95_set_obj();
 void eff95_set_position();
 
 /* Character colours and placement offsets. */
 const s8 eff95_col_tbl_win[13] = { 1, 1, 1, 2, 2, 1, 2, 1, 2, 1, 1, 1, 2 };
 const s8 eff95_col_tbl_lose[13] = { -1, 2, 3, 3, 3, 2, 2, 2, 2, 1, 2, 2, 3 };
+/* One row per fighter: x offset of the picture when the fighter won, and when it lost. */
 const s16 eff95_ofs_tbl[13][2] = {
     { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 32, 0 }, { 0, 0 }, { 0, 0 },
     { 0, 0 }, { 0, 0 }, { 0, 0 }, { 32, 0 }, { 0, 0 }, { 0, 0 },
@@ -39,12 +50,12 @@ const s16 eff95_ofs_tbl[13][2] = {
 /* an object drifting in x (speed held only while win_slide_flag) */
 void effect_95_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_timer + 1, 0);
         break;
-    case 1:
+    case R0_MOVE:
         if (win_slide_flag == 0) {
             ewk->wu.mvxy.a[0].sp = 0;
         }
@@ -60,16 +71,16 @@ void effect_95_move(WORK_Other* ewk) {
 
 s32 effect_95_init(s16 kind, s16 pl) {
     eff95_set_obj(kind, pl, 0);
-    if (kind == 0 && (My_char[pl] & 0x7F) == 8) {
+    if (kind == 0 && (My_char[pl] & 0x7F) == PL_ELENA) {
         eff95_set_obj(kind, pl, 1);
     }
-    if (kind == 13 && (My_char[pl] & 0x7F) == 4) {
+    if (kind == 13 && (My_char[pl] & 0x7F) == PL_DUDLEY) {
         eff95_set_obj(kind, pl, -1);
     }
-    if (kind == 13 && (My_char[pl] & 0x7F) == 12) {
+    if (kind == 13 && (My_char[pl] & 0x7F) == PL_SEAN) {
         eff95_set_obj(kind, pl, 0x80);
     }
-    if (kind == 0 && (My_char[pl] & 0x7F) == 12) {
+    if (kind == 0 && (My_char[pl] & 0x7F) == PL_SEAN) {
         eff95_set_obj(kind, pl, 0x80);
     }
     return 0;
@@ -78,11 +89,12 @@ s32 effect_95_init(s16 kind, s16 pl) {
 
 
 /* provisional name */
-s32 eff95_set_obj(kind, pl, type)
+s32 eff95_set_obj(kind, pl, typ)
 s16 kind;
 s16 pl;
-s16 type;
+s16 typ;
 {
+    s16 type = typ;
     WORK_Other* ewk;
     s16 ix;
     s16 col;
@@ -98,7 +110,6 @@ s16 type;
     ewk->wu.my_col_mode = 0x4200;
     ewk->wu.my_family = 2;
     eff95_set_position(ewk, player = pl);
-    (void)((WORK*)1)->id;
     if (WINNER == 0) { ewk->wu.rl_flag = 0; } else { ewk->wu.rl_flag = 1; }
     if (kind == 0) {
         ewk->wu.position_z = 41;
@@ -108,7 +119,7 @@ s16 type;
         ewk->wu.position_z = 50;
         col = eff95_col_tbl_win[My_char[pl] & 0x7F];
         ewk->wu.my_col_code = col * Player_Color[WINNER] + 112;
-        if (My_char[WINNER] == 0) {
+        if (My_char[WINNER] == PL_GILL) {
             if (player == 0) {
                 ewk->wu.my_col_code = 112;
             } else {
@@ -198,18 +209,18 @@ void eff95_set_position(WORK_Other* ewk, s16 pl) {
     if (WINNER == 0) {
         if (pl) {
             ewk->wu.mvxy.a[0].sp = 0x8000;
-            ewk->wu.xyz[0].disp.pos += eff95_ofs_tbl[My_char[pl] & 0x7F][1];
+            ewk->wu.xyz[0].disp.pos += eff95_ofs_tbl[My_char[pl] & 0x7F][E95_LOSE_X];
         } else {
             ewk->wu.mvxy.a[0].sp = 0x4000;
-            ewk->wu.xyz[0].disp.pos += eff95_ofs_tbl[My_char[pl] & 0x7F][0];
+            ewk->wu.xyz[0].disp.pos += eff95_ofs_tbl[My_char[pl] & 0x7F][E95_WIN_X];
         }
     } else {
         if (pl) {
             ewk->wu.mvxy.a[0].sp = -0x4000;
-            ewk->wu.xyz[0].disp.pos -= eff95_ofs_tbl[My_char[pl] & 0x7F][0];
+            ewk->wu.xyz[0].disp.pos -= eff95_ofs_tbl[My_char[pl] & 0x7F][E95_WIN_X];
         } else {
             ewk->wu.mvxy.a[0].sp = -0x8000;
-            ewk->wu.xyz[0].disp.pos -= eff95_ofs_tbl[My_char[pl] & 0x7F][1];
+            ewk->wu.xyz[0].disp.pos -= eff95_ofs_tbl[My_char[pl] & 0x7F][E95_LOSE_X];
         }
     }
 }

@@ -26,6 +26,11 @@
 #include "PLS02.h"
 #include "effa9.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* build the cells and show */
+#define R0_MOVE         1       /* follow the plate until it is done */
+#define R0_KILL         99      /* (default) put the work back */
+
 extern s16 sel_plate_state[2][3];   /* provisional name */
 void effB8_conn_set();   /* provisional name */
 
@@ -34,14 +39,14 @@ void effB8_conn_set();   /* provisional name */
 /* the select-screen plate marker */
 void effect_A9_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         effB8_conn_set((WORK_Other_CONN*)ewk, My_char[ewk->master_id], ewk->master_player + 3);
         /* fall through */
-    case 1:
+    case R0_MOVE:
         if (sel_plate_state[ewk->master_id][ewk->master_player] == 52) {
-            ewk->wu.routine_no[0] = 99;
+            ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
         ewk->wu.position_x = Plate_X[ewk->master_id][ewk->master_player] - 8;

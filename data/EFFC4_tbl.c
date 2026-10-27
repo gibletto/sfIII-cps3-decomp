@@ -1,5 +1,8 @@
 /*
- * EFFC4_TBL.C  tables read by EFFC4.c
+ * EFFC4_TBL.C  bouncing object speeds
+ *
+ * effC4_sp_tbl gives the x and y speeds and accelerations of the object for each state of its
+ * flight; each landing starts the next. Read by EFFC4.C, the bouncing object.
  */
 
 #include "types.h"

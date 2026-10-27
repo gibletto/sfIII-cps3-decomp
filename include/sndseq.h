@@ -27,11 +27,13 @@
 #ifndef SNDSEQ_H
 #define SNDSEQ_H
 
+#include "seqop.h"
+
 #define SEQ_MUSIC           0x00
 #define TRK(off)            (u8)((off) >> 8), (u8)(off)
 
-#define N(vel, key)         (u8)(0x80 | (vel)), (u8)(key)
-#define NT(vel, key)        (u8)(0x80 | (vel)), (u8)(0x80 | (key))
+#define N(vel, key)         (u8)(SEQ_NOTE | (vel)), (u8)(key)
+#define NT(vel, key)        (u8)(SEQ_NOTE | (vel)), (u8)(0x80 | (key))
 #define L1(d)               (u8)(d)
 #define L2(d)               (u8)(0x80 | ((d) >> 7)), (u8)((d) & 0x7F)
 #define L3(d)               (u8)(0x80 | ((d) >> 14)), (u8)(0x80 | (((d) >> 7) & 0x7F)), (u8)((d) & 0x7F)
@@ -39,39 +41,39 @@
 #define W2(t)               (u8)((t) >> 7), (u8)((t) & 0x7F)
 #define W3(t)               (u8)((t) >> 14), (u8)(((t) >> 7) & 0x7F), (u8)((t) & 0x7F)
 
-#define NOP                 0xC0
-#define TEMPO(t)            0xC1, (u8)((t) >> 8), (u8)(t)
-#define BANK(b)             0xC2, (u8)(b)
-#define BEND(s)             0xC3, (u8)(s)
-#define PROG(p)             0xC4, (u8)(p)
-#define PLFO(d)             0xC5, (u8)(d)
-#define VOL(v)              0xC6, (u8)(v)
-#define PAN(p)              0xC7, (u8)(p)
-#define EXPR(v)             0xC8, (u8)(v)
-#define PORTA(n)            0xC9, (u8)(n)
-#define REPEAT              0xCA
-#define END_REPEAT          0xCB
-#define JUMP1(r)            0xCC, (u8)((r) >> 8), (u8)(r)
-#define JUMP2(r)            0xCD, (u8)((r) >> 8), (u8)(r)
-#define JUMP(r)             0xCE, (u8)((r) >> 8), (u8)(r)
-#define JUMP_TRACK(n)       0xCF, (u8)(n)
-#define LOOP_START(n)       (u8)(0xD0 + (n))
-#define LOOP(n, count)      (u8)(0xD4 + (n)), (u8)(count)
-#define LOOP_EXIT(n, r)     (u8)(0xD8 + (n)), (u8)((r) >> 8), (u8)(r)
-#define KEY(s)              0xDC, (u8)(s)
-#define KEY_ADD(s)          0xDD, (u8)(s)
-#define TUNE(s)             0xDE, (u8)(s)
-#define TUNE_ADD(s)         0xDF, (u8)(s)
-#define LFO_SYNC(on)        0xE0, (u8)(on)
-#define LFO_RATE(r)         0xE1, (u8)(r)
-#define VLFO(d)             0xE2, (u8)(d)
-#define PRIO(p)             0xE3, (u8)(p)
-#define CMD_E4(a, b)        0xE4, (u8)(a), (u8)(b)      /* read past, no effect */
-#define CMD_E5(a, b)        0xE5, (u8)(a), (u8)(b)      /* read past, no effect */
-#define CMD_E6(a)           0xE6, (u8)(a)               /* read past, no effect */
-#define FINE(v)             0xE7, (u8)(v)
-#define STATUS(i, v)        0xE8, (u8)(i), (u8)(v)
+#define NOP                 SEQ_NOP
+#define TEMPO(t)            SEQ_TEMPO, (u8)((t) >> 8), (u8)(t)
+#define BANK(b)             SEQ_BANK, (u8)(b)
+#define BEND(s)             SEQ_BEND, (u8)(s)
+#define PROG(p)             SEQ_PROG, (u8)(p)
+#define PLFO(d)             SEQ_PLFO, (u8)(d)
+#define VOL(v)              SEQ_VOL, (u8)(v)
+#define PAN(p)              SEQ_PAN, (u8)(p)
+#define EXPR(v)             SEQ_EXPR, (u8)(v)
+#define PORTA(n)            SEQ_PORTA, (u8)(n)
+#define REPEAT              SEQ_REPEAT
+#define END_REPEAT          SEQ_END_REPEAT
+#define JUMP1(r)            SEQ_JUMP1, (u8)((r) >> 8), (u8)(r)
+#define JUMP2(r)            SEQ_JUMP2, (u8)((r) >> 8), (u8)(r)
+#define JUMP(r)             SEQ_JUMP, (u8)((r) >> 8), (u8)(r)
+#define JUMP_TRACK(n)       SEQ_JUMP_TRACK, (u8)(n)
+#define LOOP_START(n)       (u8)(SEQ_LOOP_START + (n))
+#define LOOP(n, count)      (u8)(SEQ_LOOP + (n)), (u8)(count)
+#define LOOP_EXIT(n, r)     (u8)(SEQ_LOOP_EXIT + (n)), (u8)((r) >> 8), (u8)(r)
+#define KEY(s)              SEQ_KEY, (u8)(s)
+#define KEY_ADD(s)          SEQ_KEY_ADD, (u8)(s)
+#define TUNE(s)             SEQ_TUNE, (u8)(s)
+#define TUNE_ADD(s)         SEQ_TUNE_ADD, (u8)(s)
+#define LFO_SYNC(on)        SEQ_LFO_SYNC, (u8)(on)
+#define LFO_RATE(r)         SEQ_LFO_RATE, (u8)(r)
+#define VLFO(d)             SEQ_VLFO, (u8)(d)
+#define PRIO(p)             SEQ_PRIO, (u8)(p)
+#define CMD_E4(a, b)        SEQ_E4, (u8)(a), (u8)(b)      /* read past, no effect */
+#define CMD_E5(a, b)        SEQ_E5, (u8)(a), (u8)(b)      /* read past, no effect */
+#define CMD_E6(a)           SEQ_E6, (u8)(a)               /* read past, no effect */
+#define FINE(v)             SEQ_FINE, (u8)(v)
+#define STATUS(i, v)        SEQ_STATUS, (u8)(i), (u8)(v)
 #define CMD(c)              (u8)(c)                     /* E9-FE: no effect */
-#define END                 0xFF
+#define END                 SEQ_END
 
 #endif

@@ -1,5 +1,9 @@
 /*
- * SPGAUGE_TBL_B.C  tables read by sc_sub_2.c
+ * SPGAUGE_TBL_B.C  palette fade lists
+ *
+ * fade_adrs_tbl_0 .. fade_adrs_tbl_28 are the lists of palette numbers each fade group works
+ * on, reached through fade_adrs_tbl in SC_SUB_2.C, the palette fade control. scr_obj_data18_9
+ * and scr_obj_data18_10, two short rows placed among them, are not referred to.
  */
 
 #include "types.h"

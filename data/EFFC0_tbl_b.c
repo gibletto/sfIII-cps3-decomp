@@ -1,5 +1,8 @@
 /*
- * EFFC0_TBL_B.C  tables read by EFFC2.c
+ * EFFC0_TBL_B.C  placement of the objects that drop on the landing
+ *
+ * effc2_data_tbl gives the x, y, priority and pattern of each of the four objects of effect
+ * C2. Read by EFFC2.C, the stage objects that drop on the landing.
  */
 
 #include "types.h"

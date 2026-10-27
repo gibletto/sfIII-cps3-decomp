@@ -1,5 +1,9 @@
 /*
- * PLPAT07_TBL.C  tables read by PLPAT07.c: the characters' special attack routine tables (plNN_exatt_table)
+ * PLPAT07_TBL.C  Ibuki's special attack table
+ *
+ * pl07_exatt_table is the list of Ibuki's nine special attack routines, indexed by attack
+ * routine number minus 16. Read by PLPAT07.C, which dispatches through it from
+ * pl07_extra_attack.
  */
 
 #include "types.h"

@@ -1,5 +1,9 @@
 /*
- * EFFF7_TBL.C  tables read by efff7.c: the positions of effect F7's six opening sprites
+ * EFFF7_TBL.C  opening sprite position table
+ *
+ * effF7_pos_tbl gives the x, y of each of effect F7's six opening sprites at each of the 23
+ * steps of the master's routine; each sprite moves from one step's position to the next. Read
+ * by EFFF7.C, the six opening sprites.
  */
 
 #include "types.h"

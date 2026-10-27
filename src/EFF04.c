@@ -16,6 +16,19 @@
 #include "effect_2.h"
 #include "aboutspr.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* clear the sub-states */
+#define R0_MOVE         1       /* drop stones until the work dies */
+#define R0_KILL         2       /* put the work back */
+
+/* routine_no[1] */
+#define R1_FIRST        0       /* drop the first ten stones */
+#define R1_MORE         1       /* then one at a time */
+
+/* routine_no[2] */
+#define R2_WAIT         0       /* count the wait down */
+#define R2_DROP         1       /* drop a stone while below the limit */
+
 
 extern const s16 eff04_stone_tbl[56];   /* provisional name: rows of 7, ten read from a row */
 extern const s16 eff04_wait_tbl[32];   /* provisional name */
@@ -45,13 +58,13 @@ void effect_04_move(WORK_Other* ewk) {
     s16 i;
     s8 num;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
-        ewk->wu.routine_no[1] = 0;
-        ewk->wu.routine_no[2] = 0;
+    case R0_INIT:
+        ewk->wu.routine_no[1] = R1_FIRST;
+        ewk->wu.routine_no[2] = R2_WAIT;
         ewk->wu.routine_no[3] = 0;
         ewk->wu.routine_no[0]++;
         /* fall through */
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
@@ -60,7 +73,7 @@ void effect_04_move(WORK_Other* ewk) {
             break;
         }
         switch (ewk->wu.routine_no[1]) {
-        case 0:
+        case R1_FIRST:
             num = random_32_com();
             data_ptr = eff04_stone_tbl;
             for (i = 0, data_ptr += (num = (num & 7) * 7); i < 10; i++) {
@@ -71,17 +84,17 @@ void effect_04_move(WORK_Other* ewk) {
             ewk->wu.vitality = eff04_wait_tbl[num];
             ewk->wu.routine_no[1]++;
             break;
-        case 1:
+        case R1_MORE:
             ewk->wu.dir_step = 48;
             switch (ewk->wu.routine_no[2]) {
-            case 0:
+            case R2_WAIT:
                 if (ewk->wu.vitality == 0) {
                     ewk->wu.routine_no[2]++;
                 } else {
                     ewk->wu.vitality--;
                 }
                 break;
-            case 1:
+            case R2_DROP:
                 if (ewk->wu.direction < ewk->wu.dir_step) {
                     num = random_32_com();
                     num &= 15;
@@ -96,7 +109,7 @@ void effect_04_move(WORK_Other* ewk) {
             }
         }
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);

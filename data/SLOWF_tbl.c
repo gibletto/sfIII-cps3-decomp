@@ -1,5 +1,12 @@
 /*
- * SLOWF_TBL.C  tables read by SE.c, SLOWF.c and SYS_sub.c
+ * SLOWF_TBL.C  slow-motion and screen wipe bitmap tables
+ *
+ * slow_timer_to_flag gives the slow-motion rate (SLOW_flag) for each step of the slow timer as
+ * it runs down; read by SLOWF.C, the slow-motion control. wipe_set_pattern_tbl lists, per wipe
+ * kind, the bitmap a wipe sets with (wipe_set_bitmap_0, _1 and _3, wipe_set_pattern_3) and its
+ * step count; it is read by SE.C and SYS_SUB.C. wipe_clear_bitmap_0, _1 and _3 and
+ * wipe_clear_pattern_3, the bitmaps a wipe clears with, are reached through
+ * wipe_clear_pattern_tbl in SE_TBL.C.
  */
 
 #include "types.h"

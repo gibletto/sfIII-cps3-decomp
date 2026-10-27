@@ -24,6 +24,13 @@
 #include "bg_sub_5.h"
 #include "EFF21.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start the animation, or go if broken */
+#define R0_STAND        1       /* animate until the object is hit */
+#define R0_FLY          2       /* fly off until out of the screen */
+#define R0_END          3       /* one more frame */
+#define R0_KILL         99      /* (default) put the work back */
+
 extern const u32 eff21_char_table[];   /* provisional name */
 
 
@@ -31,20 +38,20 @@ extern const u32 eff21_char_table[];   /* provisional name */
 /* Animate the breakable parts. */
 void effect_21_move(WORK_Other* ewk) {
     if (compel_dead_check(ewk) != 0) {
-        ewk->wu.routine_no[0] = 99;
+        ewk->wu.routine_no[0] = R0_KILL;
     }
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         ewk->wu.dead_f = 1;
         if (eff_hit_flag[8]) {
-            ewk->wu.routine_no[0] = 99;
+            ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R0_STAND:
         if (!EXE_flag && !Game_pause) {
             if (eff_hit_flag[8]) {
                 ewk->wu.routine_no[0]++;
@@ -55,7 +62,7 @@ void effect_21_move(WORK_Other* ewk) {
         }
         sort_push_request4(&ewk->wu);
         break;
-    case 2:
+    case R0_FLY:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             add_x_sub(ewk);
@@ -68,7 +75,7 @@ void effect_21_move(WORK_Other* ewk) {
         }
         sort_push_request4(&ewk->wu);
         break;
-    case 3:
+    case R0_END:
         ewk->wu.routine_no[0]++;
         break;
     default:

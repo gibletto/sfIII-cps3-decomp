@@ -1,5 +1,10 @@
 /*
- * SPGAUGE_TBL.C  tables read by sc_sub_2.c
+ * SPGAUGE_TBL.C  palette fade tables
+ *
+ * fade_data_tbl gives, for each fade number, the number of palette groups it fades and for
+ * each group the palette list (an index into fade_adrs_tbl) and the fade parameters (an index
+ * into fade_param_tbl); fade_param_tbl holds each parameter set: wait, start and end level,
+ * fade kind, speed and step. Read by SC_SUB_2.C, the palette fade control.
  */
 
 #include "types.h"

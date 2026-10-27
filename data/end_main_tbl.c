@@ -1,5 +1,10 @@
 /*
- * END_MAIN_TBL.C  tables read by end_main.c
+ * END_MAIN_TBL.C  opening demo screen tables
+ *
+ * op_scr_record_data is the screen map record of the opening's BG0 layer, passed to
+ * sprite_list_setup; op_tile_tbl lists the eight cells (map offset, cell number) of each of
+ * the five opening maps; op_scrn_tbl gives each opening scene step its map, scroll x and y and
+ * length in frames. Read by END_MAIN.C, the opening demo.
  */
 
 #include "types.h"

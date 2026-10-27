@@ -1,5 +1,12 @@
 /*
- * ABOUTSPR_TBL_C.C  tables read by aboutspr.c
+ * ABOUTSPR_TBL_C.C  character sprite cell tables
+ *
+ * char_cell_flip_tbl picks the cell flip routine by the flip a cell set was built with and the
+ * flip wanted; make_char_cells_tbl lists the cell builders for each sprite flip
+ * (make_char_cells_n/x/y/xy); cell_size_tbl and flip_attr_tbl give the sprite size and flip
+ * attribute codes; judge_area_code_tbl is the cell code of each hit and hurt box kind drawn by
+ * the judge-area display; zoom_up_tbl and zoom_down_tbl the zoom divisors above and below
+ * normal size, and cell_zoom_tbl the zoom lookup of get_cell_zoom. Read by ABOUTSPR.C.
  */
 
 #include "types.h"

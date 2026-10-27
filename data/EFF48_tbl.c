@@ -1,5 +1,10 @@
 /*
- * EFF48_TBL.C  tables read by EFF49.c and EFF54.c
+ * EFF48_TBL.C  continue display offsets and a stage object's flight course
+ *
+ * eff49_pos_tbl gives the x offset from the screen position of each of the ten effect 49 works
+ * that CONTINUE.C starts; read by EFF49.C, the continue count down. eff54_move_tbl is the
+ * course of the effect 54 object, a row per phase: time, then x and y speeds and
+ * accelerations; read by EFF54.C.
  */
 
 #include "types.h"

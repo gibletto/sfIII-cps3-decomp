@@ -22,6 +22,23 @@
 #include "bg_sub_5.h"
 #include "EFF18.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* first frame, then run the behaviour */
+#define R0_MOVE         1       /* run the behaviour routine */
+#define R0_KILL         99      /* (default) put the work back */
+
+/* routine_no[2], eff18_00 */
+#define R2_INIT         0       /* start the idle animation */
+#define R2_IDLE         1       /* idle until a player does a special */
+#define R2_CUE          2       /* idle until the animation's next cue */
+#define R2_DELAY        3       /* wait out the rest of the delay */
+#define R2_HOP          4       /* hop until the animation ends */
+
+/* routine_no[2], eff18_01 */
+#define R2_WAIT_WIN     1       /* idle until a perfect victory */
+#define R2_CHEER        2       /* start the celebration */
+#define R2_CELEBRATE    3       /* play the celebration */
+
 
 
 /* object lists, named by their order in the ROM (provisional names) */
@@ -54,12 +71,12 @@ void effect_18_move(WORK_Other* ewk) {
         return;
     }
     if (compel_dead_check(ewk)) {
-        ewk->wu.routine_no[0] = 99;
+        ewk->wu.routine_no[0] = R0_KILL;
     } else {
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_INIT:
             ewk->wu.routine_no[0]++;
-        case 1:
+        case R0_MOVE:
             if (!EXE_flag && !Game_pause) {
                 eff18_jp_tbl[ewk->wu.routine_no[1]](ewk);
             }
@@ -81,11 +98,11 @@ void effect_18_move(WORK_Other* ewk) {
 /* provisional name */
 void eff18_00(WORK* wk) {
     switch (wk->routine_no[2]) {
-    case 0:
+    case R2_INIT:
         wk->routine_no[2]++;
         wk->disp_flag = 1;
         set_char_move_init(wk, 0, wk->dir_old);
-    case 1:
+    case R2_IDLE:
         if (either_pl_hissatsu_check()) {
             wk->routine_no[2]++;
             wk->dir_timer = 5;
@@ -95,13 +112,13 @@ void eff18_00(WORK* wk) {
             char_move(wk);
         }
         break;
-    case 2:
+    case R2_CUE:
         wk->direction++;
         if (wk->cg_type) {
             wk->cg_type = 0;
             wk->dir_timer -= wk->direction;
             if (wk->dir_timer < 0) {
-                wk->routine_no[2] = 4;
+                wk->routine_no[2] = R2_HOP;
                 set_char_move_init(wk, 0, wk->dir_step);
             } else {
                 wk->routine_no[2]++;
@@ -111,7 +128,7 @@ void eff18_00(WORK* wk) {
             char_move(wk);
         }
         break;
-    case 3:
+    case R2_DELAY:
         wk->dir_timer--;
         if (wk->dir_timer < 0) {
             wk->routine_no[2]++;
@@ -121,11 +138,11 @@ void eff18_00(WORK* wk) {
             char_move(wk);
         }
         break;
-    case 4:
+    case R2_HOP:
         char_move(wk);
         if (wk->cg_type) {
             wk->cg_type = 0;
-            wk->routine_no[2] = 0;
+            wk->routine_no[2] = R2_INIT;
         }
         break;
     }
@@ -136,11 +153,11 @@ void eff18_00(WORK* wk) {
 /* provisional name */
 void eff18_01(WORK* wk) {
     switch (wk->routine_no[2]) {
-    case 0:
+    case R2_INIT:
         wk->routine_no[2]++;
         wk->disp_flag = 1;
         set_char_move_init(wk, 0, wk->dir_old);
-    case 1:
+    case R2_WAIT_WIN:
         if (complete_victory_check()) {
             wk->routine_no[2]++;
         }
@@ -148,11 +165,11 @@ void eff18_01(WORK* wk) {
             char_move(wk);
         }
         break;
-    case 2:
+    case R2_CHEER:
         wk->routine_no[2]++;
         set_char_move_init(wk, 0, wk->dir_step);
         break;
-    case 3:
+    case R2_CELEBRATE:
         char_move(wk);
         break;
     }

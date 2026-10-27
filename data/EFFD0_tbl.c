@@ -1,5 +1,13 @@
 /*
- * EFFD0_TBL.C  tables read by EFFD0.c, effd3.c and EFFD4.c
+ * EFFD0_TBL.C  thrown object arcs, special finish screen and suction pull tables
+ *
+ * effd0_data_tbl gives the speeds and accelerations of each arc of the thrown object and
+ * effd0_conter the time of each arc; read by EFFD0.C. ake_timer_tbl is the time each picture
+ * of the special finish screen stays up and ake_pos_tbl the BG 3 positions of its four
+ * pictures; read by EFFD3.C. sel_suikomi_tbl gives the facing, pull direction and duration of
+ * each kind of pull, and swallow_areas_x and swallow_areas_y the pull speed number by x and y
+ * distance from the master; read by EFFD4.C, the suction pull of an attack, with the speeds in
+ * EFFD4_TBL.C.
  */
 
 #include "types.h"

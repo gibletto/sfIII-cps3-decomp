@@ -38,12 +38,17 @@
 #include "textsound_3.h"
 #include "effd3.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* set up the screen */
+#define R0_FLASH        1       /* flash the pictures in turn */
+#define R0_KILL         2       /* (default) put the work back */
+
 
 
 void effect_D3_move(WORK_Other* ewk) {
     s16 i;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0] += 1;
         ewk->wu.old_rno[1] = 0;
         ewk->wu.dir_timer = ake_timer_tbl[0];
@@ -60,7 +65,7 @@ void effect_D3_move(WORK_Other* ewk) {
         Scrn_Move_Set(3, ake_pos_tbl[0][0] - bg_w.pos_offset, ake_pos_tbl[0][1]);
         Bg_Off_R(0x80);
         break;
-    case 1:
+    case R0_FLASH:
         ewk->wu.dir_timer -= 1;
         if (ewk->wu.dir_timer < 0) {
             ewk->wu.old_rno[1] += 1;

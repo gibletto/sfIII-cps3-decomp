@@ -26,6 +26,10 @@
 #include "eff87.h"
 #include "eff88.h"
 
+/* bgw r_no_0 of a layer that follows the camera */
+#define SYNC_INIT       0       /* set up the layer */
+#define SYNC_MOVE       1       /* follow the camera (bg_x_move_check, bg_y_move_check) */
+
 /* declarations the headers do not give */
 void zoom_ud_check(void);
 void bg_x_move_check(void);
@@ -161,7 +165,7 @@ static void bg_base_move_common(void) {
 /* provisional name */
 void bg150_layer2(void) {
     switch (bgw_ptr->r_no_0) {
-    case 0:
+    case SYNC_INIT:
         bgw_ptr->r_no_0++;
         bgw_ptr->old_pos_x = bgw_ptr->xy[0].disp.pos = bgw_ptr->pos_x_work = 0x200;
         bgw_ptr->hos_xy[0].cal = bgw_ptr->wxy[0].cal = bgw_ptr->xy[0].cal;
@@ -173,7 +177,7 @@ void bg150_layer2(void) {
         bgw_ptr->y_limit = bgw_ptr->y_limit2 = 0xF0;
         sync_fam_set3(2);
         break;
-    case 1:
+    case SYNC_MOVE:
         bg_x_move_check();
         bg_y_move_check();
         sync_fam_set3(2);

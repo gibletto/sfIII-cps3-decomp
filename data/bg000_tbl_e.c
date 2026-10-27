@@ -1,5 +1,12 @@
 /*
- * BG000_TBL_E.C  the BG deformation tables, continued (see bg000_tbl_d.c)
+ * BG000_TBL_E.C  background deformation tables, continued
+ *
+ * Like those in BG000_TBL_D.C, each table holds per scroll volume (21 rows, by frame_vol) the
+ * frame offset of each of 57 positions. bg_deff_r_base and bg_deff_r_tbl, the offsets while
+ * the layer scrolls right, are read by bg_frame_deff_set in BG000.C. bg_deff_rl1_tbl_0 .. _4,
+ * bg_deff_plus1_tbl_0 .. _4, bg_deff_minus0_tbl_0 .. _4 and bg_deff_minus1_tbl_0 .. _4 are the
+ * five sets of a layer's deff_* tables used by bg_frame_deff_set2 in BG000.C; they are listed
+ * per stage and layer in bg_deff_tbl in BG_WORK.C.
  */
 
 #include "types.h"

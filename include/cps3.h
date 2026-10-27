@@ -31,6 +31,10 @@
 #define IRQ14_ACK       0x25120000      /* acknowledge: interrupt level 14 */
 #define CD_REG          0x25140000      /* CD-ROM (SCSI) controller: +0 register select, +2 data */
 
+#define CRAM_BANK_REG   (VIDEO_REG + 0x86)  /* CHARACTER RAM bank shown in its 1 MB window */
+#define SIMM_BANK_REG   (VIDEO_REG + 0x88)  /* graphics SIMM bank shown at SIMM_WINDOW */
+#define SOUND_KEY_ON    (SOUND_REG + 0x200) /* one bit per voice */
+
 /* SH-2 on-chip registers */
 #define SH2_TIER        0xFFFFFE10      /* free-running timer */
 #define SH2_FTCSR       0xFFFFFE11

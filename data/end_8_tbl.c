@@ -1,5 +1,12 @@
 /*
- * END_8_TBL.C  tables read by end_7.c, end_8.c and end_9.c
+ * END_8_TBL.C  Elena's ending tables (ending 8), with parts of endings 7 and 9
+ *
+ * end_800_panel0 and end_800_panel1 list the BG0 and BG1 cells (map offset, cell number)
+ * written at the start of Elena's ending, reached through end_8_panel_p in OP_END_WORK.C;
+ * timer_8_tbl is the length in frames of each of its four scenes and end_8_pos the BG x and y
+ * of each scene, read by END_8.C. end_7_anm_tbl holds the cells of BG0's animation cycle in
+ * Ibuki's ending, read by END_7.C, and end_900_bg0_cell_tbl the BG0 cells written at the start
+ * of Oro's ending, read by END_9.C.
  */
 
 #include "types.h"

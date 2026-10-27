@@ -71,6 +71,71 @@ s32 effect_58_init();
 
 #include "EFF78.h"
 
+/* C_No2, Game_Manage_8th */
+#define CM8_S_WAIT      0       /* wait C_Timer; a button cuts it short */
+#define CM8_S_WAIT11    0       /* count down C_Timer */
+#define CM8_S_WAIT2     1       /* wait C_Timer; a button cuts it short */
+#define CM8_S_WAIT12    1       /* wait C_Timer; a button cuts it short */
+#define CM8_S_WAIT3     2       /* wait C_Timer; a button cuts it short */
+#define CM8_S_WAIT4     3       /* wait C_Timer; a button cuts it short */
+#define CM8_S_WAIT5     4       /* wait C_Timer; a button cuts it short */
+#define CM8_S_WAIT6     5       /* wait C_Timer; a button cuts it short */
+#define CM8_S_WAIT7     6       /* wait C_Timer; a button cuts it short */
+#define CM8_S_WAIT8     7       /* wait C_Timer; a button cuts it short */
+#define CM8_S_WAIT9     8       /* wait C_Timer; a button cuts it short */
+#define CM8_S_WAIT10    9       /* wait C_Timer; a button cuts it short */
+
+/* C_No1, Game_Manage_2nd */
+#define CM2_MESSAGE     0       /* until the message is gone */
+#define CM2_REVIVAL     1       /* until the wipe in is done */
+#define CM2_ROUND_START 2       /* start effect 84 and clear the round's flags */
+#define CM2_APPEAR      3       /* until both entries are over and the controls are ready */
+
+/* C_No1, Game_Manage_5th */
+#define CM5_VICTORY     0       /* until the win is shown */
+#define CM5_ANNOUNCE    1       /* wait C_Timer (a button cuts it short), then message 3 */
+#define CM5_MESSAGE     2       /* until the message is gone */
+#define CM5_WIPE        3       /* start the wipe */
+#define CM5_WIPE_WAIT   4       /* until the wipe is done */
+#define CM5_WIPE2       5       /* start the wipe */
+#define CM5_REVIVAL     6       /* until the wipe in is done */
+#define CM5_WAIT        7       /* count down C_Timer */
+
+/* C_No1, Game_Manage_6th */
+#define CM6_VICTORY     0       /* until the win is shown */
+#define CM6_WAIT        1       /* count down C_Timer */
+
+/* C_No1, Game_Manage_7th */
+#define CM7_VICTORY     0       /* until the win is shown */
+#define CM7_WAIT        1       /* count down C_Timer */
+#define CM7_WINNER      2       /* wait C_Timer (a button cuts it short), then show the winner */
+#define CM7_CLEAR       3       /* wait C_Timer (a button cuts it short), then clear the winner text */
+#define CM7_WAIT2       4       /* count down C_Timer */
+#define CM7_MESSAGE     5       /* until the message is gone */
+#define CM7_WAIT3       6       /* wait C_Timer; a button cuts it short */
+#define CM7_WAIT4       90      /* count down C_Timer */
+#define CM7_GALS        91      /* until the gals event is over, then record the win */
+#define CM7_WAIT5       92      /* count down C_Timer */
+
+/* C_No1, Game_Manage_8th */
+#define CM8_START       0       /* the next round number; bonus or skip */
+#define CM8_WAIT        1       /* wait C_Timer; a button cuts it short */
+#define CM8_WAIT2       2       /* wait C_Timer; a button cuts it short */
+#define CM8_WAIT3       3       /* wait C_Timer; a button cuts it short */
+#define CM8_WAIT4       4       /* wait C_Timer; a button cuts it short */
+
+/* C_No1, Game_Manage_9th */
+#define CM9_WIPE        0       /* start the wipe */
+#define CM9_WAIT        1       /* wait C_Timer; a button cuts it short */
+
+/* C_No1, Game_Manage_10th */
+#define CM10_WAIT       0       /* wait C_Timer; a button cuts it short */
+#define CM10_WIPE_WAIT  1       /* until the wipe is done */
+
+/* BGM_No: the music fade-in (BGM_Fade_Sub) */
+#define BGMF_NONE       0       /* nothing to do */
+#define BGMF_WAIT       1       /* wait BGM_Timer, then (default) raise the volume */
+
 
 void sound_reg_level_set(s16 level, s8 flag);
 
@@ -114,7 +179,7 @@ void Game_Manage_1st(void) {
     appear_work_clear();
     win_sp_flag = 0;
     BGM_No = 0;
-    if (Play_Type == 0) {
+    if (Play_Type == PLAY_VS_CPU) {
         paring_ctr_ori[Player_id] = paring_ctr_vs[0][Player_id] = 0;
     }
     eff_hit_flag_clear();
@@ -126,10 +191,10 @@ void Game_Manage_1st(void) {
 
 void Game_Manage_2nd(void) {
     switch (C_No1) {
-    case 0:
+    case CM2_MESSAGE:
         request_message = 0;
         if (Demo_Flag == 0 && !(exsw_2 & 0x10)) {
-            C_No1 = 2;
+            C_No1 = CM2_ROUND_START;
             effect_32_init();
             PL_Sel_Mode_2();
             break;
@@ -142,12 +207,12 @@ void Game_Manage_2nd(void) {
         effect_32_init();
         PL_Sel_Mode_2();
         break;
-    case 1:
+    case CM2_REVIVAL:
         if (Switch_Screen_Revival()) {
             C_No1++;
         }
         break;
-    case 2:
+    case CM2_ROUND_START:
         if (!effect_84_init()) {
             C_No1++;
             Forbid_Break = 0;
@@ -167,17 +232,17 @@ void Game_Manage_2nd(void) {
             BGM_Fade_Out_Flag = 0;
             Round_Operator[0] = plw[0].wu.operator;
             Round_Operator[1] = plw[1].wu.operator;
-            CP_No[0][0] = 0;
-            CP_No[1][0] = 0;
+            CP_No[0][0] = COM_INIT;
+            CP_No[1][0] = COM_INIT;
         }
         break;
-    case 3:
+    case CM2_APPEAR:
         if (Appear_end < 2) {
             break;
         }
         appear_work_clear();
         win_sp_flag = 0;
-        if (pcon_rno[0] == 0 && pcon_rno[1] == 1) {
+        if (pcon_rno[0] == PCON_INIT && pcon_rno[1] == APP_WAIT_READY) {
             C_No1++;
             effect_B2_init();
         }
@@ -185,7 +250,7 @@ void Game_Manage_2nd(void) {
     default:
         if (Next_Step != 0) {
             C_No0++;
-            C_No1 = 0;
+            C_No1 = CM2_MESSAGE;
             Allow_a_battle_f = 1;
             load_char_eff_color(My_char[0], 0);
             load_char_eff_color(My_char[1], 1);
@@ -208,8 +273,8 @@ void Game_Manage_3rd(void) {
 
 void Game_Manage_4th(void) {
     switch (Conclusion_Type) {
-    case 0:
-        C_No0 = 6;
+    case CONCLUSION_KO:
+        C_No0 = C0_ROUND_WIN;
         Setup_BGM_Fade_In(150);
         sound_reg_level_set(0, -128);
         Setup_Win_Mark();
@@ -219,18 +284,18 @@ void Game_Manage_4th(void) {
         Ck_Win_Record();
         Update_Level_Control();
         break;
-    case 1:
+    case CONCLUSION_DOUBLE_KO:
         Setup_BGM_Fade_In(150);
         sound_reg_level_set(0, -128);
         sound_request(143);
         if (Judge_Next_Disposal()) {
-            C_No0 = 4;
+            C_No0 = C0_JUDGE;
             break;
         }
-        C_No0 = 5;
-        Round_Result |= 1024;
-        win_type[0][PL_Wins[0]] = 5;
-        win_type[1][PL_Wins[1]] = 5;
+        C_No0 = C0_DRAW;
+        Round_Result |= RESULT_DRAW;
+        win_type[0][PL_Wins[0]] = WIN_MARK_DRAW;
+        win_type[1][PL_Wins[1]] = WIN_MARK_DRAW;
         PL_Wins[0]++;
         PL_Wins[1]++;
         if (PL_Wins[0] >= Game_setting.set4 + 1) {
@@ -246,9 +311,9 @@ void Game_Manage_4th(void) {
     default:
         sound_request(156);
         if (plw[0].wu.vital_new != plw[1].wu.vital_new) {
-            C_No0 = 6;
-            Round_Result |= 1;
-            ROW_ELEM(win_type[Winner_id], PL_Wins[Winner_id]) = 1;
+            C_No0 = C0_ROUND_WIN;
+            Round_Result |= RESULT_TIME;
+            ROW_ELEM(win_type[Winner_id], PL_Wins[Winner_id]) = WIN_MARK_NORMAL;
             Check_Perfect(Winner_id);
             PL_Wins[Winner_id]++;
             Update_VS_Data();
@@ -256,7 +321,7 @@ void Game_Manage_4th(void) {
             Update_Level_Control();
             break;
         }
-        C_No0 = 4;
+        C_No0 = C0_JUDGE;
         break;
     }
 }
@@ -264,20 +329,20 @@ void Game_Manage_4th(void) {
 
 
 void Setup_Win_Mark(void) {
-    if (Round_Result & 0x200) {
-        win_type[Winner_id][PL_Wins[Winner_id]] = 7;
+    if (Round_Result & RESULT_CHIP) {
+        win_type[Winner_id][PL_Wins[Winner_id]] = WIN_MARK_CHIP;
         sound_request(121);
         sound_request(143);
         Finish_SE();
         return;
     }
     if (Round_Result & 0x180) {
-        win_type[Winner_id][PL_Wins[Winner_id]] = 4;
+        win_type[Winner_id][PL_Wins[Winner_id]] = WIN_MARK_SA;
         sound_request(142);
         Finish_SE();
         return;
     }
-    win_type[Winner_id][PL_Wins[Winner_id]] = 1;
+    win_type[Winner_id][PL_Wins[Winner_id]] = WIN_MARK_NORMAL;
     sound_request(121);
     sound_request(143);
     Finish_SE();
@@ -301,7 +366,7 @@ set:
 
 void Game_Manage_5th(void) {
     switch (C_No1) {
-    case 0:
+    case CM5_VICTORY:
         if (Complete_Victory == 0) {
             break;
         }
@@ -310,7 +375,7 @@ void Game_Manage_5th(void) {
         Judge_Round_Flag = 1;
         Event_Judge_Gals = 0;
         break;
-    case 1:
+    case CM5_ANNOUNCE:
         if (!BUTTON_CUT_EX(&C_Timer, 10)) {
             break;
         }
@@ -319,14 +384,14 @@ void Game_Manage_5th(void) {
         sound_request(141);
         bgm_fade_out(182);
         break;
-    case 2:
+    case CM5_MESSAGE:
         if (request_message) {
             break;
         }
         C_No1++;
         C_Timer = 30;
         break;
-    case 3:
+    case CM5_WIPE:
         if (!BUTTON_CUT_EX(&C_Timer, 10)) {
             break;
         }
@@ -336,7 +401,7 @@ void Game_Manage_5th(void) {
         Stop_Combo = 1;
         Switch_Screen_Init(3, 3);
         break;
-    case 4:
+    case CM5_WIPE_WAIT:
         if (Switch_Screen()) {
             C_No1++;
             Switch_Screen_Init(3, 3);
@@ -352,20 +417,20 @@ void Game_Manage_5th(void) {
             pcon_rno[1] = 0;
             pcon_rno[2] = 0;
             pcon_rno[3] = 0;
-            appear_type = 3;
+            appear_type = APPEAR_JUDGE;
         }
         break;
-    case 5:
+    case CM5_WIPE2:
         if (--Cover_Timer != 0) {
             break;
         }
         C_No1++;
-        pcon_rno[1] = 3;
+        pcon_rno[1] = SETTLE_JUDGE;
         pcon_rno[2] = 1;
         Clear_Flash_No();
         Switch_Screen_Init(3, 3);
         break;
-    case 6:
+    case CM5_REVIVAL:
         if (Switch_Screen_Revival()) {
             C_No1++;
             C_Timer = 60;
@@ -373,17 +438,17 @@ void Game_Manage_5th(void) {
             sound_request(7);
         }
         break;
-    case 7:
+    case CM5_WAIT:
         if (--C_Timer != 0) {
             break;
         }
-        C_No0 = 6;
+        C_No0 = C0_ROUND_WIN;
         C_No1 = 90;
         C_Timer = 30;
         Fade_Half_Flag = 1;
         Complete_Judgement = 1;
-        Round_Result |= 0x8000;
-        win_type[Winner_id][PL_Wins[Winner_id]] = 6;
+        Round_Result |= RESULT_JUDGE;
+        win_type[Winner_id][PL_Wins[Winner_id]] = WIN_MARK_JUDGE;
         Check_Perfect(Winner_id);
         PL_Wins[Winner_id]++;
         Update_VS_Data();
@@ -396,23 +461,23 @@ void Game_Manage_5th(void) {
 
 void Game_Manage_6th(void) {
     switch (C_No1) {
-    case 0:
+    case CM6_VICTORY:
         if (Complete_Victory) {
             C_No1++;
             C_Timer = 60;
-            pcon_rno[1] = 3;
+            pcon_rno[1] = SETTLE_JUDGE;
             pcon_rno[2] = 0;
             effect_58_init(6, 1, Winner_id + 100);
             effect_92_init(0, win_type[0][PL_Wins[0] - 1]);
             effect_92_init(1, win_type[1][PL_Wins[1] - 1]);
         }
         break;
-    case 1:
+    case CM6_WAIT:
         if (--C_Timer != 0) {
             break;
         }
-        C_No0 = 8;
-        C_No1 = 0;
+        C_No0 = C0_NEXT;
+        C_No1 = CM6_VICTORY;
         Round_num++;
         Quick_Entry();
         break;
@@ -423,7 +488,7 @@ void Game_Manage_6th(void) {
 
 void Game_Manage_7th(void) {
     switch (C_No1) {
-    case 0:
+    case CM7_VICTORY:
         if (Complete_Victory) {
             C_No1++;
             C_Timer = 1;
@@ -432,14 +497,14 @@ void Game_Manage_7th(void) {
             effect_58_init(6, 1, Winner_id + 100);
         }
         break;
-    case 1:
+    case CM7_WAIT:
         if (--C_Timer != 0) {
             break;
         }
         C_No1++;
         C_Timer = 10;
         break;
-    case 2:
+    case CM7_WINNER:
         if (BUTTON_CUT_EX(&C_Timer, 10)) {
             C_No1++;
             C_Timer = 90;
@@ -449,8 +514,8 @@ void Game_Manage_7th(void) {
             }
         }
         break;
-    case 3:
-        if (Play_Type == 0 && Perfect_Flag == 0) {
+    case CM7_CLEAR:
+        if (Play_Type == PLAY_VS_CPU && Perfect_Flag == 0) {
             if (!BUTTON_CUT_EX(&C_Timer, 50)) {
                 break;
             }
@@ -465,11 +530,11 @@ void Game_Manage_7th(void) {
             C_Timer = 10;
         } else {
             C_No0++;
-            C_No1 = 0;
+            C_No1 = CM7_VICTORY;
             Event_Judge_Gals = -1;
         }
         break;
-    case 4:
+    case CM7_WAIT2:
         if (--C_Timer != 0) {
             break;
         }
@@ -477,7 +542,7 @@ void Game_Manage_7th(void) {
         request_center_message(4);
         sound_request(138);
         break;
-    case 5:
+    case CM7_MESSAGE:
         if (request_message) {
             break;
         }
@@ -485,7 +550,7 @@ void Game_Manage_7th(void) {
         C_Timer = 6;
         Event_Judge_Gals = -1;
         break;
-    case 6:
+    case CM7_WAIT3:
         if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
             C_Timer = 1;
         }
@@ -493,25 +558,25 @@ void Game_Manage_7th(void) {
             break;
         }
         C_No0++;
-        C_No1 = 0;
+        C_No1 = CM7_VICTORY;
         break;
-    case 90:
+    case CM7_WAIT4:
         if (--C_Timer != 0) {
             break;
         }
         C_No1++;
         Event_Judge_Gals = 3;
         break;
-    case 91:
+    case CM7_GALS:
         if (Event_Judge_Gals == 0) {
             C_No1++;
             C_Timer = 30;
             Ck_Win_Record();
         }
         break;
-    case 92:
+    case CM7_WAIT5:
         if (--C_Timer == 0) {
-            C_No1 = 0;
+            C_No1 = CM7_VICTORY;
         }
         break;
     }
@@ -543,9 +608,8 @@ void Check_Fade_Out_BGM(s16 Time) {
 
 
 void Game_Manage_8th(void) {
-    (void)DE_X;
     switch (C_No1) {
-    case 0:
+    case CM8_START:
         Round_num++;
         Quick_Entry();
         if (Check_Bonus_Skip()) {
@@ -563,7 +627,7 @@ void Game_Manage_8th(void) {
             }
         }
         break;
-    case 1:
+    case CM8_WAIT:
         if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
             C_Timer = 1;
         }
@@ -574,9 +638,9 @@ void Game_Manage_8th(void) {
         C_No2 = 0;
         C_Timer = 1;
         break;
-    case 2:
+    case CM8_WAIT2:
         switch (C_No2) {
-        case 0:
+        case CM8_S_WAIT:
             if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
                 if (Bonus_Cut_All()) {
                     if (Judge_Round_Flag) {
@@ -603,7 +667,7 @@ void Game_Manage_8th(void) {
                 }
             }
             break;
-        case 1:
+        case CM8_S_WAIT2:
             if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
                 if (Bonus_Cut_All()) {
                     Check_Fade_Out_BGM(0x111);
@@ -619,7 +683,7 @@ void Game_Manage_8th(void) {
             Disp_Digit16x24(Vital_Bonus, DE_X[0] + 35, 8);
             sound_request(Winner_id + 102);
             break;
-        case 2:
+        case CM8_S_WAIT3:
             if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
                 if (Bonus_Cut_All()) {
                     Check_Fade_Out_BGM(0x111);
@@ -635,7 +699,7 @@ void Game_Manage_8th(void) {
             Disp_Digit16x24(Time_Bonus, DE_X[0] + 35, 12);
             sound_request(Winner_id + 102);
             break;
-        case 3:
+        case CM8_S_WAIT4:
             if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
                 if (Bonus_Cut_All()) {
                     Check_Fade_Out_BGM(0x111);
@@ -651,7 +715,7 @@ void Game_Manage_8th(void) {
             Disp_Digit16x24(Total_Bonus, DE_X[0] + 35, 16);
             sound_request(Winner_id + 102);
             break;
-        case 4:
+        case CM8_S_WAIT5:
             if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
                 if (Bonus_Cut_All()) {
                     Check_Fade_Out_BGM(0x111);
@@ -665,7 +729,7 @@ void Game_Manage_8th(void) {
             C_No2++;
             C_Timer = 9;
             break;
-        case 5:
+        case CM8_S_WAIT6:
             if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
                 C_Timer = 1;
             }
@@ -676,12 +740,12 @@ void Game_Manage_8th(void) {
                 C_No2++;
                 C_Timer = 10;
             } else {
-                C_No2 = 8;
+                C_No2 = CM8_S_WAIT9;
                 C_Timer = 10;
             }
 
             break;
-        case 6:
+        case CM8_S_WAIT7:
             if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
                 if (Bonus_Cut_All()) {
                     Check_Fade_Out_BGM(0x111);
@@ -698,7 +762,7 @@ void Game_Manage_8th(void) {
             Disp_Digit16x24(Vital_Bonus + 40000, DE_X[0] + 35, 8);
             sound_request(Winner_id + 102);
             break;
-        case 7:
+        case CM8_S_WAIT8:
             if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
                 if (Bonus_Cut_All()) {
                     Check_Fade_Out_BGM(0x222);
@@ -714,7 +778,7 @@ void Game_Manage_8th(void) {
             Disp_Digit16x24(Total_Bonus + 40000, DE_X[0] + 35, 16);
             sound_request(Winner_id + 102);
             break;
-        case 8:
+        case CM8_S_WAIT9:
             if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
                 Bonus_Cut_All();
             }
@@ -731,7 +795,7 @@ void Game_Manage_8th(void) {
             effect_89_init(4, DE_X[3] + 12, 16, 25, 3);
 
             break;
-        case 9:
+        case CM8_S_WAIT10:
             if (!Perfect_Flag) {
                 if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
                     C_Timer = 1;
@@ -748,18 +812,18 @@ void Game_Manage_8th(void) {
             break;
         }
         break;
-    case 3:
+    case CM8_WAIT3:
         if (--C_Timer != 0 && !Button_Cut_Hold(&C_Timer, 100, 110)) {
             break;
         }
         tilemap_clear_rect(DE_X[0] + 7, 8, DE_X[0] + 36, 19);
         C_No0++;
-        C_No1 = 0;
+        C_No1 = CM8_START;
 
         break;
-    case 4:
+    case CM8_WAIT4:
         switch (C_No2) {
-        case 0:
+        case CM8_S_WAIT11:
             if (--C_Timer != 0) {
                 return;
             }
@@ -770,10 +834,9 @@ void Game_Manage_8th(void) {
             }
             effect_89_init(4, DE_X[0] + 10, 8, 36, 3);
             effect_89_init(4, DE_X[0] + 12, 16, 25, 3);
-
-        bonus_panel_done:;
+        default:
             break;
-        case 1:
+        case CM8_S_WAIT12:
             if (!Perfect_Flag) {
                 if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
                     C_Timer = 1;
@@ -782,7 +845,7 @@ void Game_Manage_8th(void) {
             if (--C_Timer != 0) {
                 break;
             }
-            C_No1 = 3;
+            C_No1 = CM8_WAIT3;
             C_Timer = 120;
             Disp_Player_Score(Winner_id);
             Check_Fade_Out_BGM(0x222);
@@ -794,7 +857,7 @@ void Game_Manage_8th(void) {
             break;
         }
         C_No0++;
-        C_No1 = 0;
+        C_No1 = CM8_START;
 
         break;
     }
@@ -802,7 +865,7 @@ void Game_Manage_8th(void) {
 
 /* nothing calls it */
 void Restore_Loser_Score(void) {
-    if (Play_Type == 1) {
+    if (Play_Type == PLAY_VS_PLAYER) {
         return;
     }
     if (PL_Wins[Winner_id] >= Game_setting.set4 + 1) {
@@ -813,7 +876,7 @@ void Restore_Loser_Score(void) {
 
 
 s32 Check_Bonus_Skip(void) {
-    if (Play_Type == 0) {
+    if (Play_Type == PLAY_VS_CPU) {
         return 0;
     }
     if (Winner_id) {
@@ -909,12 +972,12 @@ void Additional_Bonus(s16 PL_id) {
 void Game_Manage_9th(void) {
     s8 *winner;
     switch (C_No1) {
-    case 0:
+    case CM9_WIPE:
         if (*(*(winner = &WINNER) + PL_Wins) >= Game_setting.set4 + 1) {
             C_No0++;
             C_Timer = 75;
             sc_vram_to_ram();
-            if (Play_Type == 1) {
+            if (Play_Type == PLAY_VS_PLAYER) {
                 Control_Time = SC_Personal_Time[*winner];
                 card_win_check(0);
                 Stock_My_char[LOSER] = My_char[LOSER];
@@ -941,7 +1004,7 @@ void Game_Manage_9th(void) {
             Switch_Screen_Init(3, 3);
         }
         break;
-    case 1:
+    case CM9_WAIT:
         if (!(bg_w.stage == 8 && bg_w.area == 0)) {
             if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
                 C_Timer = 1;
@@ -953,10 +1016,10 @@ void Game_Manage_9th(void) {
         C_No1++;
     default:
         if (Switch_Screen()) {
-            G_No2 = 4;
+            G_No2 = G2_ROUND_RESET;
             G_No3 = 0;
             G_Timer = 4;
-            C_No0 = 1;
+            C_No0 = C0_ROUND_START;
             C_No1 = C_No2 = C_No3 = 0;
             Cover_Timer = 25;
         }
@@ -968,7 +1031,7 @@ void Game_Manage_9th(void) {
 
 void Game_Manage_10th(void) {
     switch (C_No1) {
-    case 0:
+    case CM10_WAIT:
         if (Button_Cut_Hold(&C_Timer, 0x7FFF, 0x7FFF)) {
             C_Timer = 1;
         }
@@ -980,7 +1043,7 @@ void Game_Manage_10th(void) {
             Switch_Screen_Init(3, 3);
         }
         break;
-    case 1:
+    case CM10_WIPE_WAIT:
         if (Switch_Screen()) {
             sound_system_init();
             Check_Naming(0);
@@ -989,17 +1052,17 @@ void Game_Manage_10th(void) {
             pcon_rno[1] = 0;
             pcon_rno[2] = 0;
             pcon_rno[3] = 0;
-            appear_type = 1;
+            appear_type = APPEAR_ENTRY;
             Continue_Coin2[WINNER] = 0;
             if (Round_Operator[WINNER]) {
-                G_No1 = 3;
+                G_No1 = G1_WINNER;
                 G_No2 = 0;
                 G_No3 = 0;
                 M_No0 = 0;
                 M_No1 = 0;
                 M_No2 = 0;
                 M_No3 = 0;
-                E_No0 = 5;
+                E_No0 = E0_WINNER;
                 E_No1 = 0;
                 E_No2 = 0;
                 E_No3 = 0;
@@ -1011,14 +1074,14 @@ void Game_Manage_10th(void) {
                 Continue_Coin2[WINNER] = 0;
                 Clear_Flash_No();
             } else {
-                G_No1 = 4;
+                G_No1 = G1_LOSER;
                 G_No2 = 0;
                 G_No3 = 0;
                 M_No0 = 0;
                 M_No1 = 0;
                 M_No2 = 0;
                 M_No3 = 0;
-                E_No0 = 6;
+                E_No0 = E0_LOSER;
                 E_No1 = 0;
                 E_No2 = 0;
                 E_No3 = 0;
@@ -1049,9 +1112,9 @@ s16 id;
     if (Game_setting.set5) {
         return;
     }
-    if (E_Number[id][0] != 2) {
-        Rank_In[id][0] = -1;
-        Rank_In[id][1] = -1;
+    if (E_Number[id][0] != ENTRY_NAME) {
+        Rank_In[id][RANK_SCORE] = -1;
+        Rank_In[id][RANK_WINS] = -1;
     }
 }
 
@@ -1060,7 +1123,7 @@ s16 id;
 void Ck_Win_Record(void) {
     s16 w;
     s16 l;
-    if (Play_Type == 1) {
+    if (Play_Type == PLAY_VS_PLAYER) {
         if (PL_Wins[0] >= Game_setting.set4 + 1 || PL_Wins[1] >= Game_setting.set4 + 1) {
             if (PL_Wins[0] >= Game_setting.set4 + 1) {
                 w = 0;
@@ -1108,7 +1171,7 @@ void Disp_Win_Record(void) {
     s16 pl;
     s16 digit;
     s16 num;
-    if (Play_Type != 1) {
+    if (Play_Type != PLAY_VS_PLAYER) {
         return;
     }
     if (Win_Record[0] == 0 && Win_Record[1] == 0) {
@@ -1148,7 +1211,7 @@ s16 PL_id;
 void Disp_Winner(void) {
     s8 ch;
     const NAME_PLATE* p;
-    if (Play_Type == 1) {
+    if (Play_Type == PLAY_VS_PLAYER) {
         ch = My_char[Winner_id] & 0x7F;
         winner_name_put(ch);
         p = &nwdata_tbl[ch];
@@ -1220,23 +1283,23 @@ void Check_Perfect(s16 PL_id) {
 
     if (f->wu.vitality == f->wu.vital_new) {
         Perfect_Flag = 1;
-        Round_Result |= 2;
-        win_type[PL_id][PL_Wins[PL_id]] = 3;
+        Round_Result |= RESULT_PERFECT;
+        win_type[PL_id][PL_Wins[PL_id]] = WIN_MARK_PERFECT;
     }
 }
 
 
 
 void Judge_Winner(void) {
-    if (Score[0][2] == Score[1][2]) {
-        if (Play_Type == 0) {
+    if (Score[0][SCORE_ROUND] == Score[1][SCORE_ROUND]) {
+        if (Play_Type == PLAY_VS_CPU) {
             Winner_id = Player_id;
             Loser_id = COM_id;
         } else {
             Winner_id = Champion;
             Loser_id = Champion ^ 1;
         }
-    } else if (Score[0][2] > Score[1][2]) {
+    } else if (Score[0][SCORE_ROUND] > Score[1][SCORE_ROUND]) {
         Winner_id = 0;
         Loser_id = 1;
     } else {
@@ -1248,14 +1311,14 @@ void Judge_Winner(void) {
 
 
 s32 Check_Ending(void) {
-    if (Play_Type == 1) {
+    if (Play_Type == PLAY_VS_PLAYER) {
         return 0;
     }
     Last_VS_Index[WINNER] = Next_VS_Index();
     if (Last_VS_Index[WINNER] >= 7) {
-        G_No1 = 8;
+        G_No1 = G1_ENDING;
         G_No2 = 0;
-        E_No0 = 10;
+        E_No0 = E0_ENDING;
         plw[WINNER].wu.operator = 0;
         Operator_Status[WINNER] = 0;
         sound_reg_level_set(0, 0);
@@ -1306,7 +1369,7 @@ void Quick_Entry(void) {
 
 
 s32 Check_Entry_Again(void) {
-    if (Play_Type == 1) {
+    if (Play_Type == PLAY_VS_PLAYER) {
         return 1;
     }
     if (VS_Index[WINNER] < 5) {
@@ -1333,12 +1396,12 @@ void Loser_Sub(void) {
 void Be_Continue(void) {
     if (Continue_Flag != 0 && Game_setting.set5 == 0) {
         Continue_Count[LOSER] = 9;
-        E_Number[LOSER][0] = 5;
+        E_Number[LOSER][0] = ENTRY_LOSER;
         E_Number[LOSER][1] = 0;
         E_Number[LOSER][2] = 0;
         E_Number[LOSER][3] = 0;
     } else {
-        E_Number[LOSER][0] = 8;
+        E_Number[LOSER][0] = ENTRY_GAME_OVER;
         E_Number[LOSER][1] = 0;
         E_Number[LOSER][2] = 0;
         E_Number[LOSER][3] = 0;
@@ -1355,7 +1418,7 @@ void Update_VS_Data(void) {
     }
     WINNER = Winner_id;
     LOSER = Loser_id;
-    if (Play_Type != 0 || Round_Operator[Winner_id] == 0) {
+    if (Play_Type != PLAY_VS_CPU || Round_Operator[Winner_id] == 0) {
         return;
     }
     Break_Com[Winner_id][EM_id] = 1;
@@ -1372,7 +1435,7 @@ void Update_VS_Data(void) {
 void BGM_Fade_Sub(void) {
     s8* v = &BGM_Fade_Level;
     switch (BGM_No) {
-    case 1:
+    case BGMF_WAIT:
         if (--BGM_Timer == 0) {
             BGM_No++;
             BGM_Timer = 1;
@@ -1388,7 +1451,7 @@ void BGM_Fade_Sub(void) {
         }
         sound_reg_level_set(0, *v);
         break;
-    case 0:
+    case BGMF_NONE:
         break;
     }
 }

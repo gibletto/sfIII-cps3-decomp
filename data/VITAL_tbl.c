@@ -1,5 +1,13 @@
 /*
- * VITAL_TBL.C  tables read by count.c, spgauge.c and VITAL.c
+ * VITAL_TBL.C  vitality bar, round timer and super art gauge tables
+ *
+ * vital_cell_tbl and vital_cell_1p_tbl are the text-layer cells of the two vitality bars (the
+ * end of vital_cell_1p_tbl also holds the column and attribute rows reached through
+ * vital_npos_tbl and vital_attr_tbl); read by VITAL.C. hoji_counter_tbl is the round timer
+ * tick length for each game-speed setting, read by COUNT.C. spgauge_puttbl_0 and _1 are the
+ * gauge cell codes, spgauge_postbl_0 .. spgauge_postbl_1_2 the cell columns of each player's
+ * gauge for the two screen modes, and sa_time_data_tbl the cell sheets of the timed super art
+ * countdown; these are read by SPGAUGE.C, the super art gauge display.
  */
 
 #include "types.h"

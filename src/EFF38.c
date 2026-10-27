@@ -19,11 +19,17 @@
 #include "charmove_2.h"
 #include "EFF38.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* count the start wait down, then show */
+#define R0_SLIDE_IN     1       /* slide in to the place */
+#define R0_FOLLOW       2       /* follow the cursor */
+#define R0_STAY         99      /* (default) stay in place */
+
 void effect_38_move(WORK_Other* ewk) {
     u16 cut;
     cut = Cut_Cut_Sub(3);
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (--ewk->wu.dir_timer != 0) {
             return;
         }
@@ -31,14 +37,14 @@ void effect_38_move(WORK_Other* ewk) {
         ewk->wu.disp_flag = 1;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
         break;
-    case 1:
+    case R0_SLIDE_IN:
         ewk->wu.xyz[0].cal += ewk->wu.mvxy.a[0].sp * cut;
         if (ewk->wu.mvxy.a[0].sp > 0) {
             if (ewk->wu.hit_quake < ewk->wu.xyz[0].disp.pos) {
                 if (plw[ewk->master_id].wu.operator) {
                     ewk->wu.routine_no[0]++;
                 } else {
-                    ewk->wu.routine_no[0] = 99;
+                    ewk->wu.routine_no[0] = R0_STAY;
                 }
                 ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
                 Select_Start[ewk->master_id]--;
@@ -47,13 +53,13 @@ void effect_38_move(WORK_Other* ewk) {
             if (plw[ewk->master_id].wu.operator) {
                 ewk->wu.routine_no[0]++;
             } else {
-                ewk->wu.routine_no[0] = 99;
+                ewk->wu.routine_no[0] = R0_STAY;
             }
             ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
             Select_Start[ewk->master_id]--;
         }
         break;
-    case 2:
+    case R0_FOLLOW:
         if (ewk->wu.dir_step != ID_of_Face[ewk->master_id][Cursor_Y[ewk->master_id]][Cursor_X[ewk->master_id]]) {
             ewk->wu.dir_step = ID_of_Face[ewk->master_id][Cursor_Y[ewk->master_id]][Cursor_X[ewk->master_id]];
             set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
@@ -107,7 +113,7 @@ s32 effect_38_init(s16 PL_id, s16 Wait) {
         ewk->wu.mvxy.a[0].sp = 0xF0000;
     }
     if ((ewk->wu.dir_timer = Wait) < 0) {
-        ewk->wu.routine_no[0] = 99;
+        ewk->wu.routine_no[0] = R0_STAY;
         ewk->wu.disp_flag = 1;
         ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
         if ((My_char[ewk->master_id] & 0x7F) == 10) {

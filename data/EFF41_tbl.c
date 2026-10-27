@@ -1,5 +1,9 @@
 /*
- * EFF41_TBL.C  tables read by EFF40.c and EFF41.c
+ * EFF41_TBL.C  super art sign tables and select-screen zoom positions
+ *
+ * sa_sign_data has one row per super art sign: x offset from the player (mirrored by facing),
+ * y offset and animation number; read by EFF41.C, the super art sign. eff40_pos_x_tbl gives
+ * the x position of the select-screen zoom object for each direction; read by EFF40.C.
  */
 
 #include "types.h"
@@ -14,6 +18,10 @@ const s16 eff40_pos_x_tbl[8] = {
     128, 144, 160, 176, 208, 224, 240, 256,
 };
 
+/*
+ * One row per super art sign (effect_41_init's data): x offset from the player
+ * (mirrored by rl_flag), y offset and animation number.
+ */
 const s16 sa_sign_data[33][3] = {
     { 28, 70, 156 }, { -41, 37, 156 }, { 12, 56, 156 }, { -46, 52, 156 },
     { -14, 48, 156 }, { -28, 56, 156 }, { -12, 56, 156 }, { -20, 84, 156 },

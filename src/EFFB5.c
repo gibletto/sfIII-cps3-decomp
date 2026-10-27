@@ -23,19 +23,26 @@
 #include "charmove_2.h"
 #include "EFFB5.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show the chosen letter */
+#define R0_INPUT        1       /* blink under the cursor until entered */
+#define R0_FIXED        2       /* entered: redraw when it changes */
+#define R0_FLASH        3       /* flash the finished name */
+#define R0_HOLD         4       /* stay as it is */
+
 
 
 void effect_B5_move(WORK_Other* ewk) {
     NAME_WK* np = (NAME_WK*)ewk->my_master;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.hit_stop = 0;
         ewk->wu.old_rno[3] = 0;
         ewk->wu.old_rno[1] = 47;
         ewk->wu.disp_flag = 1;
         set_char_move_init2(&ewk->wu, 0, 6, np->code[ewk->wu.old_rno[2]] + 1, 0);
-    case 1:
+    case R0_INPUT:
     case_1:
         if (np->end_flag[ewk->wu.type]) {
             ewk->wu.disp_flag = 1;
@@ -46,9 +53,9 @@ void effect_B5_move(WORK_Other* ewk) {
             current_name_move(ewk, np);
         }
         break;
-    case 2:
+    case R0_FIXED:
         if (np->r_no_0 == 7) {
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_FLASH;
             ewk->wu.routine_no[2] = 1;
             ewk->wu.routine_no[3] = 3;
             ewk->wu.routine_no[4] = 0;
@@ -59,7 +66,7 @@ void effect_B5_move(WORK_Other* ewk) {
         if (np->end_flag[ewk->wu.type] == 0) {
             ewk->wu.old_rno[0] = 0;
             ewk->wu.old_rno[4] = 0;
-            ewk->wu.routine_no[0] = 1;
+            ewk->wu.routine_no[0] = R0_INPUT;
             set_char_move_init2(&ewk->wu, 0, 6, np->code[ewk->wu.old_rno[2]] + 1, 0);
             ewk->wu.old_rno[3] = np->code[np->index];
             naming_set(np->id, ewk->wu.type, np->code[ewk->wu.old_rno[2]]);
@@ -73,7 +80,7 @@ void effect_B5_move(WORK_Other* ewk) {
             ewk->wu.old_rno[3] = np->code[ewk->wu.type];
         }
         break;
-    case 3:
+    case R0_FLASH:
         if (Flash_Violent(ewk, 9)) {
             ewk->wu.routine_no[0]++;
         }
@@ -81,7 +88,7 @@ void effect_B5_move(WORK_Other* ewk) {
             set_char_move_init2(&ewk->wu, 0, 6, np->code[ewk->wu.old_rno[2]] + 1, 0);
         }
         break;
-    case 4:
+    case R0_HOLD:
         break;
     default:
         all_cgps_put_back(ewk);

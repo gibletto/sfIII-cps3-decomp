@@ -20,26 +20,34 @@
 #include "CALDIR.h"
 #include "EFF22.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start the pattern, or settle if broken */
+#define R0_STAND        1       /* animate until the object is hit */
+#define R0_WALK         2       /* walk by the pattern's direction */
+#define R0_SETTLE       3       /* move to the resting place */
+#define R0_BROKEN       4       /* animate at the resting place */
+#define R0_KILL         99      /* (default) put the work back */
+
 
 
 /* Animate the part and move it to its resting position. */
 void effect_22_move(WORK_Other* ewk) {
     if (compel_dead_check(ewk) != 0) {
-        ewk->wu.routine_no[0] = 99;
+        ewk->wu.routine_no[0] = R0_KILL;
     } else {
         switch (ewk->wu.routine_no[0]) {
-        case 0:
+        case R0_INIT:
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 1;
             ewk->wu.dead_f = 1;
             if (eff_hit_flag[8]) {
                 set_char_move_init(&ewk->wu, 0, 2);
-                ewk->wu.routine_no[0] = 3;
+                ewk->wu.routine_no[0] = R0_SETTLE;
                 break;
             }
             set_char_move_init(&ewk->wu, 0, 0);
             break;
-        case 1:
+        case R0_STAND:
             if (!EXE_flag && !Game_pause) {
                 if (eff_hit_flag[8]) {
                     ewk->wu.routine_no[0]++;
@@ -50,7 +58,7 @@ void effect_22_move(WORK_Other* ewk) {
             }
             sort_push_request4(&ewk->wu);
             break;
-        case 2:
+        case R0_WALK:
             if (!EXE_flag && !Game_pause) {
                 if (ewk->wu.cg_type != 99) {
                     ewk->wu.direction = ewk->wu.cg_type;
@@ -65,12 +73,12 @@ void effect_22_move(WORK_Other* ewk) {
             }
             sort_push_request4(&ewk->wu);
             break;
-        case 3:
+        case R0_SETTLE:
             ewk->wu.position_x = 0x2DC;
             ewk->wu.position_y = 54;
             ewk->wu.routine_no[0]++;
             /* fall through */
-        case 4:
+        case R0_BROKEN:
             if (!EXE_flag && !Game_pause) {
                 char_move(&ewk->wu);
             }

@@ -1,5 +1,12 @@
 /*
- * CMD_MAIN_TBL.C  tables read by game_config_en.c
+ * CMD_MAIN_TBL.C  English game configuration page layout
+ *
+ * config_title_str_tbl places the title and item lines of the English GAME CONFIGURATION page,
+ * config_help_modify_str_tbl and config_help_return_str_tbl the guide lines at the foot of the
+ * page; the text itself is in CMD_MAIN_TBL_B.C and SYS_CONFIG_TBL.C. gcfg_gauge_chr_en gives
+ * the character put at the star gauge's new position for each setting and
+ * gcfg_gauge_clr_chr_en the one that clears the old position. Read by GAME_CONFIG_EN.C, the
+ * English configuration page.
  */
 
 #include "types.h"

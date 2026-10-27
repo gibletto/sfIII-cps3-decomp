@@ -1,5 +1,9 @@
 /*
- * EFFG9_TBL_B.C  tables read by EFFH1.c
+ * EFFG9_TBL_B.C  ending objects that fly in
+ *
+ * effh1_data_tbl gives the pattern, start x, y and priority of each of the four objects, and
+ * effh1_speed_tbl their x speed and acceleration and y speed and acceleration. Read by
+ * EFFH1.C, the ending objects that fly in when the scroll arrives.
  */
 
 #include "types.h"

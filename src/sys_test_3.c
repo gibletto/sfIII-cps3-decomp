@@ -27,6 +27,13 @@
 #include "sys_test_3.h"
 #include "cps3.h"
 
+/* memtest_no: the memory test page step */
+#define MEMTEST_INIT    0       /* memtest_menu_init: draw the menu */
+#define MEMTEST_SELECT  1       /* memtest_menu_select: choose a test */
+#define MEMTEST_RUN     2       /* until memtest_error clears */
+#define MEMTEST_WAIT    3       /* wait memtest_wait */
+#define MEMTEST_EXIT    4       /* (default) back to the test menu */
+
 
 
 extern const char str_ONBOARD[];
@@ -576,20 +583,20 @@ void memtest_menu_init(void) {
 /* provisional name */
 void memtest_menu_select(void) {
     s32 unused;
-    if ((p1sw_0 & 1) == 1 && (p1sw_1 & 1) != 1) {
+    if ((p1sw_0 & LEVER_UP) == LEVER_UP && (p1sw_1 & LEVER_UP) != LEVER_UP) {
         tilemap_put_block(15, memtest_cursor * 2 + 9, 2, 32);
         if (--memtest_cursor < 0) {
             memtest_cursor = 2;
         }
         tilemap_put_block(15, memtest_cursor * 2 + 9, 2, 62);
-    } else if ((p1sw_0 & 2) == 2 && (p1sw_1 & 2) != 2) {
+    } else if ((p1sw_0 & LEVER_DOWN) == LEVER_DOWN && (p1sw_1 & LEVER_DOWN) != LEVER_DOWN) {
         tilemap_put_block(15, memtest_cursor * 2 + 9, 2, 32);
         if (++memtest_cursor > 2) {
             memtest_cursor = 0;
         }
         tilemap_put_block(15, memtest_cursor * 2 + 9, 2, 62);
     }
-    if ((p1sw_0 & 0x10) == 0x10 && (p1sw_1 & 0x10) != 0x10) {
+    if ((p1sw_0 & BUTTON_LP) == BUTTON_LP && (p1sw_1 & BUTTON_LP) != BUTTON_LP) {
         switch (memtest_cursor) {
         case 0:
             memtest_memory_check();
@@ -600,7 +607,7 @@ void memtest_menu_select(void) {
             memtest_no++;
             break;
         default:
-            memtest_no = 4;
+            memtest_no = MEMTEST_EXIT;
             break;
         }
     }
@@ -613,19 +620,19 @@ s32 memtest_page(void) {
     register s32 rc;
     rc = 0;
     switch (memtest_no) {
-    case 0:
+    case MEMTEST_INIT:
         memtest_menu_init();
         break;
-    case 1:
+    case MEMTEST_SELECT:
         memtest_menu_select();
         break;
-    case 2:
+    case MEMTEST_RUN:
         if (memtest_error == 0) {
             memtest_no++;
             memtest_wait = 60;
         }
         break;
-    case 3:
+    case MEMTEST_WAIT:
         if (memtest_wait == 0) {
             memtest_no++;
         } else {
@@ -730,7 +737,7 @@ u32 simm_full_checksum(s32 rom, s32 wide) {
         for (addr = 0; count > 0; addr++, count--) {
             bank = (chip - 1) * 8 + ((addr >> 21) & 0x3F) + 2;
             port = (addr & 0x1FFFFF) + SIMM_WINDOW;
-            *(volatile u16*)(VIDEO_REG + 0x88) = bank;
+            *(volatile u16*)SIMM_BANK_REG = bank;
             while (1) {
                 a = *(volatile u8*)port;
                 b = *(volatile u8*)port;
@@ -776,7 +783,7 @@ s32 simm_bank_checksum(s32 slot, s32 count) {
     }
     sum = 0;
     for (i = start; i < start + count; i++) {
-        *(volatile u16*)(VIDEO_REG + 0x88) = i;
+        *(volatile u16*)SIMM_BANK_REG = i;
         p = (volatile u8*)SIMM_WINDOW;
         while (1) {
             a = *p;
@@ -839,7 +846,7 @@ s32 simm_quick_checksum(s32 slot, s32 mode) {
         }
         sum = 0;
         for (i = start; i < start + count; i++) {
-            *(volatile u16*)(VIDEO_REG + 0x88) = i;
+            *(volatile u16*)SIMM_BANK_REG = i;
             sum += *(u8*)(simm_sum_offset_tbl[0] + SIMM_WINDOW);
             sum += *(u8*)(simm_sum_offset_tbl[1] + SIMM_WINDOW);
             sum += *(u8*)(simm_sum_offset_tbl[2] + SIMM_WINDOW);

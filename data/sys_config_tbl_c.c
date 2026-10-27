@@ -1,5 +1,11 @@
 /*
- * SYS_CONFIG_TBL_C.C  tables read by sys_config_2.c
+ * SYS_CONFIG_TBL_C.C  test mode configuration menu screens
+ *
+ * The config_ and sysconfig_ tables place the lines of the configuration menu (x, y, attribute
+ * and text): the top menu and its guides, the system configuration page with its exit, card
+ * dispenser, voice type, language and win point lines, the modify and return guides and the
+ * saving message; the str_ strings are their text. Read by SYS_CONFIG_2.C, the test mode
+ * configuration menu.
  */
 
 #include "types.h"

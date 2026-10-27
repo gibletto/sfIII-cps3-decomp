@@ -411,6 +411,12 @@ typedef struct {        /* 32 bytes (super_arts[2] at 0200D93C, stride 0x20) */
     u8 sa_free1[4];     /* provisional name: unreferenced */
 } SA_WORK;
 
+/* SA_WORK gauge_type: how the art's gauge works (sag_jmp_tbl) */
+#define SA_GAUGE_STOCK  0       /* sag_normal: the art takes a stock */
+#define SA_GAUGE_TIMER  1       /* sag_timer: the art lasts while the gauge drains */
+#define SA_GAUGE_STOCK2 2       /* sag_normal as well */
+#define SA_GAUGE_REBIRTH 3      /* sag_rebirth */
+
 typedef struct {
     u16 sw_lvbt;
     u16 sw_new;
@@ -2061,15 +2067,15 @@ typedef struct {
 typedef struct {
     u32 adrs;
     u32 cur;
-    s16 v8;
-    s16 v10;
-    s16 v12;
-    s16 v14;
-    s16 v16;
+    s16 count;
+    s16 r;
+    s16 g;
+    s16 b;
+    s16 target;
     s16 kind;
-    s16 v20;
-    s16 v22;
-    s16 v24;
+    s16 timer;
+    s16 interval;
+    s16 speed;
     s8 on;
     s16 step;
 } FADE_LAYER;

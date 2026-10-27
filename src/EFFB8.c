@@ -21,6 +21,12 @@
 #include "PLS02.h"
 #include "EFFB8.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* load the line */
+#define R0_HOLD         1       /* hold until told to go */
+#define R0_END          2       /* one more frame */
+#define R0_KILL         3       /* (default) free the graphics and the work */
+
 
 
 s16 test_pl_no;
@@ -42,7 +48,7 @@ void effect_B8_move(WORK_Other_CONN* ewk) {
     s16 num;
     s16 i;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         switch (Country) {
         case 1:
@@ -132,7 +138,7 @@ void effect_B8_move(WORK_Other_CONN* ewk) {
         ewk->wu.cg_number++;
         ewk->wu.cg_number &= 0x7FFF;
         break;
-    case 1:
+    case R0_HOLD:
         if (Suicide == 1) {
             ewk->wu.disp_flag = 0;
             ewk->wu.routine_no[0]++;
@@ -162,11 +168,11 @@ void effect_B8_move(WORK_Other_CONN* ewk) {
         ewk->wu.cg_number &= 0x7FFF;
         sort_push_request3(&ewk->wu);
         break;
-    case 2:
+    case R0_END:
         ewk->wu.routine_no[0]++;
         break;
     default:
-        (void)((WORK*)Country)->id;
+        (void)&((WORK*)Country)->id;
         if (test_in == 0) {
             switch (Country) {
             case 1:
@@ -208,7 +214,7 @@ s32 effect_B8_init(s8 WIN_PL_NO) {
         return -1;
     }
     ewk = (WORK_Other_CONN*)frw[work_index];
-    ewk->wu.routine_no[0] = 0;
+    ewk->wu.routine_no[0] = R0_INIT;
     wk_set(ewk);
     ewk->my_master = (u32*)wk;
     ewk->master_work_id = wk->wu.work_id;
@@ -283,7 +289,7 @@ s32 effB8_mes_change_init(s16 pl, s16 mes_no) {
         return -1;
     }
     ewk = (WORK_Other_CONN*)frw[ix];
-    ewk->wu.routine_no[0] = 0;
+    ewk->wu.routine_no[0] = R0_INIT;
     wk_set(ewk);
     ewk->master_player = pl;
     mes_already = mes_no;

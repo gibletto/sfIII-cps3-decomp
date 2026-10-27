@@ -1,5 +1,10 @@
 /*
- * CMD_MAIN_TBL_E.C  text of the configuration menus' guide lines, which sys_config_tbl_c's screens point at
+ * CMD_MAIN_TBL_E.C  configuration menu guide text
+ *
+ * The guide lines at the foot of the system configuration screens: MODIFY SETTING = 1P LEFT or
+ * RIGHT with = 1P SHOT1 or SHOT2, and RETURN TO CONFIGURATION MENU with = 1P SHOT1. Reached
+ * through the sysconfig_modify_guide and sysconfig_return_guide lists of SYS_CONFIG_TBL_C.C,
+ * which SYS_CONFIG_2.C, the test-mode configuration menu, prints.
  */
 
 #include "types.h"

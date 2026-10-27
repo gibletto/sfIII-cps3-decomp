@@ -21,19 +21,34 @@
 #include "charmove_2.h"
 #include "EFF42.h"
 
+/* routine_no[0] */
+#define R0_MOVE         0       /* run the select timer */
+#define R0_CLOSE        1       /* (default) zoom out and put the work back */
+
+/* routine_no[1], while the timer runs */
+#define R1_WAIT         0       /* count the delay down, start the timer */
+#define R1_ZOOM         1       /* flip a few times, then settle */
+#define R1_COUNT        2       /* show the digit of the select timer */
+#define R1_NARROW       3       /* narrow to nothing for a new digit */
+#define R1_WIDEN        4       /* (default) widen back with the new digit */
+
+/* routine_no[1], closing */
+#define R1_SHUT         0       /* start the zoom-out */
+#define R1_CLOSE        1       /* narrow to nothing, then hide */
+
 
 
 void effect_42_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_MOVE:
         if (Time_Stop < 0) {
             ewk->wu.routine_no[0]++;
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[1] = R1_SHUT;
             sort_push_request4(&ewk->wu);
             return;
         }
         switch (ewk->wu.routine_no[1]) {
-        case 0:
+        case R1_WAIT:
             if (--ewk->wu.dir_timer != 0) {
                 return;
             } else {
@@ -44,7 +59,7 @@ void effect_42_move(WORK_Other* ewk) {
                 set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
             }
             break;
-        case 1:
+        case R1_ZOOM:
             if (zoom_x_step_check(ewk)) {
                 if (--ewk->wu.routine_no[2] != 0) {
                     ewk->wu.mvxy.a[0].sp = -ewk->wu.mvxy.a[0].sp;
@@ -54,7 +69,7 @@ void effect_42_move(WORK_Other* ewk) {
                 }
             }
             break;
-        case 2:
+        case R1_COUNT:
             if (ewk->wu.rl_waza != Select_Timer) {
                 ewk->wu.rl_waza = Select_Timer;
                 if (Select_Timer == 32) {
@@ -69,7 +84,7 @@ void effect_42_move(WORK_Other* ewk) {
                 }
             }
             break;
-        case 3:
+        case R1_NARROW:
             if (zoom_x_step_check(ewk)) {
                 ewk->wu.routine_no[1]++;
                 ewk->wu.mvxy.a[0].sp = -ewk->wu.mvxy.a[0].sp;
@@ -79,7 +94,7 @@ void effect_42_move(WORK_Other* ewk) {
             break;
         default:
             if (zoom_x_step_check(ewk)) {
-                ewk->wu.routine_no[1] = 2;
+                ewk->wu.routine_no[1] = R1_COUNT;
                 ewk->wu.my_mr_flag = 0;
             }
             break;
@@ -87,11 +102,11 @@ void effect_42_move(WORK_Other* ewk) {
         break;
     default:
         switch (ewk->wu.routine_no[1]) {
-        case 0:
+        case R1_SHUT:
             ewk->wu.routine_no[1]++;
             ewk->wu.my_mr_flag = 1;
             ewk->wu.mvxy.a[0].sp = -0x80000;
-        case 1:
+        case R1_CLOSE:
             if (zoom_x_step_check(ewk)) {
                 ewk->wu.routine_no[1]++;
                 ewk->wu.disp_flag = 0;

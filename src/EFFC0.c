@@ -20,6 +20,16 @@
 #include "effect_2.h"
 #include "EFFC0.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start the pattern */
+#define R0_MOVE         1       /* stay on the player while held */
+#define R0_KILL         2       /* put the work back */
+
+/* plhos_data columns */
+#define PLHOS_X         0       /* x offset in front of the player */
+#define PLHOS_Y         1       /* y offset from the player */
+#define PLHOS_CHAR      2       /* animation number */
+
 
 
 void effect_C0_move(WORK_Other* ewk) {
@@ -28,13 +38,13 @@ void effect_C0_move(WORK_Other* ewk) {
     s16 hok;
 
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         ewk->wu.my_col_mode = 0x4200;
         ewk->wu.my_col_code = 0x2020;
-        set_char_move_init(&ewk->wu, 0, plhos_data[mwk->player_number][2]);
-    case 1:
+        set_char_move_init(&ewk->wu, 0, plhos_data[mwk->player_number][PLHOS_CHAR]);
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 1;
@@ -42,7 +52,7 @@ void effect_C0_move(WORK_Other* ewk) {
         }
         {
             s16* r = mwk->wu.routine_no;
-            if (r[1] != 1 || r[2] != 25) {
+            if (r[1] != PLAYER_DAMAGE || r[2] != 25) {
                 ewk->wu.routine_no[0]++;
                 ewk->wu.disp_flag = 1;
                 break;
@@ -61,15 +71,15 @@ void effect_C0_move(WORK_Other* ewk) {
         }
         ewk->wu.position_x = mwk->wu.position_x;
         if (mwk->wu.rl_flag) {
-            ewk->wu.position_x += plhos_data[mwk->player_number][0];
+            ewk->wu.position_x += plhos_data[mwk->player_number][PLHOS_X];
         } else {
-            ewk->wu.position_x -= plhos_data[mwk->player_number][0];
+            ewk->wu.position_x -= plhos_data[mwk->player_number][PLHOS_X];
         }
-        ewk->wu.position_y = mwk->wu.position_y + plhos_data[mwk->player_number][1];
+        ewk->wu.position_y = mwk->wu.position_y + plhos_data[mwk->player_number][PLHOS_Y];
         ewk->wu.position_z = mwk->wu.position_z - 4;
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);

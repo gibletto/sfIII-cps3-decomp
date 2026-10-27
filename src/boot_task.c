@@ -101,7 +101,6 @@ void boot_task(void) {
     initial_task = task_tbl;
     initial_entry = mode_init_task;
     req = 0;
-    (void)&((WORK*)create_task)->id;
     while (create_task(initial_entry, 0, initial_task, 1, (s32)req) == 0) {
     }
     do {
@@ -110,11 +109,13 @@ void boot_task(void) {
             if (req == 0) {
             } else {
                 create_task(req->func, 2, &task_tbl[6], 4, req->arg);
-                (void)req->arg;
                 continue;
             }
         }
         task_wait();
+        if (0) {
+            create_task(req->func, 2, &task_tbl[6], 4, req->arg);
+        }
     } while (1);
 }
 

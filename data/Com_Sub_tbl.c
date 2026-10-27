@@ -1,5 +1,13 @@
 /*
- * COM_SUB_TBL.C  tables read by Com_Sub.c
+ * COM_SUB_TBL.C  the computer player's step helper tables
+ *
+ * cancel_shot_tbl gives the button bit of a cancel shot, picked by bits 4-6 of the cg effect
+ * type; YAGYOU_Data holds the random term numbers YAGYOU_Check picks for the Yagyou super art;
+ * Rolling_Lv_Data the lever sequence of a rolling command and the button added by power level;
+ * Meoshi_Lever_Data the lever for each low cg effect type of a meoshi attack (0x8000 and
+ * 0x8001 for a guard lever); and PL_Status, by the opponent's routine number, whether only the
+ * shell check is made. Exit_Term_Tbl and ETC_Term_Tbl are the jump tables of the Exit_Term_*
+ * and ETC_Term_* routines. Read by COM_SUB.C, the pattern step library.
  */
 
 #include "types.h"

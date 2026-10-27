@@ -19,6 +19,11 @@
 #include "ta_sub.h"
 #include "eff14.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* load the script for this id */
+#define R0_MOVE         1       /* step the script, follow the page */
+#define R0_KILL         2       /* put the work back */
+
 E14_WORK eff14_work[8];  /* 0205DF8C */
 
 
@@ -53,7 +58,7 @@ void effect_14_move(WORK_Other* ewk) {
     s8 scr;
     s8 put;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         data = eff14_data_tbl[ewk->wu.type];
         scr = *data;
         data++;
@@ -82,7 +87,7 @@ void effect_14_move(WORK_Other* ewk) {
         eff14_work[ewk->wu.rl_flag].script += 2;
         ewk->wu.routine_no[0]++;
         break;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
@@ -120,7 +125,7 @@ void effect_14_move(WORK_Other* ewk) {
             effect_14_write(ewk);
         }
         break;
-    case 2:
+    case R0_KILL:
     default:
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);

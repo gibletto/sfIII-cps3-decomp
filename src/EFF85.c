@@ -21,6 +21,17 @@
 #include "EFF86.h"
 #include "EFF85.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start the first pattern */
+
+/* routine_no[1] */
+#define R1_FIRST        0       /* play pattern 12 to its end */
+#define R1_SECOND       1       /* start pattern 14 */
+#define R1_DELAY        2       /* one frame */
+#define R1_LOOP         3       /* play pattern 14 */
+#define R1_NEXT         4       /* one frame */
+#define R1_LAST         5       /* play to the end, then start over */
+
 extern const u32 eff86_char_table[];   /* provisional name */
 
 
@@ -34,7 +45,7 @@ void effect_85_move(WORK_Other* ewk) {
 
 void eff85_0000(WORK_Other* ewk) {
     ewk->wu.routine_no[0]++;
-    ewk->wu.routine_no[1] = 0;
+    ewk->wu.routine_no[1] = R1_FIRST;
     ewk->wu.disp_flag = 1;
     set_char_move_init(&ewk->wu, 0, 12);
 }
@@ -49,30 +60,30 @@ void eff85_0100(WORK_Other* ewk) {
             return;
         }
         switch (ewk->wu.routine_no[1]) {
-        case 0:
+        case R1_FIRST:
             char_move(&ewk->wu);
             if (ewk->wu.cg_type) {
                 ewk->wu.routine_no[1]++;
             }
             break;
-        case 1:
+        case R1_SECOND:
             ewk->wu.routine_no[1]++;
             ewk->wu.disp_flag = 1;
             set_char_move_init(&ewk->wu, 0, 14);
             break;
-        case 2:
+        case R1_DELAY:
             ewk->wu.routine_no[1]++;
             break;
-        case 3:
+        case R1_LOOP:
             char_move(&ewk->wu);
             break;
-        case 4:
+        case R1_NEXT:
             ewk->wu.routine_no[1]++;
             break;
-        case 5:
+        case R1_LAST:
             char_move(&ewk->wu);
             if (ewk->wu.cg_type) {
-                ewk->wu.routine_no[0] = 0;
+                ewk->wu.routine_no[0] = R0_INIT;
             }
             break;
         }

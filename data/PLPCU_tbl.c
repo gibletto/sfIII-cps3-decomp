@@ -1,5 +1,12 @@
 /*
- * PLPCU_TBL.C  tables read by PLPCU.c
+ * PLPCU_TBL.C  thrown player routine tables
+ *
+ * plpcu_lv_00 is the list of caught routines Caught_00000 - Caught_03000, indexed by caught
+ * routine number; setup_cu_dm_init_data lists the scdmd_ routines that set up the damage state
+ * a thrown player is released into, indexed by routine number minus 12. caught_dm_chg_tbl1 and
+ * caught_dm_chg_tbl6 give, for each animation of cg kind 1 and 6, a change flag and a base
+ * animation to which the attack level is added when the release animation starts. Read by
+ * PLPCU.C, the player caught (being thrown) process.
  */
 
 #include "types.h"

@@ -1,5 +1,9 @@
 /*
- * SHELL01_TBL.C  tables read by SHELL01.c: the routine table of the shell patterns
+ * SHELL01_TBL.C  CPU anti-projectile pattern table 01 (Alex)
+ *
+ * Shell01_Tbl lists the pattern scripts Shell01_0000 .. Shell01_0009 the computer-controlled
+ * Alex runs when the opponent fires a projectile, indexed by Pattern_Index. Read by SHELL01.C,
+ * which Com_VS_Shell in COM_PL.C calls for Alex.
  */
 
 #include "types.h"

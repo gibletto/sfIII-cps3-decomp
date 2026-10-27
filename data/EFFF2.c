@@ -1,5 +1,10 @@
 /*
- * EFFF2.C  tables read by EFFF2_code.c
+ * EFFF2.C  flying objects of an ending scene
+ *
+ * efff2_data_tbl gives the settings (priority, pattern) of each of the eight objects,
+ * efff2_speed_tbl their speeds and accelerations in each of the three flight stages, and
+ * efff2_pos_tbl the position each starts again from. Read by EFFF2_CODE.C, the flying objects
+ * of an ending scene.
  */
 
 #include "types.h"

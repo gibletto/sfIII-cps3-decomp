@@ -1,5 +1,15 @@
 /*
- * CHARID_TBL.C  tables read by HITCHECK.c
+ * CHARID_TBL.C  character base data and damage reaction lookups
+ *
+ * char_init_data has one entry per charset_id (entry 0 is empty): the ten cg script tables,
+ * step and move tables, overlap, catch and judgement box tables, attack attributes and the
+ * character's settings; read by CHARID.C, which loads it into a work in set_char_base_data.
+ * The other tables are read by HITCHECK.C, the hit detection: indexed by damage reaction from
+ * 32, the attr_*_tbl give the flame, electric and freeze form of each reaction, the sky_*,
+ * kagami*_ and grd_hand_ tables its airborne, crouching and guard-hand forms, and hddm_, trdm_
+ * and ttk_damage_req_tbl the head, trunk and ttk checks; rsix_r_table gives the score index by
+ * damage, parisucc_pts the parry counter by play type, and Dsas_dir_table, sel_sp_ch_tbl and
+ * dm_oiuchi_catch the attack directions, move kinds and damage states it tests.
  */
 
 #include "types.h"

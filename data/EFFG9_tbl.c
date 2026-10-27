@@ -1,5 +1,10 @@
 /*
- * EFFG9_TBL.C  tables read by EFFG9.c and EFFH0.c
+ * EFFG9_TBL.C  trail particle scatter offsets and the effect H0 record
+ *
+ * g9_pos_hos is the 16 random offsets added to a G9 particle's x and y when it appears, which
+ * also choose whether it is drawn in front of or behind the characters; read by EFFG9.C, the
+ * trail particle. effh0_data is the single record { x, y, flag, display flag, direction,
+ * pattern } of effect H0; read by EFFH0.C.
  */
 
 #include "types.h"

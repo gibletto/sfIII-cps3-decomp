@@ -20,6 +20,22 @@
 #include "aboutspr.h"
 #include "eff56.h"
 
+/* routine_no[0]: routine, index of eff55_jp */
+#define R0_PERCH        0       /* sit on the perch */
+#define R0_FLIGHT       1       /* fly away and come back */
+#define R0_LAND         2       /* land on the perch */
+
+/* routine_no[1], eff55_0000 */
+#define R1_START        0       /* first step of each routine */
+#define R1_PERCH        1       /* play the perch pattern, then fly */
+
+/* routine_no[1]: flight step, index of eff55_1000_jp */
+#define R1_FLY_OUT      1       /* fly off to the right */
+#define R1_PAUSE        2       /* hidden, wait before crossing back */
+#define R1_CROSS        3       /* cross back to the left */
+#define R1_RETURN       4       /* hidden, wait before gliding in */
+#define R1_GLIDE        5       /* glide in to the perch */
+
 extern const u32 brz_char_table[];
 
 void eff55_0000(WORK_Other* ewk);
@@ -48,16 +64,16 @@ void effect_55_move(WORK_Other* ewk) {
 /* provisional name */
 void eff55_0000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_START:
         ewk->wu.routine_no[1]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 20);
         break;
-    case 1:
+    case R1_PERCH:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
             ewk->wu.routine_no[0]++;
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[1] = R1_START;
         }
         break;
     }
@@ -94,11 +110,11 @@ void eff55_1000_1000(WORK_Other* ewk) {
     if (ewk->wu.xyz[0].disp.pos > 912) {
         work = random_16_com();
         if (work & 1) {
-            ewk->wu.routine_no[1] = 4;
+            ewk->wu.routine_no[1] = R1_RETURN;
             ewk->wu.old_rno[0] = 864;
             ewk->wu.disp_flag = 0;
         } else {
-            ewk->wu.routine_no[1] = 2;
+            ewk->wu.routine_no[1] = R1_PAUSE;
             ewk->wu.old_rno[0] = 352;
             ewk->wu.disp_flag = 0;
         }
@@ -111,7 +127,7 @@ void eff55_1000_1000(WORK_Other* ewk) {
 void eff55_1000_2000(WORK_Other* ewk) {
     ewk->wu.old_rno[0]--;
     if (ewk->wu.old_rno[0] < 0) {
-        ewk->wu.routine_no[1] = 3;
+        ewk->wu.routine_no[1] = R1_CROSS;
         ewk->wu.disp_flag = 1;
         ewk->wu.rl_flag = 1;
         ewk->wu.mvxy.a[0].sp = -0x18000;
@@ -130,7 +146,7 @@ void eff55_1000_3000(WORK_Other* ewk) {
     char_move(&ewk->wu);
     if (ewk->wu.xyz[0].disp.pos < 96) {
         ewk->wu.rl_flag = 0;
-        ewk->wu.routine_no[1] = 4;
+        ewk->wu.routine_no[1] = R1_RETURN;
         ewk->wu.old_rno[0] = 352;
         ewk->wu.disp_flag = 0;
     }
@@ -142,7 +158,7 @@ void eff55_1000_3000(WORK_Other* ewk) {
 void eff55_1000_4000(WORK_Other* ewk) {
     ewk->wu.old_rno[0]--;
     if (ewk->wu.old_rno[0] < 0) {
-        ewk->wu.routine_no[1] = 5;
+        ewk->wu.routine_no[1] = R1_GLIDE;
         ewk->wu.disp_flag = 1;
         ewk->wu.xyz[0].disp.pos = 96;
         ewk->wu.xyz[1].disp.pos = 168;
@@ -161,7 +177,7 @@ void eff55_1000_5000(WORK_Other* ewk) {
     ewk->wu.old_rno[0]--;
     if (ewk->wu.old_rno[0] <= 0) {
         ewk->wu.routine_no[0]++;
-        ewk->wu.routine_no[1] = 0;
+        ewk->wu.routine_no[1] = R1_START;
         set_char_move_init(&ewk->wu, 0, 26);
         ewk->wu.xyz[0].disp.pos = 672;
         ewk->wu.xyz[1].disp.pos = 114;
@@ -179,8 +195,8 @@ void eff55_1000_5000(WORK_Other* ewk) {
 void eff55_2000(WORK_Other* ewk) {
     char_move(&ewk->wu);
     if (ewk->wu.cg_type) {
-        ewk->wu.routine_no[0] = 0;
-        ewk->wu.routine_no[1] = 0;
+        ewk->wu.routine_no[0] = R0_PERCH;
+        ewk->wu.routine_no[1] = R1_START;
     }
 }
 

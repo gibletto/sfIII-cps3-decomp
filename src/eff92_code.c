@@ -31,13 +31,17 @@
 #include "eff92_code.h"
 #include "cps3.h"
 
+/* routine_no[0] */
+#define R0_MOVE         0       /* draw the win marks step by step */
+#define R0_KILL         1       /* (default) flag the mark, put the work back */
+
 
 
 void effect_92_move(WORK_Other* ewk) {
     s32 kind;
     s32 col;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_MOVE:
         if (--ewk->wu.dir_timer != 0) {
             return;
         }

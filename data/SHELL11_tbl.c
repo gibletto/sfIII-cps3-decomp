@@ -1,5 +1,10 @@
 /*
- * SHELL11_TBL.C  tables read by SHELL11.c: the routine table of the shell patterns
+ * SHELL11_TBL.C  CPU anti-projectile pattern table 11 (Ken and the shared set)
+ *
+ * Shell11_Tbl lists the pattern scripts Shell11_0000 .. Shell11_0010 run when the opponent
+ * fires a projectile, indexed by Pattern_Index. Read by SHELL11.C, which Com_VS_Shell in
+ * COM_PL.C calls for Ken and for every character without a table of its own (Gill, Ryu, Necro,
+ * Ibuki, Elena, Oro).
  */
 
 #include "types.h"

@@ -1,5 +1,9 @@
 /*
- * EFF83_TBL.C  tables read by EFF83.c: effect 83's speeds and placements
+ * EFF83_TBL.C  background objects crossing the stage
+ *
+ * eff83_data_tbl gives, for each of the three objects, its eight successive entries (pattern,
+ * x, y, priority), and eff83_speed_tbl the x speed of each entry. Read by EFF83.C, the three
+ * background objects crossing the stage.
  */
 
 #include "types.h"

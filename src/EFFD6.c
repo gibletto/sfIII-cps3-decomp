@@ -21,6 +21,23 @@
 #include "charmove_2.h"
 #include "EFFD6.h"
 
+/* routine_no[0]: index of EFFD6_Jmp_Tbl, set from Order */
+#define R0_WAIT         0       /* wait for an order */
+
+/* routine_no[1], EFFD6_RISE_IN (R1_DELAY in all four) */
+#define R1_DELAY        0       /* wait for the order timer */
+#define R1_RISE         1       /* (default) rise into place */
+
+/* routine_no[1], EFFD6_SLIDE_IN */
+#define R1_SLIDE        1       /* (default) slide in to the spot */
+
+/* routine_no[1], EFFD6_SLIDE_OUT */
+#define R1_OUT          1       /* slide off the screen */
+#define R1_KILL         2       /* (default) put the work back */
+
+/* routine_no[1], EFFD6_ZOOM_SLIDE */
+#define R1_ZOOM         1       /* (default) shrink and slide across */
+
 void EFFD6_WAIT(WORK_Other* ewk);
 void EFFD6_RISE_IN(WORK_Other* ewk);
 void EFFD6_SLIDE_IN(WORK_Other* ewk);
@@ -52,7 +69,7 @@ void effect_D6_move(WORK_Other* ewk) {
 
 void EFFD6_WAIT(WORK_Other* ewk) {
     if ((ewk->wu.routine_no[0] = Order[ewk->wu.dir_step])) {
-        ewk->wu.routine_no[1] = 0;
+        ewk->wu.routine_no[1] = R1_DELAY;
     }
 }
 
@@ -60,7 +77,7 @@ void EFFD6_WAIT(WORK_Other* ewk) {
 
 void EFFD6_RISE_IN(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_DELAY:
         if (--Order_Timer[ewk->wu.dir_step]) {
             break;
         }
@@ -75,7 +92,7 @@ void EFFD6_RISE_IN(WORK_Other* ewk) {
         ewk->wu.xyz[1].cal += ewk->wu.mvxy.a[1].sp;
         if (ewk->wu.hit_quake >= ewk->wu.xyz[1].disp.pos) {
             Order[ewk->wu.dir_step] = 0;
-            ewk->wu.routine_no[0] = 0;
+            ewk->wu.routine_no[0] = R0_WAIT;
             ewk->wu.xyz[1].disp.pos = ewk->wu.hit_quake;
         }
         break;
@@ -87,7 +104,7 @@ void EFFD6_RISE_IN(WORK_Other* ewk) {
 void EFFD6_SLIDE_IN(WORK_Other* ewk) {
     s16 ofs;
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_DELAY:
         if (--Order_Timer[ewk->wu.dir_step]) {
             break;
         }
@@ -123,7 +140,7 @@ void EFFD6_SLIDE_IN(WORK_Other* ewk) {
                 if (Order[ewk->wu.dir_step] == ewk->wu.routine_no[0]) {
                     Order[ewk->wu.dir_step] = 0;
                 }
-                ewk->wu.routine_no[0] = 0;
+                ewk->wu.routine_no[0] = R0_WAIT;
                 ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
                 ewk->wu.position_z = 70;
             }
@@ -131,7 +148,7 @@ void EFFD6_SLIDE_IN(WORK_Other* ewk) {
             if (Order[ewk->wu.dir_step] == ewk->wu.routine_no[0]) {
                 Order[ewk->wu.dir_step] = 0;
             }
-            ewk->wu.routine_no[0] = 0;
+            ewk->wu.routine_no[0] = R0_WAIT;
             ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
             ewk->wu.position_z = 70;
         }
@@ -143,7 +160,7 @@ void EFFD6_SLIDE_IN(WORK_Other* ewk) {
 
 void EFFD6_SLIDE_OUT(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_DELAY:
         if (--Order_Timer[ewk->wu.dir_step]) {
             break;
         }
@@ -156,7 +173,7 @@ void EFFD6_SLIDE_OUT(WORK_Other* ewk) {
             ewk->wu.mvxy.d[0].sp = 0x8000;
         }
         break;
-    case 1:
+    case R1_OUT:
         ewk->wu.xyz[0].cal += ewk->wu.mvxy.a[0].sp;
         ewk->wu.mvxy.a[0].sp += ewk->wu.mvxy.d[0].sp;
         if (Ck_Range_Out_S(ewk, 2, 128)) {
@@ -175,7 +192,7 @@ void EFFD6_SLIDE_OUT(WORK_Other* ewk) {
 
 void EFFD6_ZOOM_SLIDE(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_DELAY:
         if (--Order_Timer[ewk->wu.dir_step]) {
             break;
         }
@@ -245,7 +262,7 @@ void EFFD6_RESET(WORK_Other* ewk) {
     }
     ewk->wu.disp_flag = 1;
     Order[ewk->wu.dir_step] = 0;
-    ewk->wu.routine_no[0] = 0;
+    ewk->wu.routine_no[0] = R0_WAIT;
     set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_old + 1, 0);
 }
 

@@ -1,5 +1,10 @@
 /*
- * EFFH4_TBL.C  tables read by effh4.c and effh5.c
+ * EFFH4_TBL.C  ending object tables for effects H4 and H5
+ *
+ * effH4_data_tbl gives the pattern, x, y and priority of each of the four H4 objects and
+ * effH4_sp_tbl their x speed while growing, x speed change once full size, and y speed; read
+ * by EFFH4.C. effH5_data_tbl has a row per H5 object: family, colour, pattern, x, y, priority,
+ * first frame and behaviour; read by EFFH5.C.
  */
 
 #include "types.h"
@@ -15,6 +20,10 @@ const s16 effH4_data_tbl[4][4] = {
     { 9, 592, 128, 72 }, { 10, 576, 96, 70 }, { 12, 432, 128, 72 }, { 11, 448, 96, 70 },
 };
 
+/*
+ * One row per object (type): x speed while it grows, x speed change once it is full size,
+ * and y speed.
+ */
 const s32 effH4_sp_tbl[4][3] = {
     { 688128, 229376, -65536 }, { 557056, 229376, -65536 },
     { -688128, -229376, -65536 }, { -557056, -229376, -65536 },

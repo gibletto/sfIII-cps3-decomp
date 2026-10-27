@@ -17,5 +17,5 @@
 
 
 void pl04_extra_attack(PLW* wk) {
-    pl04_exatt_table[wk->wu.routine_no[2] - 16](wk);
+    pl04_exatt_table[wk->wu.routine_no[2] - ATTACK_SPECIAL](wk);
 }

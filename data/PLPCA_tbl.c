@@ -1,5 +1,8 @@
 /*
- * PLPCA_TBL.C  tables read by PLPCA.c
+ * PLPCA_TBL.C  throw routine table
+ *
+ * plpca_lv_00 is the list of throw routines Catch_00000 - Catch_05000, indexed by catch
+ * routine number. Read by PLPCA.C, the player catch (throwing) process.
  */
 
 #include "types.h"

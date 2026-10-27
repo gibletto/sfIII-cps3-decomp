@@ -26,12 +26,18 @@
 #include "bg_sub_5.h"
 #include "EFFB4.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* pick a random mark and show it */
+#define R0_MOVE         1       /* animate until the pattern's cue */
+#define R0_END          2       /* one more frame */
+#define R0_KILL         3       /* (default) put the work back */
+
 
 
 /* not gated by EXE_flag/Game_pause */
 void effect_B4_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         ewk->wu.old_rno[0] = random_16_com();
@@ -39,7 +45,7 @@ void effect_B4_move(WORK_Other* ewk) {
         ewk->wu.char_index += s_mark_tbl[ewk->wu.old_rno[0]];
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R0_MOVE:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
             ewk->wu.routine_no[0]++;
@@ -47,7 +53,7 @@ void effect_B4_move(WORK_Other* ewk) {
         suzi_sync_pos_set(ewk);
         sort_push_request(&ewk->wu);
         break;
-    case 2:
+    case R0_END:
         ewk->wu.routine_no[0]++;
         break;
     default:

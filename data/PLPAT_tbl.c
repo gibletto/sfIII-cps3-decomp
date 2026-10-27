@@ -1,5 +1,11 @@
 /*
- * PLPAT_TBL.C  tables read by PLPAT.c
+ * PLPAT_TBL.C  player attack dispatch tables
+ *
+ * plpat_lv_00 is the common attack routines Attack_00000 .. Attack_10000, indexed by attack
+ * routine number (the last five entries repeat Attack_00000), and plxx_extra_attack_table each
+ * character's extra attack dispatcher (pl00_extra_attack .. pl12_extra_attack) by player
+ * number, used for attack routine numbers 16 and up. Read by PLPAT.C, the player attack
+ * routines.
  */
 
 #include "types.h"

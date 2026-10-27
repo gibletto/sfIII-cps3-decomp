@@ -21,6 +21,14 @@
 #include "ta_sub.h"
 #include "EFF62.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* set up from the master */
+#define R0_MOVE         1       /* animate with the master */
+
+/* routine_no[2] */
+#define R2_INIT         0       /* pick the win or lose pose */
+#define R2_ANIM         1       /* animate */
+
 s16 get_winner_id(void);
 void eff62_normal(WORK_Other* ewk);
 void eff62_result(WORK_Other* ewk);
@@ -33,15 +41,15 @@ const s16 eff62_layout_tbl[2][5] = {
 void effect_62_move(WORK_Other* ewk) {
     WORK* mwk;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.routine_no[1] = 0;
-        ewk->wu.routine_no[2] = 0;
+        ewk->wu.routine_no[2] = R2_INIT;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         mwk = (WORK*)ewk->my_master;
         ewk->wu.old_rno[0] = mwk->old_rno[0] ^ 1;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.type) {
             eff62_result(ewk);
         } else {
@@ -96,7 +104,7 @@ void eff62_result(WORK_Other* ewk) {
         return;
     }
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_INIT:
         winner = get_winner_id();
         if (winner == ewk->wu.old_rno[0]) {
             set_char_move_init(&ewk->wu, 0, 22);
@@ -105,7 +113,7 @@ void eff62_result(WORK_Other* ewk) {
         }
         ewk->wu.routine_no[2]++;
         break;
-    case 1:
+    case R2_ANIM:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
         }

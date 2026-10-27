@@ -18,6 +18,19 @@
 #include "SYS_sub.h"
 #include "Eff50.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* count the delay down, then show */
+#define R0_IN_LEFT      1       /* slide in to the left */
+#define R0_IN_RIGHT     2       /* slide in to the right */
+#define R0_LAND         3       /* in place, step on */
+#define R0_FLASH        4       /* colour flash */
+#define R0_READY        5       /* wait for the opponent to be decided */
+#define R0_NARROW       6       /* turn over: narrow to nothing */
+#define R0_WIDEN        7       /* turn back with the next opponent */
+#define R0_PAUSE        8       /* pause, then let the others go */
+#define R0_SLIDE_OUT    9       /* slide out when told */
+#define R0_KILL         10      /* (default) put the work back */
+
 #define EFF50_PANEL_COUNT 6
 
 extern u16 EM_Course[2];
@@ -29,28 +42,28 @@ void effect_50_move(WORK_Other* ewk) {
     s32 slide;
     cut = Cut_Cut_Sub(3);
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (--ewk->wu.dir_timer) {
             return;
         }
         if (ewk->wu.mvxy.a[0].sp < 0) {
-            ewk->wu.routine_no[0] = 1;
+            ewk->wu.routine_no[0] = R0_IN_LEFT;
         } else {
-            ewk->wu.routine_no[0] = 2;
+            ewk->wu.routine_no[0] = R0_IN_RIGHT;
         }
         ewk->wu.disp_flag = 1;
         ewk->wu.dir_timer = 5;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
         break;
-    case 1:
+    case R0_IN_LEFT:
         ewk->wu.xyz[0].cal += ewk->wu.mvxy.a[0].sp * cut;
         ewk->wu.mvxy.a[0].sp += ewk->wu.mvxy.d[0].sp * cut;
         if (ewk->wu.hit_quake >= ewk->wu.xyz[0].disp.pos) {
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_LAND;
             ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
         }
         break;
-    case 2:
+    case R0_IN_RIGHT:
         ewk->wu.xyz[0].cal += ewk->wu.mvxy.a[0].sp;
         ewk->wu.mvxy.a[0].sp += ewk->wu.mvxy.d[0].sp;
         if (ewk->wu.hit_quake <= ewk->wu.xyz[0].disp.pos) {
@@ -58,12 +71,12 @@ void effect_50_move(WORK_Other* ewk) {
             ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
         }
         break;
-    case 3:
+    case R0_LAND:
         if (--ewk->wu.dir_timer) {
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 4:
+    case R0_FLASH:
         if (Flash_Violent(ewk, 1)) {
             ewk->wu.routine_no[0]++;
         }
@@ -71,17 +84,17 @@ void effect_50_move(WORK_Other* ewk) {
             set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
         }
         break;
-    case 5:
+    case R0_READY:
         if (Exit_No < 4) {
             break;
         }
         if (VS_Index[Player_id] != ewk->master_id) {
-            ewk->wu.routine_no[0] = 9;
+            ewk->wu.routine_no[0] = R0_SLIDE_OUT;
             break;
         }
         ewk->wu.routine_no[0]++;
         break;
-    case 6:
+    case R0_NARROW:
         if ((ewk->wu.my_mr.size.x -= 6) > 0) {
             break;
         }
@@ -90,7 +103,7 @@ void effect_50_move(WORK_Other* ewk) {
         ewk->wu.dir_step = EM_Candidate_Data[My_char[Player_id]][(s8)EM_Course[Player_id]][VS_Index[Player_id]] + 28;
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);
         break;
-    case 7:
+    case R0_WIDEN:
         if ((ewk->wu.my_mr.size.x += 6) < 63) {
             break;
         }
@@ -98,14 +111,14 @@ void effect_50_move(WORK_Other* ewk) {
         ewk->wu.dir_timer = 2;
         ewk->wu.my_mr.size.x = 63;
         break;
-    case 8:
+    case R0_PAUSE:
         if (--ewk->wu.dir_timer) {
             break;
         }
         ewk->wu.routine_no[0]++;
         eff50_slide_out = 1;
         break;
-    case 9:
+    case R0_SLIDE_OUT:
         if (!(slide = eff50_slide_out)) {
             break;
         }
@@ -159,8 +172,8 @@ s32 effect_50_init(s16 player) {
             chars[j] = 57;
         }
     }
-    (void)((WORK*)EFF50_PANEL_COUNT)->be_flag;
-    (void)((WORK*)Break_Com)->be_flag;
+    (void)&((WORK*)EFF50_PANEL_COUNT)->be_flag;
+    (void)&((WORK*)Break_Com)->be_flag;
     delay = 1;
     if (Cut_Cut_Cut()) {
         extra = 0;

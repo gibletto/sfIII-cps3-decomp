@@ -1,5 +1,9 @@
 /*
- * END_2_TBL.C  tables read by end_2.c: the ending panels and timers of end_2
+ * END_2_TBL.C  Ryu's ending tables (ending 2)
+ *
+ * end_200_panel0 lists the BG0 cells (map offset, cell number) written by end_200_cell_set at
+ * the start of the ending, and timer_2_tbl the length in frames of each of its four scenes.
+ * Read by END_2.C.
  */
 
 #include "types.h"

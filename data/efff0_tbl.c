@@ -1,5 +1,9 @@
 /*
- * EFFF0_TBL.C  tables read by efff0.c
+ * EFFF0_TBL.C  alternate background wave tables
+ *
+ * effF0_line_tbl holds the 256 line offsets of BG 3's wave line scroll, read by EFFF0.C, the
+ * alternate background controller. effF0_cos_tbl, a 32-step cosine table scaled by 256, is not
+ * referred to.
  */
 
 #include "types.h"

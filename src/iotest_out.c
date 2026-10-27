@@ -39,7 +39,7 @@ void iotest_output_toggle(void) {
     register s32 unused;
     trig1 = ~p1sw_1 & p1sw_0;
     trig2 = ~p2sw_1 & p2sw_0;
-    if (trig1 & 0x10) {
+    if (trig1 & BUTTON_LP) {
         if (iotest_out1_flag != 0) {
             iotest_out1_flag = 0;
         } else {
@@ -51,7 +51,7 @@ void iotest_output_toggle(void) {
             coin_out_latch &= ~1;
         }
     }
-    if (trig2 & 0x10) {
+    if (trig2 & BUTTON_LP) {
         if (iotest_out2_flag != 0) {
             iotest_out2_flag = 0;
         } else {
@@ -63,15 +63,15 @@ void iotest_output_toggle(void) {
             coin_out_latch &= ~2;
         }
     }
-    if ((p1sw_0 & 0x20) == 0x20 && (p1sw_1 & 0x20) != 0x20) {
+    if ((p1sw_0 & BUTTON_MP) == BUTTON_MP && (p1sw_1 & BUTTON_MP) != BUTTON_MP) {
         iotest_hold_flag = 1;
         coin_out_latch |= 0x10;
         coin_out_latch |= 0x20;
-    } else if ((p1sw_0 & 0x20) != 0x20 && (p1sw_1 & 0x20) == 0x20) {
+    } else if ((p1sw_0 & BUTTON_MP) != BUTTON_MP && (p1sw_1 & BUTTON_MP) == BUTTON_MP) {
         iotest_hold_flag = 0;
         coin_out_latch &= ~0x10;
         coin_out_latch &= ~0x20;
-    } else if ((p2sw_0 & 0x20) != 0x20 && (p2sw_1 & 0x20) == 0x20) {
+    } else if ((p2sw_0 & BUTTON_MP) != BUTTON_MP && (p2sw_1 & BUTTON_MP) == BUTTON_MP) {
         if (Card_Dispenser != 0) {
             card_out_req++;
         }
@@ -100,7 +100,7 @@ s32 iotest_output_page(void) {
         iotest_output_toggle();
         break;
     }
-    if ((p1sw_0 & 0x1000) && (p1sw_0 & 0x10)) {
+    if ((p1sw_0 & BUTTON_START) && (p1sw_0 & BUTTON_LP)) {
         rc = -1;
         iotest_out_no = 0;
         Monitor_Flip = iotest_save_flip;

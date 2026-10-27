@@ -23,6 +23,11 @@
 #include "CALDIR.h"
 #include "Eff80.h"
 
+/* routine_no[2] */
+#define R2_WAIT         0       /* wait for a player to come near */
+#define R2_PLAY         1       /* play the pattern once, then hide */
+#define R2_DONE         2       /* done */
+
 extern const u32 eff80_char_table[];
 void eff80_0000(WORK_Other* ewk);
 void eff80_0001(WORK_Other* ewk);
@@ -66,7 +71,7 @@ void eff80_0000(WORK_Other* ewk) {
 void eff80_0001(WORK_Other* ewk) {
     s16 x0, x1;
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_WAIT:
         x0 = ewk->wu.xyz[0].disp.pos - plw[0].wu.xyz[0].disp.pos;
         if (x0 < 0) {
             x0 = -x0;
@@ -79,14 +84,14 @@ void eff80_0001(WORK_Other* ewk) {
             ewk->wu.routine_no[2]++;
         }
         break;
-    case 1:
+    case R2_PLAY:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
             ewk->wu.routine_no[2]++;
             ewk->wu.disp_flag = 0;
         }
         break;
-    case 2:
+    case R2_DONE:
     default:
         break;
     }

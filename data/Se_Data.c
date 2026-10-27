@@ -1,5 +1,10 @@
 /*
- * SE_DATA.C  tables read by CHARMOVE.c, EFF02.c, EFFA7.c and PLS02.c
+ * SE_DATA.C  sound request handler table
+ *
+ * sound_effect_request gives, for each of the 544 sound codes, the SE_3.C handler that plays
+ * it (Call_Se, Se_Myself, Se_Let, Se_Shock and the rest), called with the requesting object
+ * and the code. Read by CHARMOVE.C (cg script sounds), EFF02.C and EFFA7.C (hit marks) and
+ * PLS02.C (KO voices).
  */
 
 #include "types.h"

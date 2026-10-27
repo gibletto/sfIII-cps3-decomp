@@ -51,6 +51,10 @@
 #include "textsound_3.h"
 #include "RANKING.h"
 
+/* D_No2 in Ranking_01_5th */
+#define RK5_WAIT        0       /* wait D_Timer, then wipe */
+#define RK5_WIPE        1       /* until the wipe is done */
+
 
 
 /* Ranking portrait effect. */
@@ -139,7 +143,7 @@ void Ranking_01_4th(void) {
 
 void Ranking_01_5th(void) {
     switch (D_No2) {
-    case 0:
+    case RK5_WAIT:
         if (--D_Timer) {
             break;
         }
@@ -158,7 +162,7 @@ void Ranking_01_5th(void) {
         sc_vram_to_ram();
         Switch_Screen_Init(3, 3);
         break;
-    case 1:
+    case RK5_WIPE:
         if (Switch_Screen() != 0) {
             D_No2++;
             Cover_Timer = 24;

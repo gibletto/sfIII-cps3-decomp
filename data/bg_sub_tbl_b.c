@@ -1,5 +1,8 @@
 /*
- * BG_SUB_TBL_B.C  tables read by bg000.c
+ * BG_SUB_TBL_B.C  akebono screen scroll positions
+ *
+ * akebono_scrn_pos_tbl gives the scroll x, y of each step of the akebono screen layer. Read by
+ * akebono_scrn_move in BG000.C, which EFFG0.C (the select flow scene) calls to step it.
  */
 
 #include "types.h"

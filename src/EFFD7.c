@@ -20,6 +20,37 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 #include "aboutspr.h"
+
+/* routine_no[0] */
+#define R0_DELAY        0       /* wait the delay, then appear */
+#define R0_SLIDE_IN     1       /* slide in to its row */
+#define R0_SELECT       2       /* turn with the player's choice */
+#define R0_SLIDE_OUT    3       /* slide out, not chosen */
+#define R0_FLASH        4       /* wait for the flash */
+#define R0_PAUSE        5       /* pause for 10 frames */
+#define R0_WAIT         6       /* wait for the other player */
+#define R0_RISE         7       /* rise to the top */
+#define R0_STAY         8       /* stay in place */
+#define R0_END          9       /* hide */
+#define R0_KILL         10      /* (default) put the work back */
+
+/* routine_no[1] */
+#define R1_WAIT         0       /* wait for a turn or the choice */
+#define R1_TO_LAST      1       /* wrap round, first row to last */
+#define R1_TO_FIRST     2       /* wrap round, last row to first */
+#define R1_STEP         3       /* move one row */
+
+/* routine_no[2], effD7_move */
+#define R2_LEAVE        0       /* leave the row */
+#define R2_TURN         1       /* pause, then start the turn */
+#define R2_ROUND        2       /* move round to the new row */
+#define R2_DONE         3       /* (default) wait for the other plates */
+
+/* routine_no[2], effD7_move_back */
+#define R2_HOLD         0       /* short pause */
+#define R2_SHIFT        1       /* move to the new row */
+#define R2_ARRIVED      2       /* (default) wait for the other plates */
+
 extern const s16 effD7_plate_pos[2][6];
 extern const s16 effD7_plate_col[2][3];
 extern s8 eff98_arts_req[2][3];
@@ -46,7 +77,7 @@ s32 Ck_Range_Out_S();
 void effect_D7_move(WORK_Other* ewk) {
     s16 y;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_DELAY:
         if (--ewk->wu.dir_timer) {
             return;
         }
@@ -58,7 +89,7 @@ void effect_D7_move(WORK_Other* ewk) {
             effect_E4_init(ewk->master_id, ewk->master_player, ewk->master_priority);
         }
         break;
-    case 1:
+    case R0_SLIDE_IN:
         ewk->wu.xyz[0].cal += ewk->wu.mvxy.a[0].sp;
         ewk->wu.mvxy.a[0].sp += ewk->wu.mvxy.d[0].sp;
         if (ewk->wu.mvxy.a[0].sp > 0) {
@@ -69,7 +100,7 @@ void effect_D7_move(WORK_Other* ewk) {
                 Move_Super_Arts[ewk->master_id]--;
                 Select_Arts[ewk->master_id]--;
                 if (Flash_Complete[ewk->master_id] == -1 || plw[ewk->master_id].wu.operator == 0) {
-                    ewk->wu.routine_no[0] = 8;
+                    ewk->wu.routine_no[0] = R0_STAY;
                 }
             }
         } else if (ewk->wu.hit_quake >= ewk->wu.xyz[0].disp.pos) {
@@ -79,13 +110,13 @@ void effect_D7_move(WORK_Other* ewk) {
             Move_Super_Arts[ewk->master_id]--;
             Select_Arts[ewk->master_id]--;
             if (Flash_Complete[ewk->master_id] == -1 || plw[ewk->master_id].wu.operator == 0) {
-                ewk->wu.routine_no[0] = 8;
+                ewk->wu.routine_no[0] = R0_STAY;
             }
         }
         break;
-    case 2:
+    case R0_SELECT:
         switch (ewk->wu.routine_no[1]) {
-        case 0:
+        case R1_WAIT:
             switch (Moving_Plate[ewk->master_id]) {
             case 1:
                 if (ewk->wu.vital_old == 2) {
@@ -112,58 +143,57 @@ void effect_D7_move(WORK_Other* ewk) {
                 break;
             }
             break;
-        case 1:
-        case 2:
+        case R1_TO_LAST:
+        case R1_TO_FIRST:
             effD7_move(ewk);
             break;
-        case 3:
+        case R1_STEP:
             effD7_move_back(ewk);
             break;
         }
         break;
-    case 3:
+    case R0_SLIDE_OUT:
         ewk->wu.xyz[0].cal += ewk->wu.mvxy.a[0].sp;
         if (Ck_Range_Out_S(ewk, 2, 0x50)) {
             ewk->wu.disp_flag = 0;
-            ewk->wu.routine_no[0] = 9;
+            ewk->wu.routine_no[0] = R0_END;
         }
         break;
-    case 4:
+    case R0_FLASH:
         if (Flash_Complete[ewk->master_id] == 0) {
             break;
         }
         ewk->wu.dir_timer = 10;
         ewk->wu.routine_no[0]++;
         break;
-    case 5:
+    case R0_PAUSE:
         if (--ewk->wu.dir_timer) {
             break;
         }
         ewk->wu.routine_no[0]++;
         break;
-    case 6:
-        if (plw[ewk->master_id ^ 1].wu.operator == 0 || Sel_Arts_Complete[ewk->master_id ^ 1] < 0) {
-            goto plate_ready;
-        plate_ready:;
-            ewk->wu.routine_no[0]++;
-            if (ewk->wu.dm_vital == 0) {
-                y = 16;
-            } else {
-                y = 0;
-            }
-            ewk->wu.hit_quake = y + 32;
+    case R0_WAIT:
+        if (plw[ewk->master_id ^ 1].wu.operator != 0 && Sel_Arts_Complete[ewk->master_id ^ 1] >= 0) {
+            break;
         }
+        ewk->wu.routine_no[0]++;
+        if (ewk->wu.dm_vital == 0) {
+            y = 16;
+        } else {
+            y = 0;
+        }
+        ewk->wu.hit_quake = y + 32;
         break;
-    case 7:
+    case R0_RISE:
         ewk->wu.xyz[1].cal += -0xF0000;
         if (ewk->wu.hit_quake >= ewk->wu.xyz[1].disp.pos) {
             ewk->wu.xyz[1].disp.pos = ewk->wu.hit_quake;
             ewk->wu.routine_no[0]++;
         }
         break;
-    case 8:
+    case R0_STAY:
         break;
-    case 9:
+    case R0_END:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 0;
         return;
@@ -220,12 +250,12 @@ void effD7_setup_pos(WORK_Other* ewk) {
 
 void effD7_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_LEAVE:
         ewk->wu.xyz[0].cal += ewk->wu.mvxy.a[0].sp;
         if (effD7_move_y(ewk)) {
             ewk->wu.routine_no[2]++;
             ewk->wu.dir_timer = 2;
-            if (ewk->wu.routine_no[1] == 1) {
+            if (ewk->wu.routine_no[1] == R1_TO_LAST) {
                 ewk->wu.xyz[2].disp.pos = 45;
                 if (ewk->master_id == 0) {
                     ewk->wu.mvxy.a[0].sp = 0x40000;
@@ -237,7 +267,7 @@ void effD7_move(WORK_Other* ewk) {
             }
         }
         break;
-    case 1:
+    case R2_TURN:
         if (--ewk->wu.dir_timer) {
             break;
         }
@@ -256,14 +286,14 @@ void effD7_move(WORK_Other* ewk) {
         } else {
             ewk->wu.direction = effD7_plate_pos[(s8)ewk->master_id][ewk->wu.dmcal_m * 2 + 1];
         }
-        if (ewk->wu.routine_no[1] == 1) {
+        if (ewk->wu.routine_no[1] == R1_TO_LAST) {
             ewk->wu.mvxy.a[1].sp = 0xC0000;
         } else {
             ewk->wu.mvxy.a[1].sp = -0xE0000;
         }
         ewk->wu.mvxy.d[1].sp = 0;
         break;
-    case 2:
+    case R2_ROUND:
         effD7_move_x(ewk);
         if (effD7_move_y(ewk)) {
             ewk->wu.routine_no[2]++;
@@ -273,7 +303,7 @@ void effD7_move(WORK_Other* ewk) {
         break;
     default:
         if (effD7_check_move(ewk)) {
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[1] = R1_WAIT;
             Moving_Plate[ewk->master_id] = 0;
         }
         break;
@@ -282,7 +312,7 @@ void effD7_move(WORK_Other* ewk) {
 
 s32 effD7_check_move(WORK_Other* ewk) {
     if (Moving_Plate_Counter[ewk->master_id] <= 6) {
-        ewk->wu.routine_no[1] = 0;
+        ewk->wu.routine_no[1] = R1_WAIT;
         ewk->wu.xyz[2].disp.pos = ewk->wu.vital_old * 5 + 35;
         Moving_Plate_Counter[ewk->master_id]--;
         effD7_pattern(ewk, ewk->wu.vital_old);
@@ -293,12 +323,12 @@ s32 effD7_check_move(WORK_Other* ewk) {
 
 void effD7_move_back(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
+    case R2_HOLD:
         if (--ewk->wu.dir_timer == 0) {
             ewk->wu.routine_no[2]++;
         }
         break;
-    case 1:
+    case R2_SHIFT:
         if (OK_Priority[ewk->master_id]) {
             ewk->wu.xyz[2].disp.pos = ewk->wu.dmcal_m * 5 + 35;
         }
@@ -314,7 +344,7 @@ void effD7_move_back(WORK_Other* ewk) {
             ewk->wu.xyz[2].disp.pos = ewk->wu.dmcal_m * 5 + 35;
         }
         if (effD7_check_move(ewk)) {
-            ewk->wu.routine_no[1] = 0;
+            ewk->wu.routine_no[1] = R1_WAIT;
         }
         break;
     }
@@ -333,8 +363,8 @@ void effD7_setup_left(WORK_Other* ewk) {
         ewk->wu.mvxy.a[0].sp = 0x10000;
     }
     ewk->wu.dmcal_m = 2;
-    ewk->wu.routine_no[1] = 1;
-    ewk->wu.routine_no[2] = 0;
+    ewk->wu.routine_no[1] = R1_TO_LAST;
+    ewk->wu.routine_no[2] = R2_LEAVE;
     ewk->wu.hit_quake = ofs + effD7_plate_pos[(s8)ewk->master_id][ewk->wu.dmcal_m * 2];
     ewk->wu.direction = ewk->wu.xyz[1].disp.pos - 24;
     ewk->wu.mvxy.a[1].sp = -0xE0000;
@@ -354,8 +384,8 @@ void effD7_setup_right(WORK_Other* ewk) {
         ewk->wu.mvxy.a[0].sp = 0x20000;
     }
     ewk->wu.dmcal_m = 0;
-    ewk->wu.routine_no[1] = 2;
-    ewk->wu.routine_no[2] = 0;
+    ewk->wu.routine_no[1] = R1_TO_FIRST;
+    ewk->wu.routine_no[2] = R2_LEAVE;
     ewk->wu.hit_quake = ofs + effD7_plate_pos[(s8)ewk->master_id][ewk->wu.dmcal_m * 2];
     ewk->wu.direction = ewk->wu.xyz[1].disp.pos + 32;
     ewk->wu.mvxy.a[1].sp = 0xC0000;
@@ -375,8 +405,8 @@ void effD7_setup_down(WORK_Other* ewk) {
         ewk->wu.mvxy.a[0].sp = -0x10000;
     }
     ewk->wu.dmcal_m = ewk->wu.vital_old + 1;
-    ewk->wu.routine_no[1] = 3;
-    ewk->wu.routine_no[2] = 0;
+    ewk->wu.routine_no[1] = R1_STEP;
+    ewk->wu.routine_no[2] = R2_HOLD;
     ewk->wu.hit_quake = effD7_plate_pos[(s8)ewk->master_id][ewk->wu.dmcal_m * 2] + ofs;
     if (ewk->wu.dm_vital == 0) {
         ewk->wu.direction = effD7_plate_pos[(s8)ewk->master_id][ewk->wu.dmcal_m * 2 + 1] + 16;
@@ -401,8 +431,8 @@ void effD7_setup_up(WORK_Other* ewk) {
         ewk->wu.mvxy.a[0].sp = 0x10000;
     }
     ewk->wu.dmcal_m = ewk->wu.vital_old - 1;
-    ewk->wu.routine_no[1] = 3;
-    ewk->wu.routine_no[2] = 0;
+    ewk->wu.routine_no[1] = R1_STEP;
+    ewk->wu.routine_no[2] = R2_HOLD;
     ewk->wu.hit_quake = effD7_plate_pos[(s8)ewk->master_id][ewk->wu.dmcal_m * 2] + ofs;
     if (ewk->wu.dm_vital == 0) {
         ewk->wu.direction = effD7_plate_pos[(s8)ewk->master_id][ewk->wu.dmcal_m * 2 + 1] + 16;
@@ -457,17 +487,15 @@ void effD7_set_position(WORK_Other* ewk, s16 flag) {
 }
 
 s32 effD7_select_end(WORK_Other* ewk) {
-    s32 ret;
     if (Sel_Arts_Complete[ewk->master_id] == 0) {
         return 0;
     }
-    ret = 1;
     if (Super_Arts[ewk->master_id] == ewk->master_player) {
-        ewk->wu.routine_no[0] = 4;
+        ewk->wu.routine_no[0] = R0_FLASH;
     } else {
         ewk->wu.routine_no[0]++;
     }
-    return ret;
+    return 1;
 }
 
 s32 effect_D7_init(s16 pl_id, s16 plate_id, s16 pos_id, s16 time, s16 type) {
@@ -497,7 +525,7 @@ s32 effect_D7_init2(s16 pl_id, s16 plate_id, s16 type) {
     ewk = (WORK_Other*)frw[ix];
     eff98_arts_req[(s8)pl_id][plate_id] = 0;
     effE4_col_req[(s8)pl_id][plate_id] = 0;
-    ewk->wu.routine_no[0] = 8;
+    ewk->wu.routine_no[0] = R0_STAY;
     ewk->wu.disp_flag = 1;
     ewk->master_player = plate_id;
     effD7_init_common(ewk, pl_id, plate_id, 1, type, 0);
@@ -533,9 +561,7 @@ s16 pos_id;
         ewk->wu.char_index = 28;
         chr = (My_char[pl_id] & 0x7F) * 3;
         ewk->wu.vital_new = pl_id * 39 + country * 78 + plate_id + chr;
-        if (pl_id != 0) {
-            goto plate_color;
-        plate_color:;
+        if (pl_id) {
             ewk->wu.my_col_code = 0x204D;
         } else {
             ewk->wu.my_col_code = 0x2040;

@@ -26,17 +26,28 @@
 #include "aboutspr.h"
 #include "effe3.h"
 
+/* routine_no[0] */
+#define R0_WAIT         0       /* wait for a request, then switch */
+#define R0_HOLD         1       /* hold for the flash time */
+#define R0_RESTORE      2       /* restore the stage layers */
+#define R0_KILL         99      /* (default) put the work back */
+
+/* effE3_data columns */
+#define E3_BG_X         0       /* BG3 x position */
+#define E3_BG_Y         1       /* BG3 y position */
+#define E3_TIME         2       /* frames the picture is held */
+
 
 
 
 void effect_E3_move(WORK_Other* ewk) {
     s16 i;
     if (akebono_flag) {
-        ewk->wu.routine_no[0] = 99;
+        ewk->wu.routine_no[0] = R0_KILL;
         sa_pa_flag = 0;
     }
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_WAIT:
         if (!Flash_MT[0] && !Flash_MT[1]) {
             break;
         }
@@ -51,16 +62,16 @@ void effect_E3_move(WORK_Other* ewk) {
             Bg_On_W(8);
         }
         if (Flash_MT[0]) {
-            ewk->wu.old_rno[0] = effE3_data[Flash_MT[0]][2];
+            ewk->wu.old_rno[0] = effE3_data[Flash_MT[0]][E3_TIME];
             ewk->master_id = 0;
         } else {
-            ewk->wu.old_rno[0] = effE3_data[Flash_MT[1]][2];
+            ewk->wu.old_rno[0] = effE3_data[Flash_MT[1]][E3_TIME];
             ewk->master_id = 1;
         }
         effE3_scroll_set(ewk);
         return;
         break;
-    case 1:
+    case R0_HOLD:
         ewk->wu.old_rno[0]--;
         if (ewk->wu.old_rno[0] <= 0) {
             sa_pa_flag = 0;
@@ -70,8 +81,8 @@ void effect_E3_move(WORK_Other* ewk) {
             effE3_scroll_set(ewk);
         }
         break;
-    case 2:
-        ewk->wu.routine_no[0] = 0;
+    case R0_RESTORE:
+        ewk->wu.routine_no[0] = R0_WAIT;
         Flash_MT[ewk->master_id] = 0;
         if (akebono_flag) {
             return;
@@ -98,8 +109,8 @@ void effect_E3_move(WORK_Other* ewk) {
 
 /* provisional name */
 void effE3_scroll_set(WORK_Other* ewk) {
-    s32 x = effE3_data[Flash_MT[ewk->master_id]][0] - bg_w.pos_offset;
-    s32 y = effE3_data[Flash_MT[ewk->master_id]][1];
+    s32 x = effE3_data[Flash_MT[ewk->master_id]][E3_BG_X] - bg_w.pos_offset;
+    s32 y = effE3_data[Flash_MT[ewk->master_id]][E3_BG_Y];
     scrn_map_set(3, ake_scrl_w[2].adrs);
     Scrn_Move_Set(3, x, y);
     x = -x & 0x3FF;

@@ -22,6 +22,10 @@
 #include "sys_test_2.h"
 #include "cps3.h"
 
+/* screentest_no: the screen test page step */
+#define SCREEN_DRAW     0       /* screentest_draw_crosshatch */
+#define SCREEN_SHOW     1       /* the crosshatch is up */
+
 s16 screentest_no = 0;  /* 02007CA4 */
 
 
@@ -70,15 +74,15 @@ void screentest_draw_crosshatch(void) {
 s32 screentest_page(void) {
     register s32 rc;
     switch (screentest_no) {
-    case 0:
+    case SCREEN_DRAW:
         screentest_draw_crosshatch();
         break;
-    case 1:
+    case SCREEN_SHOW:
         break;
     }
-    if ((p1sw_0 & 0x1000) && (p1sw_0 & 0x10)) {
+    if ((p1sw_0 & BUTTON_START) && (p1sw_0 & BUTTON_LP)) {
         rc = -1;
-        screentest_no = 0;
+        screentest_no = SCREEN_DRAW;
         return rc;
     }
     rc = 0;

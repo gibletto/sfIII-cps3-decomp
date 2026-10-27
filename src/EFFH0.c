@@ -12,13 +12,18 @@
 #include "charmove_2.h"
 #include "effect_2.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* set up from effh0_data */
+#define R0_MOVE         1       /* play the pattern once */
+#define R0_KILL         2       /* put the work back */
+
 
 extern const EFFH0_DATA effh0_data[];
 extern const u32 effh0_char_table[];
 
 void effect_H0_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.mvxy.a[0].sp = effh0_data[ewk->wu.type].x;
         ewk->wu.mvxy.a[1].sp = effh0_data[ewk->wu.type].y;
@@ -28,7 +33,7 @@ void effect_H0_move(WORK_Other* ewk) {
         ewk->wu.mvxy.a[0].sp <<= 8;
         ewk->wu.mvxy.a[1].sp <<= 8;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;
             break;
@@ -42,7 +47,7 @@ void effect_H0_move(WORK_Other* ewk) {
             }
         }
         break;
-    case 2:
+    case R0_KILL:
     default:
         push_effect_work(&ewk->wu);
         break;

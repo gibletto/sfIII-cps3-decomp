@@ -13,16 +13,21 @@
 #include "aboutspr.h"
 #include "charmove_2.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show and start the pattern */
+#define R0_MOVE         1       /* play the pattern once */
+#define R0_KILL         2       /* (default) put the work back */
+
 extern const u32 eff99_char_table[];
 
 void effect_99_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R0_MOVE:
         if (ewk->wu.cg_type == 0) {
             char_move(&ewk->wu);
         } else {

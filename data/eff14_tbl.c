@@ -1,5 +1,13 @@
 /*
- * EFF14_TBL.C  tables read by eff14.c, EFF15.c and EFF16.c
+ * EFF14_TBL.C  background colour-cycle, falling stone and blinking object tables
+ *
+ * eff14_data_tbl gives each of the 11 colour-cycle ids its scroll layer, work slot, script and
+ * cell patterns (in eff14_pattern_0); eff14_ofs_tbl starts with the map offset of each id's
+ * rectangle, followed by the scripts. Read by EFF14.C, the background colour-cycle writer.
+ * eff15_data_tbl holds the position, priority, cell, side speed limit and floor of each
+ * falling stone, and eff15_y_speed_tbl, eff15_x_speed_tbl, eff15_x_acc_tbl and
+ * eff15_x_acc_tbl2 the random speeds it picks from; read by EFF15.C. eff16_data_tbl is the x,
+ * y and cg number of each blinking object, read by EFF16.C.
  */
 
 #include "types.h"
@@ -128,6 +136,7 @@ const s32 eff15_x_acc_tbl2[16] = {
     0, -64, -96, -128, -192, -224, -256, -288, -320, -352, -384, -448, -480, -512, -544, -768,
 };
 
+/* One row per object (effect_16_init's type): x and y from BG 1, unused, cell number. */
 const s16 eff16_data_tbl[15][4] = {
     { -321, 329, 0, 16461 }, { -321, 206, 0, 16461 }, { -321, 83, 0, 16461 }, { -198, 329, 0, 16461 },
     { -198, 206, 0, 16461 }, { -198, 83, 0, 16461 }, { -75, 329, 0, 16461 }, { -75, 206, 0, 16461 },

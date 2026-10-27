@@ -34,6 +34,14 @@
 #include "Eff93.h"
 #include "cps3.h"
 
+/* routine_no[1], Eff93_SLIDE_UP */
+#define R1_WAIT         0       /* count the delay down */
+#define R1_RAISE        1       /* (default) raise BG1 12 dots a frame */
+
+/* routine_no[1], Eff93_SLIDE_DOWN */
+#define R1_START        0       /* pick the direction and speed */
+#define R1_SLIDE        1       /* (default) slide BG1 sideways */
+
 
 
 /* 0617A08C */
@@ -53,7 +61,7 @@ void effect_93_move(WORK_Other* ewk) {
 /* provisional name */
 void Eff93_SLIDE_UP(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_WAIT:
         if (--ewk->wu.dir_timer == 0) {
             ewk->wu.routine_no[1]++;
             Face_Status = 1;
@@ -76,7 +84,7 @@ void Eff93_SLIDE_UP(WORK_Other* ewk) {
 /* provisional name */
 void Eff93_SLIDE_DOWN(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_START:
         ewk->wu.routine_no[1]++;
         if (Last_Arts_PL == 1) {
             ewk->wu.dir_step = -0x100;

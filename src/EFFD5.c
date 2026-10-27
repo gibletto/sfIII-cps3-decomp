@@ -19,16 +19,21 @@
 #include "aboutspr.h"
 #include "EFFD5.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* show the plate */
+#define R0_MOVE         1       /* show the face and the cursors */
+#define R0_KILL         2       /* (default) put the work back */
+
 extern s8 ID_of_Face[2][2][5];
 extern const s16 Face_Pos_Data[][2];
 
 void effect_D5_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         /* fall through */
-    case 1:
+    case R0_MOVE:
         if (Suicide == 1) {
             ewk->wu.routine_no[0]++;
             ewk->wu.disp_flag = 0;
@@ -99,8 +104,8 @@ s32 effect_D5_init(s16 id) {
     ewk = (WORK_Other*)frw[ix];
     Setup_EffD5(&ewk->wu);
     x = DE_X[10] + 0x100;
-    ewk->wu.xyz[0].disp.pos = x + Face_Pos_Data[id][0] + 0xC0;
-    ewk->wu.xyz[1].disp.pos = Face_Pos_Data[id][1] + 65;
+    ewk->wu.xyz[0].disp.pos = x + Face_Pos_Data[id][SEL_POS_X] + 0xC0;
+    ewk->wu.xyz[1].disp.pos = Face_Pos_Data[id][SEL_POS_Y] + 65;
     ewk->wu.xyz[2].disp.pos = 62;
     ewk->wu.dir_timer = id;
 }

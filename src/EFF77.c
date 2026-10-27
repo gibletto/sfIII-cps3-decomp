@@ -23,6 +23,16 @@
 #include "CALDIR.h"
 #include "PLS02.h"
 #include "bg_sub_5.h"
+#include "fighter.h"
+
+/* routine_no[2] */
+#define R2_WATCH        0       /* watch for an attack */
+#define R2_START        1       /* start the reaction */
+#define R2_PLAY         2       /* play it, then idle again */
+
+/* routine_no[0], later areas */
+#define R0_INIT         0       /* show in place */
+#define R0_MOVE         1       /* animate */
 
 extern const u32 eff77_char_table[];
 void eff77_0000(WORK_Other* ewk);
@@ -83,7 +93,7 @@ void eff77_0000(WORK_Other* ewk) {
 }
 
 s32 eff94_pl_attack_check(PLW* wk) {
-    if (wk->wu.routine_no[1] == 1 && wk->wu.routine_no[2] > 11) {
+    if (wk->wu.routine_no[1] == PLAYER_DAMAGE && wk->wu.routine_no[2] > 11) {
         return 1;
     }
     return 0;
@@ -91,29 +101,29 @@ s32 eff94_pl_attack_check(PLW* wk) {
 
 void eff77_0001(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
-    case 0:
-        if (plw[0].player_number == 7) {
+    case R2_WATCH:
+        if (plw[0].player_number == PL_IBUKI) {
             if (eff94_pl_attack_check(&plw[0])) {
                 ewk->wu.routine_no[2]++;
                 break;
             }
         }
-        if (plw[1].player_number == 7) {
+        if (plw[1].player_number == PL_IBUKI) {
             if (eff94_pl_attack_check(&plw[1])) {
                 ewk->wu.routine_no[2]++;
                 break;
             }
         }
         break;
-    case 1:
+    case R2_START:
         ewk->wu.routine_no[2]++;
         set_char_move_init(&ewk->wu, 0, 1);
         break;
-    case 2:
+    case R2_PLAY:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type) {
             set_char_move_init(&ewk->wu, 0, 0);
-            ewk->wu.routine_no[2] = 0;
+            ewk->wu.routine_no[2] = R2_WATCH;
         }
         break;
     default:
@@ -199,7 +209,7 @@ void eff77_0106(WORK_Other* ewk) {
 
 void eff77_area1(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 4);
@@ -207,7 +217,7 @@ void eff77_area1(WORK_Other* ewk) {
         ewk->wu.xyz[1].disp.pos = 52;
         ewk->wu.my_priority = ewk->wu.position_z = 70;
         break;
-    case 1:
+    case R0_MOVE:
         char_move(&ewk->wu);
         disp_pos_trans_entry_r(ewk);
         break;

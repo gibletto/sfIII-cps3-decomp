@@ -7,8 +7,8 @@
  * table (plpnm_lv_00) and then sets the draw priority relative to the opponent when the animation
  * asks for it. Normal_00000 is the entry routine that runs appear_player for the round
  * introduction; Normal_01000 is the standing routine (pcon_dp_flag holds it in pose 9/60).
- * The other normal routines: crouching and turning (Normal_02000 - 04000), walking and jump starts
- * (Normal_05000, 06000 through nm_05_xxxx/nm_06_xxxx), dashes, jumps (Normal_16000 - 18000), parry
+ * The other normal routines: crouching and turning (Normal_02000 - 04000), the forward and back
+ * dashes (Normal_05000, 06000 through nm_05_xxxx/nm_06_xxxx), walking, jumps (Normal_16000 - 18000), parry
  * (Normal_31000, 35000, Normal_air_paring) and the other special movement states up to Normal_41000.
  * Called from the player main routine (PLMAIN).
  */
@@ -29,6 +29,90 @@
 #include "EFFG6.h"
 #include "win_pl.h"
 #include "PLNORMAL.h"
+
+/* routine_no[3], Normal_01000 */
+#define N01_RESTART     1       /* set the animation up again */
+
+/* routine_no[3], Normal_02000 */
+#define N02_RUN         1       /* run the animation */
+
+/* routine_no[3], Normal_03000 */
+#define N03_MOVE        1       /* move and run the animation */
+
+/* routine_no[3], Normal_04000 */
+#define N04_MOVE        1       /* move and run the animation */
+
+/* routine_no[3], nm_05_0000 */
+#define N05_00_MOVE     1       /* move and run the animation to cue 1 */
+#define N05_00_AIR      2       /* in the air until it lands */
+#define N05_00_LAND     3       /* the landing */
+
+/* routine_no[3], nm_05_0100 */
+#define N05_01_MOVE     1       /* move and run the animation to cue 1 */
+#define N05_01_MOVE2    2       /* move and run the animation to cue 1 */
+#define N05_01_RUN      3       /* run the animation */
+
+/* routine_no[3], nm_06_0000 */
+#define N06_00_RUN      1       /* run the animation */
+
+/* routine_no[3], nm_06_0100 */
+#define N06_01_MOVE     1       /* move and run the animation to cue 1 */
+#define N06_01_AIR      2       /* in the air until it lands */
+#define N06_01_LAND     3       /* the landing */
+
+/* routine_no[3], nm_06_0200 */
+#define N06_02_MOVE     1       /* move and run the animation to cue 1 */
+#define N06_02_MOVE2    2       /* move and run the animation to cue 1 */
+#define N06_02_RUN      3       /* run the animation */
+
+/* routine_no[3], Normal_07000 */
+#define N07_RUN         1       /* run the animation */
+
+/* routine_no[3], Normal_08000 */
+#define N08_RUN         1       /* run the animation */
+
+/* routine_no[3], Normal_09000 */
+#define N09_RUN         1       /* run the animation */
+
+/* routine_no[3], Normal_10000 */
+#define N10_RUN         1       /* run the animation */
+
+/* routine_no[3], Normal_11000 */
+#define N11_MOVE        1       /* move and run the animation */
+
+/* routine_no[3], Normal_12000 */
+#define N12_MOVE        1       /* move and run the animation */
+
+/* routine_no[3], Normal_13000 */
+#define N13_RUN         1       /* run the animation */
+
+/* routine_no[3], Normal_16000 */
+#define N16_RUN         1       /* run the animation */
+
+/* routine_no[3], Normal_17000 */
+#define N17_RUN         1       /* run the animation */
+
+/* routine_no[3], Normal_18000 */
+#define N18_AIR         1       /* in the air until it lands */
+#define N18_LAND        2       /* the landing */
+
+/* routine_no[3], Normal_27000 */
+#define N27_RUN         1       /* run the animation */
+
+/* routine_no[3], Normal_31000 */
+#define N31_RUN         1       /* run the animation */
+
+/* routine_no[3], Normal_35000 */
+#define N35_AIR         1       /* in the air until it lands */
+#define N35_LAND        2       /* the landing */
+
+/* routine_no[3], Normal_air_paring */
+#define N_AIR_PARI_AIR  1       /* in the air until it lands */
+#define N_AIR_PARI_LAND 2       /* the landing */
+
+/* routine_no[3], Normal_38000 */
+#define N38_AIR         1       /* in the air until it lands */
+#define N38_LAND        2       /* the landing */
 
 
 
@@ -78,7 +162,7 @@ void Normal_01000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority + 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         if (pcon_dp_flag) {
             if (wk->wu.now_koc == 0 && wk->wu.char_index == 0) {
@@ -90,7 +174,7 @@ void Normal_01000(PLW* wk) {
             set_char_move_init((WORK*)wk, 0, 0);
             wk->scr_pos_set_flag = 0;
         }
-    case 1:
+    case N01_RESTART:
         if (pcon_dp_flag) {
             if (wk->wu.now_koc != 9 || wk->wu.char_index != 60) {
                 exset_char_move_init((WORK*)wk, 9, 60);
@@ -111,12 +195,12 @@ void Normal_02000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority + 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         wk->wu.rl_flag = wk->wu.rl_waza;
         set_char_move_init((WORK*)wk, 0, 1);
         break;
-    case 1:
+    case N02_RUN:
         char_move((WORK*)wk);
         break;
     }
@@ -129,7 +213,7 @@ void Normal_03000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority - 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init(&wk->wu, 0, 2);
         setup_mvxy_data(&wk->wu, 0);
@@ -137,7 +221,7 @@ void Normal_03000(PLW* wk) {
         add_mvxy_speed(&wk->wu);
         wk->wu.mvxy.a[0].sp *= 2;
         break;
-    case 1:
+    case N03_MOVE:
         cal_mvxy_speed(&wk->wu);
         add_mvxy_speed(&wk->wu);
         char_move(&wk->wu);
@@ -152,13 +236,13 @@ void Normal_04000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority + 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init((WORK*)wk, 0, 3);
         setup_mvxy_data((WORK*)wk, 1);
         add_mvxy_speed((WORK*)wk);
         break;
-    case 1:
+    case N04_MOVE:
         cal_mvxy_speed((WORK*)wk);
         add_mvxy_speed((WORK*)wk);
         char_move((WORK*)wk);
@@ -182,12 +266,12 @@ void Normal_05000(PLW* wk) {
 
 void nm_05_0000(PLW* wk) {
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         wk->wu.rl_flag = wk->wu.rl_waza;
         set_char_move_init((WORK*)wk, 0, 4);
         setup_mvxy_data((WORK*)wk, 2);
-    case 1:
+    case N05_00_MOVE:
         if (wk->wu.cg_type == 1) {
             add_mvxy_speed((WORK*)wk);
             wk->wu.routine_no[3]++;
@@ -195,10 +279,10 @@ void nm_05_0000(PLW* wk) {
             char_move((WORK*)wk);
         }
         break;
-    case 2:
+    case N05_00_AIR:
         jumping_union_process((WORK*)wk, 3);
         break;
-    case 3:
+    case N05_00_LAND:
         char_move((WORK*)wk);
         break;
     }
@@ -208,7 +292,7 @@ void nm_05_0000(PLW* wk) {
 
 void nm_05_0100(PLW* wk) {
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         wk->wu.rl_flag = wk->wu.rl_waza;
         set_char_move_init((WORK*)wk, 0, 4);
@@ -219,7 +303,7 @@ void nm_05_0100(PLW* wk) {
             wk->wu.cg_type = 0;
         }
         break;
-    case 1:
+    case N05_01_MOVE:
         char_move((WORK*)wk);
         if (wk->wu.cg_type == 1) {
             add_mvxy_speed((WORK*)wk);
@@ -227,7 +311,7 @@ void nm_05_0100(PLW* wk) {
             wk->wu.cg_type = 0;
         }
         break;
-    case 2:
+    case N05_01_MOVE2:
         char_move((WORK*)wk);
         if (wk->wu.cg_type == 1) {
             wk->wu.routine_no[3]++;
@@ -237,7 +321,7 @@ void nm_05_0100(PLW* wk) {
         cal_mvxy_speed((WORK*)wk);
         add_mvxy_speed((WORK*)wk);
         break;
-    case 3:
+    case N05_01_RUN:
         char_move((WORK*)wk);
         break;
     }
@@ -259,12 +343,12 @@ void Normal_06000(PLW* wk) {
 
 void nm_06_0000(PLW* wk) {
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         wk->wu.rl_flag = wk->wu.rl_waza;
         set_char_move_init((WORK*)wk, 0, 5);
         break;
-    case 1:
+    case N06_00_RUN:
         char_move((WORK*)wk);
         break;
     }
@@ -274,12 +358,12 @@ void nm_06_0000(PLW* wk) {
 
 void nm_06_0100(PLW* wk) {
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         wk->wu.rl_flag = wk->wu.rl_waza;
         set_char_move_init((WORK*)wk, 0, 5);
         setup_mvxy_data((WORK*)wk, 3);
-    case 1:
+    case N06_01_MOVE:
         if (wk->wu.cg_type == 1) {
             add_mvxy_speed((WORK*)wk);
             wk->wu.routine_no[3]++;
@@ -287,10 +371,10 @@ void nm_06_0100(PLW* wk) {
             char_move((WORK*)wk);
         }
         break;
-    case 2:
+    case N06_01_AIR:
         jumping_union_process((WORK*)wk, 3);
         break;
-    case 3:
+    case N06_01_LAND:
         char_move((WORK*)wk);
         break;
     }
@@ -300,7 +384,7 @@ void nm_06_0100(PLW* wk) {
 
 void nm_06_0200(PLW* wk) {
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         wk->wu.rl_flag = wk->wu.rl_waza;
         set_char_move_init((WORK*)wk, 0, 5);
@@ -311,7 +395,7 @@ void nm_06_0200(PLW* wk) {
             wk->wu.cg_type = 0;
         }
         break;
-    case 1:
+    case N06_02_MOVE:
         char_move((WORK*)wk);
         if (wk->wu.cg_type == 1) {
             add_mvxy_speed((WORK*)wk);
@@ -319,7 +403,7 @@ void nm_06_0200(PLW* wk) {
             wk->wu.cg_type = 0;
         }
         break;
-    case 2:
+    case N06_02_MOVE2:
         char_move((WORK*)wk);
         if (wk->wu.cg_type == 1) {
             wk->wu.routine_no[3]++;
@@ -329,7 +413,7 @@ void nm_06_0200(PLW* wk) {
         cal_mvxy_speed((WORK*)wk);
         add_mvxy_speed((WORK*)wk);
         break;
-    case 3:
+    case N06_02_RUN:
         char_move((WORK*)wk);
         break;
     }
@@ -342,11 +426,11 @@ void Normal_07000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority - 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init((WORK*)wk, 0, 11);
         break;
-    case 1:
+    case N07_RUN:
         char_move((WORK*)wk);
         break;
     }
@@ -359,11 +443,11 @@ void Normal_08000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority - 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init((WORK*)wk, 0, 6);
         break;
-    case 1:
+    case N08_RUN:
         char_move((WORK*)wk);
         break;
     }
@@ -376,11 +460,11 @@ void Normal_09000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority - 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init((WORK*)wk, 0, 7);
         break;
-    case 1:
+    case N09_RUN:
         char_move((WORK*)wk);
         break;
     }
@@ -393,12 +477,12 @@ void Normal_10000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority - 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         wk->wu.rl_flag = wk->wu.rl_waza;
         set_char_move_init((WORK*)wk, 0, 8);
         break;
-    case 1:
+    case N10_RUN:
         char_move((WORK*)wk);
         break;
     }
@@ -411,13 +495,13 @@ void Normal_11000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority + -1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init(&wk->wu, 0, 0x9);
         setup_mvxy_data(&wk->wu, 0x4);
         add_mvxy_speed(&wk->wu);
         break;
-    case 1:
+    case N11_MOVE:
         cal_mvxy_speed(&wk->wu);
         add_mvxy_speed(&wk->wu);
         char_move(&wk->wu);
@@ -432,13 +516,13 @@ void Normal_12000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority + 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init(&wk->wu, 0, 10);
         setup_mvxy_data(&wk->wu, 5);
         add_mvxy_speed(&wk->wu);
         break;
-    case 1:
+    case N12_MOVE:
         cal_mvxy_speed(&wk->wu);
         add_mvxy_speed(&wk->wu);
         char_move(&wk->wu);
@@ -453,11 +537,11 @@ void Normal_13000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority + 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init((WORK*)wk, 0, 50);
         break;
-    case 1:
+    case N13_RUN:
         char_move((WORK*)wk);
         break;
     }
@@ -470,11 +554,11 @@ void Normal_16000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority + 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init((WORK*)wk, 0, 12);
         break;
-    case 1:
+    case N16_RUN:
         char_move((WORK*)wk);
         break;
     }
@@ -487,11 +571,11 @@ void Normal_17000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority + 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init((WORK*)wk, 0, 13);
         break;
-    case 1:
+    case N17_RUN:
         char_move((WORK*)wk);
         break;
     }
@@ -504,16 +588,16 @@ void Normal_18000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority + 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init(&wk->wu, 0, jpdat_tbl[wk->wu.routine_no[2] - 18][0]);
         setup_mvxy_data(&wk->wu, jpdat_tbl[wk->wu.routine_no[2] - 18][1]);
         add_mvxy_speed(&wk->wu);
         break;
-    case 1:
+    case N18_AIR:
         jumping_union_process(&wk->wu, 2);
         break;
-    case 2:
+    case N18_LAND:
         char_move(&wk->wu);
         break;
     }
@@ -542,11 +626,11 @@ void Normal_27000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority + 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init(&wk->wu, 0, wk->wu.routine_no[2] + 2);
         break;
-    case 1:
+    case N27_RUN:
         char_move(&wk->wu);
         break;
     }
@@ -561,7 +645,7 @@ void Normal_31000(PLW* wk) {
     wk->guard_chuu = guard_kind[wk->wu.routine_no[2] - 27];
     wk->scr_pos_set_flag = 0;
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         wk->wu.rl_flag = (wk->wu.dm_rl + 1) & 1;
         set_char_move_init((WORK*)wk, 0, wk->wu.routine_no[2] - 7);
@@ -569,7 +653,7 @@ void Normal_31000(PLW* wk) {
         Flash_MT[(wk->wu.id)] = 2;
         add_sp_arts_gauge_paring(wk);
         break;
-    case 1:
+    case N31_RUN:
         char_move((WORK*)wk);
         break;
     }
@@ -583,7 +667,7 @@ void Normal_35000(PLW* wk) {
     }
     wk->guard_chuu = guard_kind[wk->wu.routine_no[2] - 27];
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_hit_stop_hit_quake((WORK*)wk);
         if (wk->wu.rl_flag != ((wk->wu.dm_rl + 1) & 1)) {
@@ -595,13 +679,13 @@ void Normal_35000(PLW* wk) {
         set_char_move_init((WORK*)wk, 0, 27);
         Flash_MT[(wk->wu.id)] = 2;
         break;
-    case 1:
+    case N35_AIR:
         if (((WORK*)wk->wu.target_adrs)->cg_prio != 2) {
             wk->wu.next_z = 32;
         }
         jumping_union_process((WORK*)wk, 2);
         break;
-    case 2:
+    case N35_LAND:
         char_move((WORK*)wk);
         break;
     }
@@ -616,7 +700,7 @@ void Normal_air_paring(PLW* wk) {
     }
     wk->guard_chuu = guard_kind[wk->wu.routine_no[2] - 27];
     switch (wk->wu.routine_no[3]) {
-    case 0:
+    case RN3_START:
         wk->wu.routine_no[3]++;
         set_hit_stop_hit_quake((WORK*)wk);
         if (wk->wu.rl_flag != ((wk->wu.dm_rl + 1) & 1)) {
@@ -628,13 +712,13 @@ void Normal_air_paring(PLW* wk) {
         set_char_move_init((WORK*)wk, 0, 27);
         Flash_MT[(wk->wu.id)] = 2;
         break;
-    case 1:
+    case N_AIR_PARI_AIR:
         if (((WORK*)wk->wu.target_adrs)->cg_prio != 2) {
             wk->wu.next_z = 32;
         }
         jumping_union_process((WORK*)wk, 2);
         break;
-    case 2:
+    case N_AIR_PARI_LAND:
         char_move((WORK*)wk);
         break;
     }
@@ -665,11 +749,11 @@ void Normal_38000(PLW* wk) {
         wk->wu.next_z = wk->wu.my_priority + 1;
     }
     switch (wk->wu.routine_no[3]) {
-    case 0:
-    case 1:
+    case RN3_START:
+    case N38_AIR:
         jumping_union_process(&wk->wu, 2);
         break;
-    case 2:
+    case N38_LAND:
         char_move(&wk->wu);
         break;
     }

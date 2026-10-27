@@ -19,13 +19,17 @@
 #include "aboutspr.h"
 #include "ta_sub.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* take the next entry */
+#define R0_MOVE         1       /* move right, then start again */
+
 extern const s16 eff83_data_tbl[3][8][4];
 extern const s32 eff83_speed_tbl[3][8];
 
 void effect_83_move(WORK_Other* ewk) {
     const s16* data;
     switch (ewk->wu.routine_no[0]) {
-    case 0:
+    case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 2;
         ewk->wu.blink_timing = 1;
@@ -40,12 +44,12 @@ void effect_83_move(WORK_Other* ewk) {
         ewk->wu.old_rno[0] &= 7;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R0_MOVE:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             add_x_sub(ewk);
             if (ewk->wu.xyz[0].disp.pos > 896) {
-                ewk->wu.routine_no[0] = 0;
+                ewk->wu.routine_no[0] = R0_INIT;
             }
         }
         disp_pos_trans_entry_r(ewk);

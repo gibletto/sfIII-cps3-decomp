@@ -19,6 +19,25 @@
 #include "EFF61.h"
 #include "EFF62.h"
 
+/* routine_no[0] */
+#define R0_INIT         0       /* start the idle animation */
+#define R0_IDLE         1       /* idle until a side has won */
+#define R0_LOSE         3       /* lost: pose facing the player */
+#define R0_WIN          4       /* won: play the win pose */
+#define R0_WIN_STAY     6       /* won: stay as it is */
+#define R0_LOSE_STAY    7       /* lost: stay as it is */
+
+/* routine_no[1], idle */
+#define R1_IDLE         0       /* idle until the animation's cue */
+#define R1_SECOND       1       /* start the second animation */
+#define R1_HOLD         2       /* hold for a frame */
+#define R1_PLAY         3       /* play it, then start over */
+
+/* routine_no[1], poses */
+#define R1_INIT         0       /* start the pose */
+#define R1_DELAY        1       /* one frame */
+#define R1_ANIM         2       /* animate */
+
 s16 get_winner_id(void);
 void eff61_0000(WORK_Other* ewk);
 void eff61_1000(WORK_Other* ewk);
@@ -37,7 +56,7 @@ void effect_61_move(WORK_Other* ewk) {
 
 void eff61_0000(WORK_Other* ewk) {
     ewk->wu.routine_no[0]++;
-    ewk->wu.routine_no[1] = 0;
+    ewk->wu.routine_no[1] = R1_IDLE;
     ewk->wu.old_rno[0] = 0;
     ewk->wu.disp_flag = 1;
     set_char_move_init(&ewk->wu, 0, 0);
@@ -48,7 +67,7 @@ void eff61_0000(WORK_Other* ewk) {
 
 void eff61_1000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_IDLE:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             if (ewk->wu.cg_type) {
@@ -57,21 +76,21 @@ void eff61_1000(WORK_Other* ewk) {
         }
         eff61_check_result(ewk, 0);
         break;
-    case 1:
+    case R1_SECOND:
         eff61_check_result(ewk, 1);
         ewk->wu.routine_no[1]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, 1);
         break;
-    case 2:
+    case R1_HOLD:
         eff61_check_result(ewk, 1);
         ewk->wu.routine_no[1]++;
         break;
-    case 3:
+    case R1_PLAY:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
             if (ewk->wu.cg_type) {
-                ewk->wu.routine_no[0] = 0;
+                ewk->wu.routine_no[0] = R0_INIT;
             } else {
                 eff61_check_result(ewk, 1);
             }
@@ -83,7 +102,7 @@ void eff61_1000(WORK_Other* ewk) {
 
 void eff61_3000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         if (check_work_position(&ewk->wu, (WORK*)&plw[ewk->wu.old_rno[0]])) {
             ewk->wu.char_index = 3;
@@ -92,10 +111,10 @@ void eff61_3000(WORK_Other* ewk) {
         }
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
-    case 1:
+    case R1_DELAY:
         ewk->wu.routine_no[1]++;
         break;
-    case 2:
+    case R1_ANIM:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
         }
@@ -106,14 +125,14 @@ void eff61_3000(WORK_Other* ewk) {
 
 void eff61_4000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
-    case 0:
+    case R1_INIT:
         ewk->wu.routine_no[1]++;
         set_char_move_init(&ewk->wu, 0, 2);
         break;
-    case 1:
+    case R1_DELAY:
         ewk->wu.routine_no[1]++;
         break;
-    case 2:
+    case R1_ANIM:
         if (!EXE_flag && !Game_pause) {
             char_move(&ewk->wu);
         }
@@ -129,19 +148,19 @@ void eff61_wait(WORK_Other* ewk) {
 void eff61_check_result(WORK_Other* ewk, s16 flag) {
     s16 winner;
     if (complete_victory_check()) {
-        ewk->wu.routine_no[1] = 0;
+        ewk->wu.routine_no[1] = R1_INIT;
         winner = get_winner_id();
         if (winner == ewk->wu.old_rno[0]) {
             if (flag) {
-                ewk->wu.routine_no[0] = 4;
+                ewk->wu.routine_no[0] = R0_WIN;
                 ewk->wu.char_index = 2;
             } else {
-                ewk->wu.routine_no[0] = 6;
+                ewk->wu.routine_no[0] = R0_WIN_STAY;
             }
         } else if (flag) {
-            ewk->wu.routine_no[0] = 7;
+            ewk->wu.routine_no[0] = R0_LOSE_STAY;
         } else {
-            ewk->wu.routine_no[0] = 3;
+            ewk->wu.routine_no[0] = R0_LOSE;
         }
     }
 }

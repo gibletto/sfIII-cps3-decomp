@@ -516,14 +516,14 @@ void config_top_save_exit(void) {
             s++;
             d++;
         }
-        coin_chute1_w.per_credit = coin_rate_tbl[Coin_Mode][0];
-        coin_chute1_w.credits = coin_rate_tbl[Coin_Mode][1];
-        coin_chute2_w.per_credit = coin_rate_tbl[Coin_Mode][0];
-        coin_chute2_w.credits = coin_rate_tbl[Coin_Mode][1];
-        coin_chute3_w.per_credit = coin_rate_tbl[Coin_Mode][0];
-        coin_chute3_w.credits = coin_rate_tbl[Coin_Mode][1];
-        coin_chute4_w.per_credit = coin_rate_tbl[Coin_Mode][0];
-        coin_chute4_w.credits = coin_rate_tbl[Coin_Mode][1];
+        coin_chute1_w.per_credit = coin_rate_tbl[Coin_Mode][COIN_RATE_COINS];
+        coin_chute1_w.credits = coin_rate_tbl[Coin_Mode][COIN_RATE_CREDITS];
+        coin_chute2_w.per_credit = coin_rate_tbl[Coin_Mode][COIN_RATE_COINS];
+        coin_chute2_w.credits = coin_rate_tbl[Coin_Mode][COIN_RATE_CREDITS];
+        coin_chute3_w.per_credit = coin_rate_tbl[Coin_Mode][COIN_RATE_COINS];
+        coin_chute3_w.credits = coin_rate_tbl[Coin_Mode][COIN_RATE_CREDITS];
+        coin_chute4_w.per_credit = coin_rate_tbl[Coin_Mode][COIN_RATE_COINS];
+        coin_chute4_w.credits = coin_rate_tbl[Coin_Mode][COIN_RATE_CREDITS];
         if (Coin_Mode != 17) {
             Two_Coin_Start = 0;
         } else {
