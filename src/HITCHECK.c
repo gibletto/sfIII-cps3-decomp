@@ -347,11 +347,10 @@ char gddir;
         if (ds->wu.routine_no[1] == PLAYER_DAMAGE) {
             if (ds->wu.xyz[1].disp.pos > 0) {
                 goto jump_one;
+            } else {
+                goto jump_two;
             }
-            goto jump_two;
         }
-    }
-    if (0) {
     }
     if (ds->wu.xyz[1].disp.pos > 0) {
         goto L1;
@@ -361,13 +360,13 @@ char gddir;
             ds->wu.xyz[1].cal = 0;
             goto switch_defense_ground;
         }
-        if (0) {
-        }
         switch (defense_sky(as, ds, gddir)) {
         case 0:
             goto parried;
         case 1:
             goto set_guard_status;
+        default:
+            break;
         }
     jump_one:
         as->wu.hf.hit.player = 2;

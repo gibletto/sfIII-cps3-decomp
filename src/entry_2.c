@@ -778,25 +778,22 @@ s16 Jump_Index;
             } else {
                 Naming_Cut_Sub_2P();
             }
-            if (Name_Input(PL_id) == 0) {
-                break;
-            }
-            if (0) {
-            }
-            tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[1][PL_id][Game_setting.mode], Text_Page_Y, 18, "             ");
-            Name_In_Sub(PL_id);
-            if (Naming_Cut[PL_id]) {
-                Clear_Personal_Data(PL_id);
-                break;
-            }
-            E_Number[PL_id][2] = 0;
-            E_Number[PL_id][3] = 0;
-            if (E_No0 == E0_GAME_OVER) {
-                E_Number[PL_id][0] = ENTRY_GAME_OVER;
-                E_Number[PL_id][1] = 1;
-            } else {
-                E_Number[PL_id][0] = ENTRY_GAME_OVER;
-                E_Number[PL_id][1] = 0;
+            if (Name_Input(PL_id) != 0) {
+                tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[1][PL_id][Game_setting.mode], Text_Page_Y, 18, "             ");
+                Name_In_Sub(PL_id);
+                if (Naming_Cut[PL_id]) {
+                    Clear_Personal_Data(PL_id);
+                    break;
+                }
+                E_Number[PL_id][2] = 0;
+                E_Number[PL_id][3] = 0;
+                if (E_No0 == E0_GAME_OVER) {
+                    E_Number[PL_id][0] = ENTRY_GAME_OVER;
+                    E_Number[PL_id][1] = 1;
+                } else {
+                    E_Number[PL_id][0] = ENTRY_GAME_OVER;
+                    E_Number[PL_id][1] = 0;
+                }
             }
             break;
         }

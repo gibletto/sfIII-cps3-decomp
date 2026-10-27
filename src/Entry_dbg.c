@@ -140,17 +140,12 @@ void dbg_disasm_rows(u16* tbl) {
 
 
 /* provisional name */
-void disasm_sh_opcode(u16 code, char* out) {
-    char* str = out;
+void disasm_sh_opcode(u16 code, char* str) {
     char buf[128];
     const MoveName* p;
-    u32 masked;
-    const char** side;
-    const char** names;
-    u32 kind;
     char* mark;
-    char* mark2;
     char* tail;
+    char* mark2;
     *str = 0;
     if ((code & 0xFF00) == 0) {
         for (p = sh_op_none_tbl; p->name != 0; p++) {
@@ -160,66 +155,52 @@ void disasm_sh_opcode(u16 code, char* out) {
             }
         }
     }
-    (void)&((WORK*)0xF0FF)->id;
-    (void)&((WORK*)strcat)->be_flag;
-    (void)&((WORK*)buf)->id;
-    kind = code & 0xF000;
-    names = reg_name_tbl;
-    if (kind == 0x4000) {
-    ldm:;
-        p = sh_op_ldm_tbl;
-        masked = code & 0xF0FF;
-        if (0) goto ldm;
-        side = &names[(s32)(code & 0xF00) >> 8];
-        for (; p->name != 0; p++) {
-            if (0) {
-            }
-            if (masked == p->code) {
+    if ((code & 0xF000) == 0x4000) {
+        for (p = sh_op_ldm_tbl; p->name != 0; p++) {
+            if ((code & 0xF0FF) == p->code) {
                 strcpy(buf, p->name);
                 mark = strstr(buf, sh_str_rm);
                 *mark = 0;
                 strcpy(str, buf);
-                strcat(str, *side);
+                strcat(str, reg_name_tbl[(code & 0xF00) >> 8]);
                 strcat(str, mark + 2);
                 return;
             }
         }
     }
-    if (kind == 0 || kind == 0x4000) {
-        for (p = sh_op_n_tbl, masked = code & 0xF0FF, side = &names[(s32)(code & 0xF00) >> 8];
-             (void)&((WORK*)masked)->id, p->name != 0;
-             p++) {
-            if (masked == p->code) {
+    if ((code & 0xF000) == 0 || (code & 0xF000) == 0x4000) {
+        for (p = sh_op_n_tbl; p->name != 0; p++) {
+            if ((code & 0xF0FF) == p->code) {
                 strcpy(buf, p->name);
                 mark = strstr(buf, sh_str_rn);
                 *mark = 0;
                 strcpy(str, buf);
-                strcat(str, *side);
+                strcat(str, reg_name_tbl[(code & 0xF00) >> 8]);
                 strcat(str, mark + 2);
                 return;
             }
         }
     }
-    if (kind == 0 || kind == 0x2000 || kind == 0x3000 || kind == 0x4000 || kind == 0x6000) {
+    if ((code & 0xF000) == 0 || (code & 0xF000) == 0x2000 || (code & 0xF000) == 0x3000 ||
+        (code & 0xF000) == 0x4000 || (code & 0xF000) == 0x6000) {
         for (p = sh_op_nm_tbl; p->name != 0; p++) {
             if ((code & 0xF00F) == p->code) {
                 strcpy(buf, p->name);
                 mark = strstr(buf, sh_str_rm);
                 *mark = 0;
                 strcpy(str, buf);
-                strcat(str, reg_name_tbl[(s32)(code & 0xF0) >> 4]);
-                tail = mark;
-                tail += 2;
+                strcat(str, reg_name_tbl[(code & 0xF0) >> 4]);
+                tail = mark + 2;
                 mark2 = strstr(tail, sh_str_rn);
                 *mark2 = 0;
                 strcat(str, tail);
-                strcat(str, reg_name_tbl[(s32)(code & 0xF00) >> 8]);
+                strcat(str, reg_name_tbl[(code & 0xF00) >> 8]);
                 strcat(str, mark2 + 2);
                 return;
             }
         }
     }
-    if (kind == 0x8000) {
+    if ((code & 0xF000) == 0x8000) {
         for (p = sh_op_disp_m_tbl; p->name != 0; p++) {
             if ((code & 0xFF00) == p->code) {
                 strcpy(str, p->name);
@@ -227,7 +208,7 @@ void disasm_sh_opcode(u16 code, char* out) {
             }
         }
     }
-    if (kind == 0x8000) {
+    if ((code & 0xF000) == 0x8000) {
         for (p = sh_op_disp_n_tbl; p->name != 0; p++) {
             if ((code & 0xFF00) == p->code) {
                 strcpy(str, p->name);
@@ -235,7 +216,7 @@ void disasm_sh_opcode(u16 code, char* out) {
             }
         }
     }
-    if (kind == 0x8000 || kind == 0xC000) {
+    if ((code & 0xF000) == 0x8000 || (code & 0xF000) == 0xC000) {
         for (p = sh_op_d8_tbl; p->name != 0; p++) {
             if ((code & 0xFF00) == p->code) {
                 strcpy(str, p->name);
@@ -243,7 +224,7 @@ void disasm_sh_opcode(u16 code, char* out) {
             }
         }
     }
-    if (kind == 0x8000 || kind == 0xC000) {
+    if ((code & 0xF000) == 0x8000 || (code & 0xF000) == 0xC000) {
         for (p = sh_op_imm_tbl; p->name != 0; p++) {
             if ((code & 0xFF00) == p->code) {
                 strcpy(str, p->name);
@@ -252,32 +233,31 @@ void disasm_sh_opcode(u16 code, char* out) {
         }
     }
     for (p = sh_op_disp4_tbl; p->name != 0; p++) {
-        if (kind == p->code) {
+        if ((code & 0xF000) == p->code) {
             strcpy(str, p->name);
             return;
         }
     }
     for (p = sh_op_d12_tbl; p->name != 0; p++) {
-        if (kind == p->code) {
+        if ((code & 0xF000) == p->code) {
             strcpy(str, p->name);
             return;
         }
     }
     for (p = sh_op_pcrel_tbl; p->name != 0; p++) {
-        if (kind == p->code) {
+        if ((code & 0xF000) == p->code) {
             strcpy(str, p->name);
             return;
         }
     }
     for (p = sh_op_imm_n_tbl; p->name != 0; p++) {
-        if (kind == p->code) {
+        if ((code & 0xF000) == p->code) {
             strcpy(str, p->name);
             return;
         }
     }
     if (*str == 0) {
         strcpy(str, sh_str_undef);
-        (void)&((WORK*)kind)->id;
     }
 }
 

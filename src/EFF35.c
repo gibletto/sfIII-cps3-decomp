@@ -126,22 +126,19 @@ void effect_35_move(WORK_Other* ewk) {
         add_y_sub(ewk);
         if (ewk->wu.xyz[0].disp.pos < -384 || ewk->wu.xyz[0].disp.pos > 384) {
             goto retire;
-        }
-        goto check_landing;
-    check_landing:;
-        if (ewk->wu.xyz[1].disp.pos < ewk->wu.vital_old) {
+        } else if (ewk->wu.xyz[1].disp.pos < ewk->wu.vital_old) {
             if (ewk->wu.dmcal_m == 0) {
                 ewk->wu.routine_no[0]++;
                 ewk->wu.position_x = ewk->wu.xyz[0].disp.pos & 0x3FF;
                 ewk->wu.position_y = ewk->wu.xyz[1].disp.pos & 0x3FF;
                 disp_seraph_cells(&ewk->wu);
                 return;
-                break;
+            } else {
+            retire:;
+                ewk->wu.routine_no[0]++;
+                ewk->wu.routine_no[0]++;
+                return;
             }
-        retire:;
-            ewk->wu.routine_no[0]++;
-            ewk->wu.routine_no[0]++;
-            return;
         }
         ewk->wu.position_x = ewk->wu.xyz[0].disp.pos & 0x3FF;
         ewk->wu.position_y = ewk->wu.xyz[1].disp.pos & 0x3FF;

@@ -400,14 +400,9 @@ void Win_05000(PLW* wk) {
     default:
         if (win_rno[0]) {
             Normal_normal_Winner(wk);
-            break;
         } else {
             switch (win_rno[1]) {
             case W5_FALL:
-                if (0) {
-                }
-                goto win_fall_move;
-            win_fall_move:;
                 char_move(&wk->wu);
                 add_x_sub((WORK_Other*)wk);
                 add_y_sub((WORK_Other*)wk);

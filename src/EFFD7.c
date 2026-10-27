@@ -268,30 +268,27 @@ void effD7_move(WORK_Other* ewk) {
         }
         break;
     case R2_TURN:
-        if (--ewk->wu.dir_timer) {
-            break;
+        if (--ewk->wu.dir_timer == 0) {
+            ewk->wu.routine_no[2]++;
+            OK_Priority[ewk->master_id] = 1;
+            eff98_arts_req[(s8)ewk->master_id][0] = 1;
+            eff98_arts_req[(s8)ewk->master_id][1] = 1;
+            eff98_arts_req[(s8)ewk->master_id][2] = 1;
+            effE4_col_req[(s8)ewk->master_id][0] = 1;
+            effE4_col_req[(s8)ewk->master_id][1] = 1;
+            effE4_col_req[(s8)ewk->master_id][2] = 1;
+            if (ewk->wu.dm_vital == 0) {
+                ewk->wu.direction = effD7_plate_pos[(s8)ewk->master_id][ewk->wu.dmcal_m * 2 + 1] + 16;
+            } else {
+                ewk->wu.direction = effD7_plate_pos[(s8)ewk->master_id][ewk->wu.dmcal_m * 2 + 1];
+            }
+            if (ewk->wu.routine_no[1] == R1_TO_LAST) {
+                ewk->wu.mvxy.a[1].sp = 0xC0000;
+            } else {
+                ewk->wu.mvxy.a[1].sp = -0xE0000;
+            }
+            ewk->wu.mvxy.d[1].sp = 0;
         }
-        goto plate_turn;
-    plate_turn:;
-        ewk->wu.routine_no[2]++;
-        OK_Priority[ewk->master_id] = 1;
-        eff98_arts_req[(s8)ewk->master_id][0] = 1;
-        eff98_arts_req[(s8)ewk->master_id][1] = 1;
-        eff98_arts_req[(s8)ewk->master_id][2] = 1;
-        effE4_col_req[(s8)ewk->master_id][0] = 1;
-        effE4_col_req[(s8)ewk->master_id][1] = 1;
-        effE4_col_req[(s8)ewk->master_id][2] = 1;
-        if (ewk->wu.dm_vital == 0) {
-            ewk->wu.direction = effD7_plate_pos[(s8)ewk->master_id][ewk->wu.dmcal_m * 2 + 1] + 16;
-        } else {
-            ewk->wu.direction = effD7_plate_pos[(s8)ewk->master_id][ewk->wu.dmcal_m * 2 + 1];
-        }
-        if (ewk->wu.routine_no[1] == R1_TO_LAST) {
-            ewk->wu.mvxy.a[1].sp = 0xC0000;
-        } else {
-            ewk->wu.mvxy.a[1].sp = -0xE0000;
-        }
-        ewk->wu.mvxy.d[1].sp = 0;
         break;
     case R2_ROUND:
         effD7_move_x(ewk);

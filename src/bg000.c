@@ -586,12 +586,9 @@ void zoom_ud_check(void) {
             pos_w -= bg_w.pos_offset;
             bg_w.center_x -= pos_w;
             goto zoom_check;
-        } else {
-            goto center_set;
-center_set:;
-            bg_w.center_x = 192;
-            bg_w.center_y = 224;
         }
+        bg_w.center_x = 192;
+        bg_w.center_y = 224;
     }
 zoom_check:
     if (work2) {
