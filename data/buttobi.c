@@ -52,13 +52,13 @@ const s16 buttobi_add_y_table[172] = {
 };
 
 const PARABORA_DATA* const parabora_own_table[13] = {
-    (const PARABORA_DATA *)gill_parabora_data, (const PARABORA_DATA *)alex_parabora_data,
-    (const PARABORA_DATA *)ryu_parabora_data, (const PARABORA_DATA *)yun_parabora_data,
-    (const PARABORA_DATA *)dudley_parabora_data, (const PARABORA_DATA *)necro_parabora_data,
-    (const PARABORA_DATA *)hugo_parabora_data, (const PARABORA_DATA *)ibuki_parabora_data,
-    (const PARABORA_DATA *)elena_parabora_data, (const PARABORA_DATA *)oro_parabora_data,
-    (const PARABORA_DATA *)yang_parabora_data, (const PARABORA_DATA *)ken_parabora_data,
-    (const PARABORA_DATA *)sean_parabora_data,
+    gill_parabora_data, alex_parabora_data,
+    ryu_parabora_data, yun_parabora_data,
+    dudley_parabora_data, necro_parabora_data,
+    hugo_parabora_data, ibuki_parabora_data,
+    elena_parabora_data, oro_parabora_data,
+    yang_parabora_data, ken_parabora_data,
+    sean_parabora_data,
 };
 
 const s16 parabora_ex_table[3][16][4][4][6] = {

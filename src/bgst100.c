@@ -28,7 +28,7 @@ void bg_y_move_check(void);
 void bg_base_y_move_check(void);
 void load_any_color();
 /* provisional names */
-extern const u32 bg100_scrn_data[];
+extern const u16 bg100_scrn_data[][16][32];
 extern s16 bg100_cnt;
 extern s16 bg100_timer;
 s32 effect_18_init();

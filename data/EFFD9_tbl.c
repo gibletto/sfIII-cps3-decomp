@@ -31,11 +31,11 @@ const s16 coltbl_000_2P[54] = {
 };
 
 const ColorTableIndex color_table_index[5] = {
-    { 8, 0, (const s16 *)coltbl_000_1P, (const s16 *)coltbl_000_2P },
-    { 7, 24, (const s16 *)&coltbl_000_2P[30], (const s16 *)&coltbl_000_2P[36] },
-    { 7, 30, (const s16 *)&coltbl_000_2P[10], (const s16 *)&coltbl_000_2P[16] },
-    { 5, 0, (const s16 *)&coltbl_000_2P[22], (const s16 *)&coltbl_000_2P[26] },
-    { 7, 18, (const s16 *)&coltbl_000_2P[42], (const s16 *)&coltbl_000_2P[48] },
+    { 8, 0, coltbl_000_1P, coltbl_000_2P },
+    { 7, 24, &coltbl_000_2P[30], &coltbl_000_2P[36] },
+    { 7, 30, &coltbl_000_2P[10], &coltbl_000_2P[16] },
+    { 5, 0, &coltbl_000_2P[22], &coltbl_000_2P[26] },
+    { 7, 18, &coltbl_000_2P[42], &coltbl_000_2P[48] },
 };
 
 const s16 flames_stand[16][4][4] = {

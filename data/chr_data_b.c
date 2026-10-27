@@ -95,20 +95,20 @@ extern const u16 sys_cfg_page_scr_jp_77[];
 extern const u16 sys_cfg_page_scr_jp_78[];
 extern const u16 sys_cfg_page_scr_jp_79[];
 extern const u16 sys_cfg_page_scr_jp_80[];
-extern const char test_menu_str_0[];
-extern const char test_menu_str_1[];
-extern const char test_menu_str_2[];
-extern const char test_menu_str_3[];
-extern const char test_menu_str_4[];
-extern const char test_menu_str_5[];
-extern const char test_menu_str_6[];
-extern const char test_menu_str_7[];
-extern const char test_menu_str_8[];
-extern const char test_menu_str_9[];
-extern const char test_menu_str_10[];
-extern const char test_menu_str_11[];
-extern const char test_menu_str_12[];
-extern const char test_menu_str_asia_9[];
+extern const s8 test_menu_str_0[];
+extern const s8 test_menu_str_1[];
+extern const s8 test_menu_str_2[];
+extern const s8 test_menu_str_3[];
+extern const s8 test_menu_str_4[];
+extern const s8 test_menu_str_5[];
+extern const s8 test_menu_str_6[];
+extern const s8 test_menu_str_7[];
+extern const s8 test_menu_str_8[];
+extern const s8 test_menu_str_9[];
+extern const s8 test_menu_str_10[];
+extern const s8 test_menu_str_11[];
+extern const s8 test_menu_str_12[];
+extern const s8 test_menu_str_asia_9[];
 extern const u16 sys_cfg_sound_scr_jp_0[];
 
 const u16 test_menu_scr_jp_0[155] = {
@@ -617,33 +617,33 @@ const u16 sys_cfg_page_scr_jp_80[16] = {
     0x1208, 0x12A4, 0x12D0, 0x131C, 0x12C8, 0x12B0, 0, 0,
 };
 
-const char test_menu_str_0[20] = "T E S T   M E N U\n\0\xC6";
+const s8 test_menu_str_0[20] = "T E S T   M E N U\n\0\xC6";
 
-const char test_menu_str_1[12] = " 1. INPUT\n";
+const s8 test_menu_str_1[12] = " 1. INPUT\n";
 
-const char test_menu_str_2[12] = " 2. OUTPUT\n";
+const s8 test_menu_str_2[12] = " 2. OUTPUT\n";
 
-const char test_menu_str_3[20] = " 3. SOUND & VOICE\n\0\xC1";
+const s8 test_menu_str_3[20] = " 3. SOUND & VOICE\n\0\xC1";
 
-const char test_menu_str_4[12] = " 4. COLOR\n\0\x30";
+const s8 test_menu_str_4[12] = " 4. COLOR\n\0\x30";
 
-const char test_menu_str_5[24] = " 5. DOT CROSS HATCH\n";
+const s8 test_menu_str_5[24] = " 5. DOT CROSS HATCH\n";
 
-const char test_menu_str_6[16] = " 6. GAME DATA\n\0\xC2";
+const s8 test_menu_str_6[16] = " 6. GAME DATA\n\0\xC2";
 
-const char test_menu_str_7[20] = " 7. CONFIGURATION\n";
+const s8 test_menu_str_7[20] = " 7. CONFIGURATION\n";
 
-const char test_menu_str_8[20] = " 8. MEMORY CHECK\n";
+const s8 test_menu_str_8[20] = " 8. MEMORY CHECK\n";
 
-const char test_menu_str_9[20] = " 9. GAME REWRITE\n";
+const s8 test_menu_str_9[20] = " 9. GAME REWRITE\n";
 
-const char test_menu_str_10[12] = "10. EXIT\n";
+const s8 test_menu_str_10[12] = "10. EXIT\n";
 
-const char test_menu_str_11[24] = "SELECT = 1P UP or DOWN\n";
+const s8 test_menu_str_11[24] = "SELECT = 1P UP or DOWN\n";
 
-const char test_menu_str_12[20] = "START  = 1P SHOT1";
+const s8 test_menu_str_12[20] = "START  = 1P SHOT1";
 
-const char test_menu_str_asia_9[12] = " 9. EXIT\n";
+const s8 test_menu_str_asia_9[12] = " 9. EXIT\n";
 
 const u16 sys_cfg_sound_scr_jp_0[50] = {
     0xF, 0xC, 0, 0xE, 0x12B0, 0x1200, 0x12DC, 0x1200,

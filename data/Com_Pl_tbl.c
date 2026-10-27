@@ -18,25 +18,25 @@
 extern const TM_STRING boot_title_str[];
 extern const TM_STRING boot_region_str[];
 extern const TM_STRING boot_version_str[];
-extern const char str_STREET_FIGHTER_III[];
-extern const char str_9_7_0_2_0_4[];
-extern const char str_blank[];
-extern const char str_JAPAN[];
-extern const char str_ASIA[];
-extern const char str_EURO[];
-extern const char str_USA[];
-extern const char str_HISPANIC[];
-extern const char str_BRAZIL_3[];
-extern const char str_O_C_E_A_N_I_A[];
-extern const char str_A_S_I_A[];
-extern const char str_PRODUCT_VERSION[];
-extern const char str_CHARACTER_CHECK_VERSION[];
-extern const char str_PUBLICITY_VERSION[];
-extern const char str_LOCATION_TEST_VERSION[];
-extern const char str_SHOW_VERSION[];
-extern const char str_BUG_CHECK_VERSION[];
-extern const char str_BENT_STAFF_VERSION[];
-extern const char str_DEVELOPMENT_VERSION[];
+extern const s8 str_STREET_FIGHTER_III[];
+extern const s8 str_9_7_0_2_0_4[];
+extern const s8 str_blank[];
+extern const s8 str_JAPAN[];
+extern const s8 str_ASIA[];
+extern const s8 str_EURO[];
+extern const s8 str_USA[];
+extern const s8 str_HISPANIC[];
+extern const s8 str_BRAZIL_3[];
+extern const s8 str_O_C_E_A_N_I_A[];
+extern const s8 str_A_S_I_A[];
+extern const s8 str_PRODUCT_VERSION[];
+extern const s8 str_CHARACTER_CHECK_VERSION[];
+extern const s8 str_PUBLICITY_VERSION[];
+extern const s8 str_LOCATION_TEST_VERSION[];
+extern const s8 str_SHOW_VERSION[];
+extern const s8 str_BUG_CHECK_VERSION[];
+extern const s8 str_BENT_STAFF_VERSION[];
+extern const s8 str_DEVELOPMENT_VERSION[];
 extern const char str_WARNING[];
 extern const char str_This_game_is_for_use_in_japan_on[];
 extern const char str_Sales_export_or_operation_outsid[];
@@ -107,71 +107,71 @@ extern const u32 test_cursor_y_tbl[][10];
 extern const u32 test_cursor_x_tbl[];
 
 const TM_STRING boot_title_str[2] = {
-    { 8, 8, 2, (const s8 *)str_STREET_FIGHTER_III },
-    { 0x11, 0xA, 2, (const s8 *)str_9_7_0_2_0_4 },
+    { 8, 8, 2, str_STREET_FIGHTER_III },
+    { 0x11, 0xA, 2, str_9_7_0_2_0_4 },
 };
 
 const TM_STRING boot_region_str[9] = {
-    { 0xF, 0xC, 0xE, (const s8 *)str_blank },
-    { 0x13, 0xC, 2, (const s8 *)str_JAPAN },
-    { 0xF, 0xC, 4, (const s8 *)str_ASIA },
-    { 0x13, 0xC, 6, (const s8 *)str_EURO },
-    { 0x13, 0xC, 8, (const s8 *)str_USA },
-    { 0x10, 0xC, 0xA, (const s8 *)str_HISPANIC },
-    { 0x12, 0xC, 0xC, (const s8 *)str_BRAZIL_3 },
-    { 0x11, 0xC, 0xE, (const s8 *)str_O_C_E_A_N_I_A },
-    { 0x13, 0xC, 4, (const s8 *)str_A_S_I_A },
+    { 0xF, 0xC, 0xE, str_blank },
+    { 0x13, 0xC, 2, str_JAPAN },
+    { 0xF, 0xC, 4, str_ASIA },
+    { 0x13, 0xC, 6, str_EURO },
+    { 0x13, 0xC, 8, str_USA },
+    { 0x10, 0xC, 0xA, str_HISPANIC },
+    { 0x12, 0xC, 0xC, str_BRAZIL_3 },
+    { 0x11, 0xC, 0xE, str_O_C_E_A_N_I_A },
+    { 0x13, 0xC, 4, str_A_S_I_A },
 };
 
 const TM_STRING boot_version_str[9] = {
-    { 0x10, 0xE, 0xE, (const s8 *)str_PRODUCT_VERSION },
-    { 0xD, 0xE, 0xE, (const s8 *)str_CHARACTER_CHECK_VERSION },
-    { 0x10, 0xE, 0xE, (const s8 *)str_PUBLICITY_VERSION },
-    { 0xF, 0xE, 0xE, (const s8 *)str_LOCATION_TEST_VERSION },
-    { 0x12, 0xE, 0xE, (const s8 *)str_SHOW_VERSION },
-    { 0x10, 0xE, 0xE, (const s8 *)str_BUG_CHECK_VERSION },
-    { 0x10, 0xE, 0xE, (const s8 *)str_BENT_STAFF_VERSION },
-    { 0xF, 0xE, 0xE, (const s8 *)str_DEVELOPMENT_VERSION },
-    { 0xF, 0xE, 0xE, (const s8 *)str_DEVELOPMENT_VERSION },
+    { 0x10, 0xE, 0xE, str_PRODUCT_VERSION },
+    { 0xD, 0xE, 0xE, str_CHARACTER_CHECK_VERSION },
+    { 0x10, 0xE, 0xE, str_PUBLICITY_VERSION },
+    { 0xF, 0xE, 0xE, str_LOCATION_TEST_VERSION },
+    { 0x12, 0xE, 0xE, str_SHOW_VERSION },
+    { 0x10, 0xE, 0xE, str_BUG_CHECK_VERSION },
+    { 0x10, 0xE, 0xE, str_BENT_STAFF_VERSION },
+    { 0xF, 0xE, 0xE, str_DEVELOPMENT_VERSION },
+    { 0xF, 0xE, 0xE, str_DEVELOPMENT_VERSION },
 };
 
-const char str_STREET_FIGHTER_III[36] = "S T R E E T   F I G H T E R   III\n";
+const s8 str_STREET_FIGHTER_III[36] = "S T R E E T   F I G H T E R   III\n";
 
-const char str_9_7_0_2_0_4[16] = " 9 7 0 2 0 4\0\x56\x0C\x18";
+const s8 str_9_7_0_2_0_4[16] = " 9 7 0 2 0 4\0\x56\x0C\x18";
 
-const char str_blank[16] = "             \0\xB7\x53";
+const s8 str_blank[16] = "             \0\xB7\x53";
 
-const char str_JAPAN[12] = "J A P A N\0\x9E\x4F";
+const s8 str_JAPAN[12] = "J A P A N\0\x9E\x4F";
 
-const char str_ASIA[20] = " A S I A ( NCD )\0\x54\x0C\x18";
+const s8 str_ASIA[20] = " A S I A ( NCD )\0\x54\x0C\x18";
 
-const char str_EURO[12] = " E U R O \0\x0C\x18";
+const s8 str_EURO[12] = " E U R O \0\x0C\x18";
 
-const char str_USA[12] = "  U S A  \0\x0C\x18";
+const s8 str_USA[12] = "  U S A  \0\x0C\x18";
 
-const char str_HISPANIC[16] = "H I S P A N I C";
+const s8 str_HISPANIC[16] = "H I S P A N I C";
 
-const char str_BRAZIL_3[12] = "B R A Z I L";
+const s8 str_BRAZIL_3[12] = "B R A Z I L";
 
-const char str_O_C_E_A_N_I_A[16] = "O C E A N I A\0\xC7\x40";
+const s8 str_O_C_E_A_N_I_A[16] = "O C E A N I A\0\xC7\x40";
 
-const char str_A_S_I_A[12] = " A S I A\0\x18\xC7";
+const s8 str_A_S_I_A[12] = " A S I A\0\x18\xC7";
 
-const char str_PRODUCT_VERSION[16] = "PRODUCT VERSION";
+const s8 str_PRODUCT_VERSION[16] = "PRODUCT VERSION";
 
-const char str_CHARACTER_CHECK_VERSION[24] = "CHARACTER CHECK VERSION";
+const s8 str_CHARACTER_CHECK_VERSION[24] = "CHARACTER CHECK VERSION";
 
-const char str_PUBLICITY_VERSION[20] = "PUBLICITY VERSION\0\xC7\x40";
+const s8 str_PUBLICITY_VERSION[20] = "PUBLICITY VERSION\0\xC7\x40";
 
-const char str_LOCATION_TEST_VERSION[24] = "LOCATION TEST VERSION\0\xC7\x40";
+const s8 str_LOCATION_TEST_VERSION[24] = "LOCATION TEST VERSION\0\xC7\x40";
 
-const char str_SHOW_VERSION[16] = "SHOW VERSION\0\x01\xC4\x14";
+const s8 str_SHOW_VERSION[16] = "SHOW VERSION\0\x01\xC4\x14";
 
-const char str_BUG_CHECK_VERSION[20] = "BUG CHECK VERSION\0\x30\x30";
+const s8 str_BUG_CHECK_VERSION[20] = "BUG CHECK VERSION\0\x30\x30";
 
-const char str_BENT_STAFF_VERSION[20] = "BENT STAFF VERSION\0\x60";
+const s8 str_BENT_STAFF_VERSION[20] = "BENT STAFF VERSION\0\x60";
 
-const char str_DEVELOPMENT_VERSION[20] = "DEVELOPMENT VERSION";
+const s8 str_DEVELOPMENT_VERSION[20] = "DEVELOPMENT VERSION";
 
 const char str_WARNING[12] = "WARNING\n\0\x30\xAD\x2F";
 

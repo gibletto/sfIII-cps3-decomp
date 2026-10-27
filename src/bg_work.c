@@ -145,146 +145,146 @@ u32 bg_map_tbl2[5][4] = {
 /* 02005CC4 */
 const HUD_CELL* bg_rewrite_cell_tbl[22][4] = {
     {
-        (const HUD_CELL *)bg_rewrite_cells_00_0, (const HUD_CELL *)bg_rewrite_cells_00_1,
-        (const HUD_CELL *)bg_rewrite_cells_00_0, (const HUD_CELL *)bg_rewrite_cells_00_3,
+        bg_rewrite_cells_00_0, bg_rewrite_cells_00_1,
+        bg_rewrite_cells_00_0, bg_rewrite_cells_00_3,
     },
     {
-        (const HUD_CELL *)bg_rewrite_cells_01_0, (const HUD_CELL *)bg_rewrite_cells_01_1,
-        (const HUD_CELL *)bg_rewrite_cells_01_2, 0,
+        bg_rewrite_cells_01_0, bg_rewrite_cells_01_1,
+        bg_rewrite_cells_01_2, 0,
     },
-    { (const HUD_CELL *)bg_rewrite_cells_02_0, (const HUD_CELL *)bg_rewrite_cells_02_1, 0, 0 },
+    { bg_rewrite_cells_02_0, bg_rewrite_cells_02_1, 0, 0 },
     {
-        (const HUD_CELL *)bg_rewrite_cells_03_0, (const HUD_CELL *)bg_rewrite_cells_03_1,
-        (const HUD_CELL *)bg_rewrite_cells_03_2, 0,
-    },
-    {
-        (const HUD_CELL *)bg_rewrite_cells_04_0, (const HUD_CELL *)bg_rewrite_cells_04_1,
-        (const HUD_CELL *)bg_rewrite_cells_04_2, 0,
+        bg_rewrite_cells_03_0, bg_rewrite_cells_03_1,
+        bg_rewrite_cells_03_2, 0,
     },
     {
-        (const HUD_CELL *)bg_rewrite_cells_05_0, (const HUD_CELL *)bg_rewrite_cells_05_1,
-        (const HUD_CELL *)bg_rewrite_cells_05_2, 0,
-    },
-    { (const HUD_CELL *)bg_rewrite_cells_06_0, (const HUD_CELL *)bg_rewrite_cells_06_1, 0, 0 },
-    {
-        (const HUD_CELL *)bg_rewrite_cells_07_0, (const HUD_CELL *)bg_rewrite_cells_07_1,
-        (const HUD_CELL *)bg_rewrite_cells_07_2, 0,
-    },
-    { (const HUD_CELL *)bg_rewrite_cells_08_0, (const HUD_CELL *)bg_rewrite_cells_08_1, 0, 0 },
-    {
-        (const HUD_CELL *)bg_rewrite_cells_09_0, (const HUD_CELL *)bg_rewrite_cells_09_1,
-        (const HUD_CELL *)bg_rewrite_cells_09_2, 0,
-    },
-    { (const HUD_CELL *)bg_rewrite_cells_10_0, (const HUD_CELL *)bg_rewrite_cells_10_1, 0, 0 },
-    {
-        (const HUD_CELL *)bg_rewrite_cells_11_0, (const HUD_CELL *)bg_rewrite_cells_11_1,
-        (const HUD_CELL *)bg_rewrite_cells_11_2, 0,
+        bg_rewrite_cells_04_0, bg_rewrite_cells_04_1,
+        bg_rewrite_cells_04_2, 0,
     },
     {
-        (const HUD_CELL *)bg_rewrite_cells_11_0, (const HUD_CELL *)bg_rewrite_cells_11_1,
-        (const HUD_CELL *)bg_rewrite_cells_12_2, 0,
+        bg_rewrite_cells_05_0, bg_rewrite_cells_05_1,
+        bg_rewrite_cells_05_2, 0,
+    },
+    { bg_rewrite_cells_06_0, bg_rewrite_cells_06_1, 0, 0 },
+    {
+        bg_rewrite_cells_07_0, bg_rewrite_cells_07_1,
+        bg_rewrite_cells_07_2, 0,
+    },
+    { bg_rewrite_cells_08_0, bg_rewrite_cells_08_1, 0, 0 },
+    {
+        bg_rewrite_cells_09_0, bg_rewrite_cells_09_1,
+        bg_rewrite_cells_09_2, 0,
+    },
+    { bg_rewrite_cells_10_0, bg_rewrite_cells_10_1, 0, 0 },
+    {
+        bg_rewrite_cells_11_0, bg_rewrite_cells_11_1,
+        bg_rewrite_cells_11_2, 0,
     },
     {
-        (const HUD_CELL *)bg_rewrite_cells_11_0, (const HUD_CELL *)bg_rewrite_cells_11_1,
-        (const HUD_CELL *)bg_rewrite_cells_12_2, 0,
-    },
-    { (const HUD_CELL *)bg_rewrite_cells_14_0, (const HUD_CELL *)bg_rewrite_cells_14_1, 0, 0 },
-    { (const HUD_CELL *)bg_rewrite_cells_15_0, (const HUD_CELL *)bg_rewrite_cells_15_1, 0, 0 },
-    {
-        (const HUD_CELL *)bg_rewrite_cells_16_0, (const HUD_CELL *)bg_rewrite_cells_16_1,
-        (const HUD_CELL *)bg_rewrite_cells_16_2, 0,
+        bg_rewrite_cells_11_0, bg_rewrite_cells_11_1,
+        bg_rewrite_cells_12_2, 0,
     },
     {
-        (const HUD_CELL *)bg_rewrite_cells_05_0, (const HUD_CELL *)bg_rewrite_cells_05_1,
-        (const HUD_CELL *)bg_rewrite_cells_05_2, 0,
+        bg_rewrite_cells_11_0, bg_rewrite_cells_11_1,
+        bg_rewrite_cells_12_2, 0,
     },
-    { (const HUD_CELL *)bg_rewrite_cells_06_0, (const HUD_CELL *)bg_rewrite_cells_06_1, 0, 0 },
-    { (const HUD_CELL *)bg_rewrite_cells_19_0, 0, 0, 0 },
+    { bg_rewrite_cells_14_0, bg_rewrite_cells_14_1, 0, 0 },
+    { bg_rewrite_cells_15_0, bg_rewrite_cells_15_1, 0, 0 },
     {
-        (const HUD_CELL *)bg_rewrite_cells_20_0, (const HUD_CELL *)bg_rewrite_cells_20_1,
-        (const HUD_CELL *)bg_rewrite_cells_20_2, 0,
+        bg_rewrite_cells_16_0, bg_rewrite_cells_16_1,
+        bg_rewrite_cells_16_2, 0,
     },
     {
-        (const HUD_CELL *)bg_rewrite_cells_20_0, (const HUD_CELL *)bg_rewrite_cells_20_1,
-        (const HUD_CELL *)bg_rewrite_cells_20_2, 0,
+        bg_rewrite_cells_05_0, bg_rewrite_cells_05_1,
+        bg_rewrite_cells_05_2, 0,
+    },
+    { bg_rewrite_cells_06_0, bg_rewrite_cells_06_1, 0, 0 },
+    { bg_rewrite_cells_19_0, 0, 0, 0 },
+    {
+        bg_rewrite_cells_20_0, bg_rewrite_cells_20_1,
+        bg_rewrite_cells_20_2, 0,
+    },
+    {
+        bg_rewrite_cells_20_0, bg_rewrite_cells_20_1,
+        bg_rewrite_cells_20_2, 0,
     },
 };
 
 /* 02005E24 */
 const HUD_CELL* bg_rewrite_cell_tbl_8[22][4] = {
     {
-        (const HUD_CELL *)bg_rewrite_cells_00_0, (const HUD_CELL *)bg_rewrite_cells_00_1,
-        (const HUD_CELL *)bg_rewrite_cells_00_0, (const HUD_CELL *)bg_rewrite_cells_00_3,
+        bg_rewrite_cells_00_0, bg_rewrite_cells_00_1,
+        bg_rewrite_cells_00_0, bg_rewrite_cells_00_3,
     },
     {
-        (const HUD_CELL *)bg_rewrite_cells_01_0, (const HUD_CELL *)bg_rewrite_cells_01_1,
-        (const HUD_CELL *)bg_rewrite_cells_01_2, 0,
+        bg_rewrite_cells_01_0, bg_rewrite_cells_01_1,
+        bg_rewrite_cells_01_2, 0,
     },
-    { (const HUD_CELL *)bg_rewrite_cells_02_0, (const HUD_CELL *)bg_rewrite_cells_02_1, 0, 0 },
+    { bg_rewrite_cells_02_0, bg_rewrite_cells_02_1, 0, 0 },
     {
-        (const HUD_CELL *)bg_rewrite8_cells_03_0, (const HUD_CELL *)bg_rewrite8_cells_03_1,
-        (const HUD_CELL *)bg_rewrite_cells_03_2, 0,
-    },
-    {
-        (const HUD_CELL *)bg_rewrite_cells_04_0, (const HUD_CELL *)bg_rewrite_cells_04_1,
-        (const HUD_CELL *)bg_rewrite_cells_04_2, 0,
+        bg_rewrite8_cells_03_0, bg_rewrite8_cells_03_1,
+        bg_rewrite_cells_03_2, 0,
     },
     {
-        (const HUD_CELL *)bg_rewrite_cells_05_0, (const HUD_CELL *)bg_rewrite_cells_05_1,
-        (const HUD_CELL *)bg_rewrite_cells_05_2, 0,
-    },
-    { (const HUD_CELL *)bg_rewrite_cells_06_0, (const HUD_CELL *)bg_rewrite_cells_06_1, 0, 0 },
-    {
-        (const HUD_CELL *)bg_rewrite_cells_07_0, (const HUD_CELL *)bg_rewrite_cells_07_1,
-        (const HUD_CELL *)bg_rewrite_cells_07_2, 0,
-    },
-    { (const HUD_CELL *)bg_rewrite_cells_08_0, (const HUD_CELL *)bg_rewrite_cells_08_1, 0, 0 },
-    {
-        (const HUD_CELL *)bg_rewrite_cells_09_0, (const HUD_CELL *)bg_rewrite_cells_09_1,
-        (const HUD_CELL *)bg_rewrite_cells_09_2, 0,
-    },
-    { (const HUD_CELL *)bg_rewrite_cells_10_0, (const HUD_CELL *)bg_rewrite_cells_10_1, 0, 0 },
-    {
-        (const HUD_CELL *)bg_rewrite_cells_11_0, (const HUD_CELL *)bg_rewrite8_cells_11_1,
-        (const HUD_CELL *)bg_rewrite_cells_11_2, 0,
+        bg_rewrite_cells_04_0, bg_rewrite_cells_04_1,
+        bg_rewrite_cells_04_2, 0,
     },
     {
-        (const HUD_CELL *)bg_rewrite_cells_11_0, (const HUD_CELL *)bg_rewrite8_cells_11_1,
-        (const HUD_CELL *)bg_rewrite_cells_12_2, 0,
+        bg_rewrite_cells_05_0, bg_rewrite_cells_05_1,
+        bg_rewrite_cells_05_2, 0,
+    },
+    { bg_rewrite_cells_06_0, bg_rewrite_cells_06_1, 0, 0 },
+    {
+        bg_rewrite_cells_07_0, bg_rewrite_cells_07_1,
+        bg_rewrite_cells_07_2, 0,
+    },
+    { bg_rewrite_cells_08_0, bg_rewrite_cells_08_1, 0, 0 },
+    {
+        bg_rewrite_cells_09_0, bg_rewrite_cells_09_1,
+        bg_rewrite_cells_09_2, 0,
+    },
+    { bg_rewrite_cells_10_0, bg_rewrite_cells_10_1, 0, 0 },
+    {
+        bg_rewrite_cells_11_0, bg_rewrite8_cells_11_1,
+        bg_rewrite_cells_11_2, 0,
     },
     {
-        (const HUD_CELL *)bg_rewrite_cells_11_0, (const HUD_CELL *)bg_rewrite8_cells_11_1,
-        (const HUD_CELL *)bg_rewrite_cells_12_2, 0,
-    },
-    { (const HUD_CELL *)bg_rewrite_cells_14_0, (const HUD_CELL *)bg_rewrite_cells_14_1, 0, 0 },
-    { (const HUD_CELL *)bg_rewrite_cells_15_0, (const HUD_CELL *)bg_rewrite_cells_15_1, 0, 0 },
-    {
-        (const HUD_CELL *)bg_rewrite_cells_16_0, (const HUD_CELL *)bg_rewrite_cells_16_1,
-        (const HUD_CELL *)bg_rewrite_cells_16_2, 0,
+        bg_rewrite_cells_11_0, bg_rewrite8_cells_11_1,
+        bg_rewrite_cells_12_2, 0,
     },
     {
-        (const HUD_CELL *)bg_rewrite_cells_05_0, (const HUD_CELL *)bg_rewrite_cells_05_1,
-        (const HUD_CELL *)bg_rewrite_cells_05_2, 0,
+        bg_rewrite_cells_11_0, bg_rewrite8_cells_11_1,
+        bg_rewrite_cells_12_2, 0,
     },
-    { (const HUD_CELL *)bg_rewrite_cells_06_0, (const HUD_CELL *)bg_rewrite_cells_06_1, 0, 0 },
-    { (const HUD_CELL *)bg_rewrite_cells_19_0, 0, 0, 0 },
+    { bg_rewrite_cells_14_0, bg_rewrite_cells_14_1, 0, 0 },
+    { bg_rewrite_cells_15_0, bg_rewrite_cells_15_1, 0, 0 },
     {
-        (const HUD_CELL *)bg_rewrite_cells_20_0, (const HUD_CELL *)bg_rewrite_cells_20_1,
-        (const HUD_CELL *)bg_rewrite_cells_20_2, 0,
+        bg_rewrite_cells_16_0, bg_rewrite_cells_16_1,
+        bg_rewrite_cells_16_2, 0,
     },
     {
-        (const HUD_CELL *)bg_rewrite_cells_20_0, (const HUD_CELL *)bg_rewrite_cells_20_1,
-        (const HUD_CELL *)bg_rewrite_cells_20_2, 0,
+        bg_rewrite_cells_05_0, bg_rewrite_cells_05_1,
+        bg_rewrite_cells_05_2, 0,
+    },
+    { bg_rewrite_cells_06_0, bg_rewrite_cells_06_1, 0, 0 },
+    { bg_rewrite_cells_19_0, 0, 0, 0 },
+    {
+        bg_rewrite_cells_20_0, bg_rewrite_cells_20_1,
+        bg_rewrite_cells_20_2, 0,
+    },
+    {
+        bg_rewrite_cells_20_0, bg_rewrite_cells_20_1,
+        bg_rewrite_cells_20_2, 0,
     },
 };
 
 /* 02005F84 */
 const TILEREQ* bg_etc_cell_tbl[5][4] = {
-    { (const TILEREQ *)bg_etc_cells_0, 0, 0, 0 },
-    { (const TILEREQ *)bg_etc_cells_1, 0, 0, 0 },
-    { (const TILEREQ *)bg_etc_cells_2, 0, 0, 0 },
-    { (const TILEREQ *)bg_etc_cells_3, 0, 0, 0 },
-    { (const TILEREQ *)bg_etc_cells_4, 0, 0, 0 },
+    { bg_etc_cells_0, 0, 0, 0 },
+    { bg_etc_cells_1, 0, 0, 0 },
+    { bg_etc_cells_2, 0, 0, 0 },
+    { bg_etc_cells_3, 0, 0, 0 },
+    { bg_etc_cells_4, 0, 0, 0 },
 };
 
 /* 02005FD4 */

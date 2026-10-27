@@ -199,8 +199,8 @@ u32* isp_irq_spare = (u32*)&task_stack[11][0];  /* 0200007C */
 /* 02000080 */
 /* stack pointers for two interrupts the game does not take (provisional name) */
 void* isp_unused[2] = {
-    (void*)&task_stack[12][0],
-    (void*)&task_stack[13][0],
+    &task_stack[12][0],
+    &task_stack[13][0],
 };
 u32* isp_exception = (u32*)&task_stack[14][0];  /* 02000088 */
 u32* isp_frt_compare = (u32*)&task_stack[15][0];  /* 0200008C */

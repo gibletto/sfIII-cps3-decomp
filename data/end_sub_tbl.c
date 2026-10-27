@@ -23,99 +23,99 @@ extern const char no_cd_drive_mes[];
 extern const char no_cd_rom_mes[];
 extern const STAFF_LINE staff_roll_tbl[];
 extern const STAFF_LINE staff_roll_last[];
-extern const char str_STREET_FIGHTER_NEW_GENERATION[];
-extern const char str_STAFF[];
-extern const char str_CHARACTER_DESIGN[];
-extern const char str_HITOSHI_T_NISHIO[];
-extern const char str_BALL_BOY[];
-extern const char str_Q[];
-extern const char str_YU_SUKE[];
-extern const char str_WHO[];
-extern const char str_TORU_TAKAOKA[];
-extern const char str_G_KAMINA[];
-extern const char str_D_KURITA[];
-extern const char str_SHIBAKI[];
-extern const char str_TUYOSHI[];
-extern const char str_Yoshioka[];
-extern const char str_Chun[];
-extern const char str_NORIHIDE[];
-extern const char str_CHIMORIN_SHOGUN[];
-extern const char str_YUKI_ISHIKAWA[];
-extern const char str_SYUUCYAN[];
-extern const char str_KEN_3[];
-extern const char str_KOKI_K[];
-extern const char str_SEIJI_YANO[];
-extern const char str_JUN_IKAWA[];
-extern const char str_OTOKONOYAMA[];
-extern const char str_SCROLL_DESIGN[];
-extern const char str_HIROYUKI_IMAHORI[];
-extern const char str_HIROKI_OHNISHI[];
-extern const char str_YOKO_FUKUMOTO[];
-extern const char str_YUKI_KYOTANI[];
-extern const char str_TAMA[];
-extern const char str_CHIE_MORISAKI[];
-extern const char str_HIROSHI_SUGIYAMA[];
-extern const char str_KOJI_YAMAMOTO[];
-extern const char str_YUMIKO_N[];
-extern const char str_TAKAKO_NAKAMURA[];
-extern const char str_YASUTO_TAKAHASHI[];
-extern const char str_KAZUMI_TERAMOTO[];
-extern const char str_TANOUE_YOICHI[];
-extern const char str_SHINNOSUKE_N[];
-extern const char str_NAOKO_NIIYAMA[];
-extern const char str_ORIGINAL_ART_WORK[];
-extern const char str_AKIMAN[];
-extern const char str_KINU_NISHIMURA[];
-extern const char staff_SOUND_EFFECT_DESIGN_2[];
-extern const char str_SATOSHI_ISE[];
-extern const char str_MUSIC_COMPOSE[];
-extern const char str_HIDEKI_OKUGAWA[];
-extern const char str_YUKI_IWAI[];
-extern const char str_PROGRAMMER[];
-extern const char str_KAZUHITO_NAKAI[];
-extern const char str_NOBUYA_LT1_YOSHIZUMI[];
-extern const char str_YUKO_KAWAMURA_TATE[];
-extern const char str_HIROSHI_NAKAGAWA[];
-extern const char str_HARD_YAS_ASSIST[];
-extern const char str_AKIHIRO_YOKOYAMA[];
-extern const char str_CP_SYSTEM_PROGRAMMER[];
-extern const char str_YOJI_X68k_MIKAMI[];
-extern const char str_PLANNER[];
-extern const char str_SETO_YASUHIRO[];
-extern const char str_NUMACH_THE_NIKOLIST[];
-extern const char str_S_OBATA_AE_86_TRUENO[];
-extern const char str_Malachie_du_Marais[];
-extern const char str_NEO_G_H_ISHIZAWA[];
-extern const char str_VOICE_ACTOR[];
-extern const char str_YURI_AMANO[];
-extern const char str_WATARU_TAKAGI[];
-extern const char str_ISSHIN_CHIBA[];
-extern const char str_KAN_TOKUMARU[];
-extern const char str_KOJI_TOBE[];
-extern const char str_KAHORU_FUJINO[];
-extern const char str_BRUCE_ROBERTSON[];
-extern const char str_MICHAEL_SOMMERS[];
-extern const char str_SPECIAL_THANKS[];
-extern const char str_TAKUYA_SHIRAIWA[];
-extern const char str_NAOKI_FUKUSHIMA[];
-extern const char str_SAYURI_SHINTANI[];
-extern const char str_SHOEI[];
-extern const char str_SAKOMIZU[];
-extern const char str_RITA_ROKOS[];
-extern const char str_TRANSLATOR[];
-extern const char str_MATT_TAYLOR[];
-extern const char str_ERIK_SUZUKI[];
-extern const char str_JESUS_RODRIGUEZ_BUENO[];
-extern const char str_HARUMI_YAMASHITA[];
-extern const char str_PRODUCER[];
-extern const char str_TOMOSHI_SADAMOTO[];
-extern const char str_GENERAL_PRODUCER[];
-extern const char str_NORITAKA_FUNAMIZU[];
-extern const char str_YOSHIKI_OKAMOTO[];
-extern const char str_AND_CAPCOM_ALL_STAFF[];
-extern const char str_THANK_YOU_FOR_PLAYING[];
-extern const char str_PRESENTED_BY[];
-extern const char str_blank_15[];
+extern const u8 str_STREET_FIGHTER_NEW_GENERATION[];
+extern const u8 str_STAFF[];
+extern const u8 str_CHARACTER_DESIGN[];
+extern const u8 str_HITOSHI_T_NISHIO[];
+extern const u8 str_BALL_BOY[];
+extern const u8 str_Q[];
+extern const u8 str_YU_SUKE[];
+extern const u8 str_WHO[];
+extern const u8 str_TORU_TAKAOKA[];
+extern const u8 str_G_KAMINA[];
+extern const u8 str_D_KURITA[];
+extern const u8 str_SHIBAKI[];
+extern const u8 str_TUYOSHI[];
+extern const u8 str_Yoshioka[];
+extern const u8 str_Chun[];
+extern const u8 str_NORIHIDE[];
+extern const u8 str_CHIMORIN_SHOGUN[];
+extern const u8 str_YUKI_ISHIKAWA[];
+extern const u8 str_SYUUCYAN[];
+extern const u8 str_KEN_3[];
+extern const u8 str_KOKI_K[];
+extern const u8 str_SEIJI_YANO[];
+extern const u8 str_JUN_IKAWA[];
+extern const u8 str_OTOKONOYAMA[];
+extern const u8 str_SCROLL_DESIGN[];
+extern const u8 str_HIROYUKI_IMAHORI[];
+extern const u8 str_HIROKI_OHNISHI[];
+extern const u8 str_YOKO_FUKUMOTO[];
+extern const u8 str_YUKI_KYOTANI[];
+extern const u8 str_TAMA[];
+extern const u8 str_CHIE_MORISAKI[];
+extern const u8 str_HIROSHI_SUGIYAMA[];
+extern const u8 str_KOJI_YAMAMOTO[];
+extern const u8 str_YUMIKO_N[];
+extern const u8 str_TAKAKO_NAKAMURA[];
+extern const u8 str_YASUTO_TAKAHASHI[];
+extern const u8 str_KAZUMI_TERAMOTO[];
+extern const u8 str_TANOUE_YOICHI[];
+extern const u8 str_SHINNOSUKE_N[];
+extern const u8 str_NAOKO_NIIYAMA[];
+extern const u8 str_ORIGINAL_ART_WORK[];
+extern const u8 str_AKIMAN[];
+extern const u8 str_KINU_NISHIMURA[];
+extern const u8 staff_SOUND_EFFECT_DESIGN_2[];
+extern const u8 str_SATOSHI_ISE[];
+extern const u8 str_MUSIC_COMPOSE[];
+extern const u8 str_HIDEKI_OKUGAWA[];
+extern const u8 str_YUKI_IWAI[];
+extern const u8 str_PROGRAMMER[];
+extern const u8 str_KAZUHITO_NAKAI[];
+extern const u8 str_NOBUYA_LT1_YOSHIZUMI[];
+extern const u8 str_YUKO_KAWAMURA_TATE[];
+extern const u8 str_HIROSHI_NAKAGAWA[];
+extern const u8 str_HARD_YAS_ASSIST[];
+extern const u8 str_AKIHIRO_YOKOYAMA[];
+extern const u8 str_CP_SYSTEM_PROGRAMMER[];
+extern const u8 str_YOJI_X68k_MIKAMI[];
+extern const u8 str_PLANNER[];
+extern const u8 str_SETO_YASUHIRO[];
+extern const u8 str_NUMACH_THE_NIKOLIST[];
+extern const u8 str_S_OBATA_AE_86_TRUENO[];
+extern const u8 str_Malachie_du_Marais[];
+extern const u8 str_NEO_G_H_ISHIZAWA[];
+extern const u8 str_VOICE_ACTOR[];
+extern const u8 str_YURI_AMANO[];
+extern const u8 str_WATARU_TAKAGI[];
+extern const u8 str_ISSHIN_CHIBA[];
+extern const u8 str_KAN_TOKUMARU[];
+extern const u8 str_KOJI_TOBE[];
+extern const u8 str_KAHORU_FUJINO[];
+extern const u8 str_BRUCE_ROBERTSON[];
+extern const u8 str_MICHAEL_SOMMERS[];
+extern const u8 str_SPECIAL_THANKS[];
+extern const u8 str_TAKUYA_SHIRAIWA[];
+extern const u8 str_NAOKI_FUKUSHIMA[];
+extern const u8 str_SAYURI_SHINTANI[];
+extern const u8 str_SHOEI[];
+extern const u8 str_SAKOMIZU[];
+extern const u8 str_RITA_ROKOS[];
+extern const u8 str_TRANSLATOR[];
+extern const u8 str_MATT_TAYLOR[];
+extern const u8 str_ERIK_SUZUKI[];
+extern const u8 str_JESUS_RODRIGUEZ_BUENO[];
+extern const u8 str_HARUMI_YAMASHITA[];
+extern const u8 str_PRODUCER[];
+extern const u8 str_TOMOSHI_SADAMOTO[];
+extern const u8 str_GENERAL_PRODUCER[];
+extern const u8 str_NORITAKA_FUNAMIZU[];
+extern const u8 str_YOSHIKI_OKAMOTO[];
+extern const u8 str_AND_CAPCOM_ALL_STAFF[];
+extern const u8 str_THANK_YOU_FOR_PLAYING[];
+extern const u8 str_PRESENTED_BY[];
+extern const u8 str_blank_15[];
 extern const XFER player_color_tbl[][2][6][12];
 extern const XFER any_color_tbl[];
 extern const u32 char_eff_color_tbl[];
@@ -133,294 +133,294 @@ const char no_cd_drive_mes[16] = "NO CD-ROM DRIVE";
 const char no_cd_rom_mes[12] = "NO CD-ROM";
 
 const STAFF_LINE staff_roll_tbl[94] = {
-    { 32, 48, 0, 2, (const u8 *)str_STREET_FIGHTER_NEW_GENERATION },
-    { 64, 48, 0, 2, (const u8 *)str_STAFF },
-    { 40, 32, 0, 2, (const u8 *)str_CHARACTER_DESIGN },
-    { 26, 32, 0, 0, (const u8 *)str_HITOSHI_T_NISHIO },
-    { 26, 32, 0, 0, (const u8 *)str_BALL_BOY },
-    { 26, 32, 0, 0, (const u8 *)str_Q },
-    { 26, 32, 0, 0, (const u8 *)str_YU_SUKE },
-    { 26, 32, 0, 0, (const u8 *)str_WHO },
-    { 26, 32, 0, 0, (const u8 *)str_TORU_TAKAOKA },
-    { 26, 32, 0, 0, (const u8 *)str_G_KAMINA },
-    { 26, 32, 0, 0, (const u8 *)str_D_KURITA },
-    { 26, 32, 0, 0, (const u8 *)str_SHIBAKI },
-    { 26, 32, 0, 0, (const u8 *)str_TUYOSHI },
-    { 26, 32, 0, 0, (const u8 *)str_Yoshioka },
-    { 26, 32, 0, 0, (const u8 *)str_Chun },
-    { 26, 32, 0, 0, (const u8 *)str_NORIHIDE },
-    { 26, 32, 0, 0, (const u8 *)str_CHIMORIN_SHOGUN },
-    { 26, 32, 0, 0, (const u8 *)str_YUKI_ISHIKAWA },
-    { 26, 32, 0, 0, (const u8 *)str_SYUUCYAN },
-    { 26, 32, 0, 0, (const u8 *)str_KEN_3 },
-    { 26, 32, 0, 0, (const u8 *)str_KOKI_K },
-    { 26, 32, 0, 0, (const u8 *)str_SEIJI_YANO },
-    { 26, 32, 0, 0, (const u8 *)str_JUN_IKAWA },
-    { 56, 32, 0, 0, (const u8 *)str_OTOKONOYAMA },
-    { 40, 32, 0, 2, (const u8 *)str_SCROLL_DESIGN },
-    { 26, 32, 0, 0, (const u8 *)str_HIROYUKI_IMAHORI },
-    { 26, 32, 0, 0, (const u8 *)str_HIROKI_OHNISHI },
-    { 26, 32, 0, 0, (const u8 *)str_YOKO_FUKUMOTO },
-    { 26, 32, 0, 0, (const u8 *)str_YUKI_KYOTANI },
-    { 26, 32, 0, 0, (const u8 *)str_TAMA },
-    { 26, 32, 0, 0, (const u8 *)str_CHIE_MORISAKI },
-    { 26, 32, 0, 0, (const u8 *)str_HIROSHI_SUGIYAMA },
-    { 26, 32, 0, 0, (const u8 *)str_KOJI_YAMAMOTO },
-    { 26, 32, 0, 0, (const u8 *)str_YUMIKO_N },
-    { 26, 32, 0, 0, (const u8 *)str_TAKAKO_NAKAMURA },
-    { 26, 32, 0, 0, (const u8 *)str_YASUTO_TAKAHASHI },
-    { 26, 32, 0, 0, (const u8 *)str_KAZUMI_TERAMOTO },
-    { 26, 32, 0, 0, (const u8 *)str_TANOUE_YOICHI },
-    { 26, 32, 0, 0, (const u8 *)str_SHINNOSUKE_N },
-    { 56, 32, 0, 0, (const u8 *)str_NAOKO_NIIYAMA },
-    { 40, 32, 0, 2, (const u8 *)str_ORIGINAL_ART_WORK },
-    { 26, 32, 0, 0, (const u8 *)str_AKIMAN },
-    { 56, 32, 0, 0, (const u8 *)str_KINU_NISHIMURA },
-    { 40, 32, 0, 2, (const u8 *)staff_SOUND_EFFECT_DESIGN_2 },
-    { 56, 32, 0, 0, (const u8 *)str_SATOSHI_ISE },
-    { 40, 32, 0, 2, (const u8 *)str_MUSIC_COMPOSE },
-    { 26, 32, 0, 0, (const u8 *)str_HIDEKI_OKUGAWA },
-    { 56, 32, 0, 0, (const u8 *)str_YUKI_IWAI },
-    { 40, 32, 0, 2, (const u8 *)str_PROGRAMMER },
-    { 26, 32, 0, 0, (const u8 *)str_KAZUHITO_NAKAI },
-    { 26, 32, 0, 0, (const u8 *)str_NOBUYA_LT1_YOSHIZUMI },
-    { 26, 32, 0, 0, (const u8 *)str_YUKO_KAWAMURA_TATE },
-    { 26, 32, 0, 0, (const u8 *)str_HIROSHI_NAKAGAWA },
-    { 26, 32, 0, 0, (const u8 *)str_HARD_YAS_ASSIST },
-    { 56, 32, 0, 0, (const u8 *)str_AKIHIRO_YOKOYAMA },
-    { 40, 32, 0, 2, (const u8 *)str_CP_SYSTEM_PROGRAMMER },
-    { 56, 32, 0, 0, (const u8 *)str_YOJI_X68k_MIKAMI },
-    { 40, 32, 0, 2, (const u8 *)str_PLANNER },
-    { 26, 32, 0, 0, (const u8 *)str_SETO_YASUHIRO },
-    { 26, 32, 0, 0, (const u8 *)str_NUMACH_THE_NIKOLIST },
-    { 26, 32, 0, 0, (const u8 *)str_S_OBATA_AE_86_TRUENO },
-    { 26, 32, 0, 0, (const u8 *)str_Malachie_du_Marais },
-    { 56, 32, 0, 0, (const u8 *)str_NEO_G_H_ISHIZAWA },
-    { 40, 32, 0, 2, (const u8 *)str_VOICE_ACTOR },
-    { 26, 32, 0, 0, (const u8 *)str_YURI_AMANO },
-    { 26, 32, 0, 0, (const u8 *)str_WATARU_TAKAGI },
-    { 26, 32, 0, 0, (const u8 *)str_ISSHIN_CHIBA },
-    { 26, 32, 0, 0, (const u8 *)str_KAN_TOKUMARU },
-    { 26, 32, 0, 0, (const u8 *)str_KOJI_TOBE },
-    { 48, 32, 0, 0, (const u8 *)str_KAHORU_FUJINO },
-    { 26, 32, 0, 0, (const u8 *)str_BRUCE_ROBERTSON },
-    { 56, 32, 0, 0, (const u8 *)str_MICHAEL_SOMMERS },
-    { 40, 32, 0, 2, (const u8 *)str_SPECIAL_THANKS },
-    { 26, 32, 0, 0, (const u8 *)str_TAKUYA_SHIRAIWA },
-    { 26, 32, 0, 0, (const u8 *)str_NAOKI_FUKUSHIMA },
-    { 26, 32, 0, 0, (const u8 *)str_SAYURI_SHINTANI },
-    { 26, 32, 0, 0, (const u8 *)str_SHOEI },
-    { 26, 32, 0, 0, (const u8 *)str_SAKOMIZU },
-    { 56, 32, 0, 0, (const u8 *)str_RITA_ROKOS },
-    { 40, 32, 0, 2, (const u8 *)str_TRANSLATOR },
-    { 26, 32, 0, 0, (const u8 *)str_MATT_TAYLOR },
-    { 26, 32, 0, 0, (const u8 *)str_ERIK_SUZUKI },
-    { 26, 32, 0, 0, (const u8 *)str_JESUS_RODRIGUEZ_BUENO },
-    { 56, 32, 0, 0, (const u8 *)str_HARUMI_YAMASHITA },
-    { 40, 32, 0, 2, (const u8 *)str_PRODUCER },
-    { 56, 32, 0, 0, (const u8 *)str_TOMOSHI_SADAMOTO },
-    { 40, 32, 0, 2, (const u8 *)str_GENERAL_PRODUCER },
-    { 26, 32, 0, 0, (const u8 *)str_NORITAKA_FUNAMIZU },
-    { 72, 32, 0, 0, (const u8 *)str_YOSHIKI_OKAMOTO },
-    { 96, 32, 0, 2, (const u8 *)str_AND_CAPCOM_ALL_STAFF },
-    { 26, 32, 0, 2, (const u8 *)str_THANK_YOU_FOR_PLAYING },
-    { 48, 32, 0, 2, (const u8 *)str_PRESENTED_BY },
-    { 112, 190, 0, 0, (const u8 *)str_blank_15 },
+    { 32, 48, 0, 2, str_STREET_FIGHTER_NEW_GENERATION },
+    { 64, 48, 0, 2, str_STAFF },
+    { 40, 32, 0, 2, str_CHARACTER_DESIGN },
+    { 26, 32, 0, 0, str_HITOSHI_T_NISHIO },
+    { 26, 32, 0, 0, str_BALL_BOY },
+    { 26, 32, 0, 0, str_Q },
+    { 26, 32, 0, 0, str_YU_SUKE },
+    { 26, 32, 0, 0, str_WHO },
+    { 26, 32, 0, 0, str_TORU_TAKAOKA },
+    { 26, 32, 0, 0, str_G_KAMINA },
+    { 26, 32, 0, 0, str_D_KURITA },
+    { 26, 32, 0, 0, str_SHIBAKI },
+    { 26, 32, 0, 0, str_TUYOSHI },
+    { 26, 32, 0, 0, str_Yoshioka },
+    { 26, 32, 0, 0, str_Chun },
+    { 26, 32, 0, 0, str_NORIHIDE },
+    { 26, 32, 0, 0, str_CHIMORIN_SHOGUN },
+    { 26, 32, 0, 0, str_YUKI_ISHIKAWA },
+    { 26, 32, 0, 0, str_SYUUCYAN },
+    { 26, 32, 0, 0, str_KEN_3 },
+    { 26, 32, 0, 0, str_KOKI_K },
+    { 26, 32, 0, 0, str_SEIJI_YANO },
+    { 26, 32, 0, 0, str_JUN_IKAWA },
+    { 56, 32, 0, 0, str_OTOKONOYAMA },
+    { 40, 32, 0, 2, str_SCROLL_DESIGN },
+    { 26, 32, 0, 0, str_HIROYUKI_IMAHORI },
+    { 26, 32, 0, 0, str_HIROKI_OHNISHI },
+    { 26, 32, 0, 0, str_YOKO_FUKUMOTO },
+    { 26, 32, 0, 0, str_YUKI_KYOTANI },
+    { 26, 32, 0, 0, str_TAMA },
+    { 26, 32, 0, 0, str_CHIE_MORISAKI },
+    { 26, 32, 0, 0, str_HIROSHI_SUGIYAMA },
+    { 26, 32, 0, 0, str_KOJI_YAMAMOTO },
+    { 26, 32, 0, 0, str_YUMIKO_N },
+    { 26, 32, 0, 0, str_TAKAKO_NAKAMURA },
+    { 26, 32, 0, 0, str_YASUTO_TAKAHASHI },
+    { 26, 32, 0, 0, str_KAZUMI_TERAMOTO },
+    { 26, 32, 0, 0, str_TANOUE_YOICHI },
+    { 26, 32, 0, 0, str_SHINNOSUKE_N },
+    { 56, 32, 0, 0, str_NAOKO_NIIYAMA },
+    { 40, 32, 0, 2, str_ORIGINAL_ART_WORK },
+    { 26, 32, 0, 0, str_AKIMAN },
+    { 56, 32, 0, 0, str_KINU_NISHIMURA },
+    { 40, 32, 0, 2, staff_SOUND_EFFECT_DESIGN_2 },
+    { 56, 32, 0, 0, str_SATOSHI_ISE },
+    { 40, 32, 0, 2, str_MUSIC_COMPOSE },
+    { 26, 32, 0, 0, str_HIDEKI_OKUGAWA },
+    { 56, 32, 0, 0, str_YUKI_IWAI },
+    { 40, 32, 0, 2, str_PROGRAMMER },
+    { 26, 32, 0, 0, str_KAZUHITO_NAKAI },
+    { 26, 32, 0, 0, str_NOBUYA_LT1_YOSHIZUMI },
+    { 26, 32, 0, 0, str_YUKO_KAWAMURA_TATE },
+    { 26, 32, 0, 0, str_HIROSHI_NAKAGAWA },
+    { 26, 32, 0, 0, str_HARD_YAS_ASSIST },
+    { 56, 32, 0, 0, str_AKIHIRO_YOKOYAMA },
+    { 40, 32, 0, 2, str_CP_SYSTEM_PROGRAMMER },
+    { 56, 32, 0, 0, str_YOJI_X68k_MIKAMI },
+    { 40, 32, 0, 2, str_PLANNER },
+    { 26, 32, 0, 0, str_SETO_YASUHIRO },
+    { 26, 32, 0, 0, str_NUMACH_THE_NIKOLIST },
+    { 26, 32, 0, 0, str_S_OBATA_AE_86_TRUENO },
+    { 26, 32, 0, 0, str_Malachie_du_Marais },
+    { 56, 32, 0, 0, str_NEO_G_H_ISHIZAWA },
+    { 40, 32, 0, 2, str_VOICE_ACTOR },
+    { 26, 32, 0, 0, str_YURI_AMANO },
+    { 26, 32, 0, 0, str_WATARU_TAKAGI },
+    { 26, 32, 0, 0, str_ISSHIN_CHIBA },
+    { 26, 32, 0, 0, str_KAN_TOKUMARU },
+    { 26, 32, 0, 0, str_KOJI_TOBE },
+    { 48, 32, 0, 0, str_KAHORU_FUJINO },
+    { 26, 32, 0, 0, str_BRUCE_ROBERTSON },
+    { 56, 32, 0, 0, str_MICHAEL_SOMMERS },
+    { 40, 32, 0, 2, str_SPECIAL_THANKS },
+    { 26, 32, 0, 0, str_TAKUYA_SHIRAIWA },
+    { 26, 32, 0, 0, str_NAOKI_FUKUSHIMA },
+    { 26, 32, 0, 0, str_SAYURI_SHINTANI },
+    { 26, 32, 0, 0, str_SHOEI },
+    { 26, 32, 0, 0, str_SAKOMIZU },
+    { 56, 32, 0, 0, str_RITA_ROKOS },
+    { 40, 32, 0, 2, str_TRANSLATOR },
+    { 26, 32, 0, 0, str_MATT_TAYLOR },
+    { 26, 32, 0, 0, str_ERIK_SUZUKI },
+    { 26, 32, 0, 0, str_JESUS_RODRIGUEZ_BUENO },
+    { 56, 32, 0, 0, str_HARUMI_YAMASHITA },
+    { 40, 32, 0, 2, str_PRODUCER },
+    { 56, 32, 0, 0, str_TOMOSHI_SADAMOTO },
+    { 40, 32, 0, 2, str_GENERAL_PRODUCER },
+    { 26, 32, 0, 0, str_NORITAKA_FUNAMIZU },
+    { 72, 32, 0, 0, str_YOSHIKI_OKAMOTO },
+    { 96, 32, 0, 2, str_AND_CAPCOM_ALL_STAFF },
+    { 26, 32, 0, 2, str_THANK_YOU_FOR_PLAYING },
+    { 48, 32, 0, 2, str_PRESENTED_BY },
+    { 112, 190, 0, 0, str_blank_15 },
     { 512, 0, 0, 0, 0 },
 };
 
 const STAFF_LINE staff_roll_last[4] = {
-    { 0, 32, 174, 2, (const u8 *)str_THANK_YOU_FOR_PLAYING },
-    { 0, 32, 132, 2, (const u8 *)str_PRESENTED_BY },
-    { 0, 190, 96, 0, (const u8 *)str_blank_15 },
+    { 0, 32, 174, 2, str_THANK_YOU_FOR_PLAYING },
+    { 0, 32, 132, 2, str_PRESENTED_BY },
+    { 0, 190, 96, 0, str_blank_15 },
     { 512, 0, 0, 0, 0 },
 };
 
-const char str_STREET_FIGHTER_NEW_GENERATION[36] = "STREET FIGHTER $  NEW GENERATION\0\0\0\x01";
+const u8 str_STREET_FIGHTER_NEW_GENERATION[36] = "STREET FIGHTER $  NEW GENERATION\0\0\0\x01";
 
-const char str_STAFF[20] = "             STAFF\0\x28";
+const u8 str_STAFF[20] = "             STAFF\0\x28";
 
-const char str_CHARACTER_DESIGN[24] = "- CHARACTER DESIGN -\0\x02\x12\x30";
+const u8 str_CHARACTER_DESIGN[24] = "- CHARACTER DESIGN -\0\x02\x12\x30";
 
-const char str_HITOSHI_T_NISHIO[20] = "   HITOSHI\"T\"NISHIO";
+const u8 str_HITOSHI_T_NISHIO[20] = "   HITOSHI\"T\"NISHIO";
 
-const char str_BALL_BOY[12] = "   BALL BOY";
+const u8 str_BALL_BOY[12] = "   BALL BOY";
 
-const char str_Q[8] = "   Q\0\x06\xCA\xF8";
+const u8 str_Q[8] = "   Q\0\x06\xCA\xF8";
 
-const char str_YU_SUKE[12] = "   YU-SUKE\0\xB6";
+const u8 str_YU_SUKE[12] = "   YU-SUKE\0\xB6";
 
-const char str_WHO[8] = "   WHO\0\x36";
+const u8 str_WHO[8] = "   WHO\0\x36";
 
-const char str_TORU_TAKAOKA[16] = "   TORU TAKAOKA";
+const u8 str_TORU_TAKAOKA[16] = "   TORU TAKAOKA";
 
-const char str_G_KAMINA[12] = "   G.KAMINA";
+const u8 str_G_KAMINA[12] = "   G.KAMINA";
 
-const char str_D_KURITA[12] = "   D-KURITA";
+const u8 str_D_KURITA[12] = "   D-KURITA";
 
-const char str_SHIBAKI[12] = "   SHIBAKI";
+const u8 str_SHIBAKI[12] = "   SHIBAKI";
 
-const char str_TUYOSHI[12] = "   TUYOSHI";
+const u8 str_TUYOSHI[12] = "   TUYOSHI";
 
-const char str_Yoshioka[12] = "   Yoshioka";
+const u8 str_Yoshioka[12] = "   Yoshioka";
 
-const char str_Chun[8] = "   Chun";
+const u8 str_Chun[8] = "   Chun";
 
-const char str_NORIHIDE[12] = "   NORIHIDE";
+const u8 str_NORIHIDE[12] = "   NORIHIDE";
 
-const char str_CHIMORIN_SHOGUN[20] = "   CHIMORIN SHOGUN\0\x1C";
+const u8 str_CHIMORIN_SHOGUN[20] = "   CHIMORIN SHOGUN\0\x1C";
 
-const char str_YUKI_ISHIKAWA[20] = "   YUKI ISHIKAWA\0\x02";
+const u8 str_YUKI_ISHIKAWA[20] = "   YUKI ISHIKAWA\0\x02";
 
-const char str_SYUUCYAN[12] = "   SYUUCYAN";
+const u8 str_SYUUCYAN[12] = "   SYUUCYAN";
 
-const char str_KEN_3[8] = "   KEN\0\x1B";
+const u8 str_KEN_3[8] = "   KEN\0\x1B";
 
-const char str_KOKI_K[12] = "   KOKI. K\0\x31";
+const u8 str_KOKI_K[12] = "   KOKI. K\0\x31";
 
-const char str_SEIJI_YANO[16] = "   SEIJI YANO\0\x20\x45";
+const u8 str_SEIJI_YANO[16] = "   SEIJI YANO\0\x20\x45";
 
-const char str_JUN_IKAWA[16] = "   JUN IKAWA\0\x06\xD7\x32";
+const u8 str_JUN_IKAWA[16] = "   JUN IKAWA\0\x06\xD7\x32";
 
-const char str_OTOKONOYAMA[16] = "   OTOKONOYAMA\0\xEE";
+const u8 str_OTOKONOYAMA[16] = "   OTOKONOYAMA\0\xEE";
 
-const char str_SCROLL_DESIGN[20] = "- SCROLL DESIGN -\0\x20\x4E";
+const u8 str_SCROLL_DESIGN[20] = "- SCROLL DESIGN -\0\x20\x4E";
 
-const char str_HIROYUKI_IMAHORI[20] = "   HIROYUKI IMAHORI";
+const u8 str_HIROYUKI_IMAHORI[20] = "   HIROYUKI IMAHORI";
 
-const char str_HIROKI_OHNISHI[20] = "   HIROKI OHNISHI\0\x55\x4C";
+const u8 str_HIROKI_OHNISHI[20] = "   HIROKI OHNISHI\0\x55\x4C";
 
-const char str_YOKO_FUKUMOTO[20] = "   YOKO FUKUMOTO\0\x2A\x5D\x48";
+const u8 str_YOKO_FUKUMOTO[20] = "   YOKO FUKUMOTO\0\x2A\x5D\x48";
 
-const char str_YUKI_KYOTANI[16] = "   YUKI KYOTANI";
+const u8 str_YUKI_KYOTANI[16] = "   YUKI KYOTANI";
 
-const char str_TAMA[8] = "   TAMA";
+const u8 str_TAMA[8] = "   TAMA";
 
-const char str_CHIE_MORISAKI[20] = "   CHIE MORISAKI\0\x49\x47\x48";
+const u8 str_CHIE_MORISAKI[20] = "   CHIE MORISAKI\0\x49\x47\x48";
 
-const char str_HIROSHI_SUGIYAMA[20] = "   HIROSHI SUGIYAMA";
+const u8 str_HIROSHI_SUGIYAMA[20] = "   HIROSHI SUGIYAMA";
 
-const char str_KOJI_YAMAMOTO[20] = "   KOJI YAMAMOTO\0\x53\x54\x0A";
+const u8 str_KOJI_YAMAMOTO[20] = "   KOJI YAMAMOTO\0\x53\x54\x0A";
 
-const char str_YUMIKO_N[16] = "   YUMIKO. N\0\x55\x4E\x44";
+const u8 str_YUMIKO_N[16] = "   YUMIKO. N\0\x55\x4E\x44";
 
-const char str_TAKAKO_NAKAMURA[20] = "   TAKAKO NAKAMURA\0\x45";
+const u8 str_TAKAKO_NAKAMURA[20] = "   TAKAKO NAKAMURA\0\x45";
 
-const char str_YASUTO_TAKAHASHI[20] = "   YASUTO TAKAHASHI";
+const u8 str_YASUTO_TAKAHASHI[20] = "   YASUTO TAKAHASHI";
 
-const char str_KAZUMI_TERAMOTO[20] = "   KAZUMI TERAMOTO\0\x49";
+const u8 str_KAZUMI_TERAMOTO[20] = "   KAZUMI TERAMOTO\0\x49";
 
-const char str_TANOUE_YOICHI[20] = "   TANOUE YOICHI\0\x31\x50\x20";
+const u8 str_TANOUE_YOICHI[20] = "   TANOUE YOICHI\0\x31\x50\x20";
 
-const char str_SHINNOSUKE_N[20] = "   SHINNOSUKE. N\0\x59\x20\x53";
+const u8 str_SHINNOSUKE_N[20] = "   SHINNOSUKE. N\0\x59\x20\x53";
 
-const char str_NAOKO_NIIYAMA[20] = "   NAOKO NIIYAMA\0\x6F\x72\x20";
+const u8 str_NAOKO_NIIYAMA[20] = "   NAOKO NIIYAMA\0\x6F\x72\x20";
 
-const char str_ORIGINAL_ART_WORK[24] = "- ORIGINAL ART WORK -\0\x20\x3D";
+const u8 str_ORIGINAL_ART_WORK[24] = "- ORIGINAL ART WORK -\0\x20\x3D";
 
-const char str_AKIMAN[12] = "   AKIMAN\0\x6F\x72";
+const u8 str_AKIMAN[12] = "   AKIMAN\0\x6F\x72";
 
-const char str_KINU_NISHIMURA[20] = "   KINU NISHIMURA\0\x49\x4F";
+const u8 str_KINU_NISHIMURA[20] = "   KINU NISHIMURA\0\x49\x4F";
 
-const char staff_SOUND_EFFECT_DESIGN_2[20] = "- SOUND EFFECT -\0\x4E\x20\x20";
+const u8 staff_SOUND_EFFECT_DESIGN_2[20] = "- SOUND EFFECT -\0\x4E\x20\x20";
 
-const char str_SATOSHI_ISE[16] = "   SATOSHI ISE\0\x4F";
+const u8 str_SATOSHI_ISE[16] = "   SATOSHI ISE\0\x4F";
 
-const char str_MUSIC_COMPOSE[20] = "- MUSIC COMPOSE -\0\x20\x20";
+const u8 str_MUSIC_COMPOSE[20] = "- MUSIC COMPOSE -\0\x20\x20";
 
-const char str_HIDEKI_OKUGAWA[20] = "   HIDEKI OKUGAWA\0\x20\x3D";
+const u8 str_HIDEKI_OKUGAWA[20] = "   HIDEKI OKUGAWA\0\x20\x3D";
 
-const char str_YUKI_IWAI[16] = "   YUKI IWAI\0\x20\x20\x20";
+const u8 str_YUKI_IWAI[16] = "   YUKI IWAI\0\x20\x20\x20";
 
-const char str_PROGRAMMER[16] = "- PROGRAMMER -\0\x53";
+const u8 str_PROGRAMMER[16] = "- PROGRAMMER -\0\x53";
 
-const char str_KAZUHITO_NAKAI[20] = "   KAZUHITO NAKAI\0\x44\x20";
+const u8 str_KAZUHITO_NAKAI[20] = "   KAZUHITO NAKAI\0\x44\x20";
 
-const char str_NOBUYA_LT1_YOSHIZUMI[24] = "   NOBUYA\"LT1\"YOSHIZUMI";
+const u8 str_NOBUYA_LT1_YOSHIZUMI[24] = "   NOBUYA\"LT1\"YOSHIZUMI";
 
-const char str_YUKO_KAWAMURA_TATE[24] = "   YUKO KAWAMURA(TATE)";
+const u8 str_YUKO_KAWAMURA_TATE[24] = "   YUKO KAWAMURA(TATE)";
 
-const char str_HIROSHI_NAKAGAWA[20] = "   HIROSHI NAKAGAWA";
+const u8 str_HIROSHI_NAKAGAWA[20] = "   HIROSHI NAKAGAWA";
 
-const char str_HARD_YAS_ASSIST[24] = "   HARD:YAS  -ASSIST-\0\xE1\x4E";
+const u8 str_HARD_YAS_ASSIST[24] = "   HARD:YAS  -ASSIST-\0\xE1\x4E";
 
-const char str_AKIHIRO_YOKOYAMA[20] = "   AKIHIRO YOKOYAMA";
+const u8 str_AKIHIRO_YOKOYAMA[20] = "   AKIHIRO YOKOYAMA";
 
-const char str_CP_SYSTEM_PROGRAMMER[28] = "- CP-SYSTEM$ PROGRAMMER -\0\xE8\x50";
+const u8 str_CP_SYSTEM_PROGRAMMER[28] = "- CP-SYSTEM$ PROGRAMMER -\0\xE8\x50";
 
-const char str_YOJI_X68k_MIKAMI[20] = "   YOJI\"X68k\"MIKAMI";
+const u8 str_YOJI_X68k_MIKAMI[20] = "   YOJI\"X68k\"MIKAMI";
 
-const char str_PLANNER[12] = "- PLANNER -";
+const u8 str_PLANNER[12] = "- PLANNER -";
 
-const char str_SETO_YASUHIRO[20] = "   SETO YASUHIRO\0\x2D\x41\x4C";
+const u8 str_SETO_YASUHIRO[20] = "   SETO YASUHIRO\0\x2D\x41\x4C";
 
-const char str_NUMACH_THE_NIKOLIST[24] = "   NUMACH THE NIKOLIST\0\xB8";
+const u8 str_NUMACH_THE_NIKOLIST[24] = "   NUMACH THE NIKOLIST\0\xB8";
 
-const char str_S_OBATA_AE_86_TRUENO[28] = "   S.OBATA  AE-86 TRUENO\0\x41\x54\x43";
+const u8 str_S_OBATA_AE_86_TRUENO[28] = "   S.OBATA  AE-86 TRUENO\0\x41\x54\x43";
 
-const char str_Malachie_du_Marais[24] = "   Malachie du Marais\0\x0B\x28";
+const u8 str_Malachie_du_Marais[24] = "   Malachie du Marais\0\x0B\x28";
 
-const char str_NEO_G_H_ISHIZAWA[24] = "   NEO_G  -H.ISHIZAWA-\0\x4A";
+const u8 str_NEO_G_H_ISHIZAWA[24] = "   NEO_G  -H.ISHIZAWA-\0\x4A";
 
-const char str_VOICE_ACTOR[16] = "- VOICE ACTOR -";
+const u8 str_VOICE_ACTOR[16] = "- VOICE ACTOR -";
 
-const char str_YURI_AMANO[16] = "   YURI AMANO\0\x20\x53";
+const u8 str_YURI_AMANO[16] = "   YURI AMANO\0\x20\x53";
 
-const char str_WATARU_TAKAGI[20] = "   WATARU TAKAGI\0\x20\0\x2D";
+const u8 str_WATARU_TAKAGI[20] = "   WATARU TAKAGI\0\x20\0\x2D";
 
-const char str_ISSHIN_CHIBA[16] = "   ISSHIN CHIBA";
+const u8 str_ISSHIN_CHIBA[16] = "   ISSHIN CHIBA";
 
-const char str_KAN_TOKUMARU[16] = "   KAN TOKUMARU";
+const u8 str_KAN_TOKUMARU[16] = "   KAN TOKUMARU";
 
-const char str_KOJI_TOBE[16] = "   KOJI TOBE\0\x20";
+const u8 str_KOJI_TOBE[16] = "   KOJI TOBE\0\x20";
 
-const char str_KAHORU_FUJINO[20] = "   KAHORU FUJINO\0\x41\x20";
+const u8 str_KAHORU_FUJINO[20] = "   KAHORU FUJINO\0\x41\x20";
 
-const char str_BRUCE_ROBERTSON[20] = "   BRUCE ROBERTSON";
+const u8 str_BRUCE_ROBERTSON[20] = "   BRUCE ROBERTSON";
 
-const char str_MICHAEL_SOMMERS[20] = "   MICHAEL SOMMERS\0\x4B";
+const u8 str_MICHAEL_SOMMERS[20] = "   MICHAEL SOMMERS\0\x4B";
 
-const char str_SPECIAL_THANKS[20] = "- SPECIAL THANKS -\0\x4F";
+const u8 str_SPECIAL_THANKS[20] = "- SPECIAL THANKS -\0\x4F";
 
-const char str_TAKUYA_SHIRAIWA[20] = "   TAKUYA SHIRAIWA";
+const u8 str_TAKUYA_SHIRAIWA[20] = "   TAKUYA SHIRAIWA";
 
-const char str_NAOKI_FUKUSHIMA[20] = "   NAOKI FUKUSHIMA\0\x52";
+const u8 str_NAOKI_FUKUSHIMA[20] = "   NAOKI FUKUSHIMA\0\x52";
 
-const char str_SAYURI_SHINTANI[20] = "   SAYURI SHINTANI\0\x44";
+const u8 str_SAYURI_SHINTANI[20] = "   SAYURI SHINTANI\0\x44";
 
-const char str_SHOEI[12] = "   SHOEI\0\x41";
+const u8 str_SHOEI[12] = "   SHOEI\0\x41";
 
-const char str_SAKOMIZU[12] = "   SAKOMIZU";
+const u8 str_SAKOMIZU[12] = "   SAKOMIZU";
 
-const char str_RITA_ROKOS[16] = "   RITA ROKOS\0\0\x20";
+const u8 str_RITA_ROKOS[16] = "   RITA ROKOS\0\0\x20";
 
-const char str_TRANSLATOR[16] = "- TRANSLATOR -";
+const u8 str_TRANSLATOR[16] = "- TRANSLATOR -";
 
-const char str_MATT_TAYLOR[16] = "   MATT TAYLOR\0\x49";
+const u8 str_MATT_TAYLOR[16] = "   MATT TAYLOR\0\x49";
 
-const char str_ERIK_SUZUKI[16] = "   ERIK SUZUKI";
+const u8 str_ERIK_SUZUKI[16] = "   ERIK SUZUKI";
 
-const char str_JESUS_RODRIGUEZ_BUENO[28] = "   JESUS RODRIGUEZ BUENO\0\x20\x20\x20";
+const u8 str_JESUS_RODRIGUEZ_BUENO[28] = "   JESUS RODRIGUEZ BUENO\0\x20\x20\x20";
 
-const char str_HARUMI_YAMASHITA[20] = "   HARUMI YAMASHITA";
+const u8 str_HARUMI_YAMASHITA[20] = "   HARUMI YAMASHITA";
 
-const char str_PRODUCER[16] = "- PRODUCER -\0\0\x0C";
+const u8 str_PRODUCER[16] = "- PRODUCER -\0\0\x0C";
 
-const char str_TOMOSHI_SADAMOTO[20] = "   TOMOSHI SADAMOTO";
+const u8 str_TOMOSHI_SADAMOTO[20] = "   TOMOSHI SADAMOTO";
 
-const char str_GENERAL_PRODUCER[24] = "- GENERAL PRODUCER -\0\x6B\0\x64";
+const u8 str_GENERAL_PRODUCER[24] = "- GENERAL PRODUCER -\0\x6B\0\x64";
 
-const char str_NORITAKA_FUNAMIZU[24] = "   NORITAKA FUNAMIZU\0\x6C\0\x6C";
+const u8 str_NORITAKA_FUNAMIZU[24] = "   NORITAKA FUNAMIZU\0\x6C\0\x6C";
 
-const char str_YOSHIKI_OKAMOTO[20] = "   YOSHIKI OKAMOTO\0\x6C";
+const u8 str_YOSHIKI_OKAMOTO[20] = "   YOSHIKI OKAMOTO\0\x6C";
 
-const char str_AND_CAPCOM_ALL_STAFF[24] = "   AND CAPCOM ALL STAFF";
+const u8 str_AND_CAPCOM_ALL_STAFF[24] = "   AND CAPCOM ALL STAFF";
 
-const char str_THANK_YOU_FOR_PLAYING[32] = "       THANK YOU FOR PLAYING!\0\0\x01";
+const u8 str_THANK_YOU_FOR_PLAYING[32] = "       THANK YOU FOR PLAYING!\0\0\x01";
 
-const char str_PRESENTED_BY[28] = "            PRESENTED BY\0\x10\0\x01";
+const u8 str_PRESENTED_BY[28] = "            PRESENTED BY\0\x10\0\x01";
 
-const char str_blank_15[4] = "#\0\0\x01";
+const u8 str_blank_15[4] = "#\0\0\x01";
 
 const XFER player_color_tbl[16][2][6][12] = {
     {

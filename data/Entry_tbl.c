@@ -33,22 +33,22 @@ extern const char sh_str_break[];
 extern const char sh_str_rm[];
 extern const char sh_str_rn[];
 extern const char sh_str_undef[];
-extern const char sh_str_monitor_entry[];
-extern const char sh_str_illegal_inst[];
-extern const char sh_str_slot_illegal_inst[];
-extern const char sh_str_cpu_addr_error[];
-extern const char sh_str_dma_addr_error[];
-extern const char sh_str_unknown_exception[];
-extern const char sh_str_monitor_title[];
-extern const char sh_str_regs_r0_r2[];
-extern const char sh_str_regs_r3_r5[];
-extern const char sh_str_regs_r6_r8[];
-extern const char sh_str_regs_r9_r11[];
-extern const char sh_str_regs_r12_r14[];
-extern const char sh_str_regs_sp_pc[];
-extern const char sh_str_regs_pr_gbr[];
-extern const char sh_str_dump_header[];
-extern const char sh_str_disasm_header[];
+extern const s8 sh_str_monitor_entry[];
+extern const s8 sh_str_illegal_inst[];
+extern const s8 sh_str_slot_illegal_inst[];
+extern const s8 sh_str_cpu_addr_error[];
+extern const s8 sh_str_dma_addr_error[];
+extern const s8 sh_str_unknown_exception[];
+extern const s8 sh_str_monitor_title[];
+extern const s8 sh_str_regs_r0_r2[];
+extern const s8 sh_str_regs_r3_r5[];
+extern const s8 sh_str_regs_r6_r8[];
+extern const s8 sh_str_regs_r9_r11[];
+extern const s8 sh_str_regs_r12_r14[];
+extern const s8 sh_str_regs_sp_pc[];
+extern const s8 sh_str_regs_pr_gbr[];
+extern const s8 sh_str_dump_header[];
+extern const s8 sh_str_disasm_header[];
 extern const char sh_mn_clrt[];
 extern const char sh_mn_nop[];
 extern const char sh_mn_rts[];
@@ -209,212 +209,212 @@ extern const char str_SP[];
 
 /* provisional name */
 const TM_STRING monitor_msg_tbl[14] = {
-    { 1, 0x16, 0xE, (const s8 *)sh_str_monitor_entry },
-    { 1, 0x16, 0xE, (const s8 *)sh_str_illegal_inst },
-    { 1, 0x16, 0xE, (const s8 *)sh_str_slot_illegal_inst },
-    { 1, 0x16, 0xE, (const s8 *)sh_str_cpu_addr_error },
-    { 1, 0x16, 0xE, (const s8 *)sh_str_dma_addr_error },
-    { 1, 0x16, 0xE, (const s8 *)sh_str_unknown_exception },
-    { 0xC, 0, 0xE, (const s8 *)sh_str_monitor_title },
-    { 0, 2, 0xE, (const s8 *)sh_str_regs_r0_r2 },
-    { 0, 3, 0xE, (const s8 *)sh_str_regs_r3_r5 },
-    { 0, 4, 0xE, (const s8 *)sh_str_regs_r6_r8 },
-    { 0, 5, 0xE, (const s8 *)sh_str_regs_r9_r11 },
-    { 0, 6, 0xE, (const s8 *)sh_str_regs_r12_r14 },
-    { 0, 7, 0xE, (const s8 *)sh_str_regs_sp_pc },
-    { 0, 8, 0xE, (const s8 *)sh_str_regs_pr_gbr },
+    { 1, 0x16, 0xE, sh_str_monitor_entry },
+    { 1, 0x16, 0xE, sh_str_illegal_inst },
+    { 1, 0x16, 0xE, sh_str_slot_illegal_inst },
+    { 1, 0x16, 0xE, sh_str_cpu_addr_error },
+    { 1, 0x16, 0xE, sh_str_dma_addr_error },
+    { 1, 0x16, 0xE, sh_str_unknown_exception },
+    { 0xC, 0, 0xE, sh_str_monitor_title },
+    { 0, 2, 0xE, sh_str_regs_r0_r2 },
+    { 0, 3, 0xE, sh_str_regs_r3_r5 },
+    { 0, 4, 0xE, sh_str_regs_r6_r8 },
+    { 0, 5, 0xE, sh_str_regs_r9_r11 },
+    { 0, 6, 0xE, sh_str_regs_r12_r14 },
+    { 0, 7, 0xE, sh_str_regs_sp_pc },
+    { 0, 8, 0xE, sh_str_regs_pr_gbr },
 };
 
 const TM_STRING dbg_dump_title[1] = {
-    { 0, 0xA, 0xE, (const s8 *)sh_str_dump_header },
+    { 0, 0xA, 0xE, sh_str_dump_header },
 };
 
 const TM_STRING dbg_disasm_title[1] = {
-    { 0, 0xA, 0xE, (const s8 *)sh_str_disasm_header },
+    { 0, 0xA, 0xE, sh_str_disasm_header },
 };
 
 const MoveName sh_op_none_tbl[9] = {
-    { 8, (const char *)sh_mn_clrt }, { 9, (const char *)sh_mn_nop },
-    { 0xB, (const char *)sh_mn_rts }, { 0x18, (const char *)sh_mn_sett },
-    { 0x19, (const char *)sh_mn_div0u }, { 0x1B, (const char *)sh_mn_sleep },
-    { 0x28, (const char *)sh_mn_clrmac }, { 0x2B, (const char *)sh_mn_rte },
+    { 8, sh_mn_clrt }, { 9, sh_mn_nop },
+    { 0xB, sh_mn_rts }, { 0x18, sh_mn_sett },
+    { 0x19, sh_mn_div0u }, { 0x1B, sh_mn_sleep },
+    { 0x28, sh_mn_clrmac }, { 0x2B, sh_mn_rte },
     { 0xFFFF, 0 },
 };
 
 const MoveName sh_op_ldm_tbl[13] = {
-    { 0x4006, (const char *)sh_mn_ldsl_rminc_mach },
-    { 0x4007, (const char *)sh_mn_ldcl_rminc_sr },
-    { 0x400A, (const char *)sh_mn_lds_rm_mach },
-    { 0x400E, (const char *)sh_mn_ldc_rm_sr },
-    { 0x4016, (const char *)sh_mn_ldsl_rminc_macl },
-    { 0x4017, (const char *)sh_mn_ldcl_rminc_gbr },
-    { 0x401A, (const char *)sh_mn_lds_rm_macl },
-    { 0x401E, (const char *)sh_mn_ldc_rm_gbr },
-    { 0x4026, (const char *)sh_mn_ldsl_rminc_pr },
-    { 0x4027, (const char *)sh_mn_ldcl_rminc_vbr },
-    { 0x402A, (const char *)sh_mn_lds_rm_pr },
-    { 0x402E, (const char *)sh_mn_ldc_rm_vbr },
+    { 0x4006, sh_mn_ldsl_rminc_mach },
+    { 0x4007, sh_mn_ldcl_rminc_sr },
+    { 0x400A, sh_mn_lds_rm_mach },
+    { 0x400E, sh_mn_ldc_rm_sr },
+    { 0x4016, sh_mn_ldsl_rminc_macl },
+    { 0x4017, sh_mn_ldcl_rminc_gbr },
+    { 0x401A, sh_mn_lds_rm_macl },
+    { 0x401E, sh_mn_ldc_rm_gbr },
+    { 0x4026, sh_mn_ldsl_rminc_pr },
+    { 0x4027, sh_mn_ldcl_rminc_vbr },
+    { 0x402A, sh_mn_lds_rm_pr },
+    { 0x402E, sh_mn_ldc_rm_vbr },
     { 0xFFFF, 0 },
 };
 
 const MoveName sh_op_n_tbl[36] = {
-    { 2, (const char *)sh_mn_stc_sr_rn },
-    { 3, (const char *)sh_mn_bsrf_rn },
-    { 0xA, (const char *)sh_mn_sts_mach_rn },
-    { 0x12, (const char *)sh_mn_stc_gbr_rn },
-    { 0x1A, (const char *)sh_mn_sts_macl_rn },
-    { 0x22, (const char *)sh_mn_stc_vbr_rn },
-    { 0x23, (const char *)sh_mn_braf_rn },
-    { 0x29, (const char *)sh_mn_movt_rn },
-    { 0x2A, (const char *)sh_mn_sts_pr_rn },
-    { 0x4015, (const char *)sh_mn_cmp_pl_rn },
-    { 0x4011, (const char *)sh_mn_cmp_pz_rn },
-    { 0x4010, (const char *)sh_mn_dt_rn },
-    { 0x401B, (const char *)sh_mn_tasb_atrn },
-    { 0x4004, (const char *)sh_mn_rotl_rn },
-    { 0x4005, (const char *)sh_mn_rotr_rn },
-    { 0x4024, (const char *)sh_mn_rotcl_rn },
-    { 0x4025, (const char *)sh_mn_rotcr_rn },
-    { 0x4020, (const char *)sh_mn_shal_rn },
-    { 0x4021, (const char *)sh_mn_shar_rn },
-    { 0x4000, (const char *)sh_mn_shll_rn },
-    { 0x4001, (const char *)sh_mn_shlr_rn },
-    { 0x4008, (const char *)sh_mn_shll2_rn },
-    { 0x4009, (const char *)sh_mn_shlr2_rn },
-    { 0x4018, (const char *)sh_mn_shll8_rn },
-    { 0x4019, (const char *)sh_mn_shlr8_rn },
-    { 0x4028, (const char *)sh_mn_shll16_rn },
-    { 0x4029, (const char *)sh_mn_shlr16_rn },
-    { 0x402B, (const char *)sh_mn_jmp_atrn },
-    { 0x400B, (const char *)sh_mn_jsr_atrn },
-    { 0x4003, (const char *)sh_mn_stcl_sr_decrn },
-    { 0x4013, (const char *)sh_mn_stcl_gbr_decrn },
-    { 0x4023, (const char *)sh_mn_stcl_vbr_decrn },
-    { 0x4002, (const char *)sh_mn_stsl_mach_decrn },
-    { 0x4012, (const char *)sh_mn_stsl_macl_decrn },
-    { 0x4022, (const char *)sh_mn_stsl_pr_decrn },
+    { 2, sh_mn_stc_sr_rn },
+    { 3, sh_mn_bsrf_rn },
+    { 0xA, sh_mn_sts_mach_rn },
+    { 0x12, sh_mn_stc_gbr_rn },
+    { 0x1A, sh_mn_sts_macl_rn },
+    { 0x22, sh_mn_stc_vbr_rn },
+    { 0x23, sh_mn_braf_rn },
+    { 0x29, sh_mn_movt_rn },
+    { 0x2A, sh_mn_sts_pr_rn },
+    { 0x4015, sh_mn_cmp_pl_rn },
+    { 0x4011, sh_mn_cmp_pz_rn },
+    { 0x4010, sh_mn_dt_rn },
+    { 0x401B, sh_mn_tasb_atrn },
+    { 0x4004, sh_mn_rotl_rn },
+    { 0x4005, sh_mn_rotr_rn },
+    { 0x4024, sh_mn_rotcl_rn },
+    { 0x4025, sh_mn_rotcr_rn },
+    { 0x4020, sh_mn_shal_rn },
+    { 0x4021, sh_mn_shar_rn },
+    { 0x4000, sh_mn_shll_rn },
+    { 0x4001, sh_mn_shlr_rn },
+    { 0x4008, sh_mn_shll2_rn },
+    { 0x4009, sh_mn_shlr2_rn },
+    { 0x4018, sh_mn_shll8_rn },
+    { 0x4019, sh_mn_shlr8_rn },
+    { 0x4028, sh_mn_shll16_rn },
+    { 0x4029, sh_mn_shlr16_rn },
+    { 0x402B, sh_mn_jmp_atrn },
+    { 0x400B, sh_mn_jsr_atrn },
+    { 0x4003, sh_mn_stcl_sr_decrn },
+    { 0x4013, sh_mn_stcl_gbr_decrn },
+    { 0x4023, sh_mn_stcl_vbr_decrn },
+    { 0x4002, sh_mn_stsl_mach_decrn },
+    { 0x4012, sh_mn_stsl_macl_decrn },
+    { 0x4022, sh_mn_stsl_pr_decrn },
     { 0xFFFF, 0 },
 };
 
 const MoveName sh_op_nm_tbl[54] = {
-    { 4, (const char *)sh_mn_movb_rm_r0rn },
-    { 5, (const char *)sh_mn_movw_rm_r0rn },
-    { 6, (const char *)sh_mn_movl_rm_r0rn },
-    { 7, (const char *)sh_mn_mull_rm_rn },
-    { 0xC, (const char *)sh_mn_movb_r0rm_rn },
-    { 0xD, (const char *)sh_mn_movw_r0rm_rn },
-    { 0xE, (const char *)sh_mn_movl_r0rm_rn },
-    { 0xF, (const char *)sh_mn_macl_rminc_rninc },
-    { 0x2000, (const char *)sh_mn_movb_rm_atrn },
-    { 0x2001, (const char *)sh_mn_movw_rm_atrn },
-    { 0x2002, (const char *)sh_mn_movl_rm_atrn },
-    { 0x2004, (const char *)sh_mn_movb_rm_decrn },
-    { 0x2005, (const char *)sh_mn_movw_rm_decrn },
-    { 0x2006, (const char *)sh_mn_movl_rm_decrn },
-    { 0x2007, (const char *)sh_mn_div0s_rm_rn },
-    { 0x2008, (const char *)sh_mn_tst_rm_rn },
-    { 0x2009, (const char *)sh_mn_and_rm_rn },
-    { 0x200A, (const char *)sh_mn_xor_rm_rn },
-    { 0x200B, (const char *)sh_mn_or_rm_rn },
-    { 0x200C, (const char *)sh_mn_cmp_str_rm_rn },
-    { 0x200D, (const char *)sh_mn_xtrct_rm_rn },
-    { 0x200E, (const char *)sh_mn_muluw_rm_rn },
-    { 0x200F, (const char *)sh_mn_mulsw_rm_rn },
-    { 0x3000, (const char *)sh_mn_cmp_eq_rm_rn },
-    { 0x3002, (const char *)sh_mn_cmp_hs_rm_rn },
-    { 0x3003, (const char *)sh_mn_cmp_ge_rm_rn },
-    { 0x3004, (const char *)sh_mn_div1_rm_rn },
-    { 0x3005, (const char *)sh_mn_dmulul_rm_rn },
-    { 0x3006, (const char *)sh_mn_cmp_hi_rm_rn },
-    { 0x3008, (const char *)sh_mn_sub_rm_rn },
-    { 0x300A, (const char *)sh_mn_subc_rm_rn },
-    { 0x300B, (const char *)sh_mn_subv_rm_rn },
-    { 0x300C, (const char *)sh_mn_add_rm_rn },
-    { 0x300D, (const char *)sh_mn_dmulsl_rm_rn },
-    { 0x300E, (const char *)sh_mn_addc_rm_rn },
-    { 0x300F, (const char *)sh_mn_addv_rm_rn },
-    { 0x400F, (const char *)sh_mn_macw_rminc_rninc },
-    { 0x6000, (const char *)sh_mn_movb_atrm_rn },
-    { 0x6001, (const char *)sh_mn_movw_atrm_rn },
-    { 0x6002, (const char *)sh_mn_movl_atrm_rn },
-    { 0x6003, (const char *)sh_mn_mov_rm_rn },
-    { 0x6004, (const char *)sh_mn_movb_rminc_rn },
-    { 0x6005, (const char *)sh_mn_movw_rminc_rn },
-    { 0x6006, (const char *)sh_mn_movl_rminc_rn },
-    { 0x6007, (const char *)sh_mn_not_rm_rn },
-    { 0x6008, (const char *)sh_mn_swapb_rm_rn },
-    { 0x6009, (const char *)sh_mn_swapw_rm_rn },
-    { 0x600A, (const char *)sh_mn_negc_rm_rn },
-    { 0x600B, (const char *)sh_mn_neg_rm_rn },
-    { 0x600C, (const char *)sh_mn_extub_rm_rn },
-    { 0x600D, (const char *)sh_mn_extuw_rm_rn },
-    { 0x600E, (const char *)sh_mn_extsb_rm_rn },
-    { 0x600F, (const char *)sh_mn_extsw_rm_rn },
+    { 4, sh_mn_movb_rm_r0rn },
+    { 5, sh_mn_movw_rm_r0rn },
+    { 6, sh_mn_movl_rm_r0rn },
+    { 7, sh_mn_mull_rm_rn },
+    { 0xC, sh_mn_movb_r0rm_rn },
+    { 0xD, sh_mn_movw_r0rm_rn },
+    { 0xE, sh_mn_movl_r0rm_rn },
+    { 0xF, sh_mn_macl_rminc_rninc },
+    { 0x2000, sh_mn_movb_rm_atrn },
+    { 0x2001, sh_mn_movw_rm_atrn },
+    { 0x2002, sh_mn_movl_rm_atrn },
+    { 0x2004, sh_mn_movb_rm_decrn },
+    { 0x2005, sh_mn_movw_rm_decrn },
+    { 0x2006, sh_mn_movl_rm_decrn },
+    { 0x2007, sh_mn_div0s_rm_rn },
+    { 0x2008, sh_mn_tst_rm_rn },
+    { 0x2009, sh_mn_and_rm_rn },
+    { 0x200A, sh_mn_xor_rm_rn },
+    { 0x200B, sh_mn_or_rm_rn },
+    { 0x200C, sh_mn_cmp_str_rm_rn },
+    { 0x200D, sh_mn_xtrct_rm_rn },
+    { 0x200E, sh_mn_muluw_rm_rn },
+    { 0x200F, sh_mn_mulsw_rm_rn },
+    { 0x3000, sh_mn_cmp_eq_rm_rn },
+    { 0x3002, sh_mn_cmp_hs_rm_rn },
+    { 0x3003, sh_mn_cmp_ge_rm_rn },
+    { 0x3004, sh_mn_div1_rm_rn },
+    { 0x3005, sh_mn_dmulul_rm_rn },
+    { 0x3006, sh_mn_cmp_hi_rm_rn },
+    { 0x3008, sh_mn_sub_rm_rn },
+    { 0x300A, sh_mn_subc_rm_rn },
+    { 0x300B, sh_mn_subv_rm_rn },
+    { 0x300C, sh_mn_add_rm_rn },
+    { 0x300D, sh_mn_dmulsl_rm_rn },
+    { 0x300E, sh_mn_addc_rm_rn },
+    { 0x300F, sh_mn_addv_rm_rn },
+    { 0x400F, sh_mn_macw_rminc_rninc },
+    { 0x6000, sh_mn_movb_atrm_rn },
+    { 0x6001, sh_mn_movw_atrm_rn },
+    { 0x6002, sh_mn_movl_atrm_rn },
+    { 0x6003, sh_mn_mov_rm_rn },
+    { 0x6004, sh_mn_movb_rminc_rn },
+    { 0x6005, sh_mn_movw_rminc_rn },
+    { 0x6006, sh_mn_movl_rminc_rn },
+    { 0x6007, sh_mn_not_rm_rn },
+    { 0x6008, sh_mn_swapb_rm_rn },
+    { 0x6009, sh_mn_swapw_rm_rn },
+    { 0x600A, sh_mn_negc_rm_rn },
+    { 0x600B, sh_mn_neg_rm_rn },
+    { 0x600C, sh_mn_extub_rm_rn },
+    { 0x600D, sh_mn_extuw_rm_rn },
+    { 0x600E, sh_mn_extsb_rm_rn },
+    { 0x600F, sh_mn_extsw_rm_rn },
     { 0xFFFF, 0 },
 };
 
 const MoveName sh_op_disp_m_tbl[3] = {
-    { 0x8400, (const char *)sh_mn_movb_disprm_r0 },
-    { 0x8500, (const char *)sh_mn_movw_disprm_r0 },
+    { 0x8400, sh_mn_movb_disprm_r0 },
+    { 0x8500, sh_mn_movw_disprm_r0 },
     { 0xFFFF, 0 },
 };
 
 const MoveName sh_op_disp_n_tbl[3] = {
-    { 0x8000, (const char *)sh_mn_movb_r0_disprn },
-    { 0x8100, (const char *)sh_mn_movw_r0_disprn },
+    { 0x8000, sh_mn_movb_r0_disprn },
+    { 0x8100, sh_mn_movw_r0_disprn },
     { 0xFFFF, 0 },
 };
 
 const MoveName sh_op_d8_tbl[12] = {
-    { 0x8900, (const char *)sh_mn_bt_label },
-    { 0x8B00, (const char *)sh_mn_bf_label },
-    { 0x8D00, (const char *)sh_mn_bt_s_label },
-    { 0x8F00, (const char *)sh_mn_bf_s_label },
-    { 0xC000, (const char *)sh_mn_movb_r0_dispgbr },
-    { 0xC100, (const char *)sh_mn_movw_r0_dispgbr },
-    { 0xC200, (const char *)sh_mn_movl_r0_dispgbr },
-    { 0xC400, (const char *)sh_mn_movb_dispgbr_r0 },
-    { 0xC500, (const char *)sh_mn_movw_dispgbr_r0 },
-    { 0xC600, (const char *)sh_mn_movl_dispgbr_r0 },
-    { 0xC700, (const char *)sh_mn_mova_disppc_r0 },
+    { 0x8900, sh_mn_bt_label },
+    { 0x8B00, sh_mn_bf_label },
+    { 0x8D00, sh_mn_bt_s_label },
+    { 0x8F00, sh_mn_bf_s_label },
+    { 0xC000, sh_mn_movb_r0_dispgbr },
+    { 0xC100, sh_mn_movw_r0_dispgbr },
+    { 0xC200, sh_mn_movl_r0_dispgbr },
+    { 0xC400, sh_mn_movb_dispgbr_r0 },
+    { 0xC500, sh_mn_movw_dispgbr_r0 },
+    { 0xC600, sh_mn_movl_dispgbr_r0 },
+    { 0xC700, sh_mn_mova_disppc_r0 },
     { 0xFFFF, 0 },
 };
 
 const MoveName sh_op_imm_tbl[11] = {
-    { 0x8800, (const char *)sh_mn_cmp_eq_imm_r0 },
-    { 0xC300, (const char *)sh_mn_trapa_imm },
-    { 0xC800, (const char *)sh_mn_tst_imm_r0 },
-    { 0xC900, (const char *)sh_mn_and_imm_r0 },
-    { 0xCA00, (const char *)sh_mn_xor_imm_r0 },
-    { 0xCB00, (const char *)sh_mn_or_imm_r0 },
-    { 0xCC00, (const char *)sh_mn_tstb_imm_r0gbr },
-    { 0xCD00, (const char *)sh_mn_andb_imm_r0gbr },
-    { 0xCE00, (const char *)sh_mn_xorb_imm_r0gbr },
-    { 0xCF00, (const char *)sh_mn_orb_imm_r0gbr },
+    { 0x8800, sh_mn_cmp_eq_imm_r0 },
+    { 0xC300, sh_mn_trapa_imm },
+    { 0xC800, sh_mn_tst_imm_r0 },
+    { 0xC900, sh_mn_and_imm_r0 },
+    { 0xCA00, sh_mn_xor_imm_r0 },
+    { 0xCB00, sh_mn_or_imm_r0 },
+    { 0xCC00, sh_mn_tstb_imm_r0gbr },
+    { 0xCD00, sh_mn_andb_imm_r0gbr },
+    { 0xCE00, sh_mn_xorb_imm_r0gbr },
+    { 0xCF00, sh_mn_orb_imm_r0gbr },
     { 0xFFFF, 0 },
 };
 
 const MoveName sh_op_disp4_tbl[3] = {
-    { 0x1000, (const char *)sh_mn_movl_rm_disprn },
-    { 0x5000, (const char *)sh_mn_movl_disprm_rn },
+    { 0x1000, sh_mn_movl_rm_disprn },
+    { 0x5000, sh_mn_movl_disprm_rn },
     { 0xFFFF, 0 },
 };
 
 const MoveName sh_op_d12_tbl[3] = {
-    { 0xA000, (const char *)sh_mn_bra_label },
-    { 0xB000, (const char *)sh_mn_bsr_label },
+    { 0xA000, sh_mn_bra_label },
+    { 0xB000, sh_mn_bsr_label },
     { 0xFFFF, 0 },
 };
 
 const MoveName sh_op_pcrel_tbl[3] = {
-    { 0x9000, (const char *)sh_mn_movw_disppc_rn },
-    { 0xD000, (const char *)sh_mn_movl_disppc_rn },
+    { 0x9000, sh_mn_movw_disppc_rn },
+    { 0xD000, sh_mn_movl_disppc_rn },
     { 0xFFFF, 0 },
 };
 
 const MoveName sh_op_imm_n_tbl[3] = {
-    { 0x7000, (const char *)sh_mn_add_imm_rn },
-    { 0xE000, (const char *)sh_mn_mov_imm_rn },
+    { 0x7000, sh_mn_add_imm_rn },
+    { 0xE000, sh_mn_mov_imm_rn },
     { 0xFFFF, 0 },
 };
 
@@ -426,37 +426,37 @@ const char sh_str_rn[4] = "Rn\0\x1A";
 
 const char sh_str_undef[4] = "???";
 
-const char sh_str_monitor_entry[16] = "Monitor Entry\0\x07\x0C";
+const s8 sh_str_monitor_entry[16] = "Monitor Entry\0\x07\x0C";
 
-const char sh_str_illegal_inst[28] = "Common Illigal Instruction\0\xC2";
+const s8 sh_str_illegal_inst[28] = "Common Illigal Instruction\0\xC2";
 
-const char sh_str_slot_illegal_inst[28] = "Slot Illigal Instruction\0\x06\xD0\xB7";
+const s8 sh_str_slot_illegal_inst[28] = "Slot Illigal Instruction\0\x06\xD0\xB7";
 
-const char sh_str_cpu_addr_error[20] = "CPU Address Error\0\x18\xA8";
+const s8 sh_str_cpu_addr_error[20] = "CPU Address Error\0\x18\xA8";
 
-const char sh_str_dma_addr_error[20] = "DMA Address Error\0\x28\x01";
+const s8 sh_str_dma_addr_error[20] = "DMA Address Error\0\x28\x01";
 
-const char sh_str_unknown_exception[20] = "Unknown Exception\0\xA8\x4F";
+const s8 sh_str_unknown_exception[20] = "Unknown Exception\0\xA8\x4F";
 
-const char sh_str_monitor_title[16] = "M O N I T O R\n\0\x4A";
+const s8 sh_str_monitor_title[16] = "M O N I T O R\n\0\x4A";
 
-const char sh_str_regs_r0_r2[48] = "R0  = 00000000 R1  = 00000000 R2  = 00000000\n\0\xAD\x47";
+const s8 sh_str_regs_r0_r2[48] = "R0  = 00000000 R1  = 00000000 R2  = 00000000\n\0\xAD\x47";
 
-const char sh_str_regs_r3_r5[48] = "R3  = 00000000 R4  = 00000000 R5  = 00000000\n\0\x34\x01";
+const s8 sh_str_regs_r3_r5[48] = "R3  = 00000000 R4  = 00000000 R5  = 00000000\n\0\x34\x01";
 
-const char sh_str_regs_r6_r8[48] = "R6  = 00000000 R7  = 00000000 R8  = 00000000\n\0\x4A\x24";
+const s8 sh_str_regs_r6_r8[48] = "R6  = 00000000 R7  = 00000000 R8  = 00000000\n\0\x4A\x24";
 
-const char sh_str_regs_r9_r11[48] = "R9  = 00000000 R10 = 00000000 R11 = 00000000\n\0\x4C\x08";
+const s8 sh_str_regs_r9_r11[48] = "R9  = 00000000 R10 = 00000000 R11 = 00000000\n\0\x4C\x08";
 
-const char sh_str_regs_r12_r14[48] = "R12 = 00000000 R13 = 00000000 R14 = 00000000\n\0\xA8\x51";
+const s8 sh_str_regs_r12_r14[48] = "R12 = 00000000 R13 = 00000000 R14 = 00000000\n\0\xA8\x51";
 
-const char sh_str_regs_sp_pc[32] = "SP  = 00000000 PC  = 00000000\n\0\x0C";
+const s8 sh_str_regs_sp_pc[32] = "SP  = 00000000 PC  = 00000000\n\0\x0C";
 
-const char sh_str_regs_pr_gbr[32] = "PR  = 00000000 GBR = 00000000\0\x10\x10";
+const s8 sh_str_regs_pr_gbr[32] = "PR  = 00000000 GBR = 00000000\0\x10\x10";
 
-const char sh_str_dump_header[48] = "Address   +0   +2   +4   +6   +8   +A   +C   +E";
+const s8 sh_str_dump_header[48] = "Address   +0   +2   +4   +6   +8   +A   +C   +E";
 
-const char sh_str_disasm_header[48] = "Address  Code Nemonic                          ";
+const s8 sh_str_disasm_header[48] = "Address  Code Nemonic                          ";
 
 const char sh_mn_clrt[28] = "CLRT                    \0\x24\x24\xC4";
 

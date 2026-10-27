@@ -16,8 +16,8 @@
 extern const char str_NORMAL_2[];
 extern const char str_WIDE[];
 extern const char str_1_ROUND[];
-extern const char str_3_ROUNDS[];
-extern const char str_5_ROUNDS[];
+extern const s8 str_3_ROUNDS[];
+extern const s8 str_5_ROUNDS[];
 extern const char str_7_ROUNDS[];
 extern const char str_OFF[];
 extern const char str_1_MATCH[];
@@ -29,9 +29,9 @@ const char str_WIDE[12] = "WIDE    \0\x1E\x1E\x20";
 
 const char str_1_ROUND[12] = "1 ROUND \0\x29\x29\x2A";
 
-const char str_3_ROUNDS[12] = "3 ROUNDS\0\x01\x02\x02";
+const s8 str_3_ROUNDS[12] = "3 ROUNDS\0\x01\x02\x02";
 
-const char str_5_ROUNDS[12] = "5 ROUNDS\0\x06\x06\x06";
+const s8 str_5_ROUNDS[12] = "5 ROUNDS\0\x06\x06\x06";
 
 const char str_7_ROUNDS[12] = "7 ROUNDS\0\x07\x37\x38";
 

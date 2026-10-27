@@ -15,14 +15,15 @@
 
 #pragma section TBL
 
-extern const u16 sc_celllist_scr_tbl[];
+extern const s8 sc_celllist_scr_tbl[];
 extern const u16 sc_player_name_chr_tbl[];
 extern const TONE_ENTRY tone_down_tbl[];
 extern const u16 bcount_mark_chr[];
 extern const NAME_PLATE nwdata_tbl[];
 
-const u16 sc_celllist_scr_tbl[9] = {
-    3, 0x303, 0xD0C, 0x303, 0x303, 0x303, 0x303, 0x403, 0x3C8,
+const s8 sc_celllist_scr_tbl[18] = {
+    0, 3, 3, 3, 13, 12, 3, 3, 3, 3, 3, 3, 3, 3, 4, 3,
+    3, -56,
 };
 
 const u16 sc_player_name_chr_tbl[13] = {

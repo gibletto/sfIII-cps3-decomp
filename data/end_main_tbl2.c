@@ -22,12 +22,12 @@ extern const s16 end_map_data_0[];
 extern const s16 end_map_data_1[];
 extern const s16 end_map_data_2[];
 extern const s16 end_map_data_3[];
-extern const u32 end_100_scrn_data[];
-extern const u32 end_1100_scrn_data[];
-extern const u32 end_200_scrn_data[];
-extern const u32 end_500_scrn_data[];
-extern const u32 end_900_scrn_data[];
-extern const u32 end_scrn_data[];
+extern const u16 end_100_scrn_data[][16][32];
+extern const u16 end_1100_scrn_data[][16][32];
+extern const u16 end_200_scrn_data[][16][32];
+extern const u16 end_500_scrn_data[][16][32];
+extern const u16 end_900_scrn_data[][16][32];
+extern const u16 end_scrn_data[][16][32];
 
 const s16 end_scno_tbl[13] = {
     0, 2, 2, 2, 2, 2, 0, 2, 3, 1, 2, 2, 3,

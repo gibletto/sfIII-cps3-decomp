@@ -292,13 +292,13 @@ const CELL_ENTRY sc_celllist_14[11] = {
 };
 
 const CELL_ENTRY * const sc_celllist_tbl[17] = {
-    (const CELL_ENTRY *)sc_celllist_0, (const CELL_ENTRY *)sc_celllist_1,
-    (const CELL_ENTRY *)sc_celllist_2, (const CELL_ENTRY *)sc_celllist_3,
-    (const CELL_ENTRY *)sc_celllist_4, (const CELL_ENTRY *)sc_celllist_5,
-    (const CELL_ENTRY *)sc_celllist_6, (const CELL_ENTRY *)sc_celllist_7,
-    (const CELL_ENTRY *)sc_celllist_8, (const CELL_ENTRY *)sc_celllist_9,
-    (const CELL_ENTRY *)sc_celllist_10, (const CELL_ENTRY *)sc_celllist_11,
-    (const CELL_ENTRY *)sc_celllist_12, (const CELL_ENTRY *)sc_celllist_13,
-    (const CELL_ENTRY *)sc_celllist_14, (const CELL_ENTRY *)sc_celllist_15,
-    (const CELL_ENTRY *)sc_celllist_16,
+    sc_celllist_0, sc_celllist_1,
+    sc_celllist_2, sc_celllist_3,
+    sc_celllist_4, sc_celllist_5,
+    sc_celllist_6, sc_celllist_7,
+    sc_celllist_8, sc_celllist_9,
+    sc_celllist_10, sc_celllist_11,
+    sc_celllist_12, sc_celllist_13,
+    sc_celllist_14, sc_celllist_15,
+    sc_celllist_16,
 };

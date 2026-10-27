@@ -41,7 +41,7 @@ void load_any_color();
 void debug_bg_tile_put();
 s32 effect_C3_init();
 /* provisional name */
-extern const u8 bg150_scrn_data[];
+extern const u16 bg150_scrn_data[][16][32];
 
 void bg150_layer0(void);
 void bg150_layer0_init(void);

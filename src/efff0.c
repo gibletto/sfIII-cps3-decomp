@@ -85,7 +85,7 @@ void effect_F0_move(WORK_Other* ewk) {
             seraph_flag = 1;
             scrn_map_set(3, ake_scrl_w[0].adrs);
             effF0_line_scroll(ewk);
-line_done:;
+            effF0_scroll_set(ewk);
         } else {
             scrn_map_set(3, ake_scrl_w[0].adrs);
             effF0_line_scroll(ewk);
@@ -96,10 +96,9 @@ line_done:;
             sound_reg_level_set(0, 0);
             return;
         }
-        goto scroll_set;
+        break;
     case R0_OFF:
         effF0_line_scroll(ewk);
-scroll_set:;
         effF0_scroll_set(ewk);
         break;
     default:

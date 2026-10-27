@@ -52,8 +52,8 @@
 extern const char str_NORMAL_2[];
 extern const char str_WIDE[];
 extern const char str_1_ROUND[];
-extern const char str_3_ROUNDS[];
-extern const char str_5_ROUNDS[];
+extern const s8 str_3_ROUNDS[];
+extern const s8 str_5_ROUNDS[];
 extern const char str_7_ROUNDS[];
 extern const char str_OFF[];
 extern const char str_1_MATCH[];
@@ -76,8 +76,8 @@ TM_STRING gcfg_screen_str_en[2] = {
 
 TM_STRING gcfg_round_str_en[4] = {
     { 0, 0, 2, (void*)str_1_ROUND },
-    { 0, 0, 2, (void*)str_3_ROUNDS },
-    { 0, 0, 2, (void*)str_5_ROUNDS },
+    { 0, 0, 2, str_3_ROUNDS },
+    { 0, 0, 2, str_5_ROUNDS },
     { 0, 0, 2, (void*)str_7_ROUNDS },
 };
 

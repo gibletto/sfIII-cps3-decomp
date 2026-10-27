@@ -10,6 +10,7 @@
 
 #include "types.h"
 #include "structs.h"
+#include "fighter.h"
 
 #pragma section TBL
 
@@ -19,7 +20,7 @@ extern const s8 Demo_Stage_Play_Data[];
 extern const s8 Demo_PL_Data[];
 
 const s8 Demo_PL_Play_Data[10] = {
-    1, 2, 7, 4, 5, 7, 2, 5, 2, 11,
+    PL_ALEX, PL_RYU, PL_IBUKI, PL_DUDLEY, PL_NECRO, PL_IBUKI, PL_RYU, PL_NECRO, PL_RYU, PL_KEN,
 };
 
 const u8 Arts_Rnd_Demo_Data[8] = {

@@ -34,7 +34,7 @@ void blit_8x16_tile();
 s32 effect_66_init();
 s32 effect_68_init();
 /* provisional name */
-extern const u16 bg070_cell_data[];
+extern const u16 bg070_cell_data[][16][32];
 void bg0700(void);
 void bg0701(void);
 void bg0700_init00(void);

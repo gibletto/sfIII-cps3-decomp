@@ -277,11 +277,10 @@ s32 effect_B0_init(void) {
     ewk->wu.direction = 0;
     load_any_color_fade(9, 0, 0, 0);
     Bg_Off_R(16);
-    (void)&((WORK*)2)->id;
     bg_w.bgw[0].zuubun = 0;
     bg_w.quake_x_index = 0;
     bg_w.quake_y_index = 0;
-    for (i = 0; i < 2; i = i + 1) {
+    for (i = 0; i < 2; i++) {
         if (i) {
             n = 3;
         } else {
@@ -297,7 +296,6 @@ s32 effect_B0_init(void) {
     }
     (void)&((WORK*)0x200)->id;
     scrn_reg_w[0].ctrl &= 0xFE7F;
-    (void)&((WORK*)0x2000000)->id;
     
     end_ake_cell_put(0, 0x3040, 6, (u32)effb0_scrn_data);
     end_ake_cell_put(0, 0x3080, 7, (u32)effb0_scrn_data);

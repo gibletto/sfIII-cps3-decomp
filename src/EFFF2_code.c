@@ -116,10 +116,10 @@ s32 effect_F2_init(s16 no) {
     const s16* data_ptr = &efff2_data_tbl[no][0];
     (void)&((WORK*)data_ptr)->id;
     for (i = 0; i < 4; i++) {
-        if ((ix = pull_effect_work(4)) == -1) {
+        ix = pull_effect_work(4);
+        if (ix == -1) {
             return -1;
         }
-        (void)&((WORK*)(s32)ix)->id;
         ewk = (WORK_Other*)frw[ix];
         ewk->wu.be_flag = 1;
         ewk->wu.id = 152;

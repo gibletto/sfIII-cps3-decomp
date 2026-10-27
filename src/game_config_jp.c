@@ -51,29 +51,29 @@
 #include "CMD_MAIN.h"
 #include "cps3.h"
 
-extern const u32 gcfg_cursor_clr_scr_jp_0[];
-extern const u32 gcfg_cursor_scr_jp_0[];
-extern const u8 gcfg_event_scr_jp_0[];
-extern const u8 gcfg_event_scr_jp_1[];
-extern const u32 gcfg_exit_guide_scr_jp_0[];
-extern const u32 gcfg_gauge_clr_scr_jp_0[];
-extern const u32 gcfg_gauge_scr_jp_0[];
-extern const u32 gcfg_gauge_scr_jp_1[];
-extern const u32 gcfg_gauge_scr_jp_2[];
-extern const u32 gcfg_gauge_scr_jp_3[];
-extern const u32 gcfg_gauge_scr_jp_4[];
-extern const u32 gcfg_gauge_scr_jp_5[];
-extern const u32 gcfg_gauge_scr_jp_6[];
-extern const u32 gcfg_gauge_scr_jp_7[];
-extern const u32 gcfg_guide_scr_jp_0[];
-extern const u8 gcfg_round_scr_jp_0[];
-extern const u8 gcfg_round_scr_jp_1[];
-extern const u8 gcfg_round_scr_jp_2[];
-extern const u8 gcfg_round_scr_jp_3[];
-extern const u8 gcfg_screen_scr_jp_0[];
-extern const u8 gcfg_screen_scr_jp_1[];
-extern const u32 gcfg_title_scr_jp_0[];
-extern const u8 config_jp_chr_f400[];      /* provisional name: data copied to SS_RAM + 0xF400 */
+extern const u16 gcfg_cursor_clr_scr_jp_0[];
+extern const u16 gcfg_cursor_scr_jp_0[];
+extern const u16 gcfg_event_scr_jp_0[];
+extern const u16 gcfg_event_scr_jp_1[];
+extern const u16 gcfg_exit_guide_scr_jp_0[];
+extern const u16 gcfg_gauge_clr_scr_jp_0[];
+extern const u16 gcfg_gauge_scr_jp_0[];
+extern const u16 gcfg_gauge_scr_jp_1[];
+extern const u16 gcfg_gauge_scr_jp_2[];
+extern const u16 gcfg_gauge_scr_jp_3[];
+extern const u16 gcfg_gauge_scr_jp_4[];
+extern const u16 gcfg_gauge_scr_jp_5[];
+extern const u16 gcfg_gauge_scr_jp_6[];
+extern const u16 gcfg_gauge_scr_jp_7[];
+extern const u16 gcfg_guide_scr_jp_0[];
+extern const u16 gcfg_round_scr_jp_0[];
+extern const u16 gcfg_round_scr_jp_1[];
+extern const u16 gcfg_round_scr_jp_2[];
+extern const u16 gcfg_round_scr_jp_3[];
+extern const u16 gcfg_screen_scr_jp_0[];
+extern const u16 gcfg_screen_scr_jp_1[];
+extern const u16 gcfg_title_scr_jp_0[];
+extern const u8 config_jp_chr_f400[][32];      /* provisional name: data copied to SS_RAM + 0xF400 */
 
 s8 Config_Item_jp;  /* 0201390C */
 s8 Config_Exit_jp;  /* 0201390D */

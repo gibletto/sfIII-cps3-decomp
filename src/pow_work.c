@@ -14,12 +14,12 @@ extern const DAMAGE_DATA Damage_Power_Data[];
 /* 02000D3C */
 /* each player's damage table (the characters' tables in CCHR), set when the character is (provisional name) */
 const DAMAGE_DATA* Damage_Data_Ptr[16] = {
-    (const DAMAGE_DATA *)Damage_Power_Data, (const DAMAGE_DATA *)Damage_Power_Data,
-    (const DAMAGE_DATA *)Damage_Power_Data, (const DAMAGE_DATA *)Damage_Power_Data,
-    (const DAMAGE_DATA *)Damage_Power_Data, (const DAMAGE_DATA *)Damage_Power_Data,
-    (const DAMAGE_DATA *)Damage_Power_Data, (const DAMAGE_DATA *)Damage_Power_Data,
-    (const DAMAGE_DATA *)Damage_Power_Data, (const DAMAGE_DATA *)Damage_Power_Data,
-    (const DAMAGE_DATA *)Damage_Power_Data, (const DAMAGE_DATA *)Damage_Power_Data,
-    (const DAMAGE_DATA *)Damage_Power_Data, (const DAMAGE_DATA *)Damage_Power_Data,
-    (const DAMAGE_DATA *)Damage_Power_Data, (const DAMAGE_DATA *)Damage_Power_Data,
+    Damage_Power_Data, Damage_Power_Data,
+    Damage_Power_Data, Damage_Power_Data,
+    Damage_Power_Data, Damage_Power_Data,
+    Damage_Power_Data, Damage_Power_Data,
+    Damage_Power_Data, Damage_Power_Data,
+    Damage_Power_Data, Damage_Power_Data,
+    Damage_Power_Data, Damage_Power_Data,
+    Damage_Power_Data, Damage_Power_Data,
 };

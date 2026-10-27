@@ -86,16 +86,16 @@ extern const s16 scr_obj_unref_6[];
 /* scroll object lists like scr_obj_data88's; nothing in the program refers to it (provisional name) */
 const s16* scr_obj_data_unref[3][4] = {
     {
-        (const s16 *)scr_obj_unref_0, (const s16 *)scr_obj_unref_1,
-        (const s16 *)scr_obj_unref_2, (const s16 *)scr_obj_unref_3,
+        scr_obj_unref_0, scr_obj_unref_1,
+        scr_obj_unref_2, scr_obj_unref_3,
     },
     {
-        (const s16 *)scr_obj_unref_4, (const s16 *)scr_obj_unref_4,
-        (const s16 *)scr_obj_unref_5, (const s16 *)scr_obj_unref_5,
+        scr_obj_unref_4, scr_obj_unref_4,
+        scr_obj_unref_5, scr_obj_unref_5,
     },
     {
-        (const s16 *)scr_obj_unref_6, (const s16 *)scr_obj_unref_6,
-        (const s16 *)scr_obj_unref_6, (const s16 *)scr_obj_unref_6,
+        scr_obj_unref_6, scr_obj_unref_6,
+        scr_obj_unref_6, scr_obj_unref_6,
     },
 };
 
