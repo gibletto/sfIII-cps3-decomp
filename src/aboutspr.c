@@ -374,7 +374,6 @@ s32 trans_char_cells(WORK* work) {
     no = wk->cg_number;
     set = cg_data_list[no].set;
     if ((set->slot & 0x8000) ? 0 : 1) {
-    load:
         if (wk->old_cgnum == wk->cg_number) {
             goto cached;
         }

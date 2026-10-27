@@ -55,6 +55,9 @@ if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
 asmsh src\tasksw.src -object=obj\tasksw.obj
 if errorlevel 1 goto fail
+shc src\reset.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -object=obj\reset.obj >obj\shc.log 2>&1
+if errorlevel 1 goto fail
+findstr /c:") : " obj\shc.log >>obj\warnings.log
 shc src\Entry_dbg.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -object=obj\Entry_dbg.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log

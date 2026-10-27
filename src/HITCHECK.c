@@ -189,9 +189,10 @@ wait_dm:
             goto three;
         }
         goto four;
-    } else if (ds->wu.xyz[1].disp.pos > 0) {
-        goto L1;
-    L1:
+    } else {
+        if (ds->wu.xyz[1].disp.pos <= 0) {
+            goto ground;
+        }
         if (ds->wu.xyz[1].disp.pos < 8 && ds->wu.mvxy.a[1].real.h < 0) {
             ds->wu.xyz[1].cal = 0;
             goto ground;
@@ -352,73 +353,73 @@ char gddir;
             }
         }
     }
-    if (ds->wu.xyz[1].disp.pos > 0) {
-        goto L1;
-    L1:
-        if (ds->wu.xyz[1].disp.pos < 8 && ds->wu.mvxy.a[1].real.h < 0) {
-        fall:
-            ds->wu.xyz[1].cal = 0;
-            goto switch_defense_ground;
-        }
-        switch (defense_sky(as, ds, gddir)) {
-        case 0:
-            goto parried;
-        case 1:
-            goto set_guard_status;
-        default:
-            break;
-        }
-    jump_one:
-        as->wu.hf.hit.player = 2;
-        dm_reaction_init_set(as, ds);
-        if (as->wu.att.at_free4 & 0x40) {
-            ds->wu.routine_no[2] = get_sky_sp_damage(ds->wu.routine_no[2]);
-        } else {
-            if (ds->dm_point == 4) {
-                ds->wu.routine_no[2] = get_sky_nm2_damage(ds->wu.routine_no[2]);
-            }
-            ds->wu.routine_no[2] = get_sky_nm_damage(ds->wu.routine_no[2]);
-        }
+    if (ds->wu.xyz[1].disp.pos <= 0) {
+        goto switch_defense_ground;
+    }
+    if (ds->wu.xyz[1].disp.pos < 8 && ds->wu.mvxy.a[1].real.h < 0) {
+    fall:
+        ds->wu.xyz[1].cal = 0;
+        goto switch_defense_ground;
+    }
+    switch (defense_sky(as, ds, gddir)) {
+    case 0:
+        goto parried;
+    case 1:
+        goto set_guard_status;
+    default:
+        break;
+    }
+jump_one:
+    as->wu.hf.hit.player = 2;
+    dm_reaction_init_set(as, ds);
+    if (as->wu.att.at_free4 & 0x40) {
+        ds->wu.routine_no[2] = get_sky_sp_damage(ds->wu.routine_no[2]);
     } else {
-    switch_defense_ground:
-        switch (defense_ground(as, ds, gddir)) {
-        case 0:
-            goto parried;
-        case 1:
-            goto set_guard_status;
-        default:
-            break;
+        if (ds->dm_point == 4) {
+            ds->wu.routine_no[2] = get_sky_nm2_damage(ds->wu.routine_no[2]);
         }
-    jump_two:
-        as->wu.hf.hit.player = 1;
-        dm_reaction_init_set(as, ds);
-        if (as->wu.zu_flag == 0) {
-            if (ds->wu.pat_status >= 32) {
-                if (ds->dm_point == 4 && ds->player_number == PL_NECRO) {
-                    ds->wu.routine_no[2] = get_kagami2_damage(ds->wu.routine_no[2]);
+        ds->wu.routine_no[2] = get_sky_nm_damage(ds->wu.routine_no[2]);
+    }
+    goto set_damage;
+switch_defense_ground:
+    switch (defense_ground(as, ds, gddir)) {
+    case 0:
+        goto parried;
+    case 1:
+        goto set_guard_status;
+    default:
+        break;
+    }
+jump_two:
+    as->wu.hf.hit.player = 1;
+    dm_reaction_init_set(as, ds);
+    if (as->wu.zu_flag == 0) {
+        if (ds->wu.pat_status >= 32) {
+            if (ds->dm_point == 4 && ds->player_number == PL_NECRO) {
+                ds->wu.routine_no[2] = get_kagami2_damage(ds->wu.routine_no[2]);
+            }
+            ds->wu.routine_no[2] = get_kagami_damage(ds->wu.routine_no[2]);
+        } else {
+            switch (ds->dm_point) {
+            case 0:
+            case 1:
+                if (check_head_damage(ds->wu.routine_no[2])) {
+                    ds->wu.routine_no[2] = get_kind_of_head_dm(as->wu.dir_atthit, ds->wu.dm_rl);
                 }
-                ds->wu.routine_no[2] = get_kagami_damage(ds->wu.routine_no[2]);
-            } else {
-                switch (ds->dm_point) {
-                case 0:
-                case 1:
-                    if (check_head_damage(ds->wu.routine_no[2])) {
-                        ds->wu.routine_no[2] = get_kind_of_head_dm(as->wu.dir_atthit, ds->wu.dm_rl);
-                    }
-                    break;
-                case 4:
-                    if (ds->player_number == PL_NECRO) {
-                        ds->wu.routine_no[2] = get_grd_hand_damage(ds->wu.routine_no[2]);
-                    }
-                default:
-                    if (check_trunk_damage(ds->wu.routine_no[2])) {
-                        ds->wu.routine_no[2] = get_kind_of_trunk_dm(as->wu.dir_atthit, ds->wu.dm_rl);
-                    }
-                    break;
+                break;
+            case 4:
+                if (ds->player_number == PL_NECRO) {
+                    ds->wu.routine_no[2] = get_grd_hand_damage(ds->wu.routine_no[2]);
                 }
+            default:
+                if (check_trunk_damage(ds->wu.routine_no[2])) {
+                    ds->wu.routine_no[2] = get_kind_of_trunk_dm(as->wu.dir_atthit, ds->wu.dm_rl);
+                }
+                break;
             }
         }
     }
+set_damage:
     ds->wu.routine_no[1] = PLAYER_DAMAGE;
     ds->wu.routine_no[3] = 0;
     effect_02_init(&as->wu, ds->dm_point, 1, ds->wu.dm_rl);
@@ -965,10 +966,10 @@ loop_mi:
         if (mad->att_hit_ok == 0) {
             goto cont_mi;
         }
-        if ((mh = (s16*)mad->h_att)[0] == 0) {
+        mh = (s16*)mad->h_att;
+        if (mh[0] == 0) {
             goto cont_mi;
         }
-        (void)&((ATTACK_BOX*)mh)->att_box[0][2];
         si = 0;
         goto next_si;
     loop_si:
@@ -1036,7 +1037,6 @@ next_mi:
 }
 
 
-#define HIT_DAMAGE_W(value) ((void)&((WORK*)(s32)(value))->id)
 #define HIT_BOX_INDEX_W(value) ((void)&((WORK*)(s32)(value))->id)
 
 void attack_hit_check(void) {
@@ -1102,7 +1102,6 @@ void attack_hit_check(void) {
                             continue;
                         }
                         mw = hit_check_subroutine(mad, sad, ah, dh);
-                        HIT_DAMAGE_W(mw);
                         if (mw > mkm_wk[si]) {
                             hs[mi].my_att = i;
                             mkm_wk[si] = mw;
@@ -1121,7 +1120,8 @@ void attack_hit_check(void) {
                             }
                         }
                     }
-                    if ((mw = hit_check_subroutine(mad, sad, ah, dh))) {
+                    mw = hit_check_subroutine(mad, sad, ah, dh);
+                    if (mw) {
                         hs[mi].flag.results |= 0x10;
                         hs[mi].my_hit = si;
                         hs[mi].my_att = i;
@@ -1183,7 +1183,6 @@ void attack_hit_check(void) {
 }
 
 
-#undef HIT_DAMAGE_W
 #undef HIT_BOX_INDEX_W
 
 s32 hit_check_subroutine(WORK* wk1, WORK* wk2, const s16* hd1, const s16* hd2) {

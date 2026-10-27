@@ -980,15 +980,14 @@ void suzi_line_calc_fill(s16 bg_num) {
         line = line - 1;
         count = 41 - bg_w.bgw[bg_num].d_line;
         i = 0;
-        if (count > 0) {
-            goto suzi_fill_first;
-        suzi_fill_first:;
-            do {
-                *dst = *(u16*)line;
-                dst = dst + 2;
-                i = i + 1;
-            } while (i < count);
+        if (count <= 0) {
+            goto fill_top;
         }
+        do {
+            *dst = *(u16*)line;
+            dst = dst + 2;
+            i = i + 1;
+        } while (i < count);
     } else {
         suzi_calc_w->step = bg_w.bgw[bg_num].zuubun * dist;
         dst = bg_w.bgw[bg_num].start_suzi;
@@ -1012,16 +1011,16 @@ void suzi_line_calc_fill(s16 bg_num) {
         line--;
         count = 41 - bg_w.bgw[bg_num].d_line;
         i = 0;
-        if (count > 0) {
-            goto suzi_fill_second;
-        suzi_fill_second:;
-            do {
-                *dst = *(u16*)line;
-                dst += 2;
-                i++;
-            } while (i < count);
+        if (count <= 0) {
+            goto fill_top;
         }
+        do {
+            *dst = *(u16*)line;
+            dst += 2;
+            i++;
+        } while (i < count);
     }
+fill_top:
     top = suzi_line_buf[0];
     dst = bg_w.bgw[bg_num].suzi_adrs + 1024;
     if (0) {

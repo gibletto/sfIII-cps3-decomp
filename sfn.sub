@@ -12,6 +12,7 @@ INPUT obj\work.obj
 INPUT obj\intr.obj
 INPUT obj\Entry.obj
 INPUT obj\tasksw.obj
+INPUT obj\reset.obj
 INPUT obj\Entry_dbg.obj
 INPUT obj\entry_2.obj
 INPUT obj\Entry_tbl_b.obj

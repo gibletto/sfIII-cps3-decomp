@@ -42,6 +42,8 @@
 #define SH2_FRCL        0xFFFFFE13
 #define SH2_OCRH        0xFFFFFE14
 #define SH2_OCRL        0xFFFFFE15
+#define SH2_TOCR        0xFFFFFE16      /* timer output compare control */
+#define SH2_IPRB        0xFFFFFE60      /* interrupt priority B (SCI, free-running timer) */
 #define SH2_VCRD        0xFFFFFE66      /* free-running timer vector number */
 #define SH2_DRCR0       0xFFFFFE71      /* DMA request select, channel 0 */
 #define SH2_CCR         0xFFFFFE92      /* cache control */

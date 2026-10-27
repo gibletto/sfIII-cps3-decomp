@@ -40,7 +40,6 @@ static void eff11_tile_disp(s32 ofs) {}
 void effect_11_move(WORK_Other* ewk) {
     s16 i;
     s16 j;
-    void (*put)(s16, s32, s32, s32);
     s16 y;
     s16 page;
     const EFF11_ROW* row;
@@ -53,16 +52,14 @@ void effect_11_move(WORK_Other* ewk) {
         ewk->wu.now_koc = eff11_anime_tbl[ewk->wu.char_index].count;
         ewk->wu.pat_status = eff11_anime_tbl[ewk->wu.char_index].frames;
         ewk->wu.cg_ctr = eff11_frame_tbl[ewk->wu.pat_status][ewk->wu.cg_ix].timer;
-        put = debug_bg_tile_put;
         for (i = 0; i < 4; i++) {
             row = (const EFF11_ROW*)&eff11_tile_tbl[i].t[0];
             for (j = 0; j < 16; j++) {
                 tile = &row->t[j];
-                put(i, tile->ofs, tile->page, (s32)bg070_cell_data);
+                debug_bg_tile_put(i, tile->ofs, tile->page, (s32)bg070_cell_data);
                 eff11_tile_disp(tile->ofs);
             }
         }
-        (void)&((WORK*)put)->id;
         scrn_map_set_now(0, (u32)bg_w.bgw[0].bg_address);
         Scrn_Y_Set_R(0, eff11_frame_tbl[ewk->wu.pat_status][ewk->wu.cg_ix].y);
         break;

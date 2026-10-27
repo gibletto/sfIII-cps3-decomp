@@ -241,9 +241,7 @@ void Att_PL07_AT1(PLW* wk) {
         case 30:
             wk->wu.routine_no[3] = AT1_CUE;
             wk->wu.cg_type = 0;
-            goto out;
         }
-    out:
         break;
     case AT1_CUE:
         char_move((WORK*)wk);

@@ -148,6 +148,8 @@ void effect_34_move(WORK_Other* wk) {
                     ewk->wu.routine_no[2]--;
                 }
                 break;
+            default:
+                break;
             }
             switch (ewk->wu.routine_no[3]) {
             case R3_WAIT:
@@ -171,13 +173,13 @@ void effect_34_move(WORK_Other* wk) {
                     ewk->wu.routine_no[3]--;
                 }
                 break;
+            default:
+                break;
             }
         }
         break;
     case R0_KILL:
     default:
-        goto effect_retire;
-        effect_retire:;
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
         break;

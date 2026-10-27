@@ -20,7 +20,7 @@ The build is a byte-for-byte copy of the arcade program. `build/prog.bin` has th
     sfiii-simm1.2  crc 0d8f2680  sha1 ade7b28acd11023696c4b20136f3d2f34da6b1be
     sfiii-simm1.3  crc ea4ca054  sha1 f91c55c4e4fc428ce15d27be38aeed3a483d028c
 
-5,659 C routines, 56 assembler routines and 18 run-time routines compile and link from
+5,660 C routines, 55 assembler routines and 18 run-time routines compile and link from
 this source to the arcade's exact bytes, and all the program's tables and work RAM are source too. The build copies
 only the graphics and the parts outside the linked sections from your ROM (see [What the build reads from your
 ROM](#what-the-build-reads-from-your-rom)). The sound driver's routines are built from assembler source; their
