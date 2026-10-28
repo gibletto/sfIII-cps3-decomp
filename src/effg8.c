@@ -47,9 +47,8 @@ void effect_G8_move(WORK_Other* ewk) {
         cal_initial_speed_y(&ewk->wu, ewk->wu.old_rno[5], ewk->wu.old_rno[2]);
         ewk->wu.old_rno[3] = 0;
         ewk->wu.dir_step = 0;
+        disp_pos_trans_entry(ewk);
         break;
-    default:
-        goto kill;
     case R1_FLY:
         ewk->wu.old_rno[3]++;
         if (ewk->wu.old_rno[3] > 60) {
@@ -74,15 +73,13 @@ void effect_G8_move(WORK_Other* ewk) {
         if (range_x_check(&ewk->wu) == 0) {
             return;
         }
+        disp_pos_trans_entry(ewk);
+        break;
+    default:
+        all_cgps_put_back(&ewk->wu);
+        push_effect_work(&ewk->wu);
+        break;
     }
-    disp_pos_trans_entry(ewk);
-    return;
-kill:
-    if (DEBUG_EDIT) {
-        return;
-    }
-    all_cgps_put_back(&ewk->wu);
-    push_effect_work(&ewk->wu);
 }
 
 
