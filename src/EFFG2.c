@@ -132,14 +132,14 @@ void effect_G2_move(WORK_Other* ewk) {
             effG2_follow(ewk, mwk);
             add_mvxy_speed_direct(&ewk->wu, ewk->wu.dir_timer, 0);
             effG2_char_move(ewk, mwk->wu.dmcal_m);
-            if (mwk->wu.routine_no[1] == 0) {
-                if (mwk->wu.routine_no[2] == 40) {
+            if (mwk->wu.routine_no[1] == PLAYER_NORMAL) {
+                if (mwk->wu.routine_no[2] == NORMAL_WIN) {
                     ewk->wu.routine_no[1] = R1_RUN;
                 }
-                if (mwk->wu.routine_no[2] == 41) {
+                if (mwk->wu.routine_no[2] == NORMAL_LOSE) {
                     ewk->wu.routine_no[1] = R1_LAST;
                 }
-            } else if (mwk->wu.routine_no[1] == 1) {
+            } else if (mwk->wu.routine_no[1] == PLAYER_DAMAGE) {
                 if (!mwk->wu.routine_no[2] && mwk->wu.routine_no[3] == 3) {
                     ewk->wu.routine_no[1] = R1_LAST;
                 }
@@ -229,7 +229,7 @@ void effG2_disp(WORK_Other* ewk) {
 }
 
 void effG2_pattern(WORK_Other* ewk, WORK_Other* mwk) {
-    if (mwk->wu.routine_no[1] == 1 || mwk->wu.routine_no[1] == 3) {
+    if (mwk->wu.routine_no[1] == PLAYER_DAMAGE || mwk->wu.routine_no[1] == PLAYER_CAUGHT) {
         if (ewk->wu.char_index != effG2_char_tbl[ewk->wu.type][G2_CHAR_DAMAGE]) {
             set_char_move_init(&ewk->wu, 0, effG2_char_tbl[ewk->wu.type][G2_CHAR_DAMAGE]);
         }

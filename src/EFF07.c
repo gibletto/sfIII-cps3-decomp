@@ -42,7 +42,7 @@ void effect_07_move(WORK_Other* ewk) {
             if (ewk->wu.cg_type) {
                 ewk->wu.cg_type = 0;
                 ewk->wu.old_rno[0]++;
-                ewk->wu.old_rno[0] &= 15;
+                ewk->wu.old_rno[0] &= 0xF;
                 ewk->wu.char_index = eff07_char_index_tbl[ewk->wu.old_rno[0]];
                 ewk->wu.routine_no[0] = R0_INIT;
             }

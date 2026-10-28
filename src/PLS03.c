@@ -892,7 +892,7 @@ s32 check_meoshi_cancel(PLW* wk) {
 
 
 s32 check_renda_cancel(PLW* wk) {
-    wk->permited_koa |= 32;
+    wk->permited_koa |= 0x20;
     if (wk->wu.pat_status == renda_status_table[(wk->cp->sw_new & 3)]) {
         if ((wk->cp->sw_now & CMD_SW_SHOT) == wk->current_attack) {
             setup_comm_back((WORK*)wk);

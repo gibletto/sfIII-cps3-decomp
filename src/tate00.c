@@ -162,7 +162,7 @@ void bg_test_stage_select(void) {
     s8 save_entry;
     changed = 0;
     sw = ~p1sw_1 & p1sw_0;
-    if (sw & 0x80) {
+    if (sw & BUTTON_LK) {
         bg_select_no++;
         if (bg_select_no > 16) {
             bg_select_no = 0;
@@ -171,7 +171,7 @@ void bg_test_stage_select(void) {
         bg_w.area = bg_test_stage_tbl[bg_select_no][1];
         changed = 1;
     }
-    if (sw & 0x100) {
+    if (sw & BUTTON_MK) {
         bg_select_no--;
         if (bg_select_no < 0) {
             bg_select_no = 16;

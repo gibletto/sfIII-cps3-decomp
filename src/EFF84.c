@@ -17,6 +17,7 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 #include "EFF84.h"
+#include "sc_trans.h"
 
 /* routine_no[0] */
 #define R0_WAIT         0       /* wait for a message request */
@@ -26,7 +27,6 @@
 #define R1_DRAW         0       /* draw the message when it may */
 #define R1_HOLD         1       /* hold, then clear and resume play */
 
-void bcount_mark_trans(u8 ix);
 
 void effect_84_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {

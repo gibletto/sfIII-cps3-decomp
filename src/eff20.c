@@ -13,6 +13,7 @@
 #include "romdata.h"
 #include "EFFECT.h"
 #include "effect_2.h"
+#include "EFF67.h"
 
 /* routine_no[0] */
 #define R0_INIT         0       /* clear the sub-states */
@@ -31,7 +32,6 @@
 #define R3_WAIT         0       /* count the type 1 wait down */
 #define R3_LAUNCH       1       /* launch a type 1 when fewer than 4 */
 
-s32 effect_67_init(WORK_Other* oya, s16 type);
 extern const s16 eff20_wait_tbl[32];
 
 s32 effect_20_init(void) {

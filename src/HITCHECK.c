@@ -598,8 +598,8 @@ void hit_pattern_extdat_check(WORK* as) {
 s32 check_dm_att_guard(WORK* as, WORK* ds) {
     s16 rnum;
     rnum = 0;
-    if (as->att.at_free4 & 31) {
-        ds->dm_vital = ds->dm_vital / (as->att.at_free4 & 31);
+    if (as->att.at_free4 & 0x1F) {
+        ds->dm_vital = ds->dm_vital / (as->att.at_free4 & 0x1F);
         if (ds->dm_vital == 0) {
             ds->dm_vital = 1;
         }
@@ -688,7 +688,7 @@ guard:
     if (ds->guard_flag & 1) {
         goto miss;
     } else {
-        if (ds->spmv_ng_flag & 32) {
+        if (ds->spmv_ng_flag & 0x20) {
             goto miss;
         } else {
             if (ds->saishin_lvdir & gddir) {
@@ -833,7 +833,7 @@ void setup_dm_rl(WORK* as, WORK* ds) {
 
 
 void dm_status_copy(WORK* as, WORK* ds) {
-    ds->dm_fushin = as->att.at_free4 & 32;
+    ds->dm_fushin = as->att.at_free4 & 0x20;
     ds->dm_attlv = as->kezuri_pow;
     ds->dm_impact = as->att.impact;
     ds->dm_stop = as->att.hs_you;

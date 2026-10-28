@@ -25,6 +25,7 @@
 #include "EFF83.h"
 #include "aboutspr.h"
 #include "fighter.h"
+#include "eff94.h"
 
 /* declarations the headers do not give */
 void zoom_ud_check(void);
@@ -32,7 +33,6 @@ void bg_x_move_check(void);
 void bg_y_move_check(void);
 void bg_base_x_move_check(void);
 void bg_base_y_move_check(void);
-void effect_94_entry(s16 sw);
 s32 effect_48_init();
 s32 effect_75_init();
 

@@ -15,9 +15,8 @@
 #include "PLSGAUGE.h"
 #include "PLS02.h"
 #include "HITEFPL.h"
+#include "HITCHECK.h"
 
-void cal_combo_waribiki(PLW* as, PLW* ds);
-void cal_hit_mark_pos();
 void plef_at_vs_player_damage_union();
 
 

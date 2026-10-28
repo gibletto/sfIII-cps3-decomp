@@ -1582,8 +1582,8 @@ typedef struct {
     s16 pos_y;
     s16 priority;
     s16 cg_number;
-    s8 v8;
-    s8 v9;
+    s8 dbg_rl_flag;
+    s8 dbg_cg_flip;
     s16 used;
     s16 cg_ctr;
     s16 dbg_val[2];

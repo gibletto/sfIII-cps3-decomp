@@ -986,7 +986,7 @@ s32 scsi_send_cdb_and_read(s32 lba, u8* buf) {
     delay_cycles(17);
     (*(volatile u16*)(CD_REG + 0x2)) = scsi_cdb_len;
     delay_cycles(17);
-    cmd |= 64;
+    cmd |= 0x40;
     (*(volatile u16*)CD_REG) = 15;
     delay_cycles(17);
     (*(volatile u16*)(CD_REG + 0x2)) = 0;

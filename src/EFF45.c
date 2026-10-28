@@ -23,10 +23,6 @@
 #define R0_MOVE         1       /* drift left and animate */
 #define R0_KILL         2       /* put the work back */
 
-extern const u32 eff45_char_table[];
-
-
-
 void effect_45_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:

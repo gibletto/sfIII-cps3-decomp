@@ -25,12 +25,6 @@
 #define R0_LEAVE        3       /* fly off the top */
 #define R0_KILL         4       /* (default) put the work back */
 
-extern const s32 eff54_move_tbl[3][5];      /* provisional name */
-extern const u32 eff54_char_table[];        /* provisional name */
-
-
-
-
 /* flies the rows of eff54_move_tbl */
 void effect_54_move(WORK_Other* ewk) {
     const s32* p;

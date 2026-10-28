@@ -362,7 +362,7 @@ s32 Name_Input_sub(void) {
         sw_data = p1sw_0;
         sw_up_w = ~p1sw_1 & p1sw_0;
     }
-    if (sw_up_w & 0x3F0) {
+    if (sw_up_w & BUTTON_SHOTS) {
         switch (name_ptr->code[name_ptr->index]) {
         case 45:
             return 2;
@@ -372,7 +372,7 @@ s32 Name_Input_sub(void) {
             return 1;
         }
     } else {
-        if (sw_data & 0xC) {
+        if (sw_data & LEVER_LR) {
             if (auto_n_check(4, 0, sw_data, sw_up_w)) {
                 name_ptr->code[name_ptr->index]--;
                 if (name_ptr->code[name_ptr->index] < 0) {

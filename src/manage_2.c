@@ -413,7 +413,7 @@ void Game_Manage_5th(void) {
             if (bg_w.bg_index) {
                 load_any_color_fade(bg_color3_tbl[bg_w.bg_index - 1], 16, 16, 16);
             }
-            pcon_rno[0] = 0;
+            pcon_rno[0] = PCON_INIT;
             pcon_rno[1] = 0;
             pcon_rno[2] = 0;
             pcon_rno[3] = 0;
@@ -1048,7 +1048,7 @@ void Game_Manage_10th(void) {
             sound_system_init();
             Check_Naming(0);
             Check_Naming(1);
-            pcon_rno[0] = 0;
+            pcon_rno[0] = PCON_INIT;
             pcon_rno[1] = 0;
             pcon_rno[2] = 0;
             pcon_rno[3] = 0;

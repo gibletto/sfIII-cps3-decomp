@@ -17,6 +17,7 @@
 #include "effect_2.h"
 #include "aboutspr.h"
 #include "EFFC2.h"
+#include "EFF45.h"
 
 /* routine_no[0] */
 #define R0_INIT         0       /* start the pattern */
@@ -26,8 +27,6 @@
 #define R0_END          4       /* one more frame */
 #define R0_KILL         5       /* (default) put the work back */
 
-extern const s16 effc2_data_tbl[4][4];   /* provisional name */
-extern const u32 eff45_char_table[];     /* provisional name */
 
 
 

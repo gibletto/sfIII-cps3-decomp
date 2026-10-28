@@ -18,16 +18,14 @@
 #include "effect_2.h"
 #include "aboutspr.h"
 #include "ta_sub.h"
+#include "EFF75.h"
+#include "Eff76.h"
 
 /* routine_no[0] */
 #define R0_WAIT         0       /* wait for a player to stay far left */
 #define R0_MOVE         1       /* walk and shrink to the animation's end */
 #define R0_KILL         2       /* put the work back */
 
-extern const u32 eff75_char_table[];
-extern const s16 eff75_dir_tbl[];
-extern const s16 eff75_prio_tbl[];
-s32 effect_76_init(void);
 
 s32 effect_75_init(void) {
     WORK_Other* ewk;

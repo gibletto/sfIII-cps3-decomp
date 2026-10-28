@@ -371,7 +371,7 @@ s32 check_attbox_dir(PLW* wk) {
             wk->wu.xyz[0].disp.pos + dttbl[0], wk->wu.xyz[1].disp.pos + dttbl[1], target_pos_x, target_pos_y);
         emdir = dir32_rl_conv[emdir];
     }
-    emdir = (emdir + dttbl[2]) & 31;
+    emdir = (emdir + dttbl[2]) & 0x1F;
     return emdir > dttbl[2] + dttbl[3];
 }
 

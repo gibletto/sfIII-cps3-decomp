@@ -22,6 +22,8 @@
 #include "Com_Pl.h"
 #include "eff05.h"
 #include "eff06.h"
+#include "EFF47.h"
+#include "eff12.h"
 
 /* bgw r_no_0 of a layer with an entrance demo: its bg*_jmp routine */
 #define R0_INIT         0       /* set up the layer */
@@ -34,8 +36,6 @@ void bg_x_move_check(void);
 void bg_y_move_check(void);
 void bg_base_x_move_check(void);
 void bg_base_y_move_check(void);
-s32 effect_47_init();
-s32 effect_12_init();
 void setup_mark_cells();
 void effect_94_entry();
 /* provisional names */

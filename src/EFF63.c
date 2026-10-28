@@ -20,6 +20,7 @@
 #include "aboutspr.h"
 #include "EFF27.h"
 #include "EFF63.h"
+#include "eff05.h"
 
 /* routine_no[0] */
 #define R0_INIT         0       /* pick the pattern by the hit state */
@@ -30,8 +31,6 @@
 #define R0_SETTLE       5       /* play on to the last signal */
 #define R0_BROKEN       6       /* stay broken */
 #define R0_KILL         99      /* (default) put the work back */
-
-extern const u32 stg06_char_table[];    /* provisional name (06353034, eff05.c) */
 
 
 

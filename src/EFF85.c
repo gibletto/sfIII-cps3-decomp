@@ -32,8 +32,6 @@
 #define R1_NEXT         4       /* one frame */
 #define R1_LAST         5       /* play to the end, then start over */
 
-extern const u32 eff86_char_table[];   /* provisional name */
-
 
 
 void effect_85_move(WORK_Other* ewk) {

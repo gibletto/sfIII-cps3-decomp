@@ -604,10 +604,10 @@ s32 Check_Catch(PLW* wk, WORK* em, s16 VS_Technique) {
         xx = p1sw_0;
     }
     if (wk->wu.rl_waza) {
-        if (!(xx & 4)) {
+        if (!(xx & LEVER_LEFT)) {
             return 0;
         }
-    } else if (!(xx & 8)) {
+    } else if (!(xx & LEVER_RIGHT)) {
         return 0;
     }
     Counter_Attack[wk->wu.id] = 1;

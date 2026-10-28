@@ -403,7 +403,7 @@ void config_top_select(void) {
 void config_top_system(void) {
     u16 trig;
     trig = ~p1sw_1 & p1sw_0;
-    if (trig & 0x10) {
+    if (trig & BUTTON_LP) {
         Config_No_1 = 1;
         Config_No_2 = 0;
     } else if (Area_Type) {
@@ -418,7 +418,7 @@ void config_top_system(void) {
 void config_top_game(void) {
     u16 trig;
     trig = ~p1sw_1 & p1sw_0;
-    if (trig & 0x10) {
+    if (trig & BUTTON_LP) {
         Config_No_1 = 2;
         Config_No_2 = 0;
     } else if (Area_Type) {
@@ -494,7 +494,7 @@ void config_top_save_exit(void) {
     s8* d;
     s32 v;
     e = ~p1sw_1 & p1sw_0;
-    if (e & 0x10) {
+    if (e & BUTTON_LP) {
         config_check_changed();
         Free_Play = cfg_coin_special;
         Two_Coin_Start = cfg_free_play;
@@ -990,7 +990,7 @@ void sysconfig_voice_type_toggle(void) {
 void sysconfig_exit(void) {
     u16 trig;
     trig = ~p1sw_1 & p1sw_0;
-    if (trig & 0x10) {
+    if (trig & BUTTON_LP) {
         Config_No_1 = 0;
         Config_No_2 = 0;
     } else if (Area_Type) {
@@ -1249,17 +1249,17 @@ s8 config_modify_step(void) {
     s8 step;
     trig = ~p1sw_1 & p1sw_0;
     step = 0;
-    if (trig & 0xC) {
-        if (trig & 8) {
+    if (trig & LEVER_LR) {
+        if (trig & LEVER_RIGHT) {
             step = 1;
         } else {
             step = -1;
         }
     }
-    if (trig & 0x10) {
+    if (trig & BUTTON_LP) {
         step = 1;
     }
-    if (trig & 0x20) {
+    if (trig & BUTTON_MP) {
         step = -1;
     }
     return step;
@@ -1272,7 +1272,7 @@ s8 menu_cursor_vtick(s32 x, s32 y, s8 last, s8 row, s8 wrap) {
     s32 off;
     trig = ~p1sw_1 & p1sw_0;
     if (trig & 3) {
-        if (trig & 2) {
+        if (trig & LEVER_DOWN) {
             off = row * 2;
             if (Area_Type) {
                 tilemap_print_string_attr(x, y + off, 2, cursor_blank_str);

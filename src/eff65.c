@@ -18,6 +18,7 @@
 #include "bg_sub_5.h"
 #include "aboutspr.h"
 #include "eff65.h"
+#include "eff05.h"
 
 /* routine_no[0] */
 #define R0_INIT         0       /* set up at the start point */
@@ -28,8 +29,6 @@
 #define R1_WAIT         0       /* wait 600 frames */
 #define R1_DRIFT        1       /* drift for 196 frames */
 #define R1_SHRINK       2       /* go faster and shrink, then start over */
-
-extern const u32 stg04_char_table[];   /* provisional name */
 
 void eff65_char_move(WORK_Other* ewk);
 

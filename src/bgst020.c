@@ -20,6 +20,13 @@
 #include "ta_sub2.h"
 #include "aboutspr.h"
 #include "eff05.h"
+#include "eff06.h"
+#include "EFF25.h"
+#include "EFF44.h"
+#include "EFF61.h"
+#include "eff64.h"
+#include "eff87.h"
+#include "eff88.h"
 
 /* bgw r_no_0 of a layer with an entrance demo: its bg*_jmp routine */
 #define R0_INIT         0       /* set up the layer */
@@ -30,13 +37,6 @@ void zoom_ud_check(void);
 void bg_x_move_check(void);
 void bg_y_move_check(void);
 void bg_base_y_move_check(void);
-s32 effect_06_init();
-s32 effect_25_init();
-s32 effect_44_init();
-s32 effect_61_init();
-s32 effect_64_init();
-s32 effect_87_init();
-s32 effect_88_init();
 void bg0200(void);
 void bg0201_ctrl(void);
 void bg0200_init00(void);

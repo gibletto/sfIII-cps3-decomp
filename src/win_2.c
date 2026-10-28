@@ -62,6 +62,8 @@
 #include "pow_pow.h"
 #include "win_2.h"
 #include "fighter.h"
+#include "Eff95.h"
+#include "EFFB8.h"
 
 /* M_No1 in Win_3rd and Lose_3rd */
 #define M1_COVER        0       /* after Cover_Timer, clear the screen and wipe in */
@@ -69,9 +71,6 @@
 
 
 
-/* effect_95_init takes the kind and the player, effect_B8_init the player only */
-s32 effect_95_init();
-s32 effect_B8_init();
 
 
 s16 WIN_X;

@@ -49,7 +49,7 @@ void effect_90_move(WORK_Other* ewk) {
         case R0_MOVE:
             if (exsw_0 & 0x8000) {
                 sw = p1sw_0 & ~p1sw_1;
-                if (sw & 0x100) {
+                if (sw & BUTTON_MK) {
                     ewk->wu.disp_flag ^= 1;
                 }
             }

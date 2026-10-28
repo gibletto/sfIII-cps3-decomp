@@ -3,7 +3,11 @@
 
 #include "structs.h"
 
-void effect_75_move(WORK_Other* ewk);
 s32 effect_75_init(void);
+void effect_75_move(WORK_Other* ewk);
+
+extern const u32 eff75_char_table[];
+extern const s16 eff75_dir_tbl[];
+extern const s16 eff75_prio_tbl[];
 
 #endif

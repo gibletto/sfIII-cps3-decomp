@@ -45,7 +45,7 @@ void process_normal(PLW* wk) {
 
 
 void TO_nm_01000(WORK* wk) {
-    wk->routine_no[1] = 0;
+    wk->routine_no[1] = PLAYER_NORMAL;
     wk->routine_no[2] = 1;
     wk->routine_no[3] = 0;
     wk->cg_type = 0;
@@ -55,7 +55,7 @@ void TO_nm_01000(WORK* wk) {
 
 
 void TO_nm_36000(WORK* wk) {
-    wk->routine_no[1] = 0;
+    wk->routine_no[1] = PLAYER_NORMAL;
     wk->routine_no[2] = 36;
     wk->routine_no[3] = 0;
     wk->cg_type = 0;
@@ -65,7 +65,7 @@ void TO_nm_36000(WORK* wk) {
 
 
 void TO_nm_09000(WORK* wk) {
-    wk->routine_no[1] = 0;
+    wk->routine_no[1] = PLAYER_NORMAL;
     wk->routine_no[2] = 9;
     wk->routine_no[3] = 0;
     wk->cg_type = 0;
@@ -75,7 +75,7 @@ void TO_nm_09000(WORK* wk) {
 
 
 void TO_nm_37000(WORK* wk) {
-    wk->routine_no[1] = 0;
+    wk->routine_no[1] = PLAYER_NORMAL;
     wk->routine_no[2] = 37;
     wk->routine_no[3] = 0;
     wk->cg_type = 0;
@@ -85,7 +85,7 @@ void TO_nm_37000(WORK* wk) {
 
 
 void TO_nm_38000(WORK* wk) {
-    wk->routine_no[1] = 0;
+    wk->routine_no[1] = PLAYER_NORMAL;
     wk->routine_no[2] = 38;
     wk->routine_no[3] = 1;
     wk->cg_type = 0;
@@ -94,7 +94,7 @@ void TO_nm_38000(WORK* wk) {
 
 
 void TO_nm_18000_01(WORK* wk) {
-    wk->routine_no[1] = 0;
+    wk->routine_no[1] = PLAYER_NORMAL;
     wk->routine_no[2] = 18;
     wk->routine_no[3] = 1;
     wk->cg_type = 0;
@@ -1314,7 +1314,7 @@ s32 check_cg_cancel_data(PLW* wk) {
             }
         }
     }
-    if ((wk->wu.cg_cancel & 16) && (check_renda_cancel(wk) != 0)) {
+    if ((wk->wu.cg_cancel & 0x10) && (check_renda_cancel(wk) != 0)) {
         return 1;
     }
     if ((wk->wu.cg_cancel & 8) && (check_meoshi_cancel(wk) != 0)) {

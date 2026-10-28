@@ -689,8 +689,8 @@ void debug_player_change(void) {
     const s8* data;
     if ((sw = exsw_1) & 0x4000) {
         sw = sw & 0xFF;
-        if ((data = plid_data, data[sw & 15])) {
-            My_char[0] = sw & 15;
+        if ((data = plid_data, data[sw & 0xF])) {
+            My_char[0] = sw & 0xF;
         }
 
         if (*(data = (const s8*)((u32)data + (sw & 0xF0) / 16))) {

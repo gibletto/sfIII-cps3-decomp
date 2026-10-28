@@ -149,13 +149,13 @@ void effect_B8_move(WORK_Other_CONN* ewk) {
             if (sw & 0x180) {
                 ewk->wu.routine_no[0]++;
                 test_in = 1;
-                if (sw & 0x80) {
+                if (sw & BUTTON_LK) {
                     test_pl_no++;
                     if (test_pl_no > 12) {
                         test_pl_no = 0;
                     }
                 }
-                if (sw & 0x100) {
+                if (sw & BUTTON_MK) {
                     test_mes_no++;
                     if (test_mes_no > 23) {
                         test_mes_no = 0;
@@ -222,7 +222,7 @@ s32 effect_B8_init(s8 WIN_PL_NO) {
     ewk->master_player = wk->player_number;
     test_pl_no = wk->player_number;
     vital = wk->wu.vital_new;
-    if (Play_Type == 0) {
+    if (Play_Type == PLAY_VS_CPU) {
         if (wk->wu.operator) {
             count = Straight_Win_Count;
         } else {

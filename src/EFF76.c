@@ -17,12 +17,12 @@
 #include "effect_2.h"
 #include "aboutspr.h"
 #include "ta_sub.h"
+#include "EFF75.h"
 
 /* routine_no[0] */
 #define R0_MOVE         0       /* walk and shrink to the animation's end */
 #define R0_KILL         1       /* put the work back */
 
-extern const u32 eff75_char_table[];
 extern const s16 eff76_dir_tbl[];
 extern const s16 eff76_prio_tbl[];
 

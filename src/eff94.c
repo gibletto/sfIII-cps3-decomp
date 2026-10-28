@@ -160,7 +160,7 @@ void eff94_01(WORK_Other* ewk) {
             ewk->wu.routine_no[2]++;
             set_char_move_init(&ewk->wu, 0, 18);
             ewk->wu.old_rno[4] = plw[ewk->master_id].wu.xyz[0].disp.pos;
-            ewk->wu.old_rno[0] = eff94_time_tbl[(ewk->wu.old_rno[6] >> 5) & 31];
+            ewk->wu.old_rno[0] = eff94_time_tbl[(ewk->wu.old_rno[6] >> 5) & 0x1F];
             cal_all_speed_data(&ewk->wu, ewk->wu.old_rno[0], ewk->wu.old_rno[4], ewk->wu.xyz[1].disp.pos, 0, 0);
         } else {
             char_move(&ewk->wu);
@@ -256,7 +256,7 @@ void eff94_03(WORK_Other* ewk) {
 /* the fight is over */
 /* provisional name */
 void eff94_04(WORK_Other* ewk) {
-    if (pcon_rno[0] == 2 && pcon_rno[1] == 3) {
+    if (pcon_rno[0] == PCON_DIE && pcon_rno[1] == 3) {
         ewk->wu.old_rno[0] = 60;
         ewk->wu.routine_no[1] = R1_HIDE;
         ewk->wu.routine_no[2] = R2_INIT;
@@ -456,7 +456,7 @@ void eff94_12(WORK_Other* ewk) {
         set_char_move_init(&ewk->wu, 0, 29);
         break;
     case R2_MOVE:
-        if (pcon_rno[0] == 2 && pcon_rno[1] == 3) {
+        if (pcon_rno[0] == PCON_DIE && pcon_rno[1] == 3) {
             ewk->wu.disp_flag = 0;
         }
         char_move(&ewk->wu);
@@ -476,7 +476,7 @@ void eff94_13(WORK_Other* ewk) {
 void eff94_set_wait(WORK_Other* ewk) {
     s16 ix;
     ix = random_16_com();
-    ix &= 15;
+    ix &= 0xF;
     ewk->wu.old_rno[0] = eff94_wait_tbl[ix];
 }
 

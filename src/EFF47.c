@@ -14,17 +14,15 @@
 #include "ta_sub.h"
 #include "EFFECT.h"
 #include "effect_2.h"
-#include "EFF47.h"
 #include "EFF19.h"
+#include "EFF47.h"
+#include "eff05.h"
 
 /* routine_no[0] */
 #define R0_INIT         0       /* show and start the blinking */
 #define R0_WIPE         1       /* blink until the screen wipe ends */
 #define R0_MOVE         2       /* blink until retired */
 
-extern const u8 eff47_timer_tbl[];    /* provisional name */
-extern const s16 eff47_init_data[5][4];
-extern const u32 stg00_char_table[];
 
 void disp_mark_cells();
 

@@ -23,6 +23,8 @@
 #include "bg_sub_2.h"
 #include "bg_sub_3.h"
 #include "bg_sub_5.h"
+#include "EFF45.h"
+#include "EFF86.h"
 #include "eff05.h"
 
 /* routine_no[0] */
@@ -30,21 +32,6 @@
 #define R0_MOVE         1       /* draw until retired */
 #define R0_KILL         2       /* (default) put the work back */
 
-
-
-extern const u32 eff45_char_table[];   /* provisional name */
-extern const u32 eff86_char_table[];
-extern const u32 stg00_char_table[];   /* provisional name */
-extern const u32 stg01_char_table[];   /* provisional name */
-extern const u32 stg02_char_table[];   /* provisional name */
-extern const u32 stg03_char_table[];   /* provisional name */
-extern const u32 stg04_char_table[];   /* provisional name */
-extern const u32 stg05_char_table[];   /* provisional name */
-extern const u32 stg06_char_table[];   /* provisional name */
-extern const u32 stg07_char_table[];   /* provisional name */
-extern const u32 stg10_char_table[];   /* provisional name */
-extern const u32 stg11_char_table[];   /* provisional name */
-extern const u32 stg12_char_table[];   /* provisional name */
 
 
 /* By stage and area; the last stage has none. */

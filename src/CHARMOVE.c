@@ -1099,7 +1099,7 @@ s32 comm_smhf(WORK* wk, CHAR_CMD* ctc) {
 s32 comm_ngme(WORK* wk, CHAR_CMD* ctc) {
     WORK* emwk;
     emwk = (WORK*)wk->hit_adrs;
-    emwk->routine_no[1] = 3;
+    emwk->routine_no[1] = PLAYER_CAUGHT;
     emwk->routine_no[2] = 1;
     emwk->routine_no[3] = 1;
     if (test_flag) {
@@ -1113,7 +1113,7 @@ s32 comm_ngme(WORK* wk, CHAR_CMD* ctc) {
 s32 comm_ngem(WORK* wk, CHAR_CMD* ctc) {
     WORK* emwk;
     emwk = (WORK*)wk->hit_adrs;
-    emwk->routine_no[1] = 3;
+    emwk->routine_no[1] = PLAYER_CAUGHT;
     emwk->routine_no[2] = 2;
     emwk->routine_no[3] = 1;
     if (test_flag) {
@@ -1653,7 +1653,7 @@ s32 comm_emhp(WORK* wk, CHAR_CMD* ctc) {
     return 1;
 }
 
-u32 comm_exbgs(u32 wk_adrs, CHAR_CMD* ctc, u32 arg2, u32 arg3) {
+u32 comm_exbgs(u32 wk_adrs, CHAR_CMD* ctc, u32 _p2, u32 _p3) {
     effect_F1_init(wk_adrs, (u8)ctc->koc);
     return 1;
 }

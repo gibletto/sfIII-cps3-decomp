@@ -273,7 +273,7 @@ void eff_hit_flag_clear(void) {
     s16 i;
     s16* ptr;
     ptr = &eff_hit_flag[0];
-    for (i = 0; i < 0xB; i++) {
+    for (i = 0; i < 11; i++) {
         *ptr++ = 0;
     }
 }

@@ -87,7 +87,7 @@ void cd_keep_spinning_tick(void) {
     if (cd_ready_flag) {
         if (!cd_spin_timer) {
             scsi_start_stop_unit(1, 1);
-            cd_spin_timer = 0x258;
+            cd_spin_timer = 600;
         }
         cd_spin_timer--;
     }

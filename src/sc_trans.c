@@ -610,7 +610,7 @@ void winner_name_put(s8 ch) {
 
 void player_face_char_set(void) {
     sc_chr_block_trans((My_char[0] & 0x7F) * 8 + 0x2EA, 0x100, 4, 2);
-    if ((My_char[1] & 0x7F) == 0) {
+    if ((My_char[1] & 0x7F) == PL_GILL) {
         sc_chr_block_trans(0x352, 0x104, 4, 2);
     } else {
         sc_chr_block_trans((My_char[1] & 0x7F) * 8 + 0x2EA, 0x104, 4, 2);

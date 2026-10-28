@@ -205,21 +205,21 @@ s16 dir256_to_128(s16 dir) {
 
 /* provisional name */
 s16 dir256_to_064(s16 dir) {
-    return (dir + 2) >> 2 & 63;
+    return (dir + 2) >> 2 & 0x3F;
 }
 
 
 
 /* provisional name */
 s16 dir256_to_032(s16 dir) {
-    return (dir + 4) >> 3 & 31;
+    return (dir + 4) >> 3 & 0x1F;
 }
 
 
 
 /* provisional name */
 s16 dir256_to_016(s16 dir) {
-    return (dir + 8) >> 4 & 15;
+    return (dir + 8) >> 4 & 0xF;
 }
 
 

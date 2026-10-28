@@ -15,13 +15,13 @@
 #include "effect_2.h"
 #include "aboutspr.h"
 #include "fighter.h"
+#include "EFF77.h"
 
 /* routine_no[0] */
 #define R0_WAIT         0       /* wait for a perfect victory */
 #define R0_SCENE        1       /* the companions play their scene */
 #define R0_CLEAR        2       /* the companions free themselves */
 
-s32 effect_77_init(WORK_Other* ewk);
 
 void effect_82_move(WORK_Other* ewk) {
     if (bg_w.area || Allow_a_battle_f || Conclusion_Flag != 1 || C_No0 < 2) {

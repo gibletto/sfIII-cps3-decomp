@@ -17,6 +17,7 @@
 #include "effect_2.h"
 #include "CHARMOVE.h"
 #include "charmove_2.h"
+#include "fighter.h"
 #include "EFF38.h"
 
 /* routine_no[0] */
@@ -116,7 +117,7 @@ s32 effect_38_init(s16 PL_id, s16 Wait) {
         ewk->wu.routine_no[0] = R0_STAY;
         ewk->wu.disp_flag = 1;
         ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
-        if ((My_char[ewk->master_id] & 0x7F) == 10) {
+        if ((My_char[ewk->master_id] & 0x7F) == PL_YANG) {
             ewk->wu.dir_step = 10;
         }
         set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_step + 1, 0);

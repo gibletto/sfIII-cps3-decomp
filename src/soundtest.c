@@ -58,19 +58,19 @@ void soundtest_code_select(void) {
         soundtest_rep_timer = 30;
         trig = ~p1sw_1 & p1sw_0;
     }
-    if (trig & 8) {
+    if (trig & LEVER_RIGHT) {
         soundtest_code += 16;
-    } else if (trig & 4) {
+    } else if (trig & LEVER_LEFT) {
         soundtest_code -= 16;
-    } else if (trig & 1) {
+    } else if (trig & LEVER_UP) {
         soundtest_code += 1;
-    } else if (trig & 2) {
+    } else if (trig & LEVER_DOWN) {
         soundtest_code -= 1;
     }
     trig = ~p1sw_1 & p1sw_0;
-    if (trig & 0x10) {
+    if (trig & BUTTON_LP) {
         sound_request(soundtest_code);
-    } else if (trig & 0x20) {
+    } else if (trig & BUTTON_MP) {
         bgm_stop();
     }
     tilemap_print_hex_block(30, 7, 2, soundtest_code, 4, 0);
@@ -197,7 +197,7 @@ void soundtest_monitor_task(void) {
 void soundtest_print_pan_bar(s32 x, s32 y, s32 pan) {
     tilemap_print_string_attr(x, y, 2, pan_bar_str);
     if (pan != -1) {
-        tilemap_put_char(x + (pan & 15), y, 2, 35);
+        tilemap_put_char(x + (pan & 0xF), y, 2, 35);
     }
 }
 

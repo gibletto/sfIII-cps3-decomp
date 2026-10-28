@@ -13,6 +13,7 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 #include "aboutspr.h"
+#include "eff05.h"
 
 /* routine_no[0] */
 #define R0_INIT         0       /* start the animation */
@@ -26,7 +27,6 @@
 void eff70_wait(WORK_Other* ewk);
 void eff70_react(WORK_Other* ewk);
 void eff70_broken(WORK_Other* ewk);
-extern const u32 stg01_char_table[];
 extern const s16 eff70_data_tbl[3][4];
 extern const s16 eff70_char_tbl[3][4];
 void (*eff70_jp[4])(WORK_Other*) = { eff70_wait, eff70_react, eff70_broken, eff70_broken };

@@ -91,28 +91,28 @@ void effect_34_move(WORK_Other* wk) {
         case R1_FIRST:
             num = random_32_com();
             num = num & 7;
-            if ((s8)num == 0) {
+            if (num == 0) {
                 num = 4;
             }
             rnd = random_32_com();
             rnd &= 7;
             data = eff34_first_tbl;
             data += (s8)(rnd * 7);
-            for (i = 0; i < (s8)num; i++, data++) {
+            for (i = 0; i < num; i++, data++) {
                 effect_35_init(ewk, *data);
             }
             rnd = random_32_com();
             ewk->wu.vitality = eff34_wait_tbl[rnd];
             num = random_32_com();
             num &= 7;
-            if ((s8)num == 0) {
+            if (num == 0) {
                 num = 3;
             }
             rnd = random_32_com();
             rnd &= 7;
             data = eff34_second_tbl;
             data += (s8)(rnd * 7);
-            for (i = 0; i < (s8)num; i++, data++) {
+            for (i = 0; i < num; i++, data++) {
                 effect_35_init(ewk, *data);
             }
             rnd = random_32_com();
@@ -138,11 +138,11 @@ void effect_34_move(WORK_Other* wk) {
             case R2_LAUNCH:
                 if (ewk->wu.direction < ewk->wu.dir_step) {
                     num = random_32_com();
-                    num &= 15;
-                    if ((s8)num > 10) {
+                    num &= 0xF;
+                    if (num > 10) {
                         num -= 10;
                     }
-                    effect_35_init(ewk, (s8)num);
+                    effect_35_init(ewk, num);
                     rnd = random_32_com();
                     ewk->wu.vitality = eff34_wait_tbl[rnd];
                     ewk->wu.routine_no[2]--;
@@ -162,12 +162,12 @@ void effect_34_move(WORK_Other* wk) {
             case R3_LAUNCH:
                 if (ewk->wu.dir_old < ewk->wu.dir_timer) {
                     num = random_32_com();
-                    num &= 15;
-                    if ((s8)num > 10) {
+                    num &= 0xF;
+                    if (num > 10) {
                         num -= 10;
                     }
                     num += 11;
-                    effect_35_init(ewk, (s8)num);
+                    effect_35_init(ewk, num);
                     rnd = random_32_com();
                     ewk->wu.vital_new = eff34_wait_tbl[rnd];
                     ewk->wu.routine_no[3]--;

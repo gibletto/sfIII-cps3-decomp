@@ -52,12 +52,12 @@ u8 abcd(u8 a, u8 b) {
     register s32 d;
     if ((u16)(d = (a & 0xF) + (bcdext & 1) + (b & 0xF)) > 9) {
         d -= 10;
-        d |= 16;
+        d |= 0x10;
     }
     d += (a & 0xF0) + (b & 0xF0);
     d = (u16)d;
     if (d > 0x99) {
-        d -= 160;
+        d -= 0xA0;
         d &= 0xFF;
         bcdext = 1;
     } else {
@@ -71,7 +71,7 @@ u8 sbcd(u8 a, u8 b) {
     register s16 d, c;
     if ((d = (b & 0xF) - (a & 0xF) - (bcdext & 1)) < 0) {
         d += 10;
-        d |= 16;
+        d |= 0x10;
     }
     c = (b & 0xF0) - (a & 0xF0) - (d & 0xF0);
     d &= 0xF;
@@ -89,7 +89,7 @@ u8 nbcd(u8 a) {
     register s8 d;
     if ((d = 0 - (bcdext & 1) - (a & 0xF)) < 0) {
         d += 2;
-        d |= 16;
+        d |= 0x10;
     }
     d |= 0 - (a & 0xF0) - (d & 0xF0);
     if ((d & 0xF0) > 0) {

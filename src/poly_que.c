@@ -294,7 +294,7 @@ void sprite_polygon_flush_queue(s32 kind) {
         out[i].w1 = 0;
         out[i].w2 = 0;
         POLY_LIST_LO = ((u32)out - CHARACTER_RAM) >> 2;
-        POLY_LIST_HI = ((((u32)out - CHARACTER_RAM) >> 18) & 63) | 64;
+        POLY_LIST_HI = ((((u32)out - CHARACTER_RAM) >> 18) & 0x3F) | 0x40;
         cram_bank_restore();
         break;
     case POLY_KIND_QUAD:

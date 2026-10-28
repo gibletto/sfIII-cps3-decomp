@@ -17,13 +17,12 @@
 #include "effect_2.h"
 #include "aboutspr.h"
 #include "EFF24.h"
+#include "eff05.h"
 
 /* routine_no[0] */
 #define R0_INIT         0       /* whole or already broken pattern */
 #define R0_STAND        1       /* animate until the object is hit */
 #define R0_BROKEN       2       /* animate the broken pattern */
-
-extern const u32 stg03_char_table[];    /* provisional name (0634EBDC, eff05.c) */
 
 
 

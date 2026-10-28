@@ -145,7 +145,7 @@ void card_msg_disp(void) {
         card_pl_w[Winner_id].card_state++;
         card_pl_w[Winner_id].blink = 0;
     case 1:
-        switch (card_pl_w[Winner_id].blink & 31) {
+        switch (card_pl_w[Winner_id].blink & 0x1F) {
         case 0:
             tilemap_print_string_attr(21, Text_Page_Y + 6, 20, no_card_mes);
             break;
@@ -180,7 +180,7 @@ void card_msg_disp(void) {
             card_pl_w[Winner_id].flag = 0;
             break;
         }
-        switch (card_msg_cnt & 63) {
+        switch (card_msg_cnt & 0x3F) {
         case 0:
             tilemap_print_string_attr(18, Text_Page_Y + 6, 20, win_card_mes);
             break;

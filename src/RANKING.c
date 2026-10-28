@@ -50,6 +50,7 @@
 #include "textsound_2.h"
 #include "textsound_3.h"
 #include "RANKING.h"
+#include "Eff95.h"
 
 /* D_No2 in Ranking_01_5th */
 #define RK5_WAIT        0       /* wait D_Timer, then wipe */
@@ -57,8 +58,6 @@
 
 
 
-/* Ranking portrait effect. */
-s32 effect_95_rank_init();
 s32 effect_51_init();
 s32 effect_57_init();
 s32 effect_F3_init();

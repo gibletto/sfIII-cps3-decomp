@@ -46,6 +46,7 @@
 #include "textsound_3.h"
 #include "demo01.h"
 #include "demo02_code.h"
+#include "sc_logo.h"
 
 /* D_No1 in Title */
 #define TT_INIT         0       /* set up */
@@ -57,7 +58,6 @@
 #define TD_INIT         0       /* set up */
 #define TD_DEMO         1       /* the opening demo, then wait D_Timer */
 
-void SF3_logo(s16 y);
 
 
 

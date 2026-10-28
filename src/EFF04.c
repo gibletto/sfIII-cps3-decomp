@@ -97,7 +97,7 @@ void effect_04_move(WORK_Other* ewk) {
             case R2_DROP:
                 if (ewk->wu.direction < ewk->wu.dir_step) {
                     num = random_32_com();
-                    num &= 15;
+                    num &= 0xF;
                     if (num > 10) {
                         num -= 10;
                     }

@@ -400,31 +400,31 @@ u16 sw;
         return;
     }
     if (Time_Over != 0) {
-        sw = 16;
+        sw = BUTTON_LP;
     }
     if (sw == 0) {
         return;
     }
     move = 0;
-    if (sw & 8) {
+    if (sw & LEVER_RIGHT) {
         move = 1;
         if (++Cursor_X[PL_id] >= 5) {
             Cursor_X[PL_id] = 0;
         }
     }
-    if (sw & 4) {
+    if (sw & LEVER_LEFT) {
         move = 1;
         if (--Cursor_X[PL_id] < 0) {
             Cursor_X[PL_id] = 4;
         }
     }
-    if (sw & 1) {
+    if (sw & LEVER_UP) {
         move = 1;
         if (++Cursor_Y[PL_id] >= 2) {
             Cursor_Y[PL_id] = 0;
         }
     }
-    if (sw & 2) {
+    if (sw & LEVER_DOWN) {
         move = 1;
         if (--Cursor_Y[PL_id] < 0) {
             Cursor_Y[PL_id] = 1;
@@ -433,7 +433,7 @@ u16 sw;
     if (move) {
         Sound_SE(ID + 96);
     }
-    if (sw & 0x3F0) {
+    if (sw & BUTTON_SHOTS) {
         Sel_PL_Complete[PL_id] = 1;
         My_char[PL_id] = ID_of_Face[PL_id][Cursor_Y[PL_id]][Cursor_X[PL_id]];
         Yun_Yang_Select(PL_id, sw);
@@ -534,7 +534,7 @@ u16 sw_0;
         return;
     }
     if (Time_Over) {
-        sw = 16;
+        sw = BUTTON_LP;
     }
     if (Sel_Arts_Sub_Check(PL_id, sw, sw_0)) {
         return;
@@ -542,7 +542,7 @@ u16 sw_0;
     switch (sw) {
     case 0:
         return;
-    case 2:
+    case LEVER_DOWN:
         Sound_SE(ID + 96);
         Moving_Plate[PL_id] = 2;
         Moving_Plate_Counter[PL_id] = 18;
@@ -551,7 +551,7 @@ u16 sw_0;
             Arts_Y[PL_id] = 0;
         }
         break;
-    case 1:
+    case LEVER_UP:
         Sound_SE(ID + 96);
         Moving_Plate[PL_id] = 1;
         Moving_Plate_Counter[PL_id] = 18;

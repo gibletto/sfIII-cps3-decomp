@@ -148,7 +148,7 @@ void bg1001_move(void) {
     case 0:
         if (exsw_0 & 0x8000) {
             sw = ~p1sw_1 & p1sw_0;
-            if (sw & 0x80) {
+            if (sw & BUTTON_LK) {
                 bgw_ptr->r_no_1++;
                 bg100_timer = 8;
                 bg100_cnt = 0;

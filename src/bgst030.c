@@ -24,8 +24,8 @@
 #include "eff05.h"
 #include "eff06.h"
 #include "eff88.h"
+#include "eff14.h"
 
-s32 effect_14_init();
 s32 effect_18_init();
 s32 effect_34_init();
 void setup_seraph_cells(void);

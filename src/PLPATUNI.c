@@ -23,6 +23,7 @@
 #include "PLS01.h"
 #include "PLPATUNI.h"
 #include "cmd_data.h"
+#include "CALDIR.h"
 
 /* routine_no[3], Att_HADOUKEN2 */
 #define HADOUKEN2_RUN   1       /* run the animation */
@@ -92,7 +93,6 @@
 
 
 
-void cal_initial_speed_y();
 
 void Att_DUMMY(PLW* wk) {}
 

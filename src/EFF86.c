@@ -23,9 +23,6 @@
 #define R0_MOVE         1       /* follow the master's state */
 #define R0_KILL         2       /* (default) put the work back */
 
-extern const u32 eff86_char_table[];   /* provisional name */
-
-
 /* pattern 13, then eff86_0000 every frame */
 void effect_86_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {

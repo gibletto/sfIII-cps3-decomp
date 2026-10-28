@@ -18,6 +18,7 @@
 #include "effect_2.h"
 #include "aboutspr.h"
 #include "EFF53.h"
+#include "EFF54.h"
 
 /* routine_no[0] */
 #define R0_INIT         0       /* show and start the pattern */
@@ -32,12 +33,10 @@
 #define R0_FLY          9       /* fly off past the layer */
 #define R0_KILL         99      /* (default) put the work back */
 
-extern const u32 eff54_char_table[];    /* provisional name */
-
 
 
 void effect_53_move(WORK_Other* ewk) {
-    if (pcon_rno[0] == 2 && pcon_rno[1] == 3) {
+    if (pcon_rno[0] == PCON_DIE && pcon_rno[1] == 3) {
         ewk->wu.routine_no[0] = R0_KILL;
     }
     switch (ewk->wu.routine_no[0]) {

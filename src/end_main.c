@@ -47,7 +47,7 @@ extern const u16 op_scr_record_data[];
 extern const OP_TILES op_tile_tbl[5];
 extern const OP_SCRN op_scrn_tbl[20];
 extern const OP_PRIO op_prio_tbl[10];
-extern const u32 op_bg_scrn_data;
+extern const u16 op_bg_scrn_data;
 extern s8 effE1_end_flag;
 extern s8 op_fade_flag;
 

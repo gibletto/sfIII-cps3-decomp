@@ -18,6 +18,7 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 #include "EFFC3.h"
+#include "EFF45.h"
 
 /* routine_no[0], types 1 and up */
 #define R0_INIT         0       /* set up and show */
@@ -28,8 +29,6 @@
 #define R0_WAIT         1       /* wait for background layer 1 */
 #define R0_RIDE         2       /* rise with the layer */
 #define R0_RIDE_KILL    3       /* (default) put the work back */
-
-extern const u32 eff45_char_table[];    /* provisional name */
 
 
 

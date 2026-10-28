@@ -3,7 +3,7 @@
 
 #include "structs.h"
 
-s32 effect_C9_init(PLW* arg0, u8 data);
+s32 effect_C9_init(PLW* wk, u8 data);
 void effect_C9_move(WORK_Other* ewk);
 void setup_EJG_index(void);
 

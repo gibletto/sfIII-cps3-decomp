@@ -14,6 +14,9 @@
 #include "EFFECT.h"
 #include "effect_2.h"
 #include "aboutspr.h"
+#include "EFF70.h"
+#include "EFF60.h"
+#include "eff05.h"
 
 /* routine_no[0] */
 #define R0_INIT         0       /* show */
@@ -27,9 +30,6 @@
 void eff69_2000(WORK_Other* ewk);
 void eff69_wait(WORK_Other* ewk);
 void eff69_break(WORK_Other* ewk);
-s32 effect_70_init(WORK_Other* oya);
-s32 effect_60_init();
-extern const u32 stg01_char_table[];
 
 void effect_69_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {

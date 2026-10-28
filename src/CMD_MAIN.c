@@ -53,6 +53,7 @@
 #include "cmd_main_2.h"
 #include "CMD_MAIN.h"
 #include "cps3.h"
+#include "fighter.h"
 
 /* Debug_R_No: the debug menu routine (debug_scene_outer_dispatch) */
 #define DBG_INIT        0       /* debug_menu_work_init */
@@ -248,20 +249,20 @@ void debug_menu_select_init(void)
 /* provisional name */
 void debug_menu_select_run(void) {
     u16 sw = ~dbg_p1sw_1 & dbg_p1sw_0;
-    if (sw & 0x10) {
+    if (sw & BUTTON_LP) {
         Debug_Menu_No -= 4;
         Debug_R_No++;
         Debug_Tool_No = 0;
         debug_bg_stage_load();
         return;
     }
-    if (sw & 1) {
+    if (sw & LEVER_UP) {
         tilemap_print_string_attr(8, Debug_Menu_No, 6, " ");
         Debug_Menu_No--;
         if (Debug_Menu_No < 4) {
             Debug_Menu_No = 9;
         }
-    } else if (sw & 2) {
+    } else if (sw & LEVER_DOWN) {
         tilemap_print_string_attr(8, Debug_Menu_No, 6, " ");
         Debug_Menu_No++;
         if (Debug_Menu_No > 9) {
@@ -916,9 +917,9 @@ void debug_player_color_next(void) {
     u16 sw;
     if (exsw_1 & 0x100) {
         sw = ~dbg_p1sw_1 & dbg_p1sw_0;
-        if (sw & 0x1000) {
+        if (sw & BUTTON_START) {
             dbg_col_ix[dbg_pl->wu.id] += 1;
-            dbg_col_ix[dbg_pl->wu.id] &= 15;
+            dbg_col_ix[dbg_pl->wu.id] &= 0xF;
             dbg_pl->wu.my_col_code = dbg_col_code_tbl[dbg_col_ix[dbg_pl->wu.id]];
             if (dbg_col_ix[dbg_pl->wu.id] < 13) {
                 load_any_color(dbg_col_no_tbl[dbg_col_ix[dbg_pl->wu.id]]);
@@ -1387,9 +1388,9 @@ static void debug_rgb_editor_navigate(u16 sw) {
             Debug_RGB[2] += 3;
         }
     }
-    Debug_RGB[0] &= 127;
-    Debug_RGB[1] &= 127;
-    Debug_RGB[2] &= 127;
+    Debug_RGB[0] &= 0x7F;
+    Debug_RGB[1] &= 0x7F;
+    Debug_RGB[2] &= 0x7F;
 }
 
 /* provisional name */
@@ -1399,11 +1400,11 @@ static void debug_rgb_editor_print(s16 print) {
     s32 word;
     s32 part;
     r = Debug_RGB[0] >> 2;
-    r &= 31;
+    r &= 0x1F;
     g = Debug_RGB[1] >> 2;
-    g &= 31;
+    g &= 0x1F;
     b = Debug_RGB[2] >> 2;
-    b &= 31;
+    b &= 0x1F;
     if (print) {
         tilemap_print_hex(13, 12, 2, r, 2, 0);
         tilemap_print_hex(13, 13, 2, green = g, 2, 0);
@@ -1618,7 +1619,7 @@ void debug_bg_test_run(void) {
             for (j = 0; j < 32; j++) {
                 cell = *++p;
                 cell &= 0xFE00;
-                cell |= 64;
+                cell |= 0x40;
                 cell |= bg_w.bgw[0].r_limit;
                 *p = cell;
                 p++;
@@ -1696,7 +1697,7 @@ s32 debug_slot_all_select(u16 sw)
     if (!(dbg_p1sw_0 & BUTTON_START)) {
         return 0;
     }
-    if (!(dbg_p1sw_0 & 3)) {
+    if (!(dbg_p1sw_0 & (LEVER_UP | LEVER_DOWN))) {
         return 0;
     }
     moved = 0;
@@ -1899,7 +1900,7 @@ void debug_move_record_menu(void)
         tilemap_print_string(0, 0, 0xFFFF, dbg_rec_nodata_str);
     }
     sw = ~dbg_p1sw_1 & dbg_p1sw_0;
-    if (sw & 0x80) {
+    if (sw & BUTTON_LK) {
         /* clear all recorded frames */
         tilemap_print_string(0, 0, 0xFFFF, dbg_rec_clear_str);
         Debug_Rec_Frame = 0;
@@ -1910,7 +1911,7 @@ void debug_move_record_menu(void)
         dbg_rec_exist = 0;
         Debug_Play_Flag = 0;
     }
-    if (sw & 0x100) {
+    if (sw & BUTTON_MK) {
         /* delete the current frame: pull the following snapshots down one slot */
         tilemap_print_string(0, 0, 0xFFFF, dbg_rec_clear_str);
         for (i = Debug_Rec_Frame; i < Debug_Rec_Count; i++) {
@@ -1923,7 +1924,7 @@ void debug_move_record_menu(void)
         dbg_snap_req = 1;
         Debug_Play_Flag = 1;
     }
-    if (sw & 0x200) {
+    if (sw & BUTTON_HK) {
         tilemap_print_string(0, 0, 0xFFFF, dbg_rec_clear_str);
         dbg_rec_menu = 0;
     }
@@ -2054,7 +2055,7 @@ void debug_hit_box_edit(void) {
     s16* box;
     u16 pad;
     pad = ~dbg_p2sw_1 & dbg_p2sw_0;
-    if (pad & 0x20) {
+    if (pad & BUTTON_MP) {
         dbg_judge_ewk->look_up_flag ^= 1;
     }
     if (Debug_Box_Edit) {
@@ -2131,7 +2132,7 @@ void debug_hit_box_edit(void) {
         }
         dbg_edit_box = box;
         if (!Debug_Box_Edit) {
-            if (pad & 0x10) {
+            if (pad & BUTTON_LP) {
                 if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 1, 4)) {
                     box[3] = box[3] + 1;
                 }
@@ -2260,13 +2261,13 @@ void debug_hit_box_cursor(void) {
     sw = ~dbg_p2sw_1 & now;
     if (now & 0x240) {
         tilemap_rect_fill(dbg_hud_x + 36, (s8)((WORK_Other*)dbg_judge_ewk)->refrected + 16, 8, 1, 2, 0xFFFF);
-        if (sw & 0x40) {
+        if (sw & BUTTON_HP) {
             ((WORK_Other*)dbg_judge_ewk)->refrected--;
             if ((s8)((WORK_Other*)dbg_judge_ewk)->refrected < 0) {
                 ((WORK_Other*)dbg_judge_ewk)->refrected = 9;
             }
         }
-        if (sw & 0x200) {
+        if (sw & BUTTON_HK) {
             ((WORK_Other*)dbg_judge_ewk)->refrected++;
             if ((s8)((WORK_Other*)dbg_judge_ewk)->refrected > 9) {
                 ((WORK_Other*)dbg_judge_ewk)->refrected = 0;
@@ -2289,7 +2290,7 @@ void debug_memcpy_u16(u16* src, u16* dst, s16 n) {
 void debug_hit_box_copy(void) {
     u16 sw;
     sw = ~dbg_p2sw_1 & dbg_p2sw_0;
-    if (sw & 0x100) {
+    if (sw & BUTTON_MK) {
         Debug_Box_Edit ^= 1;
         if (Debug_Box_Edit) {
             if (dbg_judge_ewk->look_up_flag) {
@@ -2307,7 +2308,7 @@ void debug_hit_box_copy(void) {
             dbg_copy_done = 0;
         }
     }
-    if (sw & 0x80) {
+    if (sw & BUTTON_LK) {
         if (Debug_Box_Edit) {
         dbg_copy_done = 1;
         dbg_copy_pat = dbg_slot->sel[2];
@@ -2685,7 +2686,7 @@ void debug_object_look_input(void) {
         return;
     }
     sw = ~dbg_p1sw_1 & dbg_p1sw_0;
-    if (sw & 0x40) {
+    if (sw & BUTTON_HP) {
         Debug_Command = 6;
         return;
     }
@@ -2792,7 +2793,7 @@ void debug_hit_judgment_input(void) {
         debug_position_by_pad();
     }
     sw = ~dbg_p2sw_1 & dbg_p2sw_0;
-    if (sw & 0x1000) {
+    if (sw & BUTTON_START) {
         Debug_PL_id = Debug_PL_id ^ 1;
     }
 }
@@ -2953,7 +2954,7 @@ void debug_slot_char_load(void) {
             } else {
                 dbg_pl->wu.my_col_code = 0x2000;
             }
-            if (dbg_pl->player_number != 6) {
+            if (dbg_pl->player_number != PL_HUGO) {
                 load_player_color(dbg_pl->player_number, dbg_pl->wu.id, 0);
             }
             set_player_shadow(dbg_pl);
@@ -3260,8 +3261,8 @@ void debug_save_player_snapshot(SNAPSHOT* rec, WORK* wk) {
     rec->pos_y = wk->xyz[1].disp.pos;
     rec->priority = wk->my_priority;
     rec->cg_number = wk->cg_number;
-    rec->v8 = Debug_RL_Flag[wk->id];
-    rec->v9 = Debug_CG_Flip[wk->id];
+    rec->dbg_rl_flag = Debug_RL_Flag[wk->id];
+    rec->dbg_cg_flip = Debug_CG_Flip[wk->id];
     rec->used = 1;
     rec->col_mode = wk->my_col_mode;
     rec->col_code = wk->my_col_code;
@@ -3280,8 +3281,8 @@ void debug_copy_player_snapshot(SNAPSHOT* src, SNAPSHOT* dst) {
     dst->pos_y = src->pos_y;
     dst->priority = src->priority;
     dst->cg_number = src->cg_number;
-    dst->v8 = src->v8;
-    dst->v9 = src->v9;
+    dst->dbg_rl_flag = src->dbg_rl_flag;
+    dst->dbg_cg_flip = src->dbg_cg_flip;
     dst->used = 1;
     dst->cg_ctr = src->cg_ctr;
     dst->col_mode = src->col_mode;
@@ -4054,7 +4055,7 @@ void debug_draw_cg_data(void) {
             bit = bit << 1;
         }
         if (plw[0].wu.cg_cancel & 8) {
-            n = plw[0].wu.cg_eftype & 15;
+            n = plw[0].wu.cg_eftype & 0xF;
             if (n > 8) {
                 tilemap_print_string(dbg_hud_x, 0, 0xFFFF, &dbg_eftype_names[8]);
             } else {
@@ -4150,7 +4151,7 @@ void debug_draw_cgd_info(void) {
 /* provisional name */
 void debug_hud_mode_dispatch(void) {
     u16 trg = ~dbg_p2sw_1 & dbg_p2sw_0;
-    if (trg & 0x1000) {
+    if (trg & BUTTON_START) {
         dbg_hud_mode++;
         if (dbg_hud_mode > 4) {
             dbg_hud_mode = 0;
@@ -4295,8 +4296,8 @@ void debug_move_snapshot_frame(SNAPSHOT* rec, WORK* wk, s16 priority) {
     rec->pos_y = wk->xyz[1].disp.pos;
     rec->priority = priority;
     rec->cg_number = wk->cg_number;
-    rec->v8 = wk->rl_flag;
-    rec->v9 = wk->cg_flip;
+    rec->dbg_rl_flag = wk->rl_flag;
+    rec->dbg_cg_flip = wk->cg_flip;
     rec->used = 1;
     rec->cg_ctr = wk->cg_ctr;
     rec->col_mode = wk->my_col_mode;
