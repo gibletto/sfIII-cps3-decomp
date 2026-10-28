@@ -96,14 +96,11 @@ s32 effect_C1_init(PLW* wk) {
                 pattern = 3;
             }
         } else if (wk->player_number == PL_YUN) {
-            if (other->player_number == PL_YUN || other->player_number == PL_YANG) {
-            } else {
+            if (other->player_number != PL_YUN && other->player_number != PL_YANG) {
                 pattern = 0;
             }
         }
     }
-    goto companion_check;
-companion_check:;
     if (pattern < 0) {
         return;
     }
