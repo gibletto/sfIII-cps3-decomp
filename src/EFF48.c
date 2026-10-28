@@ -147,7 +147,7 @@ void eff48_page0_write(void) {
     const EFF48_ROW* row;
     const EFF48_TILE* tile;
     for (i = 0; i < 2; i++) {
-        row = &eff48_tile_tbl0[(u8)i] + 0;
+        row = &eff48_tile_tbl0[i] + 0;
         for (j = 0; j < 12; j++) {
             tile = &row->t[j];
             debug_bg_tile_put(i, tile->ofs, tile->page, (s32)eff48_scrn_data);

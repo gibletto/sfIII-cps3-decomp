@@ -561,7 +561,7 @@ void set_paring_status(PLW* as, PLW* ds) {
         if (paring_ctr_vs[Play_Type][ds->wu.id] > 49) {
             row = &paring_ctr_vs[Play_Type];
             row_copy = row;
-            *(ds->wu.id + *row_copy) = 49;
+            (*row_copy)[ds->wu.id] = 49;
             if (0) {
             }
             player = 0;
