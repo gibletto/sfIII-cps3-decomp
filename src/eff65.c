@@ -82,7 +82,6 @@ void effect_65_move(WORK_Other* ewk) {
                 }
                 if (range_x_check(&ewk->wu)) {
                     suzi_sync_pos_set(ewk);
-sync_done:;
                     goto draw;
                 }
                 break;
@@ -100,11 +99,13 @@ sync_done:;
                         ewk->wu.my_mr.size.y--;
                     }
                 }
-                if (range_x_check(&ewk->wu)) {
+                if (!range_x_check(&ewk->wu)) {
+                    break;
+                } else {
                     suzi_sync_pos_set(ewk);
-draw:;
-                    sort_push_request4(&ewk->wu);
                 }
+draw:
+                sort_push_request4(&ewk->wu);
                 break;
             }
             break;

@@ -925,12 +925,9 @@ void suzi_line_calc(s16 bg_num) {
     }
     top = suzi_line_buf[0];
     dst = bg_w.bgw[bg_num].suzi_adrs + 1024;
-    if (0) {
-        return;
-    }
     for (i = 0; i < bg_w.bgw[bg_num].no_suzi_line - 512; i++) {
-        *dst = top;
-        dst = dst + 2;
+        *dst++ = top;
+        dst++;
     }
 }
 
@@ -976,7 +973,7 @@ void suzi_line_calc_fill(s16 bg_num) {
             line++;
             dst = dst + 2;
         }
-        line = line - 1;
+        line--;
         count = 41 - bg_w.bgw[bg_num].d_line;
         i = 0;
         if (count <= 0) {
@@ -985,7 +982,7 @@ void suzi_line_calc_fill(s16 bg_num) {
         do {
             *dst = *(u16*)line;
             dst = dst + 2;
-            i = i + 1;
+            i++;
         } while (i < count);
     } else {
         suzi_calc_w->step = bg_w.bgw[bg_num].zuubun * dist;
@@ -1022,12 +1019,9 @@ void suzi_line_calc_fill(s16 bg_num) {
 fill_top:
     top = suzi_line_buf[0];
     dst = bg_w.bgw[bg_num].suzi_adrs + 1024;
-    if (0) {
-        return;
-    }
     for (i = 0; i < bg_w.bgw[bg_num].no_suzi_line - 512; i++) {
-        *dst = top;
-        dst += 2;
+        *dst++ = top;
+        dst++;
     }
 }
 
@@ -1065,10 +1059,9 @@ void suzi_line_fix_set(void) {
     }
     top = suzi_line_buf[0];
     dst = bg_w.bgw[0].suzi_adrs;
-    while (0);
     for (i = 0; i < 681; i++) {
-        *dst = top;
-        dst += 2;
+        *dst++ = top;
+        dst++;
     }
 }
 
