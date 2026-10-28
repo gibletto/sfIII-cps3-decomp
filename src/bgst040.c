@@ -26,8 +26,8 @@
 
 s32 effect_18_init();
 void bg_cell_write(s16 bg, s32 ofs, s32 cell, u32 src, u16 u5, s16 attr);
-/* provisional name: the stage map data the code passes by address (declared as one word, as the link labels it) */
-extern const u32 bg040_scrn_data;
+/* provisional name: the stage map data the code passes by address */
+extern const u16 bg040_scrn_data[][16][32];
 void bg0401(void);
 void bg0402(void);
 void bg0403(void);

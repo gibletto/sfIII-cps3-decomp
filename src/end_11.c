@@ -36,7 +36,6 @@
 #include "aboutspr.h"
 #include "end_11.h"
 
-extern const u32 end_1100_scrn_data[];
 extern const s32* end_11_cell_ptr0[9];
 extern const s32* end_11_cell_ptr1[9];
 extern s16 ls_rate0;

@@ -24,8 +24,6 @@
 #define R0_MOVE         1       /* show the face and the cursors */
 #define R0_KILL         2       /* (default) put the work back */
 
-extern s8 ID_of_Face[2][2][5];
-extern const s16 Face_Pos_Data[][2];
 
 void effect_D5_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {

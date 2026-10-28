@@ -274,8 +274,8 @@ const u16* txt_no_12[6] = {
 
 /* 020070A0 */
 const u16** txt_no_tbl[13] = {
-    (const u16 **)txt_no_00, (const u16 **)txt_no_00, (const u16 **)txt_no_02, (const u16 **)txt_no_03,
-    (const u16 **)txt_no_04, (const u16 **)txt_no_05, (const u16 **)txt_no_00, (const u16 **)txt_no_07,
-    (const u16 **)txt_no_08, (const u16 **)txt_no_09, (const u16 **)txt_no_10, (const u16 **)txt_no_11,
-    (const u16 **)txt_no_12,
+    txt_no_00, txt_no_00, txt_no_02, txt_no_03,
+    txt_no_04, txt_no_05, txt_no_00, txt_no_07,
+    txt_no_08, txt_no_09, txt_no_10, txt_no_11,
+    txt_no_12,
 };

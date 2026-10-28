@@ -34,7 +34,6 @@
 
 extern const s16 eff74_data_tbl[4][3];      /* provisional name */
 extern const s32 eff74_move_tbl[8][6];      /* provisional name */
-extern const u32 brz_char_table[];
 
 void eff74_0000(WORK_Other* ewk);
 void eff74_1000(WORK_Other* ewk);

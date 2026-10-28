@@ -45,7 +45,6 @@
 #define R1_MOVE_2       3       /* second move, 40 frames */
 #define R1_STAY         4       /* stay in place */
 
-extern const u32 effH3_char_table[];   /* provisional name (EFFH3.c) */
 
 
 

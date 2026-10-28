@@ -37,7 +37,6 @@
 #define R1_PLAY         1       /* play it, then watch again */
 
 extern const s16 eff71_char_tbl[];          /* provisional name */
-extern const u32 brz_char_table[];
 
 void eff71_0000(WORK_Other* ewk);
 void eff71_0000_0000(WORK_Other* ewk);

@@ -4,7 +4,8 @@
  * bg_clear_cell_tbl gives, per stage and area, the cell used to clear the scroll layers;
  * bg_limit_tbl gives, per stage background and layer, the left and right scroll limits (normal
  * and wide screen) and the two vertical limits. Read by BG000.C, the stage background
- * services. bg_limit_tbl_tail, a short row after bg_limit_tbl, is not referred to.
+ * services. bg_limit_unref_tbl, rows of bg_limit_tbl's form after bg_clear_cell_tbl, and bg_limit_tbl_tail,
+ * a short row after bg_limit_tbl, are not referred to.
  */
 
 #include "types.h"
@@ -16,7 +17,7 @@ extern const u32 bg_clear_cell_tbl[][3];
 extern const s16 bg_limit_tbl[][4][6];
 extern const s16 bg_limit_tbl_tail[];
 
-const u32 bg_clear_cell_tbl[34][3] = {
+const u32 bg_clear_cell_tbl[14][3] = {
     { 0x13, 0, 0 }, { 0x33, 3, 0 },
     { 0x1A, 0x14, 0 }, { 0x16, 0x30, 0 },
     { 0xF, 0xF, 0 }, { 0x10, 0, 0 },
@@ -24,16 +25,20 @@ const u32 bg_clear_cell_tbl[34][3] = {
     { 1, 0xF, 0 }, { 0, 0, 0 },
     { 0, 0, 0 }, { 0, 0, 0 },
     { 0, 0, 0 }, { 0, 0, 0 },
-    { 0xC402FC, 0xFC02C4, 0xA000B0 }, { 0x11202F0, 0x14A02B8, 0xA000B0 },
-    { 0x12A02EE, 0x16202B6, 0xA000B0 }, { 0xFF3A00C4, 0xFF72008C, 0xA000B0 },
-    { 0xFEB6015D, 0xFEEE0125, 0x9000A0 }, { 0x14802B0, 0x1800278, 0xA000B0 },
-    { 0x14802B0, 0x1800278, 0x9000A0 }, { 0xFF1000F0, 0xFF4800B8, 0xA000B0 },
-    { 0xFF1000F0, 0xFF4800B8, 0xA000B0 }, { 0xCA0330, 0x10202F8, 0xA000B0 },
-    { 0xFF1200E8, 0xFF4A00B0, 0x9000A0 }, { 0x12202DA, 0x15A02A2, 0xA000B0 },
-    { 0x12202DA, 0x15A02A2, 0xA000B0 }, { 0x12202DA, 0x15A02A2, 0xA000B0 },
-    { 0x15402B4, 0x18C027C, 0xA000B0 }, { 0x15402B8, 0x18C0280, 0x9000A0 },
-    { 0x14402AC, 0x17C0274, 0x9000A0 }, { 0x14802B0, 0x1800278, 0xA000B0 },
-    { 0x14802B0, 0x1800278, 0x9000A0 }, { 0xFEB00160, 0xFEE70129, 0x500080 },
+};
+
+/* after bg_clear_cell_tbl, rows of bg_limit_tbl's form; nothing in the program refers to them (provisional name) */
+static const s16 bg_limit_unref_tbl[20][6] = {
+    { 196, 764, 252, 708, 160, 176 }, { 274, 752, 330, 696, 160, 176 },
+    { 298, 750, 354, 694, 160, 176 }, { -198, 196, -142, 140, 160, 176 },
+    { -330, 349, -274, 293, 144, 160 }, { 328, 688, 384, 632, 160, 176 },
+    { 328, 688, 384, 632, 144, 160 }, { -240, 240, -184, 184, 160, 176 },
+    { -240, 240, -184, 184, 160, 176 }, { 202, 816, 258, 760, 160, 176 },
+    { -238, 232, -182, 176, 144, 160 }, { 290, 730, 346, 674, 160, 176 },
+    { 290, 730, 346, 674, 160, 176 }, { 290, 730, 346, 674, 160, 176 },
+    { 340, 692, 396, 636, 160, 176 }, { 340, 696, 396, 640, 144, 160 },
+    { 324, 684, 380, 628, 144, 160 }, { 328, 688, 384, 632, 160, 176 },
+    { 328, 688, 384, 632, 144, 160 }, { -336, 352, -281, 297, 80, 128 },
 };
 
 const s16 bg_limit_tbl[21][4][6] = {

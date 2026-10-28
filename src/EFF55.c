@@ -36,7 +36,6 @@
 #define R1_RETURN       4       /* hidden, wait before gliding in */
 #define R1_GLIDE        5       /* glide in to the perch */
 
-extern const u32 brz_char_table[];
 
 void eff55_0000(WORK_Other* ewk);
 void eff55_1000(WORK_Other* ewk);

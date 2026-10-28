@@ -35,8 +35,6 @@ extern const s32 eff15_x_acc_tbl[];   /* provisional name */
 extern const s32 eff15_x_acc_tbl2[];   /* provisional name */
 int abs(int);
 
-#define STONE_SPEED_W(value) ((WORK*)(s16)(value))
-
 s32 effect_15_init(WORK* wk, s16 data) {
     WORK_Other* ewk;
     s16 ix;
@@ -148,12 +146,9 @@ void effect_15_move(WORK_Other* ewk) {
 /* provisional name */
 void eff15_speed_set(WORK_Other* ewk) {
     s8 num;
-    const s32* q;
     num = random_32_com();
-    q = &eff15_y_speed_tbl[num * 2];
-    ewk->wu.mvxy.a[1].sp = q[0];
-    ewk->wu.mvxy.d[1].sp = q[1];
-    (void)&STONE_SPEED_W(num)->id;
+    ewk->wu.mvxy.a[1].sp = *(eff15_y_speed_tbl + num * 2);
+    ewk->wu.mvxy.d[1].sp = *(eff15_y_speed_tbl + num * 2 + 1);
     num = random_16_com();
     if (num < ewk->wu.vitality) {
         ewk->wu.mvxy.a[0].sp = abs(eff15_x_speed_tbl[num]);

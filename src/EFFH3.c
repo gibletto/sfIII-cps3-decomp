@@ -29,7 +29,6 @@
 #define R0_INIT         0       /* show the picture */
 #define R0_MOVE         1       /* draw until freed */
 
-extern const u32 effH3_char_table[];   /* provisional name */
 
 
 

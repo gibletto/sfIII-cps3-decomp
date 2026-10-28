@@ -27,7 +27,6 @@
 /* routine_no[0], types 1 and 2 */
 #define R0_PAUSE        2       /* hold for a moment */
 
-extern s16 op_obj_disp;
 extern const s16 eff36_data_num[3];
 extern const s16* eff36_data_adrs[3];
 

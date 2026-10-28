@@ -357,7 +357,6 @@ s8 PL;
     s16 h;
     u32 score;
     s8 last;
-    const u32 (*tbl)[2];
     k_ptr = plw[PL].cb->kind_of[0][0];
     c_ptr = &calc_hit[PL][1];
     s_ptr = score_calc[PL];

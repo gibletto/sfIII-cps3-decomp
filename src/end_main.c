@@ -50,7 +50,6 @@ extern const OP_PRIO op_prio_tbl[10];
 extern const u32 op_bg_scrn_data;
 extern s8 effE1_end_flag;
 extern s8 op_fade_flag;
-extern s16 op_obj_disp;
 
 void opning_init_00000(void);
 void opning_init_01000(void);

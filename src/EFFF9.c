@@ -38,18 +38,13 @@
 #define R0_KILL         3       /* (default) put the work back */
 
 s16 efff9_suicide;
-s32 * efff9_txt_no_adrs;
-u16 * efff9_txt_scene_adrs;
+const u16** efff9_txt_no_adrs;
+const u16* efff9_txt_scene_adrs;
 s16 efff9_PL_NO;
 s16 efff9_txt_point;
 s16 efff9_message;
 s16 keep_mes_no;
 s16 efff9_mes_no;
-extern const EFFF9_MESSAGE* effF9_mes_jp[];
-extern const EFFF9_MESSAGE* effF9_mes_en[];
-extern const EFFF9_MESSAGE* effF9_mes_es[];
-extern const EFFF9_MESSAGE* effF9_mes_pt[];
-extern s32* txt_no_tbl[];
 
 void effect_F9_move(WORK_Other_CONN* ewk) {
     const u16* chr_data;
@@ -215,7 +210,7 @@ s32 Rewrite_End_Message(u16 mes_no) {
     efff9_wk_set((WORK_Other_CONN*)ewk);
     efff9_txt_point = 2;
     efff9_txt_no_adrs = txt_no_tbl[efff9_PL_NO];
-    efff9_txt_scene_adrs = (u16*)efff9_txt_no_adrs[mes_no];
+    efff9_txt_scene_adrs = efff9_txt_no_adrs[mes_no];
     efff9_message = efff9_txt_scene_adrs[0];
     keep_mes_no = *(s16*)(efff9_txt_scene_adrs + 1);
     mes_already = efff9_message;
@@ -249,7 +244,7 @@ s32 Next_Talk_Message(void) {
     ewk->master_player = efff9_PL_NO;
     efff9_wk_set((WORK_Other_CONN*)ewk);
     efff9_txt_no_adrs = txt_no_tbl[efff9_PL_NO];
-    efff9_txt_scene_adrs = (u16*)efff9_txt_no_adrs[efff9_mes_no];
+    efff9_txt_scene_adrs = efff9_txt_no_adrs[efff9_mes_no];
     efff9_message = efff9_txt_scene_adrs[efff9_txt_point];
     keep_mes_no = efff9_txt_scene_adrs[efff9_txt_point + 1];
     efff9_txt_point += 2;

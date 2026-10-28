@@ -46,7 +46,6 @@
 #define R1_COUNT        3       /* count down, then end the scene */
 
 extern s16 END_OF_B0;
-extern s8 Forbid_Break;
 extern const u16 effb0_scrn_data[10][16][32]; /* provisional name */
 extern const s16 effb0_scr_record_data[];    /* provisional name */
 

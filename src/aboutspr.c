@@ -31,7 +31,7 @@ CharGfxEntry * cg_data_list;
 extern s16 mark_gfx_ofs[128];    /* provisional name */
 extern s16 mark_gfx_cells[128];  /* provisional name */
 extern s16 mark_gfx_colcd[128];  /* provisional name */
-extern const s16 mark_cg_tbl[45];       /* provisional name */
+extern const s16 mark_cg_tbl[46];       /* provisional name */
 extern const s16 mark_index_tbl[5][9];  /* provisional name */
 extern const s16 zoom_down_tbl[64];     /* provisional name */
 extern const s16 zoom_up_tbl[64];       /* provisional name */

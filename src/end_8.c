@@ -38,9 +38,6 @@
 
 
 
-extern const s16 timer_8_tbl[4];
-extern const s16 end_8_pos[4][2];
-extern const u32 end_scrn_data[];
 extern const PANEL* end_8_panel_p[2];
 
 

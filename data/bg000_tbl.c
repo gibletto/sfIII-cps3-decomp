@@ -45,7 +45,7 @@ extern const u16 bg_scrn_data_16[][16][32];
 extern const u16 eff48_scrn_data[][16][32];
 extern const u16 etc_bg_scrn_data_0[][16][32];
 extern const u16 etc_bg_scrn_data_3[][16][32];
-extern const u32 bg040_scrn_data;
+extern const u16 bg040_scrn_data[][16][32];
 extern const u16 bg100_scrn_data[][16][32];
 extern const u16 effb0_scrn_data[][16][32];
 extern const u16 bg150_scrn_data[][16][32];
@@ -231,7 +231,7 @@ const s16 etc_bg_cell_cnt_tbl[5][4] = {
 
 const u32 bg_cg_src_tbl[22] = {
     (u32)bg050_cell_data, (u32)bg_scrn_data_01, (u32)bg_scrn_data_02, (u32)bg_scrn_data_03,
-    (u32)&bg040_scrn_data, (u32)bg_scrn_data_05, (u32)bg_scrn_data_06, (u32)bg070_cell_data,
+    (u32)bg040_scrn_data, (u32)bg_scrn_data_05, (u32)bg_scrn_data_06, (u32)bg070_cell_data,
     (u32)bg070_cell_data, (u32)bg_scrn_data_09, (u32)bg100_scrn_data, (u32)eff48_scrn_data,
     (u32)eff48_scrn_data, (u32)eff48_scrn_data, (u32)bg_scrn_data_14, (u32)bg150_scrn_data,
     (u32)bg_scrn_data_16, (u32)bg_scrn_data_05, (u32)bg_scrn_data_06, (u32)effb0_scrn_data,

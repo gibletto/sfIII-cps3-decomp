@@ -66,7 +66,6 @@ extern s16 bg_deff_type;          /* provisional name: 0201D5A4 */
 extern s16 bg_zoom_d;
 extern HUD_CELL* bg_rewrite_cell_tbl_8[][4];
 extern const u32 bg_clear_cell_tbl[14][3];
-extern const s16 etc_bg_limit_tbl[][6];
 extern s16 bg_zoom_old_x;
 void zoom_center_set(void);
 void tilemap_print_string_attr(u16 x, u16 y, u16 attr, const s8* str);

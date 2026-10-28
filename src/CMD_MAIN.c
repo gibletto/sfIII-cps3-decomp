@@ -65,11 +65,6 @@ void scrn_attr_set(s16 n, u16 attr, u16 bits);  /* as bg000.c declares them */
 void scrn_map_set_now(u16 n, u32 p);
 void scrn_map_set(u16 n, u32 p);
 
-extern PLW * dbg_pl;
-extern DBG_SLOT * dbg_slot;
-extern PATTERN_BUF dbg_look_buf;
-extern PATTERN_BUF dbg_edit_buf;
-extern WORK_Other_JUDGE * dbg_judge_ewk;
 
 
 /* provisional name */

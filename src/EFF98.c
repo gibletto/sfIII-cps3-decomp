@@ -30,7 +30,6 @@
 #define R0_HOLD         6       /* stay at the plate position */
 #define R0_KILL         99      /* (default) put the work back */
 
-extern s16 Flash_Complete[2];
 extern s16 eff98_plate_z[2][3];         /* provisional name */
 extern s8 eff98_arts_req[2][3];         /* provisional name */
 

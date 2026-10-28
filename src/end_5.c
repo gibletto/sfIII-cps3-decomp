@@ -45,8 +45,6 @@
 
 
 
-extern const s16 quake_y_tbl[];
-extern s8 end_etc_flag;
 
 
 

@@ -26,7 +26,6 @@
 
 
 extern const s16 effD8_priority_tbl[];
-extern const s16 Face_Pos_Data[][2];
 
 void effD8_char_set(WORK_Other* ewk);
 void effect_D8_init(WORK_Other* ewk);

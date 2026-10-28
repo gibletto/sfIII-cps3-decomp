@@ -38,7 +38,6 @@
 
 extern s16 ls_rate0;
 extern s16 line_scroll_mode;
-extern s16 ls_cnt1;
 extern s16 ls_cnt2;
 extern const s32 effF0_line_tbl[256];
 void Scrn_Move_Set(s32 n, s16 x, s16 y);

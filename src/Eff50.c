@@ -33,7 +33,6 @@
 
 #define EFF50_PANEL_COUNT 6
 
-extern u16 EM_Course[2];
 extern u8 eff50_slide_out;
 s32 Flash_Violent();
 
