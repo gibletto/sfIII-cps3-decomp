@@ -26,7 +26,7 @@ const u16 Entry_Screen_X_Pairs[6][2][2] = {
 };
 
 const u16 Score_X_Pos_Data[4][2] = {
-    { 0x11, 0x17 }, { 0x25, 0x2E }, { 6, 6 }, { 0x1F, 0x28 },
+    { 17, 23 }, { 37, 46 }, { 6, 6 }, { 31, 40 },
 };
 
 const s16 Loser_X_Pos_Data[6][2] = {

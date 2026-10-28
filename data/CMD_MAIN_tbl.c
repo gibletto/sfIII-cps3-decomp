@@ -38,21 +38,21 @@ const TM_STRING config_title_str_tbl[8] = {
     { 3, 4, 2, str_1_GAME_DIFFICULTY_EASY_HARD },
     { 3, 6, 2, str_2_DAMAGE_LEVEL_LOW_HIGH },
     { 3, 8, 2, str_3_TIME_COUNT_SPEED_SLOW_FAST },
-    { 3, 0xA, 2, str_4_MAX_ROUND_3_ROUND },
-    { 3, 0xC, 2, str_5_EVENT_OFF },
-    { 3, 0xE, 2, str_6_EXIT },
-    { 7, 0x19, 2, gcfg_help_select2_en },
+    { 3, 10, 2, str_4_MAX_ROUND_3_ROUND },
+    { 3, 12, 2, str_5_EVENT_OFF },
+    { 3, 14, 2, str_6_EXIT },
+    { 7, 25, 2, gcfg_help_select2_en },
 };
 
 const TM_STRING config_help_modify_str_tbl[2] = {
-    { 7, 0x1A, 2, (const s8 *)str_guide_modify_setting },
-    { 7, 0x1B, 2, str_1P_SHOT1_or_SHOT2 },
+    { 7, 26, 2, (const s8 *)str_guide_modify_setting },
+    { 7, 27, 2, str_1P_SHOT1_or_SHOT2 },
 };
 
 const TM_STRING config_help_return_str_tbl[3] = {
-    { 7, 0x19, 2, (const s8 *)str_guide_select_option },
-    { 7, 0x1A, 2, (const s8 *)str_guide_return_config_menu },
-    { 7, 0x1B, 2, str_1P_SHOT1 },
+    { 7, 25, 2, (const s8 *)str_guide_select_option },
+    { 7, 26, 2, (const s8 *)str_guide_return_config_menu },
+    { 7, 27, 2, str_1P_SHOT1 },
 };
 
 const s16 gcfg_gauge_clr_chr_en = 42;

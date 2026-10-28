@@ -53,23 +53,23 @@
 
 
 
-extern const s16 scr_obj_data27_0[];
-extern const s16 scr_obj_data27_1[];
-extern const s16 scr_obj_data27_2[];
-extern const s16 scr_obj_data27_3[];
-extern const s16 scr_obj_data27_4[];
-extern const s16 scr_obj_data27_5[];
-extern const s16 scr_obj_data27_6[];
+extern const s16 scr_obj_data27_0[][19];
+extern const s16 scr_obj_data27_1[][19];
+extern const s16 scr_obj_data27_2[][19];
+extern const s16 scr_obj_data27_3[][19];
+extern const s16 scr_obj_data27_4[][19];
+extern const s16 scr_obj_data27_5[][19];
+extern const s16 scr_obj_data27_6[][19];
 
 /* Seven object types. */
 const s16* scr_obj_data27[7] = {
-    scr_obj_data27_0,
-    scr_obj_data27_1,
-    scr_obj_data27_2,
-    scr_obj_data27_3,
-    scr_obj_data27_4,
-    scr_obj_data27_5,
-    scr_obj_data27_6,
+    scr_obj_data27_0[0],
+    scr_obj_data27_1[0],
+    scr_obj_data27_2[0],
+    scr_obj_data27_3[0],
+    scr_obj_data27_4[0],
+    scr_obj_data27_5[0],
+    scr_obj_data27_6[0],
 };
 /* 02006C98 */
 void (*eff27_jp_tbl[11])(WORK_Other*) = {

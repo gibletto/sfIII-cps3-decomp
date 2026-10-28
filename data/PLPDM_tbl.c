@@ -27,7 +27,7 @@ extern const s16 dd_convert[][4];
 extern const u8 guard_kind[];
 extern void (*const plpdm_lv_00[])(PLW* wk);
 extern const s8 atsagct[];
-extern const u16 exdm_ix_data[][16][5];
+extern const s16 exdm_ix_data[][16][5];
 extern void Damage_00000();
 extern void Damage_01000();
 extern void Damage_04000();
@@ -152,15 +152,16 @@ const s8 atsagct[30] = {
     1, 1, 1, 1, 1, 1, 1, 1, 17, 0, 1, 1, 0, 1,
 };
 
-const u16 exdm_ix_data[1][16][5] = {
+/* { x offset, y offset, flip, cg_olc_ix, cg_number } per damage kind and character */
+const s16 exdm_ix_data[1][16][5] = {
     {
-        { 0x4C, 0, 1, 0, 0x167 }, { 0x3C, 0xC, 1, 0, 0x4E9 },
-        { 0x3F, 0xD, 1, 0, 0x898 }, { 0x41, 2, 1, 0, 0xD39 },
-        { 0x3A, 3, 1, 0, 0x1105 }, { 0x2E, 9, 1, 0, 0x15C4 },
-        { 0, 0, 1, 0, 0x1800 }, { 0x28, 0x15, 1, 0x3C4, 0x1D32 },
-        { 0x5B, 0x15, 1, 0, 0x20BA }, { 0x40, 0x17, 1, 0, 0x2487 },
-        { 0x41, 2, 1, 0, 0x2939 }, { 0x3F, 0xD, 1, 0, 0x2C98 },
-        { 0x3F, 0xD, 1, 0, 0x3098 }, { 0, 0, 0, 0, 0 },
+        { 76, 0, 1, 0, 0x167 }, { 60, 12, 1, 0, 0x4E9 },
+        { 63, 13, 1, 0, 0x898 }, { 65, 2, 1, 0, 0xD39 },
+        { 58, 3, 1, 0, 0x1105 }, { 46, 9, 1, 0, 0x15C4 },
+        { 0, 0, 1, 0, 0x1800 }, { 40, 21, 1, 964, 0x1D32 },
+        { 91, 21, 1, 0, 0x20BA }, { 64, 23, 1, 0, 0x2487 },
+        { 65, 2, 1, 0, 0x2939 }, { 63, 13, 1, 0, 0x2C98 },
+        { 63, 13, 1, 0, 0x3098 }, { 0, 0, 0, 0, 0 },
         { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 },
     },
 };

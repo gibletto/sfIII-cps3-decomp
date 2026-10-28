@@ -42,22 +42,22 @@
 
 
 /* object lists, named by their order in the ROM (provisional names) */
-extern const s16 scr_obj_data18_0[];
-extern const s16 scr_obj_data18_1[];
-extern const s16 scr_obj_data18_2[];
-extern const s16 scr_obj_data18_3[];
-extern const s16 scr_obj_data18_4[];
-extern const s16 scr_obj_data18_5[];
-extern const s16 scr_obj_data18_6[];
-extern const s16 scr_obj_data18_7[];
+extern const s16 scr_obj_data18_0[][12];
+extern const s16 scr_obj_data18_1[][12];
+extern const s16 scr_obj_data18_2[][12];
+extern const s16 scr_obj_data18_3[][12];
+extern const s16 scr_obj_data18_4[][12];
+extern const s16 scr_obj_data18_5[][12];
+extern const s16 scr_obj_data18_6[][12];
+extern const s16 scr_obj_data18_7[][12];
 
 const s16* scr_obj_data18[6][4] = {
-    { scr_obj_data18_0, scr_obj_data18_0, scr_obj_data18_0, scr_obj_data18_0 },
-    { scr_obj_data18_1, scr_obj_data18_1, scr_obj_data18_1, scr_obj_data18_1 },
-    { scr_obj_data18_2, scr_obj_data18_3, scr_obj_data18_2, scr_obj_data18_3 },
-    { scr_obj_data18_4, scr_obj_data18_4, scr_obj_data18_5, scr_obj_data18_5 },
-    { scr_obj_data18_6, scr_obj_data18_6, scr_obj_data18_6, scr_obj_data18_6 },
-    { scr_obj_data18_7, scr_obj_data18_7, scr_obj_data18_7, scr_obj_data18_7 },
+    { scr_obj_data18_0[0], scr_obj_data18_0[0], scr_obj_data18_0[0], scr_obj_data18_0[0] },
+    { scr_obj_data18_1[0], scr_obj_data18_1[0], scr_obj_data18_1[0], scr_obj_data18_1[0] },
+    { scr_obj_data18_2[0], scr_obj_data18_3[0], scr_obj_data18_2[0], scr_obj_data18_3[0] },
+    { scr_obj_data18_4[0], scr_obj_data18_4[0], scr_obj_data18_5[0], scr_obj_data18_5[0] },
+    { scr_obj_data18_6[0], scr_obj_data18_6[0], scr_obj_data18_6[0], scr_obj_data18_6[0] },
+    { scr_obj_data18_7[0], scr_obj_data18_7[0], scr_obj_data18_7[0], scr_obj_data18_7[0] },
 };
 void (*eff18_jp_tbl[2])(WORK_Other*) = {
     eff18_00,

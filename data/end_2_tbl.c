@@ -15,7 +15,7 @@ extern const PANEL end_200_panel0[];
 extern const s16 timer_2_tbl[];
 
 const PANEL end_200_panel0[8] = {
-    { 0, 3 }, { 64, 4 }, { 128, 5 }, { 192, 6 }, { 4096, 7 }, { 4160, 8 }, { 4224, 10 }, { 4288, 11 },
+    { 0, 3 }, { 0x40, 4 }, { 0x80, 5 }, { 0xC0, 6 }, { 0x1000, 7 }, { 0x1040, 8 }, { 0x1080, 10 }, { 0x10C0, 11 },
 };
 
 const s16 timer_2_tbl[4] = {

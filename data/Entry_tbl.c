@@ -209,13 +209,13 @@ extern const char str_SP[];
 
 /* provisional name */
 const TM_STRING monitor_msg_tbl[14] = {
-    { 1, 0x16, 0xE, sh_str_monitor_entry },
-    { 1, 0x16, 0xE, sh_str_illegal_inst },
-    { 1, 0x16, 0xE, sh_str_slot_illegal_inst },
-    { 1, 0x16, 0xE, sh_str_cpu_addr_error },
-    { 1, 0x16, 0xE, sh_str_dma_addr_error },
-    { 1, 0x16, 0xE, sh_str_unknown_exception },
-    { 0xC, 0, 0xE, sh_str_monitor_title },
+    { 1, 22, 0xE, sh_str_monitor_entry },
+    { 1, 22, 0xE, sh_str_illegal_inst },
+    { 1, 22, 0xE, sh_str_slot_illegal_inst },
+    { 1, 22, 0xE, sh_str_cpu_addr_error },
+    { 1, 22, 0xE, sh_str_dma_addr_error },
+    { 1, 22, 0xE, sh_str_unknown_exception },
+    { 12, 0, 0xE, sh_str_monitor_title },
     { 0, 2, 0xE, sh_str_regs_r0_r2 },
     { 0, 3, 0xE, sh_str_regs_r3_r5 },
     { 0, 4, 0xE, sh_str_regs_r6_r8 },
@@ -226,11 +226,11 @@ const TM_STRING monitor_msg_tbl[14] = {
 };
 
 const TM_STRING dbg_dump_title[1] = {
-    { 0, 0xA, 0xE, sh_str_dump_header },
+    { 0, 10, 0xE, sh_str_dump_header },
 };
 
 const TM_STRING dbg_disasm_title[1] = {
-    { 0, 0xA, 0xE, sh_str_disasm_header },
+    { 0, 10, 0xE, sh_str_disasm_header },
 };
 
 const MoveName sh_op_none_tbl[9] = {

@@ -22,7 +22,7 @@ extern const u8 judge_gals_kage_tbl_tail[];
 extern const u8 ag_sel_table[][4][4];
 
 const u8 sel_ejg_ix_table[2][2][4] = {
-    { { 0, 0, 1, 0xFF }, { 1, 0, 0, 0xFF } }, { { 1, 1, 0, 0xFF }, { 0, 1, 1, 0xFF } },
+    { { 0, 0, 1, 255 }, { 1, 0, 0, 255 } }, { { 1, 1, 0, 255 }, { 0, 1, 1, 255 } },
 };
 
 const u16 ag_cc_table[7] = {

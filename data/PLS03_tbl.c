@@ -36,5 +36,5 @@ const u16 meoshi_off_shot[6] = {
 };
 
 const u8 renda_status_table[4] = {
-    0, 0x14, 0x20, 0,
+    0, 20, 32, 0,
 };

@@ -1638,14 +1638,13 @@ void Disp_Start_Message(void) {
     s8 credits;
     s8 coins;
     s8 needed;
-    const s8* blank;
+    const s8* blank = "                         ";
     const s8* one_more;
     if (Two_Coin_Start != 0 && credit_1p < 2) {
         credits = 99;
     } else {
         credits = credit_1p;
     }
-    (void)"                         ";
     one_more = "INSERT 1 MORE COIN";
     blank = "                         ";
     switch (Chute_Mode) {

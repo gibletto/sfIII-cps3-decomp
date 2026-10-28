@@ -40,5 +40,5 @@ const char str_OFF[8] = "OFF    ";
 const char str_1_MATCH[8] = "1 MATCH";
 
 const u8 debug_charset_tbl[16] = {
-    6, 3, 5, 1, 2, 9, 7, 4, 0xA, 8, 0xC, 0xD, 0xE, 3, 3, 3,
+    6, 3, 5, 1, 2, 9, 7, 4, 10, 8, 12, 13, 14, 3, 3, 3,
 };

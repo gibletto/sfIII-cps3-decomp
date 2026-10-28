@@ -108,31 +108,31 @@ extern const u32 test_cursor_x_tbl[];
 
 const TM_STRING boot_title_str[2] = {
     { 8, 8, 2, str_STREET_FIGHTER_III },
-    { 0x11, 0xA, 2, str_9_7_0_2_0_4 },
+    { 17, 10, 2, str_9_7_0_2_0_4 },
 };
 
 const TM_STRING boot_region_str[9] = {
-    { 0xF, 0xC, 0xE, str_blank },
-    { 0x13, 0xC, 2, str_JAPAN },
-    { 0xF, 0xC, 4, str_ASIA },
-    { 0x13, 0xC, 6, str_EURO },
-    { 0x13, 0xC, 8, str_USA },
-    { 0x10, 0xC, 0xA, str_HISPANIC },
-    { 0x12, 0xC, 0xC, str_BRAZIL_3 },
-    { 0x11, 0xC, 0xE, str_O_C_E_A_N_I_A },
-    { 0x13, 0xC, 4, str_A_S_I_A },
+    { 15, 12, 0xE, str_blank },
+    { 19, 12, 2, str_JAPAN },
+    { 15, 12, 4, str_ASIA },
+    { 19, 12, 6, str_EURO },
+    { 19, 12, 8, str_USA },
+    { 16, 12, 0xA, str_HISPANIC },
+    { 18, 12, 0xC, str_BRAZIL_3 },
+    { 17, 12, 0xE, str_O_C_E_A_N_I_A },
+    { 19, 12, 4, str_A_S_I_A },
 };
 
 const TM_STRING boot_version_str[9] = {
-    { 0x10, 0xE, 0xE, str_PRODUCT_VERSION },
-    { 0xD, 0xE, 0xE, str_CHARACTER_CHECK_VERSION },
-    { 0x10, 0xE, 0xE, str_PUBLICITY_VERSION },
-    { 0xF, 0xE, 0xE, str_LOCATION_TEST_VERSION },
-    { 0x12, 0xE, 0xE, str_SHOW_VERSION },
-    { 0x10, 0xE, 0xE, str_BUG_CHECK_VERSION },
-    { 0x10, 0xE, 0xE, str_BENT_STAFF_VERSION },
-    { 0xF, 0xE, 0xE, str_DEVELOPMENT_VERSION },
-    { 0xF, 0xE, 0xE, str_DEVELOPMENT_VERSION },
+    { 16, 14, 0xE, str_PRODUCT_VERSION },
+    { 13, 14, 0xE, str_CHARACTER_CHECK_VERSION },
+    { 16, 14, 0xE, str_PUBLICITY_VERSION },
+    { 15, 14, 0xE, str_LOCATION_TEST_VERSION },
+    { 18, 14, 0xE, str_SHOW_VERSION },
+    { 16, 14, 0xE, str_BUG_CHECK_VERSION },
+    { 16, 14, 0xE, str_BENT_STAFF_VERSION },
+    { 15, 14, 0xE, str_DEVELOPMENT_VERSION },
+    { 15, 14, 0xE, str_DEVELOPMENT_VERSION },
 };
 
 const s8 str_STREET_FIGHTER_III[36] = "S T R E E T   F I G H T E R   III\n";

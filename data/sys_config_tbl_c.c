@@ -58,20 +58,20 @@ extern const s8 gcfg_help_return_en[];
 
 const TM_STRING config_top_menu_scr[5] = {
     { 4, 2, 2, str_config_menu_title },
-    { 0x12, 6, 2, str_config_1_system },
-    { 0x12, 8, 2, str_config_2_game },
-    { 0x12, 0xA, 2, str_config_3_default },
-    { 0x12, 0xC, 2, str_config_4_save_exit },
+    { 18, 6, 2, str_config_1_system },
+    { 18, 8, 2, str_config_2_game },
+    { 18, 10, 2, str_config_3_default },
+    { 18, 12, 2, str_config_4_save_exit },
 };
 
 const TM_STRING config_top_guide_scr[2] = {
-    { 0xD, 0x1A, 2, str_guide_select_up_down },
-    { 0xD, 0x1B, 2, str_guide_start_shot1 },
+    { 13, 26, 2, str_guide_select_up_down },
+    { 13, 27, 2, str_guide_start_shot1 },
 };
 
 const TM_STRING config_reset_guide_scr[2] = {
-    { 0xD, 0x1A, 2, str_guide_select_up_down },
-    { 0xD, 0x1B, 2, str_guide_reset_shot1_shot2 },
+    { 13, 26, 2, str_guide_select_up_down },
+    { 13, 27, 2, str_guide_reset_shot1_shot2 },
 };
 
 const TM_STRING sysconfig_scr[7] = {
@@ -79,47 +79,47 @@ const TM_STRING sysconfig_scr[7] = {
     { 3, 5, 2, str_sys_1_coin },
     { 3, 7, 2, str_sys_2_chute_mode },
     { 3, 9, 2, str_sys_3_continue },
-    { 3, 0xB, 2, str_sys_4_monitor },
-    { 3, 0xD, 2, str_sys_5_demo_sound },
-    { 3, 0xF, 2, str_sys_6_sound_mode },
+    { 3, 11, 2, str_sys_4_monitor },
+    { 3, 13, 2, str_sys_5_demo_sound },
+    { 3, 15, 2, str_sys_6_sound_mode },
 };
 
 const TM_STRING sysconfig_exit_scr[3] = {
-    { 3, 0x11, 2, str_sys_7_exit },
-    { 3, 0x11, 2, str_sys_7_language },
-    { 3, 0x13, 2, str_sys_8_exit },
+    { 3, 17, 2, str_sys_7_exit },
+    { 3, 17, 2, str_sys_7_language },
+    { 3, 19, 2, str_sys_8_exit },
 };
 
 const TM_STRING sysconfig_dispenser_scr[5] = {
-    { 3, 0x11, 2, str_sys_7_c_dispenser },
-    { 3, 0x13, 2, str_sys_8_win_point },
-    { 3, 0x15, 2, str_sys_9_exit },
-    { 3, 0x11, 2, str_sys_7_voice_type },
-    { 3, 0x13, 2, str_sys_8_exit },
+    { 3, 17, 2, str_sys_7_c_dispenser },
+    { 3, 19, 2, str_sys_8_win_point },
+    { 3, 21, 2, str_sys_9_exit },
+    { 3, 17, 2, str_sys_7_voice_type },
+    { 3, 19, 2, str_sys_8_exit },
 };
 
 const TM_STRING sysconfig_winpoint_scr[4] = {
-    { 3, 0x11, 2, str_sys_7_c_dispenser },
-    { 3, 0x13, 2, str_sys_8_win_point_com },
-    { 3, 0x15, 2, str_sys_9_win_point_human },
-    { 2, 0x17, 2, str_sys_10_exit },
+    { 3, 17, 2, str_sys_7_c_dispenser },
+    { 3, 19, 2, str_sys_8_win_point_com },
+    { 3, 21, 2, str_sys_9_win_point_human },
+    { 2, 23, 2, str_sys_10_exit },
 };
 
 const TM_STRING sysconfig_modify_guide[3] = {
-    { 7, 0x19, 2, str_SELECT_OPTION_1P_UP_or_DOWN },
-    { 7, 0x1A, 2, gcfg_help_modify_en },
-    { 7, 0x1B, 2, str_1P_SHOT1_or_SHOT2_2 },
+    { 7, 25, 2, str_SELECT_OPTION_1P_UP_or_DOWN },
+    { 7, 26, 2, gcfg_help_modify_en },
+    { 7, 27, 2, str_1P_SHOT1_or_SHOT2_2 },
 };
 
 const TM_STRING sysconfig_return_guide[3] = {
-    { 7, 0x19, 2, str_SELECT_OPTION_1P_UP_or_DOWN },
-    { 7, 0x1A, 2, gcfg_help_return_en },
-    { 7, 0x1B, 2, str_1P_SHOT1_2 },
+    { 7, 25, 2, str_SELECT_OPTION_1P_UP_or_DOWN },
+    { 7, 26, 2, gcfg_help_return_en },
+    { 7, 27, 2, str_1P_SHOT1_2 },
 };
 
 const TM_STRING config_saving_scr[2] = {
-    { 5, 0xC, 0xE, (const s8 *)str_saving_configuration },
-    { 5, 0xE, 0xE, (const s8 *)str_IN_EEPROM },
+    { 5, 12, 0xE, (const s8 *)str_saving_configuration },
+    { 5, 14, 0xE, (const s8 *)str_IN_EEPROM },
 };
 
 const s8 str_config_menu_title[40] = "7. C O N F I G U R A T I O N   M E N U\n";

@@ -24,7 +24,7 @@ extern const s16 effH8_char2_tbl[][4];
 extern const s16 effH8_pos_tbl[][4][3];
 
 const u8 effH7_wait_tbl[4] = {
-    0, 0xF, 0x1E, 0x2D,
+    0, 15, 30, 45,
 };
 
 const u8 effH7_wait2_tbl[4] = {
@@ -59,7 +59,7 @@ const s16 effH7_bound_tbl[164] = {
 };
 
 const u8 effH8_wait_tbl[4] = {
-    0, 0xF, 0x1E, 0x2D,
+    0, 15, 30, 45,
 };
 
 const s16 effH8_char_tbl[2][4] = {

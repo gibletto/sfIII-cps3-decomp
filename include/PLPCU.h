@@ -26,6 +26,6 @@ void scdmd_26000(PLW* wk);
 void scdmd_27000(PLW* wk);
 void scdmd_28000(PLW* wk);
 
-extern const u8 caught_dm_chg_tbl1[][2];   /* provisional name */
-extern const u8 caught_dm_chg_tbl6[][2];   /* provisional name */
+extern const u8 caught_dm_chg_tbl1[92][2];   /* provisional name */
+extern const u8 caught_dm_chg_tbl6[128][2];   /* provisional name */
 #endif

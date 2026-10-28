@@ -161,5 +161,5 @@ const s16 gauge_rank_table[6][2] = {
 };
 
 const u8 jump_pat_status_data[2][4] = {
-    { 0x16, 0x14, 0x18, 0 }, { 0x16, 0x18, 0x14, 0 },
+    { 22, 20, 24, 0 }, { 22, 24, 20, 0 },
 };

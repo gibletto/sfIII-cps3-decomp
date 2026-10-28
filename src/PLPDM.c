@@ -915,7 +915,7 @@ void Damage_29000(PLW* wk) {
             break;
         }
         wk->wu.routine_no[3]++;
-        datadrs = (const s16*)exdm_ix_data[wk->wu.dm_exdm_ix][wk->player_number];
+        datadrs = exdm_ix_data[wk->wu.dm_exdm_ix][wk->player_number];
         if (twk->wu.rl_flag) {
             wk->wu.xyz[0].disp.pos = twk->wu.xyz[0].disp.pos - datadrs[0];
         } else {

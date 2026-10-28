@@ -181,15 +181,15 @@ const u16 scroll_enable_bit_tbl[3][2] = {
 };
 
 const TM_STRING iotest_input_scr[9] = {
-    { 0xC, 2, 2, iotest_input_title_str },
+    { 12, 2, 2, iotest_input_title_str },
     { 6, 4, 2, iotest_service_label_str },
     { 6, 5, 2, str_TEST },
-    { 0x10, 7, 2, iotest_1p_2p_header_str },
+    { 16, 7, 2, iotest_1p_2p_header_str },
     { 6, 8, 2, str_COIN },
     { 6, 9, 2, str_START },
-    { 6, 0xB, 2, str_LEVER },
-    { 6, 0xF, 2, str_SHOT },
-    { 0xD, 0x1B, 2, iotest_input_exit_str },
+    { 6, 11, 2, str_LEVER },
+    { 6, 15, 2, str_SHOT },
+    { 13, 27, 2, iotest_input_exit_str },
 };
 
 const s16 iotest_1p_sw_x[1] = {
@@ -270,15 +270,15 @@ const s8 str_SHOT[8] = "SHOT\n\0\0\x10";
 const s8 iotest_input_exit_str[24] = "EXIT = 1P START & SHOT1";
 
 const TM_STRING iotest_output_scr[5] = {
-    { 0xB, 2, 2, iotest_output_title_str },
-    { 0xA, 5, 2, iotest_coin_lock_1p_str },
-    { 0xA, 7, 2, iotest_coin_lock_2p_str },
-    { 0xA, 0xA, 2, iotest_elec_counter_str },
-    { 0xC, 0x1B, 2, iotest_output_exit_str },
+    { 11, 2, 2, iotest_output_title_str },
+    { 10, 5, 2, iotest_coin_lock_1p_str },
+    { 10, 7, 2, iotest_coin_lock_2p_str },
+    { 10, 10, 2, iotest_elec_counter_str },
+    { 12, 27, 2, iotest_output_exit_str },
 };
 
 const TM_STRING iotest_dispenser_str[1] = {
-    { 0xA, 0xC, 2, iotest_card_dispenser_str },
+    { 10, 12, 2, iotest_card_dispenser_str },
 };
 
 const s8 iotest_output_title_str[28] = "2 . O U T P U T   T E S T\n\0\x0B";
@@ -295,14 +295,14 @@ const s8 iotest_card_dispenser_str[32] = "CARD DISPENSER    (2P SHOT2)";
 
 const TM_STRING soundtest_menu_scr[9] = {
     { 4, 2, 2, soundtest_title_str },
-    { 0xE, 7, 2, soundtest_code_label_str },
-    { 0xE, 0xB, 2, soundtest_help_up_str },
-    { 0xE, 0xC, 2, soundtest_help_down_str },
-    { 0xE, 0xD, 2, soundtest_help_right_str },
-    { 0xE, 0xE, 2, soundtest_help_left_str },
-    { 0xE, 0xF, 2, soundtest_help_request_str },
-    { 0xE, 0x10, 2, soundtest_help_stop_str },
-    { 0xC, 0x1B, 2, soundtest_exit_str },
+    { 14, 7, 2, soundtest_code_label_str },
+    { 14, 11, 2, soundtest_help_up_str },
+    { 14, 12, 2, soundtest_help_down_str },
+    { 14, 13, 2, soundtest_help_right_str },
+    { 14, 14, 2, soundtest_help_left_str },
+    { 14, 15, 2, soundtest_help_request_str },
+    { 14, 16, 2, soundtest_help_stop_str },
+    { 12, 27, 2, soundtest_exit_str },
 };
 
 const TM_STRING soundtest_monitor_scr[21] = {
@@ -311,22 +311,22 @@ const TM_STRING soundtest_monitor_scr[21] = {
     { 2, 5, 2, soundtest_status_label_str },
     { 1, 8, 2, soundtest_channel_header_str },
     { 1, 9, 2, soundtest_ch0_str },
-    { 1, 0xA, 2, soundtest_ch1_str },
-    { 1, 0xB, 2, soundtest_ch2_str },
-    { 1, 0xC, 2, soundtest_ch3_str },
-    { 1, 0xD, 2, soundtest_ch4_str },
-    { 1, 0xE, 2, soundtest_ch5_str },
-    { 1, 0xF, 2, soundtest_ch6_str },
-    { 1, 0x10, 2, soundtest_ch7_str },
-    { 1, 0x11, 2, soundtest_ch8_str },
-    { 1, 0x12, 2, soundtest_ch9_str },
-    { 1, 0x13, 2, soundtest_ch10_str },
-    { 1, 0x14, 2, soundtest_ch11_str },
-    { 1, 0x15, 2, soundtest_ch12_str },
-    { 1, 0x16, 2, soundtest_ch13_str },
-    { 1, 0x17, 2, soundtest_ch14_str },
-    { 1, 0x18, 2, soundtest_ch15_str },
-    { 0xC, 0x1A, 2, soundtest_exit_str },
+    { 1, 10, 2, soundtest_ch1_str },
+    { 1, 11, 2, soundtest_ch2_str },
+    { 1, 12, 2, soundtest_ch3_str },
+    { 1, 13, 2, soundtest_ch4_str },
+    { 1, 14, 2, soundtest_ch5_str },
+    { 1, 15, 2, soundtest_ch6_str },
+    { 1, 16, 2, soundtest_ch7_str },
+    { 1, 17, 2, soundtest_ch8_str },
+    { 1, 18, 2, soundtest_ch9_str },
+    { 1, 19, 2, soundtest_ch10_str },
+    { 1, 20, 2, soundtest_ch11_str },
+    { 1, 21, 2, soundtest_ch12_str },
+    { 1, 22, 2, soundtest_ch13_str },
+    { 1, 23, 2, soundtest_ch14_str },
+    { 1, 24, 2, soundtest_ch15_str },
+    { 12, 26, 2, soundtest_exit_str },
 };
 
 const s8 snd_stat_stop_str[8] = "STOP \0\0\x1E";
@@ -406,13 +406,13 @@ const s8 soundtest_ch14_str[4] = "E:\n";
 const s8 soundtest_ch15_str[4] = "F:\n";
 
 const TM_STRING colortest_scr[7] = {
-    { 0xD, 2, 0x1E, colortest_title_str },
-    { 0xB, 4, 0x1E, colortest_hex_header_str },
+    { 13, 2, 0x1E, colortest_title_str },
+    { 11, 4, 0x1E, colortest_hex_header_str },
     { 6, 5, 0x1E, str_RED },
-    { 4, 0xA, 0x1E, str_GREEN },
-    { 5, 0xF, 0x1E, str_BLUE },
-    { 4, 0x14, 0x1E, str_WHITE },
-    { 0xC, 0x1B, 0x1E, colortest_exit_str },
+    { 4, 10, 0x1E, str_GREEN },
+    { 5, 15, 0x1E, str_BLUE },
+    { 4, 20, 0x1E, str_WHITE },
+    { 12, 27, 0x1E, colortest_exit_str },
 };
 
 const u16 colortest_palette[134] = {
@@ -451,7 +451,7 @@ const s8 colortest_exit_str[24] = "EXIT = 1P START & SHOT1";
 
 const TM_STRING crosshatch_scr[2] = {
     { 7, 2, 2, crosshatch_title_str },
-    { 0xC, 0x1B, 2, crosshatch_exit_str },
+    { 12, 27, 2, crosshatch_exit_str },
 };
 
 const s8 crosshatch_title_str[36] = "5 . D O T   C R O S S   H A T C H\n";
@@ -459,18 +459,18 @@ const s8 crosshatch_title_str[36] = "5 . D O T   C R O S S   H A T C H\n";
 const s8 crosshatch_exit_str[24] = "EXIT = 1P START & SHOT1";
 
 const TM_STRING gamedata_scr[4] = {
-    { 0xD, 2, 2, gamedata_title_str },
-    { 0xB, 7, 2, gamedata_coin_counter_str },
-    { 0xB, 9, 2, gamedata_service_counter_str },
-    { 0xC, 0x1B, 2, gamedata_exit_str },
+    { 13, 2, 2, gamedata_title_str },
+    { 11, 7, 2, gamedata_coin_counter_str },
+    { 11, 9, 2, gamedata_service_counter_str },
+    { 12, 27, 2, gamedata_exit_str },
 };
 
 const TM_STRING gamedata_freeplay_str[1] = {
-    { 0xB, 0xB, 2, gamedata_freeplay_counter_str },
+    { 11, 11, 2, gamedata_freeplay_counter_str },
 };
 
 const TM_STRING gamedata_card_str[1] = {
-    { 0xB, 0xB, 2, gamedata_card_counter_str },
+    { 11, 11, 2, gamedata_card_counter_str },
 };
 
 const s8 gamedata_title_str[24] = "6 . G A M E   D A T A\n\0\x03";
@@ -486,42 +486,42 @@ const s8 gamedata_freeplay_counter_str[20] = "FREEPLAY COUNTER\0\x06\0\x06";
 const s8 gamedata_card_counter_str[20] = "CARD     COUNTER\0\x06\0\x06";
 
 const TM_STRING memtest_menu_scr[6] = {
-    { 0xB, 1, 2, memtest_menu_title_str },
-    { 0xC, 9, 2, memtest_menu_memory_str },
-    { 0xC, 0xB, 2, memtest_menu_simm_str },
-    { 0xC, 0xD, 2, memtest_menu_exit_str },
-    { 0xC, 0x1A, 2, memtest_select_help_str },
-    { 0xC, 0x1B, 2, memtest_start_help_str },
+    { 11, 1, 2, memtest_menu_title_str },
+    { 12, 9, 2, memtest_menu_memory_str },
+    { 12, 11, 2, memtest_menu_simm_str },
+    { 12, 13, 2, memtest_menu_exit_str },
+    { 12, 26, 2, memtest_select_help_str },
+    { 12, 27, 2, memtest_start_help_str },
 };
 
 const TM_STRING memtest_ram_scr[16] = {
     { 9, 1, 2, memtest_ram_title_str },
-    { 0x10, 3, 2, memtest_work_ram_str },
-    { 0x10, 5, 2, memtest_sprite_ram_str },
-    { 0x10, 7, 2, memtest_color_ram_str },
-    { 0x10, 9, 2, memtest_character_ram_str },
-    { 0x10, 0xB, 2, memtest_ss_ram_str },
-    { 0x10, 0xD, 2, memtest_eeprom_str },
-    { 0x10, 0xF, 2, str_FRAM },
-    { 0x10, 0x11, 2, memtest_cdrom_str },
-    { 0x10, 0x13, 2, memtest_flash_simm1_str },
-    { 0x10, 0x14, 2, memtest_simm2_str },
-    { 0x10, 0x15, 2, memtest_simm3_str },
-    { 0x10, 0x16, 2, memtest_simm4_str },
-    { 0x10, 0x17, 2, memtest_simm5_str },
-    { 0x10, 0x18, 2, memtest_simm6_str },
-    { 0x10, 0x19, 2, memtest_simm7_str },
+    { 16, 3, 2, memtest_work_ram_str },
+    { 16, 5, 2, memtest_sprite_ram_str },
+    { 16, 7, 2, memtest_color_ram_str },
+    { 16, 9, 2, memtest_character_ram_str },
+    { 16, 11, 2, memtest_ss_ram_str },
+    { 16, 13, 2, memtest_eeprom_str },
+    { 16, 15, 2, str_FRAM },
+    { 16, 17, 2, memtest_cdrom_str },
+    { 16, 19, 2, memtest_flash_simm1_str },
+    { 16, 20, 2, memtest_simm2_str },
+    { 16, 21, 2, memtest_simm3_str },
+    { 16, 22, 2, memtest_simm4_str },
+    { 16, 23, 2, memtest_simm5_str },
+    { 16, 24, 2, memtest_simm6_str },
+    { 16, 25, 2, memtest_simm7_str },
 };
 
 const TM_STRING memtest_simm_scr[8] = {
-    { 0xB, 1, 2, memtest_simm_title_and_names },
-    { 0x10, 5, 2, memtest_flash_simm1_str },
-    { 0x10, 7, 2, memtest_simm2_str },
-    { 0x10, 9, 2, memtest_simm3_str },
-    { 0x10, 0xB, 2, memtest_simm4_str },
-    { 0x10, 0xD, 2, memtest_simm5_str },
-    { 0x10, 0xF, 2, memtest_simm6_str },
-    { 0x10, 0x11, 2, memtest_simm7_str },
+    { 11, 1, 2, memtest_simm_title_and_names },
+    { 16, 5, 2, memtest_flash_simm1_str },
+    { 16, 7, 2, memtest_simm2_str },
+    { 16, 9, 2, memtest_simm3_str },
+    { 16, 11, 2, memtest_simm4_str },
+    { 16, 13, 2, memtest_simm5_str },
+    { 16, 15, 2, memtest_simm6_str },
+    { 16, 17, 2, memtest_simm7_str },
 };
 
 const u32 simm_sum_offset_tbl[16] = {
@@ -616,28 +616,28 @@ const char str_SIMM6[12] = "SIMM6      ";
 const char str_SIMM7[12] = "SIMM7      ";
 
 const TM_STRING rewrite_menu_scr[7] = {
-    { 0xC, 2, 2, rewrite_title_str },
-    { 0x11, 9, 2, rewrite_all_str },
-    { 0x11, 0xB, 2, rewrite_character_str },
-    { 0x11, 0xD, 2, str_EXIT },
-    { 7, 0x12, 4, rewrite_note1_str },
-    { 7, 0x13, 4, rewrite_note2_str },
-    { 7, 0x14, 4, rewrite_note3_str },
+    { 12, 2, 2, rewrite_title_str },
+    { 17, 9, 2, rewrite_all_str },
+    { 17, 11, 2, rewrite_character_str },
+    { 17, 13, 2, str_EXIT },
+    { 7, 18, 4, rewrite_note1_str },
+    { 7, 19, 4, rewrite_note2_str },
+    { 7, 20, 4, rewrite_note3_str },
 };
 
 const TM_STRING rewrite_guide_scr[2] = {
-    { 0xD, 0x19, 2, rewrite_select_help_str },
-    { 0xD, 0x1A, 2, rewrite_start_help_str },
+    { 13, 25, 2, rewrite_select_help_str },
+    { 13, 26, 2, rewrite_start_help_str },
 };
 
 const TM_STRING rewrite_exit_guide_scr[3] = {
-    { 0xD, 0x19, 2, rewrite_select_help_str },
-    { 0xD, 0x1A, 2, rewrite_exit_help_str },
-    { 0xD, 0x1B, 2, str_blank_16 },
+    { 13, 25, 2, rewrite_select_help_str },
+    { 13, 26, 2, rewrite_exit_help_str },
+    { 13, 27, 2, str_blank_16 },
 };
 
 const TM_STRING rewrite_not_ready_str[1] = {
-    { 0x10, 0xC, 0xE, rewrite_cd_not_ready_str },
+    { 16, 12, 0xE, rewrite_cd_not_ready_str },
 };
 
 const s8 rewrite_title_str[32] = "9 . G A M E   R E W R I T E\n\0\x24\0\x24";
