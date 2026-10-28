@@ -886,8 +886,7 @@ s32 make_conn_cells(WORK_Other_CONN* ewk) {
         cells = (CHAR_CELL*)set->chunk;
         cells += set->count;
         for (j = 0; j < set->cells; j++) {
-            s = &dst[n];
-            s->code = base + cells[j].code;
+            (s = &dst[n])->code = base + cells[j].code;
             s->pal = cells[j].col + ewk->wu.spr.disp_colcd + ewk->conn[i].col;
             s->x = (cells[j].x + ewk->conn[i].nx + cg_data_list[chr].x) & 0x3FF;
             n++;
@@ -897,7 +896,6 @@ s32 make_conn_cells(WORK_Other_CONN* ewk) {
             s->zoom = 0x3F3F;
         }
     }
-    (void)&((WORK*)base)->be_flag;
     return 1;
 }
 
