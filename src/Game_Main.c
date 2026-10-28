@@ -232,7 +232,9 @@ void match_state_0_fight(void) {
         Text_Page_Y = 0;
         Insert_Y = 20;
         Demo_Flag = 0;
-wipe:
+        if (DEBUG_DISP) {
+            tilemap_print_hex_block(20, 1, 18, G_No0, 4, 0);
+        }
         wipe_pattern_set(0, 7, 0);
         scfont_page0_fill(0, 32);
         break;
