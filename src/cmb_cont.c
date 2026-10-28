@@ -508,7 +508,6 @@ s8 KIND;
 
 void combo_window_trans(s8 PL) {
     s8 PLS;
-    s32 mask;
     if (cmb_stock[PL] != 0) {
         if (cmst_buff[PL][cst_read[PL]].pts_flag) {
             switch (cmst_buff[PL][cst_read[PL]].routine_num) {
@@ -567,12 +566,7 @@ void combo_window_trans(s8 PL) {
                         }
                     }
                 }
-                mask = 3;
-                if (DEBUG_EDIT) {
-                    combo_window_all_clear();
-                    mask = check_combo_end(0);
-                }
-                if ((end_flag[PL] & mask) == mask) {
+                if ((end_flag[PL] & 3) == 3) {
                     cmst_buff[PL][cst_read[PL]].routine_num++;
                     cmst_buff[PL][cst_read[PL]].timer[1] = cmb_window_time_tbl[cmst_buff[PL][cst_read[PL]].kind];
                     if (PL == 0) {
