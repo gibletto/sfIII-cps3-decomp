@@ -88,16 +88,14 @@ void effect_D0_move(WORK_Other* ewk) {
 
 
 void d0_speed_set(WORK* ewk, s16 num) {
-    const s32* volatile p;
-
     ewk->old_rno[0] = effd0_conter[num];
     ewk->old_rno[1]++;
     if (ewk->rl_flag) {
-        ewk->mvxy.a[0].sp = -*(p = &effd0_data_tbl[num][0]);
-        ewk->mvxy.d[0].sp = -p[1];
+        ewk->mvxy.a[0].sp = -effd0_data_tbl[num][0];
+        ewk->mvxy.d[0].sp = -effd0_data_tbl[num][1];
     } else {
-        ewk->mvxy.a[0].sp = *(p = &effd0_data_tbl[num][0]);
-        ewk->mvxy.d[0].sp = *(const s32*)((const u8*)p + 4);
+        ewk->mvxy.a[0].sp = effd0_data_tbl[num][0];
+        ewk->mvxy.d[0].sp = effd0_data_tbl[num][1];
     }
     ewk->mvxy.a[1].sp = effd0_data_tbl[num][2];
     ewk->mvxy.d[1].sp = effd0_data_tbl[num][3];
