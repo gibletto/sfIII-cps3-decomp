@@ -1453,6 +1453,7 @@ s32 coins;
     s16 (*timer)[2] = (s16(*)[2])F_Timer;
     s16* line = &Text_Page_Y;
     s32 count;
+    const s8* msg;
 
     (void)&((WORK*)coins)->be_flag;
     (void)&((LoHi16*)coins)->h;
@@ -1480,9 +1481,12 @@ s32 coins;
             }
             F_No2[PL_id] += 1;
             (*timer)[PL_id] = 50;
-            print(x, *line, 18,
-                                      count == 1 ? (s8*)"INSERT   MORE COIN " : (s8*)"INSERT   MORE COINS");
-            if (0) {}
+            if (count == 1) {
+                msg = "INSERT   MORE COIN ";
+            } else {
+                msg = "INSERT   MORE COINS";
+            }
+            print(x, *line, 18, msg);
             tilemap_print_hex_block(x + 7, *line, 18, count, 1, 1);
             break;
         }
