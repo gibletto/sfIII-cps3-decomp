@@ -102,7 +102,7 @@ the top (and a few more for the modules compiled with other options) for the rev
 compiler project's [SF3.md](https://github.com/gibletto/shc-5r26-decomp-sf3/blob/main/SF3.md) lists the rules with the
 routines that show them. Those New Generation adds:
 
-- `MDL_IMM_REG=255`: bit 128 (with bit 4): a nonzero constant a register already holds may serve an arithmetic expression of scalar variables, constants and casts, globals included (RANKING)
+- `MDL_IMM_REG=191`: bit 128 (with bit 4): a nonzero constant a register already holds may serve an arithmetic expression of scalar variables, constants and casts, globals included (RANKING)
 - `PEP_SWITCH_END=3`: bits 1 and 2: a nested switch keeps its own break label (bit 1), also where nested switches end one after another (bit 2)
 - `PEP_RETURN_EXIT=1`: when a return to the adjacent epilogue is removed and a final immediate load is left in a block of its own, the conditional-branch delay-slot pass may still take it if the next block holds only the exit (all its other checks stay)
 - `PEP_AUTOINC=0`: only for the modules of the `SPEED_STABLE` group: no folding of a load and a later pointer `add` into a post-increment load (as Release 26)

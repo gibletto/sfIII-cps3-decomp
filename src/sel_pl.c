@@ -1468,16 +1468,13 @@ void Record_Demo_Lever(void) {
 
 void Setup_Face_ID(void) {
     s16 i, j;
-    const s8* cell;
 
-    (void)&((WORK*)&Face_Cursor_Data)->routine_no[0];
     for (i = 0; i <= 1; i++) {
         for (j = 0; j <= 4; j++) {
-            ID_of_Face[0][i][j] = *(cell = &Face_Cursor_Data.id[i][j]);
-            ID_of_Face[1][i][j] = *cell;
+            ID_of_Face[0][i][j] = Face_Cursor_Data[0][i][j];
+            ID_of_Face[1][i][j] = Face_Cursor_Data[0][i][j];
         }
     }
-    (void)&((WORK*)4)->routine_no[0];
 }
 
 

@@ -219,7 +219,7 @@ extern const u16 Entry_Screen_X_Pairs[11][2][2];
 extern const s16 Loser_X_Pos_Data[6][2];
 extern const s16 EFFA3_Area_Data[][2][4];
 extern const s16 Damage_Power_Data[];
-extern const struct { s8 id[2][5]; } Face_Cursor_Data;
+extern const s8 Face_Cursor_Data[2][2][5];
 /* columns of the select and result screen position tables */
 #define SEL_POS_X       0       /* x */
 #define SEL_POS_Y       1       /* y */
@@ -290,8 +290,8 @@ extern const s16 quake_x_tbl[];
 extern const s16 quake_y_tbl[];
 extern const u16 bg_color2_tbl[];
 extern const u16 etc_bg_color_tbl[];
-extern const char ake_cell1_data[];
-extern const char ake_cell2_data[];
+extern const PANEL ake_cell1_data[];
+extern const PANEL ake_cell2_data[];
 extern const char thank_you_str[];
 extern const char for_playing_str[];
 extern const s16 smoke_check[22];
@@ -777,6 +777,6 @@ extern const u32 snd_seq_rom_data[];
 extern const SNDSAMPLE snd_sample_rom_tbl[];
 extern u8* snd_bank_rom_tbl[];
 extern const CharGfxEntry cg_data_tbl[];
-extern const char ake_cell0_data[];
+extern const PANEL ake_cell0_data[];
 extern const u32 result_char_table[]; /* provisional name: result figures */
 #endif

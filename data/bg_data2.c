@@ -23,9 +23,9 @@ extern const u16 bg_palette_no_tbl[];
 extern const u16 etc_bg_color_tbl[];
 extern const u16 bg_color3_tbl[];
 extern const s16 mark_cg_tbl[];
-extern const char ake_cell1_data[];
-extern const char ake_cell0_data[];
-extern const char ake_cell2_data[];
+extern const PANEL ake_cell1_data[];
+extern const PANEL ake_cell0_data[];
+extern const PANEL ake_cell2_data[];
 extern const s8 str_BG_1_POS_X[];
 extern const s8 str_BG_1_POS_Y[];
 extern const s8 str_BG_2_POS_X[];
@@ -90,25 +90,19 @@ const s16 mark_cg_tbl[46] = {
     69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 80, 257,
 };
 
-const char ake_cell1_data[64] = {
-    0, 0, 32, 0, 0, 0, 0, 5, 0, 0, 32, 64, 0, 0, 0, 6,
-    0, 0, 32, -128, 0, 0, 0, 7, 0, 0, 32, -64, 0, 0, 0, 8,
-    0, 0, 48, 0, 0, 0, 0, 1, 0, 0, 48, 64, 0, 0, 0, 2,
-    0, 0, 48, -128, 0, 0, 0, 3, 0, 0, 48, -64, 0, 0, 0, 4,
+const PANEL ake_cell1_data[8] = {
+    { 0x2000, 5 }, { 0x2040, 6 }, { 0x2080, 7 }, { 0x20C0, 8 },
+    { 0x3000, 1 }, { 0x3040, 2 }, { 0x3080, 3 }, { 0x30C0, 4 },
 };
 
-const char ake_cell0_data[64] = {
-    0, 0, 32, 0, 0, 0, 0, 25, 0, 0, 32, 64, 0, 0, 0, 26,
-    0, 0, 32, -128, 0, 0, 0, 27, 0, 0, 32, -64, 0, 0, 0, 28,
-    0, 0, 48, 0, 0, 0, 0, 29, 0, 0, 48, 64, 0, 0, 0, 30,
-    0, 0, 48, -128, 0, 0, 0, 31, 0, 0, 48, -64, 0, 0, 0, 32,
+const PANEL ake_cell0_data[8] = {
+    { 0x2000, 25 }, { 0x2040, 26 }, { 0x2080, 27 }, { 0x20C0, 28 },
+    { 0x3000, 29 }, { 0x3040, 30 }, { 0x3080, 31 }, { 0x30C0, 32 },
 };
 
-const char ake_cell2_data[64] = {
-    0, 0, 32, 0, 0, 0, 0, 13, 0, 0, 32, 64, 0, 0, 0, 14,
-    0, 0, 32, -128, 0, 0, 0, 17, 0, 0, 32, -64, 0, 0, 0, 18,
-    0, 0, 48, 0, 0, 0, 0, 21, 0, 0, 48, 64, 0, 0, 0, 22,
-    0, 0, 48, -128, 0, 0, 0, 23, 0, 0, 48, -64, 0, 0, 0, 24,
+const PANEL ake_cell2_data[8] = {
+    { 0x2000, 13 }, { 0x2040, 14 }, { 0x2080, 17 }, { 0x20C0, 18 },
+    { 0x3000, 21 }, { 0x3040, 22 }, { 0x3080, 23 }, { 0x30C0, 24 },
 };
 
 const s8 str_BG_1_POS_X[16] = "BG 1 POS X = \n\0\x55";

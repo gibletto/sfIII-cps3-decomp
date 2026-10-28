@@ -8,10 +8,10 @@ export SHC_LIB ?= bin
 export SHC_TMP ?= C:\TEMP
 
 # the compiler revision that built New Generation (see README.md, Compiler)
-export XJUMP_2I = 62
+export XJUMP_2I = 2
 export MDL_IV_AUTOINC = 1
 export MDL_MOD_CONST = 3
-export MDL_IMM_REG = 255
+export MDL_IMM_REG = 191
 export MDL_EQ_CONST = 3
 export MDL_GCSE = 26
 export GEN_LAST_IDX = 4

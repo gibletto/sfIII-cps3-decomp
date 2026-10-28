@@ -7,10 +7,10 @@ if "%SHC_LIB%"=="" set SHC_LIB=bin
 if "%SHC_TMP%"=="" set SHC_TMP=C:\TEMP
 set PATH=%SHC_LIB%;%PATH%
 rem the compiler revision that built New Generation (see README.md, Compiler)
-set XJUMP_2I=62
+set XJUMP_2I=2
 set MDL_IV_AUTOINC=1
 set MDL_MOD_CONST=3
-set MDL_IMM_REG=255
+set MDL_IMM_REG=191
 set MDL_EQ_CONST=3
 set MDL_GCSE=26
 set GEN_LAST_IDX=4

@@ -148,7 +148,6 @@ void effect_15_move(WORK_Other* ewk) {
 /* provisional name */
 void eff15_speed_set(WORK_Other* ewk) {
     s8 num;
-    const s32* p;
     const s32* q;
     num = random_32_com();
     q = &eff15_y_speed_tbl[num * 2];
@@ -156,9 +155,8 @@ void eff15_speed_set(WORK_Other* ewk) {
     ewk->wu.mvxy.d[1].sp = q[1];
     (void)&STONE_SPEED_W(num)->id;
     num = random_16_com();
-    p = &eff15_x_speed_tbl[num];
     if (num < ewk->wu.vitality) {
-        ewk->wu.mvxy.a[0].sp = abs(*p);
+        ewk->wu.mvxy.a[0].sp = abs(eff15_x_speed_tbl[num]);
         num = random_16_com();
         num &= 1;
         if (num == 0) {
@@ -169,8 +167,7 @@ void eff15_speed_set(WORK_Other* ewk) {
             ewk->wu.mvxy.d[0].sp = abs(eff15_x_acc_tbl2[num]);
         }
     } else {
-        (void)&STONE_SPEED_W(num)->id;
-        ewk->wu.mvxy.a[0].sp = *p;
+        ewk->wu.mvxy.a[0].sp = eff15_x_speed_tbl[num];
         num = random_16_com();
         num &= 1;
         if (num == 0) {
