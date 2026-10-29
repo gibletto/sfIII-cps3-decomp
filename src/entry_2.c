@@ -1476,21 +1476,20 @@ s32 coins;
         s32 column = x;
         s32 player = PL_id;
         if (Disp_More_Coins(player, column, count) == 0) {
-            if (--(*timer)[PL_id] != 0) {
-                break;
+            if (--(*timer)[PL_id] == 0) {
+                F_No2[PL_id] += 1;
+                (*timer)[PL_id] = 50;
+                if (count == 1) {
+                    msg = "INSERT   MORE COIN ";
+                } else {
+                    msg = "INSERT   MORE COINS";
+                }
+                print(x, *line, 18, msg);
+                tilemap_print_hex_block(x + 7, *line, 18, count, 1, 1);
             }
+        } else {
             F_No2[PL_id] += 1;
-            (*timer)[PL_id] = 50;
-            if (count == 1) {
-                msg = "INSERT   MORE COIN ";
-            } else {
-                msg = "INSERT   MORE COINS";
-            }
-            print(x, *line, 18, msg);
-            tilemap_print_hex_block(x + 7, *line, 18, count, 1, 1);
-            break;
         }
-        F_No2[PL_id] += 1;
         break;
     }
     case 2:

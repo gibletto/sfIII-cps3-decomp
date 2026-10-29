@@ -22,8 +22,6 @@
 
 
 
-static void eff32_pos_disp(s16 pos) {}
-
 void effect_32_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
@@ -31,8 +29,7 @@ void effect_32_move(WORK_Other* ewk) {
         ewk->wu.disp_flag = 1;
         ewk->wu.old_cgnum = 0;
         ewk->wu.cg_number = 1;
-        ewk->wu.position_z = 1;
-        ewk->wu.my_priority = 1;
+        ewk->wu.my_priority = ewk->wu.position_z = 1;
         break;
     case R0_MOVE:
         if (ewk->wu.dead_f) {
@@ -42,7 +39,6 @@ void effect_32_move(WORK_Other* ewk) {
         }
         ewk->wu.position_x = bg_w.bgw[1].wxy[0].disp.pos;
         ewk->wu.position_y = bg_w.bgw[1].wxy[1].disp.pos;
-        eff32_pos_disp(bg_w.bgw[0].wxy[0].disp.pos);
         sort_push_request3(&ewk->wu);
         break;
     case R0_END:

@@ -574,7 +574,7 @@ void Damage_1st(PLW* wk) {
         CP_No[wk->wu.id][1] = Get_Up_Data[wk->player_number][Lv][Rnd] + 1;
         CP_No[wk->wu.id][2] = 0;
         if (Get_Up_Area_Data[wk->player_number][CP_No[wk->wu.id][1] - 1][Area_Number[wk->wu.id]] == 1) {
-            CP_No[wk->wu.id][1] = *(((u8*)Get_Up_Area_Data[wk->player_number][CP_No[wk->wu.id][1]]) + 5);
+            CP_No[wk->wu.id][1] = Get_Up_Area_Data[wk->player_number][CP_No[wk->wu.id][1] + 1][0];
         }
         if (CP_No[wk->wu.id][1] != DMG_DECIDE) {
             break;
@@ -675,7 +675,7 @@ void Damage_6th(PLW* wk) {
         }
         if (wk->wu.cg_type == 12) {
             if (Get_Up_Area_Data[wk->player_number][CP_No[wk->wu.id][1] - 1][Area_Number[wk->wu.id]] == 1) {
-                CP_No[wk->wu.id][1] = *(((u8*)Get_Up_Area_Data[wk->player_number][CP_No[wk->wu.id][1]]) + 5);
+                CP_No[wk->wu.id][1] = Get_Up_Area_Data[wk->player_number][CP_No[wk->wu.id][1] + 1][0];
             }
             CP_No[wk->wu.id][2]++;
             CP_Index[wk->wu.id][1] = 0;

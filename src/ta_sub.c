@@ -362,36 +362,19 @@ void win_lose_work_clear(void) {
 }
 
 
-#pragma inline(bg_speed_disp)
-static void bg_speed_disp(s8 r1, s8 r2, s8 stage, s8 area) {}
-
-static void chase_xy_disp(s32 cal, s16 pos, s16 low) {}
-
 void cal_bg_speed_data(bg_num, tm)
 s16 bg_num;
 s16 tm;
 {
     MotionState ms;
-    XY* xy = bg_w.bgw[bg_num].chase_xy;
-    bg_speed_disp(bg_w.bg_r_1, bg_w.bg_r_2, bg_w.stage, bg_w.area);
-    if (0) {
-        return;
-    }
-    chase_xy_disp(xy->cal, xy->disp.pos, xy->disp.low);
-    xy[0].disp.low = xy[1].disp.low = 0;
-    (void)&((WORK*)bg_num)->be_flag;
+    bg_w.bgw[bg_num].chase_xy[0].disp.low = bg_w.bgw[bg_num].chase_xy[1].disp.low = 0;
     ms.timer = tm;
     ms.timer2 = (((ms.timer - 1) * ms.timer) / 2) + ms.timer;
     ms.x.ps.h = chase_x - bg_w.bgw[bg_num].chase_xy[0].disp.pos;
     ms.y.ps.h = chase_y - bg_w.bgw[bg_num].chase_xy[1].disp.pos;
-    ms.y.ps.l = 0;
-    ms.x.ps.l = 0;
+    ms.x.ps.l = ms.y.ps.l = 0;
     if (!ms.timer) {
-        ms.amy = 0;
-        ms.amx = 0;
-        ms.spy = ms.dly = 0;
-        ms.dlx = 0;
-        ms.spx = 0;
+        ms.spx = ms.dlx = ms.spy = ms.dly = ms.amx = ms.amy = 0;
     } else {
         ms.amx = ms.x.pl % ms.timer2;
         ms.spx = ms.dlx = ms.x.pl / ms.timer2;

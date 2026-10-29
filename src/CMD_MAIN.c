@@ -1489,8 +1489,6 @@ void debug_bg_test_dispatch(void) {
 }
 
 
-#pragma inline(bg_routine_disp)
-static void bg_routine_disp(s32 routine) {}
 
 void debug_bg_test_init(void) {
     const BG_GFX* gfx;
@@ -1498,7 +1496,6 @@ void debug_bg_test_init(void) {
     s16 i;
     s16 j;
     u8 mode;
-    s16 old_sp;
     Family_Init();
     clear_scroll_layer_state_and_mask();
     scrn_pos_clear();
@@ -1513,9 +1510,10 @@ void debug_bg_test_init(void) {
     polygon2d_submit_line(gfx->prep, 0, 0, 3);
     mode = gfx->mode;
     polygon2d_submit_line(gfx->src, bg_w.scroll_cg_adr, gfx->size, mode);
-    bg_w.pos_offset = Game_setting.mode ? 0xF8 : 0xC0;
-    if (DEBUG_DISP) {
-        old_sp = bg_sp_work;
+    if (Game_setting.mode) {
+        bg_w.pos_offset = 0xF8;
+    } else {
+        bg_w.pos_offset = 0xC0;
     }
     for (i = 0; i < 7; i++) {
         bg_w.bgw[i].pos_x_work = 0;
@@ -1528,17 +1526,14 @@ void debug_bg_test_init(void) {
         bg_w.bgw[i].hos_xy[0].cal = 0;
         bg_w.bgw[i].hos_xy[1].cal = 0;
         bg_w.bgw[i].rewrite_flag = 0;
-        bg_routine_disp(bg_w.bg_routine);
     }
-    if (DEBUG_DISP) {
-        bg_w.dmm1 = old_sp;
-    }
-    for (i = 0; i < bg_w.scno; i = i + 1) {
+    for (i = 0; i < bg_w.scno; i++) {
         bg_w.bgw[i].bg_adrs_c_no = simmram_big_page_alloc_40(1);
         bg_w.bgw[i].bg_address = (u16 *)simmram_slot_addr(bg_w.bgw[i].bg_adrs_c_no);
         scrn_map_set_now(i, (u32)bg_w.bgw[i].bg_address);
         scrn_map_set(i, (u32)bg_w.bgw[i].bg_address);
-        sprite_list_setup(i, 1, (const s16*)bg_map_tbl2[4][i]);
+        ptr = (const s16*)bg_map_tbl2[4][i];
+        sprite_list_setup(i, 1, ptr);
         bg_w.bgw[i].r_no_1 = bg_w.bgw[i].r_no_2 = 0;
         bg_w.bgw[i].fam_no = i;
     }

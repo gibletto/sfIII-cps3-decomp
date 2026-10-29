@@ -128,9 +128,6 @@ void fade_cont_init(void) {
             fade_layer[i].step = 96;
             break;
         }
-        if (0) {
-            dat = fade_param_tbl[tbl[1]];
-        }
         tbl += 2;
     }
 }

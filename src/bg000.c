@@ -502,13 +502,13 @@ void bg_pos_hosei_deff2(void) {
         pos2 += quake_x_tbl[bg_w.quake_x_index];
         bg_w.bgw[i].position_x = pos2;
         if (bg_w.chase_flag & 0xF0) {
-            pos2 = (&bg_w.bgw[i] + 0)->chase_xy[1].disp.pos;
+            pos2 = bg_w.bgw[i].chase_xy[1].disp.pos;
         } else {
-            pos2 = (&bg_w.bgw[i] + 0)->xy[1].disp.pos;
+            pos2 = bg_w.bgw[i].xy[1].disp.pos;
         }
         pos = pos2 & 0x3FF;
         pos += quake_y_tbl[bg_w.quake_y_index];
-        (&bg_w.bgw[i] + 0)->position_y = pos & 0x3FF;
+        bg_w.bgw[i].position_y = pos & 0x3FF;
     }
 }
 
@@ -2060,7 +2060,6 @@ s16 capcom_logo_anim(void) {
 
 
 
-static void bg_work_disp(s16 id, s8 be_flag) {}
 
 /* provisional name */
 void check_cg_zoom(void) {
@@ -2072,8 +2071,7 @@ void check_cg_zoom(void) {
     for (i = 0; i < 2; i++) {
         if (plw[i].scr_pos_set_flag) {
             plw[i].wu.scr_mv_x = plw[i].wu.xyz[0].disp.pos;
-            wk = &plw[i].wu;
-            bg_work_disp(wk->id, wk->be_flag);
+            wk = (WORK*)&plw[i];
             wk->scr_mv_y = wk->xyz[1].disp.pos;
         }
     }

@@ -432,7 +432,7 @@ s32 trans_char_cells(WORK* work) {
         base = simmram_slot_to_offset(blk10);
         wk->spr.slot_addr = addr = simmram_slot_to_cg_no(blk10);
         chunk = set->chunk;
-        for (i = 0; i < set->count; i = i + 1) {
+        for (i = 0; i < set->count; i++) {
             adr = base + chunk[i].dst * 16;
             err = polygon2d_submit_line(chunk[i].src, adr, chunk[i].size, wk->cgromtype);
             if (err != 0) {
@@ -764,8 +764,6 @@ s32 set_judge_area_sprite(WORK_Other_JUDGE* wk) {
 }
 
 
-static void conn_cells_disp(u16 last_attr) {}
-
 s32 set_conn_sprite(WORK_Other_CONN* wk) {
     s16 handle;
     CharSpriteK* dst;
@@ -800,10 +798,11 @@ s32 set_conn_sprite(WORK_Other_CONN* wk) {
     wk->wu.spr.done_rl = 0;
     if (wk->wu.my_col_code & 0x2000) {
         wk->wu.spr.disp_colcd = 0;
+        n = 0;
     } else {
         wk->wu.spr.disp_colcd = wk->wu.my_col_code & 0x1FF;
+        n = 0;
     }
-    n = 0;
     for (i = 0; i < wk->num_of_conn; i++) {
         chr = wk->conn[i].chr;
         cg_index = chr;
@@ -823,7 +822,6 @@ s32 set_conn_sprite(WORK_Other_CONN* wk) {
             n++;
         }
     }
-    conn_cells_disp(dst[n - 1].attr);
     return 1;
 }
 
