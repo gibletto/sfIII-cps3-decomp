@@ -23,7 +23,6 @@ extern TMSCRIPT * sys_cfg_continue_scr_jp[];
 extern TMSCRIPT * sys_cfg_monitor_scr_jp[];
 extern TMSCRIPT * sys_cfg_demo_scr_jp[];
 extern TMSCRIPT * sys_cfg_sound_scr_jp[];
-extern TMSCRIPT sys_cfg_unref_scr_jp[];
 extern const s8 test_menu_str_0[];
 extern const s8 test_menu_str_10[];
 extern const s8 test_menu_str_11[];
@@ -300,7 +299,8 @@ TMSCRIPT* sys_cfg_sound_scr_jp[42] = {
 };
 
 /* 02000B2C */
-/* a screen script after the sound page's; nothing in the program refers to it (provisional name) */
-TMSCRIPT sys_cfg_unref_scr_jp[1] = {
+/* Stored after sys_cfg_sound_scr_jp. Nothing in the program refers to it by name or address; if it is read,
+   it is through an index past the end of sys_cfg_sound_scr_jp. */
+TMSCRIPT sys_cfg_sound_scr_jp_tail[1] = {
     { 1, 0, sys_cfg_sound_scr_jp_0 },
 };

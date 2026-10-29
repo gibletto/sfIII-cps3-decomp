@@ -3,7 +3,7 @@
 
 #include "structs.h"
 
-s32 effect_G7_init();
+s32 effect_G7_init(s16 type);
 void effect_G7_move(WORK_Other* ewk);
 
 #endif

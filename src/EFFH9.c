@@ -6,8 +6,9 @@
  * raises a dust effect (effect 3 types 69 / 70) and then appears with a pattern from
  * effH7_char_tbl / effH8_char_tbl at the offsets in effH7_pos_tbl / effH8_pos_tbl.
  * effect_H7_move bounces the object in (effH7_bound_tbl) and then bobs it along random height
- * tables (effH7_move_tbl). effect_H8_move plays its pattern once; on stage 8 in the first round
- * it later switches to a second pattern and flies upward. Both die with dead_f or Suicide.
+ * tables (effH7_move_tbl, effH7_move_data_0 - 3). effect_H8_move plays its pattern once; on
+ * stage 8 in the first round it later switches to a second pattern and flies upward. Both die
+ * with dead_f or Suicide.
  */
 
 #include "structs.h"
@@ -50,22 +51,22 @@
 
 /* 02007428 */
 s16* effH7_move_tbl[16] = {
-    (s16*)&effH7_bound_tbl[57],
-    (s16*)&effH7_bound_tbl[57],
-    (s16*)&effH7_bound_tbl[57],
-    (s16*)&effH7_bound_tbl[57],
-    (s16*)&effH7_bound_tbl[73],
-    (s16*)&effH7_bound_tbl[73],
-    (s16*)&effH7_bound_tbl[73],
-    (s16*)&effH7_bound_tbl[73],
-    (s16*)&effH7_bound_tbl[73],
-    (s16*)&effH7_bound_tbl[57],
-    (s16*)&effH7_bound_tbl[73],
-    (s16*)&effH7_bound_tbl[57],
-    (s16*)&effH7_bound_tbl[97],
-    (s16*)&effH7_bound_tbl[97],
-    (s16*)&effH7_bound_tbl[73],
-    (s16*)&effH7_bound_tbl[125],
+    (s16*)effH7_move_data_0,
+    (s16*)effH7_move_data_0,
+    (s16*)effH7_move_data_0,
+    (s16*)effH7_move_data_0,
+    (s16*)effH7_move_data_1,
+    (s16*)effH7_move_data_1,
+    (s16*)effH7_move_data_1,
+    (s16*)effH7_move_data_1,
+    (s16*)effH7_move_data_1,
+    (s16*)effH7_move_data_0,
+    (s16*)effH7_move_data_1,
+    (s16*)effH7_move_data_0,
+    (s16*)effH7_move_data_2,
+    (s16*)effH7_move_data_2,
+    (s16*)effH7_move_data_1,
+    (s16*)effH7_move_data_3,
 };
 
 

@@ -127,7 +127,7 @@ s32 effect_39_init(s16 PL_id, s16 Wait) {
         ewk->wu.hit_quake = ewk->wu.xyz[0].disp.pos + 140;
         ewk->wu.mvxy.a[0].sp = 0xF0000;
     }
-    if (plw[PL_id].wu.operator == 0 && EM_id == 0) {
+    if (plw[PL_id].wu.operator == 0 && EM_id == PL_GILL) {
         ewk->wu.dir_step = 0;
     } else {
         ewk->wu.dir_step = ID_of_Face[ewk->master_id][Cursor_Y[ewk->master_id]][Cursor_X[ewk->master_id]];

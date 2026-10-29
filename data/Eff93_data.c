@@ -13,5 +13,8 @@
 extern const s16 effb0_scr_record_data[];
 
 const s16 effb0_scr_record_data[14] = {
-    4, 88, 127, 32512, 60, 255, 32512, 60, 383, 32512, 60, -1, -1, 0,
+    /* [0] */
+    4, 88,  0x7F, 0x7F00, 60,  0xFF, 0x7F00, 60,  0x17F, 0x7F00, 60,  -1,
+    -1,
+    0,
 };

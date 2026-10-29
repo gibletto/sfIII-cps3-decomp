@@ -99,7 +99,7 @@ extern const s16 bg_deff_rl1_tbl_2[][57];
 extern const s16 bg_deff_rl1_tbl_3[][57];
 extern const s16 bg_deff_rl1_tbl_4[][57];
 extern const s16 bg_scr_record_data[];
-extern const u16 ake_scr_record_data[];
+extern const s16 ake_scr_record_data[];
 
 /* 02005B14 */
 u32 bg_map_tbl[22][4] = {

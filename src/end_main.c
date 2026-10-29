@@ -43,7 +43,7 @@ s32 Check_Fade_Complete(void);
 s32 Request_Fade(u16 fade_code, s8 fade_mode);
 void Disp_Capcom_Rights(void);
 
-extern const u16 op_scr_record_data[];
+extern const s16 op_scr_record_data[];
 extern const OP_TILE op_tile_tbl[5][8];
 extern const OP_SCRN op_scrn_tbl[20];
 extern const OP_PRIO op_prio_tbl[10];

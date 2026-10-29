@@ -807,14 +807,13 @@ s16 cx;
 
 
 s32 shot_data_convert(sw)
-s32 sw;
+u16 sw;
 {
     s16 i;
     s16 rnum = -1;
     for (i = 0; i < 6; i++) {
-        if ((u16)sw & shot_prio[i][0]) {
+        if (sw & shot_prio[i][0]) {
             rnum = shot_prio[i][1];
-            sw *= 1;
         }
     }
     return rnum;

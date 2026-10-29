@@ -79,26 +79,19 @@ void effect_C1_move(WORK_Other* ewk) {
     sort_push_request(&ewk->wu);
 }
 
-static void effc1_pos_disp(s16 pos) {}
-
 s32 effect_C1_init(PLW* wk) {
     s16 id;
-    PLW* other;
     WORK_Other* ewk;
     s16 pattern = -1;
     s16 ix;
-    if (pattern < 0) {
-        id = wk->wu.id ^ 1;
-        other = &plw[id];
-        effc1_pos_disp(other->wu.xyz[id].disp.pos);
-        if (wk->player_number == PL_YANG) {
-            if (other->player_number != PL_YUN && other->player_number != PL_YANG) {
-                pattern = 3;
-            }
-        } else if (wk->player_number == PL_YUN) {
-            if (other->player_number != PL_YUN && other->player_number != PL_YANG) {
-                pattern = 0;
-            }
+    id = wk->wu.id ^ 1;
+    if (wk->player_number == PL_YANG) {
+        if (plw[id].player_number != PL_YUN && plw[id].player_number != PL_YANG) {
+            pattern = 3;
+        }
+    } else if (wk->player_number == PL_YUN) {
+        if (plw[id].player_number != PL_YUN && plw[id].player_number != PL_YANG) {
+            pattern = 0;
         }
     }
     if (pattern < 0) {

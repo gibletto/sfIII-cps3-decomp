@@ -373,87 +373,90 @@ s32 trans_char_cells(WORK* work) {
     CharGfxChunk* chunk;
     no = wk->cg_number;
     set = cg_data_list[no].set;
-    if ((set->slot & 0x8000) ? 0 : 1) {
-        if (wk->old_cgnum == wk->cg_number) {
-            goto cached;
+    if (set->slot & 0x8000) {
+        goto simm;
+    }
+    if (wk->old_cgnum == wk->cg_number) {
+        goto cached;
+    }
+    if (cg_slot_tbl[set->slot].addr == 0 && !load_char_gfx(no, wk->cgromtype)) {
+        return 0;
+    }
+    addr = cg_slot_tbl[set->slot].addr;
+    wk->spr.slot_addr = addr;
+    cells = (CHAR_CELL*)set->chunk;
+    cells = (CHAR_CELL*)((u8*)cells + set->count * sizeof(CharGfxChunk));
+    wk->spr.cells = cells;
+    if ((blk40 = simmram_block_alloc_40((set->cells >> 4) + 1, 1)) == 0) {
+        return 0;
+    }
+    dst = (CHAR_SPRITE*)simmram_slot_addr(blk40);
+    goto set_sprite;
+    simm:
+    if (wk->old_cgnum != wk->cg_number) {
+        goto reload;
+    }
+    cached:
+    if (wk->spr.done_flip != wk->cg_flip) {
+        if (wk->spr.done_rl != wk->rl_flag) {
+            goto both;
         }
-        if (cg_slot_tbl[set->slot].addr == 0 && !load_char_gfx(no, wk->cgromtype)) {
-            return 0;
-        }
-        addr = cg_slot_tbl[set->slot].addr;
-        wk->spr.slot_addr = addr;
-        cells = (CHAR_CELL*)set->chunk;
-        cells = (CHAR_CELL*)((u8*)cells + set->count * sizeof(CharGfxChunk));
-        wk->spr.cells = cells;
-        if ((blk40 = simmram_block_alloc_40((set->cells >> 4) + 1, 1)) == 0) {
-            return 0;
-        }
-        dst = (CHAR_SPRITE*)simmram_slot_addr(blk40);
-    } else {
-        if (wk->old_cgnum != wk->cg_number) {
-            goto reload;
-        }
-        cached:
-            if (wk->spr.done_flip != wk->cg_flip) {
-                if (wk->spr.done_rl != wk->rl_flag) {
-                    goto both;
-                }
-                goto flip;
-            }
-            if (wk->spr.done_rl == wk->rl_flag) {
-                return char_cell_flip_none(wk);
-            }
-            if (!char_cell_flip_x(wk)) {
-                return 0;
-            }
-            wk->spr.done_rl = wk->rl_flag;
-            wk->spr.sprite_flip = wk->cg_flip ^ wk->rl_flag;
-            return 1;
-        flip:
-            if (!char_cell_flip_tbl[wk->spr.done_flip][wk->cg_flip](wk)) {
-                return 0;
-            }
-            wk->spr.done_flip = wk->cg_flip;
-            wk->spr.sprite_flip = wk->cg_flip ^ wk->rl_flag;
-            return 1;
-        both:
-            if (!char_cell_flip_tbl[wk->spr.done_flip ^ wk->spr.done_rl][wk->cg_flip ^ wk->rl_flag](wk)) {
-                return 0;
-            }
-            wk->spr.done_flip = wk->cg_flip;
-            wk->spr.done_rl = wk->rl_flag;
-            wk->spr.sprite_flip = wk->cg_flip ^ wk->rl_flag;
-            return 1;
-            reload:;
-        polygon2d_submit_line(set->prep, 0, 0, 3);
-        if ((s16)(blk10 = simmram_block_alloc_10((set->size >> 5) + 1, 1)) == 0) {
-            return 0;
-        }
-        base = simmram_slot_to_offset(blk10);
-        wk->spr.slot_addr = addr = simmram_slot_to_cg_no(blk10);
-        chunk = set->chunk;
-        for (i = 0; i < set->count; i++) {
-            adr = base + chunk[i].dst * 16;
-            err = polygon2d_submit_line(chunk[i].src, adr, chunk[i].size, wk->cgromtype);
-            if (err != 0) {
-                simmram_block_free_10(blk10);
-                return 0;
-            }
-        }
-        cells = (CHAR_CELL*)&chunk[i];
-        wk->spr.cells = cells;
-        if ((blk40 = simmram_block_alloc_40((set->cells >> 4) + 1, 1)) == 0) {
+        goto flip;
+    }
+    if (wk->spr.done_rl == wk->rl_flag) {
+        return char_cell_flip_none(wk);
+    }
+    if (!char_cell_flip_x(wk)) {
+        return 0;
+    }
+    wk->spr.done_rl = wk->rl_flag;
+    wk->spr.sprite_flip = wk->cg_flip ^ wk->rl_flag;
+    return 1;
+    flip:
+    if (!char_cell_flip_tbl[wk->spr.done_flip][wk->cg_flip](wk)) {
+        return 0;
+    }
+    wk->spr.done_flip = wk->cg_flip;
+    wk->spr.sprite_flip = wk->cg_flip ^ wk->rl_flag;
+    return 1;
+    both:
+    if (!char_cell_flip_tbl[wk->spr.done_flip ^ wk->spr.done_rl][wk->cg_flip ^ wk->rl_flag](wk)) {
+        return 0;
+    }
+    wk->spr.done_flip = wk->cg_flip;
+    wk->spr.done_rl = wk->rl_flag;
+    wk->spr.sprite_flip = wk->cg_flip ^ wk->rl_flag;
+    return 1;
+    reload:
+    polygon2d_submit_line(set->prep, 0, 0, 3);
+    if ((s16)(blk10 = simmram_block_alloc_10((set->size >> 5) + 1, 1)) == 0) {
+        return 0;
+    }
+    base = simmram_slot_to_offset(blk10);
+    wk->spr.slot_addr = addr = simmram_slot_to_cg_no(blk10);
+    chunk = set->chunk;
+    for (i = 0; i < set->count; i++) {
+        adr = base + chunk[i].dst * 16;
+        err = polygon2d_submit_line(chunk[i].src, adr, chunk[i].size, wk->cgromtype);
+        if (err != 0) {
             simmram_block_free_10(blk10);
             return 0;
         }
-        dst = (CHAR_SPRITE*)simmram_slot_addr(blk40);
-        if (wk->spr.gfx_blk10[2]) {
-            simmram_block_free_10(wk->spr.gfx_blk10[2]);
-        }
-        wk->spr.gfx_blk10[2] = wk->spr.gfx_blk10[1];
-        wk->spr.gfx_blk10[1] = wk->spr.gfx_blk10[0];
-        wk->spr.gfx_blk10[0] = blk10;
     }
+    cells = (CHAR_CELL*)&chunk[i];
+    wk->spr.cells = cells;
+    if ((blk40 = simmram_block_alloc_40((set->cells >> 4) + 1, 1)) == 0) {
+        simmram_block_free_10(blk10);
+        return 0;
+    }
+    dst = (CHAR_SPRITE*)simmram_slot_addr(blk40);
+    if (wk->spr.gfx_blk10[2]) {
+        simmram_block_free_10(wk->spr.gfx_blk10[2]);
+    }
+    wk->spr.gfx_blk10[2] = wk->spr.gfx_blk10[1];
+    wk->spr.gfx_blk10[1] = wk->spr.gfx_blk10[0];
+    wk->spr.gfx_blk10[0] = blk10;
+    set_sprite:
     if (wk->spr.gfx_blk40[2]) {
         simmram_block_free_40(wk->spr.gfx_blk40[2]);
     }

@@ -76,9 +76,7 @@ void effect_G7_move(WORK_Other* ewk) {
 
 
 
-static void end_rno_disp(s16 r_no_2) {}
-
-s32 effect_G7_init(void) {
+s32 effect_G7_init(s16 type) {
     WORK_Other* ewk;
     s16 ix;
     s16 i;
@@ -108,6 +106,5 @@ s32 effect_G7_init(void) {
         ewk->wu.mvxy.a[0].sp = effg7_speed_tbl[i / 2];
         ewk->wu.mvxy.d[0].sp = 0;
     }
-    end_rno_disp(end_w.r_no_2);
     return 0;
 }

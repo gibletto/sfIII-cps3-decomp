@@ -171,8 +171,6 @@ s32 effect_50_init(s16 player) {
             chars[j] = 57;
         }
     }
-    (void)&((WORK*)EFF50_PANEL_COUNT)->be_flag;
-    (void)&((WORK*)Break_Com)->be_flag;
     delay = 1;
     if (Cut_Cut_Cut()) {
         extra = 0;
@@ -192,7 +190,8 @@ s32 effect_50_init(s16 player) {
         ewk->wu.my_col_code = 0x2040;
         ewk->wu.my_family = 3;
         ewk->wu.position_z = 78;
-        ewk->wu.hit_quake = (ewk->wu.xyz[0].disp.pos = x) + dx;
+        ewk->wu.xyz[0].disp.pos = x;
+        ewk->wu.hit_quake = x + dx;
         ewk->wu.dir_timer = delay;
         ewk->wu.char_index = 0;
         ewk->wu.dir_step = chars[i];
@@ -207,11 +206,7 @@ s32 effect_50_init(s16 player) {
         ewk->wu.routine_no[3] = 2;
         ewk->wu.routine_no[4] = 6;
         ewk->wu.vitality = 0;
-        if (chars[i] == 57) {
-            col = 14;
-        } else {
-            col = 38;
-        }
+        col = (chars[i] == 57) ? 14 : 38;
         ewk->wu.vital_new = 0x2065 - col;
         ewk->wu.vital_old = 0x2040;
         if (i < 3) {
@@ -222,12 +217,10 @@ s32 effect_50_init(s16 player) {
         delay += extra;
         if (i != 2) {
             x += 44;
+        } else if (COM_id) {
+            x = DE_X[10] + 1008;
         } else {
-            if (COM_id) {
-                x = DE_X[10] + 1008;
-            } else {
-                x = 304;
-            }
+            x = 304;
         }
     }
     return 0;

@@ -1037,13 +1037,10 @@ next_mi:
 }
 
 
-#define HIT_BOX_INDEX_W(value) ((void)&((WORK*)(s32)(value))->id)
-
 void attack_hit_check(void) {
     WORK* mad;
     WORK* sad;
     s16* mh;
-    s16* ah;
     s16* dh;
     s16 mi;
     s16 si;
@@ -1089,11 +1086,7 @@ void attack_hit_check(void) {
                     continue;
                 }
                 dh = sad->h_bod->body_dm[0];
-                j = 0;
-                ah = &mh[i * 4];
-                (void)&((ATTACK_BOX*)ah)->att_box[0][0];
-                for (; j < 5; j++, dh += 4) {
-                    (void)&((ATTACK_BOX*)ah)->att_box[0][2];
+                for (j = 0; j < 5; j++, dh += 4) {
                     if (dh[0] == 0) {
                         continue;
                     }
@@ -1101,7 +1094,7 @@ void attack_hit_check(void) {
                         if (hs[si].dm_body != j) {
                             continue;
                         }
-                        mw = hit_check_subroutine(mad, sad, ah, dh);
+                        mw = hit_check_subroutine(mad, sad, &mh[i * 4], dh);
                         if (mw > mkm_wk[si]) {
                             hs[mi].my_att = i;
                             mkm_wk[si] = mw;
@@ -1120,7 +1113,7 @@ void attack_hit_check(void) {
                             }
                         }
                     }
-                    mw = hit_check_subroutine(mad, sad, ah, dh);
+                    mw = hit_check_subroutine(mad, sad, &mh[i * 4], dh);
                     if (mw) {
                         hs[mi].flag.results |= 0x10;
                         hs[mi].my_hit = si;
@@ -1130,7 +1123,7 @@ void attack_hit_check(void) {
                         hs[si].dm_body = j;
                         mad->att_hit_ok = 0;
                         mkm_wk[si] = mw;
-                        hs[mi].ah = ah;
+                        hs[mi].ah = &mh[i * 4];
                         hs[si].dh = dh;
                         break;
                     }
@@ -1151,8 +1144,6 @@ void attack_hit_check(void) {
             if ((dh = (s16*)sad->h_hos)[0] == 0) {
                 continue;
             }
-            (void)&((HOSEI_BOX*)dh)->hos_box[1];
-            HIT_BOX_INDEX_W(i);
             if (mad->att.at_free4 & 0x80) {
                 if (!(hs[mi].flag.results & 0x10)) {
                     for (i = 1; i < 3; i++) {
@@ -1182,8 +1173,6 @@ void attack_hit_check(void) {
     }
 }
 
-
-#undef HIT_BOX_INDEX_W
 
 s32 hit_check_subroutine(WORK* wk1, WORK* wk2, const s16* hd1, const s16* hd2) {
     s16 d0;
