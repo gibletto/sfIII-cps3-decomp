@@ -23,7 +23,7 @@
 #define R0_MOVE         1       /* cycle the four frames */
 
 extern const EFF12_FRAME eff12_frame_tbl[4];
-extern const EFF12_ROW eff12_tile_tbl[2];
+extern const EFF12_TILE eff12_tile_tbl[2][16];
 extern const u16 bg050_cell_data[66][16][32];
 void eff12_tile_put(void);
 void debug_bg_tile_put(s16 bg, s32 ofs, s32 page, s32 src);
@@ -95,20 +95,18 @@ void debug_bg_tile_put(s16 bg, s32 ofs, s32 page, s32 src) {
     blit_16x16_tile(sp, (u16)x, dst, 0x240);
 }
 
-static void eff12_tile_disp(s32 ofs) {}
-
 void eff12_tile_put(void) {
     s16 i;
     s16 j;
-    const EFF12_ROW* row;
+    const EFF12_TILE* data;
     const EFF12_TILE* tile;
 
     for (i = 0; i < 2; i++) {
-        row = &eff12_tile_tbl[i] + 0;
+        data = &eff12_tile_tbl[i][0];
         for (j = 0; j < 16; j++) {
-            tile = &row->t[j];
+            tile = data;
+            tile += j;
             debug_bg_tile_put(i, tile->ofs, tile->page, (s32)bg050_cell_data);
-            eff12_tile_disp(tile->ofs);
         }
     }
 }

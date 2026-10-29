@@ -1335,15 +1335,12 @@ s32 Check_Ending(void) {
 
 s16 Next_VS_Index(void) {
     s16 em;
-    s16 char_offset;
     if (VS_Index[WINNER] >= 7) {
         return 7;
     }
     ROW_ELEM(Last_VS_Index, WINNER) = VS_Index[WINNER];
     for (; Last_VS_Index[WINNER] <= 5; Last_VS_Index[WINNER]++) {
-        em = *((char_offset = Decided_My_char[WINNER] * sizeof EM_Candidate_Data[0]) +
-               (const s8*)EM_Candidate_Data +
-               (s8)(EM_Course[WINNER] * sizeof EM_Candidate_Data[0][0]) + Last_VS_Index[WINNER]);
+        em = EM_Candidate_Data[Decided_My_char[WINNER]][EM_Course[WINNER]][Last_VS_Index[WINNER]];
         if (Break_Com[WINNER][em] == 0) {
             return Last_VS_Index[WINNER];
         }

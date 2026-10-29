@@ -1687,7 +1687,7 @@ void Disp_Start_Message(void) {
                 }
                 tilemap_print_hex_block(DE_X[0] + 9, 18, 18, needed, 1, 1);
             } else {
-                tilemap_print_string(6, 18, 0xFFFF, ((const TM_STRING*)((const u8*)insert_coin_mes + (s8)((coin_chute1_w.per_credit) * sizeof(TM_STRING)) - sizeof(TM_STRING))));
+                tilemap_print_string(6, 18, 0xFFFF, insert_coin_mes + coin_chute1_w.per_credit - 1);
             }
             break;
         case 99:
@@ -1720,7 +1720,7 @@ void Disp_Start_Message(void) {
             }
             tilemap_print_hex_block(DE_X[0] + 32, 18, 18, needed, 1, 1);
         } else {
-            tilemap_print_string(DE_X[4] + 29, 18, 0xFFFF, ((const TM_STRING*)((const u8*)insert_coin_mes + (s8)((coin_chute1_w.per_credit) * sizeof(TM_STRING)) - sizeof(TM_STRING))));
+            tilemap_print_string(DE_X[4] + 29, 18, 0xFFFF, insert_coin_mes + coin_chute1_w.per_credit - 1);
         }
         break;
     case 99:

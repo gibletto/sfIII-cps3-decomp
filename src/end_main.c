@@ -44,7 +44,7 @@ s32 Request_Fade(u16 fade_code, s8 fade_mode);
 void Disp_Capcom_Rights(void);
 
 extern const u16 op_scr_record_data[];
-extern const OP_TILES op_tile_tbl[5];
+extern const OP_TILE op_tile_tbl[5][8];
 extern const OP_SCRN op_scrn_tbl[20];
 extern const OP_PRIO op_prio_tbl[10];
 extern const u16 op_bg_scrn_data;
@@ -110,7 +110,7 @@ void opning_init_00000(void) {
     scrn_pos_clear();
     Zoomf_Init();
     op_w.r_no_0++;
-    scr_cg_c_no = ((s16)simmram_block_alloc_10(0xCE, 1));
+    scr_cg_c_no = simmram_block_alloc_10(0xCE, 1);
     bg_w.scroll_cg_adr = simmram_slot_to_offset(scr_cg_c_no);
     bg_w.scno = 1;
     load_any_color(0x82);
@@ -134,7 +134,7 @@ void opning_init_00000(void) {
     bg_w.bgw[0].position_x = 0x100 - bg_w.pos_offset;
     bg_w.bgw[0].position_y = 0;
     for (i = 0; i < 5; i++) {
-        (p = &eff_bg_adrs[i] + 0)->no = simmram_big_page_alloc_40(1);
+        (p = &eff_bg_adrs[i])->no = simmram_big_page_alloc_40(1);
         p->adrs = simmram_slot_addr(p->no);
     }
     bg_w.bgw[0].bg_adrs_c_no = eff_bg_adrs[0].no;
@@ -157,23 +157,21 @@ void opning_init_00000(void) {
 
 
 
-static void op_tile_disp(s32 ofs) {}
-
 /* draws the five maps, then waits 8 frames with the music started */
 void opning_init_01000(void) {
     s16 i;
     s16 j;
-    const OP_TILES* t;
+    const OP_TILE* t;
     const OP_TILE* q;
     switch (op_w.r_no_1) {
     case 0:
         op_w.r_no_1++;
         for (i = 0; i < 5; i = i + 1) {
-            t = &op_tile_tbl[i] + 0;
+            t = &op_tile_tbl[i][0];
             for (j = 0; j < 8; j++) {
-                q = &t->tile[j];
+                q = t;
+                q += j;
                 debug_bg_tile_put(i, q->ofs, q->cell, (u32)&op_bg_scrn_data);
-                op_tile_disp(q->ofs);
             }
         }
         Bg_On_R(1);
@@ -692,7 +690,7 @@ void op_20_move(void) {
 void op_21_move(void) {
     Zoomf_Init();
     bg_vbl_trans_flag = 0;
-    scr_cg_c_no = ((s16)simmram_block_alloc_10(0xCE, 1));
+    scr_cg_c_no = simmram_block_alloc_10(0xCE, 1);
     bg_w.scroll_cg_adr = simmram_slot_to_offset(scr_cg_c_no);
     bg_w.scno = 1;
     polygon2d_submit_line(0x00FB4000, 0, 0, 3);

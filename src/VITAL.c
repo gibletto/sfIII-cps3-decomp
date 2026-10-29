@@ -16,8 +16,6 @@
 #include "VITAL.h"
 #include "cps3.h"
 
-#define BAR_WORD(tbl, ix) (*(s16*)((u32)(tbl) + (ix) * 2))
-
 #define VITAL_FULL      160     /* full vitality (vital_new) */
 #define VITAL_CELLS     20      /* tile cells in a bar */
 #define VITAL_CELL_DOTS 8       /* vitality points per cell */

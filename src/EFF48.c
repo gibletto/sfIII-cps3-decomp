@@ -28,14 +28,13 @@
 
 extern const EFF48_FRAME eff48_frame_tbl0[20];
 extern const EFF48_FRAME eff48_frame_tbl1[20];
-extern const EFF48_ROW eff48_tile_tbl0[2];
-extern const s32 eff48_tile_tbl1[4][16];
-extern const s32 eff48_tile_jp_tbl1[4][16];
+extern const EFF48_TILE eff48_tile_tbl0[2][12];
+extern const EFF48_TILE eff48_tile_tbl1[4][8];
+extern const EFF48_TILE eff48_tile_jp_tbl1[4][8];
 extern const u16 eff48_scrn_data[46][16][32];
 void debug_bg_tile_put(s16 bg, s32 ofs, s32 page, s32 src);
 
-void effect_48_move(WORK_Other* wk) {
-    WORK_Other* ewk = wk;
+void effect_48_move(WORK_Other* ewk) {
     s16 y;
     register s16 ty;
     switch (ewk->wu.routine_no[0]) {
@@ -139,39 +138,36 @@ void eff48_set_wait(WORK_Other* ewk) {
     }
 }
 
-static void eff48_tile_disp(s32 ofs) {}
-
 void eff48_page0_write(void) {
+    const EFF48_TILE* data;
+    const EFF48_TILE* tile;
     s16 i;
     s16 j;
-    const EFF48_ROW* row;
-    const EFF48_TILE* tile;
     for (i = 0; i < 2; i++) {
-        row = &eff48_tile_tbl0[i] + 0;
+        data = &eff48_tile_tbl0[i][0];
         for (j = 0; j < 12; j++) {
-            tile = &row->t[j];
+            tile = data;
+            tile += j;
             debug_bg_tile_put(i, tile->ofs, tile->page, (s32)eff48_scrn_data);
-            eff48_tile_disp(tile->ofs);
         }
     }
-    (void)&((WORK*)tile)->id;
 }
 
 void eff48_page1_write(void) {
-    const s32* data;
-    u32 tile;
+    const EFF48_TILE* data;
+    const EFF48_TILE* tile;
     s16 i;
     s16 j;
     for (i = 2; i < 6; i++) {
         if (Country == 8) {
-            data = eff48_tile_jp_tbl1[i - 2];
+            data = &eff48_tile_jp_tbl1[i - 2][0];
         } else {
-            data = eff48_tile_tbl1[i - 2];
+            data = &eff48_tile_tbl1[i - 2][0];
         }
         for (j = 0; j < 8; j++) {
-            tile = (u32)data;
-            tile += j * 8;
-            debug_bg_tile_put(i, ((const s32*)tile)[0], ((const s32*)tile)[1], (s32)eff48_scrn_data);
+            tile = data;
+            tile += j;
+            debug_bg_tile_put(i, tile->ofs, tile->page, (s32)eff48_scrn_data);
         }
     }
 }

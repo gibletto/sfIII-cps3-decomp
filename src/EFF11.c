@@ -26,7 +26,7 @@
 
 
 
-extern const EFF11_ROW eff11_tile_tbl[4];
+extern const EFF11_TILE eff11_tile_tbl[4][16];
 extern const EFF11_FRAME eff11_frame_tbl[8][4];
 extern const EFF11_ANIME eff11_anime_tbl[14];
 extern const u16 bg070_cell_data[155][16][32];
@@ -35,14 +35,12 @@ void debug_bg_tile_put(s16 bg, s32 ofs, s32 page, s32 src);
 
 
 
-static void eff11_tile_disp(s32 ofs) {}
-
 void effect_11_move(WORK_Other* ewk) {
     s16 i;
     s16 j;
     s16 y;
     s16 page;
-    const EFF11_ROW* row;
+    const EFF11_TILE* data;
     const EFF11_TILE* tile;
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
@@ -53,11 +51,11 @@ void effect_11_move(WORK_Other* ewk) {
         ewk->wu.pat_status = eff11_anime_tbl[ewk->wu.char_index].frames;
         ewk->wu.cg_ctr = eff11_frame_tbl[ewk->wu.pat_status][ewk->wu.cg_ix].timer;
         for (i = 0; i < 4; i++) {
-            row = (const EFF11_ROW*)&eff11_tile_tbl[i].t[0];
+            data = &eff11_tile_tbl[i][0];
             for (j = 0; j < 16; j++) {
-                tile = &row->t[j];
+                tile = data;
+                tile += j;
                 debug_bg_tile_put(i, tile->ofs, tile->page, (s32)bg070_cell_data);
-                eff11_tile_disp(tile->ofs);
             }
         }
         scrn_map_set_now(0, (u32)bg_w.bgw[0].bg_address);
@@ -100,28 +98,22 @@ void effect_11_move(WORK_Other* ewk) {
 }
 
 
-
-static void bg_adrs_disp(s16 no) {}
-
 s32 effect_11_init(void) {
     WORK_Other* ewk;
     s16 ix;
     s16 i;
     BG_ADRS* adrs;
-    BG* bg;
     if ((ix = pull_effect_work(4)) == -1) {
         return -1;
     }
     ewk = (WORK_Other*)frw[ix];
     ewk->wu.be_flag = 1;
     ewk->wu.id = 11;
-    bg_adrs_disp(eff_bg_adrs->no);
-    bg = &bg_w;
     ewk->wu.work_id = 16;
-    eff_bg_adrs[0].no = bg->bgw[0].bg_adrs_c_no;
-    eff_bg_adrs[0].adrs = (u32)bg->bgw[0].bg_address;
+    eff_bg_adrs[0].no = bg_w.bgw[0].bg_adrs_c_no;
+    eff_bg_adrs[0].adrs = (u32)bg_w.bgw[0].bg_address;
     for (i = 1; i < 4; i++) {
-        (adrs = &eff_bg_adrs[i] + 0)->no = simmram_big_page_alloc_40(1);
+        (adrs = &eff_bg_adrs[i])->no = simmram_big_page_alloc_40(1);
         adrs->adrs = simmram_slot_addr(adrs->no);
     }
     return 0;

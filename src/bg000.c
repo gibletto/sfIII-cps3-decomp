@@ -491,7 +491,7 @@ void bg_pos_hosei_deff2(void) {
     for (i = 0; i < bg_w.scno; i++) {
         bg_frame_deff_set2(i);
         pos2 = (&bg_w.bgw[i] + 0)->frame_deff +
-               (pos = (&bg_w.bgw[i] + 0)->xy[0].disp.pos, (void)&((BGW*)(s32)pos)->be_flag, pos);
+               (pos = (&bg_w.bgw[i] + 0)->xy[0].disp.pos, pos);
         pos = pos2;
         pos &= 0x3FF;
         pos -= bg_w.pos_offset;
@@ -1729,7 +1729,7 @@ void bg_initialize(void) {
     bg_w.scno = bg_scno_tbl[bg_w.bg_index];
     n = ((bg_gfx_tbl[bg_w.bg_index].size << 4) + 0xFFF) / 0x1000;
     blocks = n;
-    scr_cg_c_no = ((s16)simmram_block_alloc_10(blocks, 1));
+    scr_cg_c_no = simmram_block_alloc_10(blocks, 1);
     bg_w.scroll_cg_adr = simmram_slot_to_offset(scr_cg_c_no);
     gfx = &bg_gfx_tbl[bg_w.bg_index];
     load_any_color(bg_palette_no_tbl[bg_w.bg_index]);
@@ -1813,7 +1813,7 @@ void bg_initialize(void) {
     bg_w.quake_y_index = 0;
     bg_w.frame_deff = 64;
     bg_ofs_work[0] = bg_ofs_work[1] = bg_ofs_work[2] = 0;
-    ake_cg_c_no = ((s16)simmram_block_alloc_10(104, 1));
+    ake_cg_c_no = simmram_block_alloc_10(104, 1);
     bg_w.ake_cg_adr = simmram_slot_to_offset(ake_cg_c_no);
     load_any_color(140);
     load_any_color(143);
@@ -1881,7 +1881,9 @@ void compel_bg_init_position(void) {
 
 
 
-void bg_etc_write(s16 kind) {
+void bg_etc_write(kind)
+s16 kind;
+{
     s16 type = kind;
     const BG_GFX* gfx;
     s32 n;
@@ -1895,7 +1897,7 @@ void bg_etc_write(s16 kind) {
     Zoomf_Init();
     n = ((etc_bg_gfx_tbl[type].size << 4) + 0xFFF) / 0x1000;
     blocks = n;
-    scr_cg_c_no = ((s16)simmram_block_alloc_10(blocks, 1));
+    scr_cg_c_no = simmram_block_alloc_10(blocks, 1);
     bg_w.scroll_cg_adr = simmram_slot_to_offset(scr_cg_c_no);
     bg_w.scno = etc_bg_scno_tbl[type];
     load_any_color(etc_bg_color_tbl[type]);

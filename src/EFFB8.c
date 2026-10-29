@@ -43,6 +43,7 @@ extern u8 Straight_Lose_Count;
 void effect_B8_move(WORK_Other_CONN* ewk) {
     const CONN* conn_data;
     const u16* chr_data;
+    const EFFB8_MESSAGE* mes;
     u16 sw;
     u16 chr;
     s16 num;
@@ -76,8 +77,10 @@ void effect_B8_move(WORK_Other_CONN* ewk) {
                 chr_data = effB8_mes_en[ewk->master_player][mes_already].chr;
                 break;
             case 1:
-                conn_data = effB8_mes_es[ewk->master_player][mes_already].conn;
-                chr_data = effB8_mes_es[ewk->master_player][mes_already].chr;
+                mes = effB8_mes_es[ewk->master_player];
+                mes += mes_already;
+                conn_data = mes->conn;
+                chr_data = mes->chr;
                 break;
             case 2:
                 conn_data = effB8_mes_pt[ewk->master_player][mes_already].conn;
@@ -100,8 +103,10 @@ void effect_B8_move(WORK_Other_CONN* ewk) {
                 chr_data = effB8_mes_en[ewk->master_player][mes_already].chr;
                 break;
             case 1:
-                conn_data = effB8_mes_es[ewk->master_player][mes_already].conn;
-                chr_data = effB8_mes_es[ewk->master_player][mes_already].chr;
+                mes = effB8_mes_es[ewk->master_player];
+                mes += mes_already;
+                conn_data = mes->conn;
+                chr_data = mes->chr;
                 break;
             case 2:
                 conn_data = effB8_mes_pt[ewk->master_player][mes_already].conn;
@@ -172,7 +177,6 @@ void effect_B8_move(WORK_Other_CONN* ewk) {
         ewk->wu.routine_no[0]++;
         break;
     default:
-        (void)&((WORK*)Country)->id;
         if (test_in == 0) {
             switch (Country) {
             case 1:

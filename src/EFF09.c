@@ -572,7 +572,7 @@ s32 effect_09_init(WORK_Other* mk, s8 kind) {
     }
     ewk = (WORK_Other*)frw[ix];
     ewk->wu.type = kind;
-    data = (const s16*)((const u8*)eff09_data + (s8)((s8)ewk->wu.type * 18));
+    data = eff09_data[ewk->wu.type];
     ewk->wu.be_flag = 1;
     ewk->wu.id = 9;
     ewk->wu.work_id = 16;

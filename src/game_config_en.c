@@ -24,7 +24,11 @@
 #include "effect_2.h"
 #include "EFF00.h"
 #include "EFF02.h"
-#include "textsound.h"
+void palette_write(s32 offset, const u16 *src, s32 count);
+void palette_bank_set(s32 offset);
+void tilemap_fill_all(u16 attr, u16 code);
+void tilemap_print_string();
+void tilemap_chunk_copy_16b(s16 *dst, char *src, s32 chunks);
 #include "textsound_2.h"
 #include "textsound_3.h"
 #include "CHARMOVE.h"
@@ -148,9 +152,9 @@ void game_config_move_en(void) {
 /* provisional name */
 void game_config_screen_item_en(void) {
     Config_Move_en = 0;
-    if (((s8)game_config_lever_repeat_en(4, 2))) {
+    if (game_config_lever_repeat_en(4, 2)) {
         Config_Move_en = -1;
-    } else if (((s8)game_config_lever_repeat_en(8, 3))) {
+    } else if (game_config_lever_repeat_en(8, 3)) {
         Config_Move_en = 1;
     } else {
         if ((p1sw_0 & ~p1sw_1) & BUTTON_LP) {
@@ -262,9 +266,9 @@ void game_config_timer_item_en(void) {
 /* provisional name */
 void game_config_1p_round_item_en(void) {
     Config_Move_en = 0;
-    if (((s8)game_config_lever_repeat_en(4, 2))) {
+    if (game_config_lever_repeat_en(4, 2)) {
         Config_Move_en = -1;
-    } else if (((s8)game_config_lever_repeat_en(8, 3))) {
+    } else if (game_config_lever_repeat_en(8, 3)) {
         Config_Move_en = 1;
     } else {
         if ((p1sw_0 & ~p1sw_1) & BUTTON_LP) {
@@ -286,9 +290,9 @@ void game_config_1p_round_item_en(void) {
 
 void game_config_event_item_en(void) {
     Config_Move_en = 0;
-    if (((s8)game_config_lever_repeat_en(4, 2))) {
+    if (game_config_lever_repeat_en(4, 2)) {
         Config_Move_en = -1;
-    } else if (((s8)game_config_lever_repeat_en(8, 3))) {
+    } else if (game_config_lever_repeat_en(8, 3)) {
         Config_Move_en = 1;
     } else {
         if ((p1sw_0 & ~p1sw_1) & BUTTON_LP) {
@@ -344,12 +348,12 @@ s8 game_config_lever_repeat_en(u16 sw, s16 ix) {
 /* provisional name */
 void game_config_cursor_move_en(void) {
     game_config_draw_cursor_en(32);
-    if (((s8)game_config_lever_repeat_en(1, 0))) {
+    if (game_config_lever_repeat_en(1, 0)) {
         Config_Item_en--;
         if (Config_Item_en < 0) {
             Config_Item_en = 5;
         }
-    } else if (((s8)game_config_lever_repeat_en(2, 1))) {
+    } else if (game_config_lever_repeat_en(2, 1)) {
         Config_Item_en++;
         if (Config_Item_en > 5) {
             Config_Item_en = 0;
@@ -393,5 +397,5 @@ void game_config_print_value_en(s16 attr, const TM_STRING* str) {
     y = Config_Item_en;
     y += y;
     y += 4;
-    ((void(*)(s32 x, s32 y, s32 attr, const TM_STRING* str))tilemap_print_string)(24, y, attr, str);
+    tilemap_print_string(24, y, attr, str);
 }

@@ -365,7 +365,7 @@ extern const PLEF plef_data[71];
 extern const s16 plef_kage_data[1][4];
 extern const s16 scr_obj_num[14][3];   /* by stage and area */
 extern const s16 scr_obj_num6[14][3];   /* by stage and area */
-extern const s16 eff09_data[36];
+extern const s16 eff09_data[4][9];
 extern const s16 eff09_data2[10][8];
 extern const s32 eff09_2000_data[2][4];
 extern const s32 eff09_add_tbl0[2][2];

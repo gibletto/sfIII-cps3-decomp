@@ -12,6 +12,6 @@ s16 capcom_logo_anim(void);
 void bg0201_init00(void);
 void bg_initialize(void);
 void oh_opening_demo();
-void bg_etc_write(s16 x);
+void bg_etc_write();
 
 #endif

@@ -2421,7 +2421,6 @@ typedef struct {
 
 /* end_main.c */
 typedef struct { s32 ofs; s32 cell; } OP_TILE;
-typedef struct { OP_TILE tile[8]; } OP_TILES;
 typedef struct { s16 bg; s16 x; s16 y; u8 time; u8 pad; } OP_SCRN;
 typedef struct { s16 time; s16 prio; } OP_PRIO;
 
@@ -2443,7 +2442,6 @@ typedef struct {
     s32 ofs;
     s32 page;
 } EFF48_TILE;
-typedef struct { EFF48_TILE t[12]; } EFF48_ROW;
 
 /* EFFA6.c */
 typedef struct { s16 x; } SCROLL_TARGET;
@@ -2472,9 +2470,6 @@ typedef struct {
     s32 ofs;
     s32 page;
 } EFF11_TILE;
-typedef struct {
-    EFF11_TILE t[16];
-} EFF11_ROW;
 
 /* eff12.c */
 typedef struct {
@@ -2486,9 +2481,6 @@ typedef struct {
     s32 ofs;
     s32 page;
 } EFF12_TILE;
-typedef struct {
-    EFF12_TILE t[16];
-} EFF12_ROW;
 
 /* efff8_code.c */
 typedef struct {

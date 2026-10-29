@@ -1505,7 +1505,7 @@ void debug_bg_test_init(void) {
     Zoomf_Init();
     Debug_Tool_No++;
     tilemap_fill_all(0, 32);
-    scr_cg_c_no = ((s16)simmram_block_alloc_10(0x400, 1));
+    scr_cg_c_no = simmram_block_alloc_10(0x400, 1);
     bg_w.scroll_cg_adr = simmram_slot_to_offset(scr_cg_c_no);
     bg_w.scno = etc_bg_scno_tbl[4];
     load_any_color(10);
@@ -3707,13 +3707,13 @@ void debug_draw_record_info(void) {
     s16 bcd;
     debug_draw_position_delta();
     debug_draw_edit_side();
-    bcd = ((s16)debug_hex4_to_bcd(Debug_Rec_Count));
+    bcd = debug_hex4_to_bcd(Debug_Rec_Count);
     tilemap_print_hex(11, 19, 2, bcd, 4, 0);
-    bcd = ((s16)debug_hex4_to_bcd(Debug_Rec_Frame));
+    bcd = debug_hex4_to_bcd(Debug_Rec_Frame);
     tilemap_print_hex(11, 18, 2, bcd, 4, 0);
-    bcd = ((s16)debug_hex4_to_bcd(dbg_snap_ptr->used));
+    bcd = debug_hex4_to_bcd(dbg_snap_ptr->used);
     tilemap_print_hex(11, 20, 2, bcd, 4, 0);
-    bcd = ((s16)debug_hex4_to_bcd(dbg_snap_ptr->cg_ctr));
+    bcd = debug_hex4_to_bcd(dbg_snap_ptr->cg_ctr);
     tilemap_print_hex(11, 21, 2, bcd, 4, 0);
     switch (dbg_save_mode) {
     case 0:

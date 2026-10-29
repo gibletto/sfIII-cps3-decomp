@@ -325,7 +325,7 @@ void Ranking_00_6th(s8 flag) {
 
 
 s32 ToneDown(s8 tone) {
-    const TONE_ENTRY* e = (const TONE_ENTRY*)((const s8*)tone_down_tbl + (s8)(tone * sizeof(TONE_ENTRY)));
+    const TONE_ENTRY* e = &tone_down_tbl[tone];
     sc_trans_src = (u8*)sc_chr_data + e->chr * 32;
     sc_trans_dst = (u16*)((SS_RAM + 0x8000) + e->pos * 64);
     return sc_chr_trans(e->n);

@@ -103,7 +103,6 @@ void Win_2nd(void) {
     M_No1 = 0;
     Suicide = 0;
     System_all_clear_Wait();
-bg_set:;
     base_y_pos = 40;
     bg_etc_write(0);
     bg_pos_hosei2();

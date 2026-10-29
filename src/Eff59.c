@@ -39,9 +39,6 @@ extern const u8 eff59_country_tbl[13][2];
 extern const s16 eff59_name_x_tbl[10];
 extern const u8 eff59_name_tbl[10][39];
 
-
-#define COUNTRY_LETTER_SCALE(value) (((WORK_Other*)(value))->wu.id)
-
 void effect_59_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_WAIT:
@@ -106,8 +103,7 @@ void effect_59_move(WORK_Other* ewk) {
 
 
 /* one letter per name character */
-s32 effect_59_init(s16 time) {
-    s16 timer = time;
+s32 effect_59_init(s16 timer) {
     WORK_Other* ewk;
     s16 ix;
     s16 i;
@@ -119,9 +115,9 @@ s32 effect_59_init(s16 time) {
     const u8* p;
     no = eff59_country_tbl[Battle_Country][COUNTRY_NAME];
     num = eff59_country_tbl[Battle_Country][COUNTRY_LEN];
-    i = 0;
     x = eff59_name_x_tbl[no];
     n = num * 2;
+    i = 0;
     name = eff59_name_tbl[no];
     for (; i < n; i += 2) {
         if (name[i] == 27) {
@@ -160,7 +156,6 @@ s32 effect_59_init(s16 time) {
             ewk->wu.my_mr.size.x = 0;
         }
     }
-    (void)&COUNTRY_LETTER_SCALE(63);
     load_any_color(7);
     return 0;
 }

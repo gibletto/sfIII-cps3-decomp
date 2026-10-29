@@ -144,7 +144,7 @@ s32 fade_cont_main(void)
 
     switch (fade_cont_rno) {
     case FADE_RUN:
-        for (i = 0; i < fade_layer_num; i += 1) {
+        for (i = 0; i < fade_layer_num; i++) {
             if (0) {
                 fade_layer_num = 0;
             }

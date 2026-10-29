@@ -56,7 +56,7 @@ extern const s16 effg0_flash_tbl[40][4];
 extern const s16 effg0_name_tbl[53][3];
 extern const s16 effg0_name_tbl2[][3];   /* provisional name: the names of the akebono version */
 void akebono_scrn_move();
-void scrn_attr_set(s16 n, u16 attr, u16 bits);
+void scrn_attr_set();
 s32 effG0_flash_init(s16 step, s16 x, s16 y, s16 timer, s16 dir_old, s16 col_ofs, s16 use_ofs, s16 col2_ofs);
 
 
@@ -324,7 +324,6 @@ void effG0_akebono_setup(void) {
     ake_scrl_w[0].xy[0].cal = 0x2000000;
     ake_scrl_w[0].xy[1].cal = 0;
     sprite_list_setup(0, 1, (s16*)bg_scr_record_data);
-ake_set:;
     akebono_cell_fill();
     Bg_On_R(1);
     scrn_reg_w[0].ctrl &= 0xFE7F;

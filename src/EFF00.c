@@ -25,8 +25,7 @@
 
 
 
-void effect_00_move(WORK_Other_JUDGE* judge) {
-    register WORK_Other_JUDGE* ewk = judge;
+void effect_00_move(WORK_Other_JUDGE* ewk) {
     u16 dip;
     ewk->fade_cja.l += 0x2000;
     ewk->fade_cja.w = ewk->fade_cja.w & 3;

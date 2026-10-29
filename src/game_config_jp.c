@@ -26,7 +26,11 @@
 #include "effect_2.h"
 #include "EFF00.h"
 #include "EFF02.h"
-#include "textsound.h"
+void tilemap_rect_fill(u16 x, u16 y, u16 w, u16 h, u16 attr, u16 code);
+void palette_write(s32 offset, const u16 *src, s32 count);
+void tilemap_fill_all(u16 attr, u16 code);
+void tilemap_print_script_seq();
+void tilemap_chunk_copy_16b(s16 *dst, char *src, s32 chunks);
 #include "textsound_2.h"
 #include "textsound_3.h"
 #include "CHARMOVE.h"
@@ -207,9 +211,9 @@ void game_config_force_wide(void) {
 /* provisional name */
 void game_config_screen_item_jp(void) {
     Config_Move_jp = 0;
-    if (((s8)game_config_lever_repeat_jp(4, 2))) {
+    if (game_config_lever_repeat_jp(4, 2)) {
         Config_Move_jp = -1;
-    } else if (((s8)game_config_lever_repeat_jp(8, 3))) {
+    } else if (game_config_lever_repeat_jp(8, 3)) {
         Config_Move_jp = 1;
     } else {
         if ((p1sw_0 & ~p1sw_1) & BUTTON_LP) {
@@ -324,9 +328,9 @@ void game_config_timer_item_jp(void) {
 /* provisional name */
 void game_config_1p_round_item_jp(void) {
     Config_Move_jp = 0;
-    if (((s8)game_config_lever_repeat_jp(4, 2))) {
+    if (game_config_lever_repeat_jp(4, 2)) {
         Config_Move_jp = -1;
-    } else if (((s8)game_config_lever_repeat_jp(8, 3))) {
+    } else if (game_config_lever_repeat_jp(8, 3)) {
         Config_Move_jp = 1;
     } else {
         if ((p1sw_0 & ~p1sw_1) & BUTTON_LP) {
@@ -351,9 +355,9 @@ void game_config_1p_round_item_jp(void) {
 /* provisional name */
 void game_config_event_item_jp(void) {
     Config_Move_jp = 0;
-    if (((s8)game_config_lever_repeat_jp(4, 2))) {
+    if (game_config_lever_repeat_jp(4, 2)) {
         Config_Move_jp = -1;
-    } else if (((s8)game_config_lever_repeat_jp(8, 3))) {
+    } else if (game_config_lever_repeat_jp(8, 3)) {
         Config_Move_jp = 1;
     } else {
         if ((p1sw_0 & ~p1sw_1) & BUTTON_LP) {
@@ -422,13 +426,13 @@ s8 game_config_lever_repeat_jp(u16 sw, s16 ix) {
 /* provisional name */
 void game_config_cursor_move_jp(void) {
     game_config_print_cursor_jp(gcfg_cursor_clr_scr_jp);
-    if (((s8)game_config_lever_repeat_jp(1, 0))) {
+    if (game_config_lever_repeat_jp(1, 0)) {
         Config_Item_jp--;
         if (Config_Item_jp < 0) {
             Config_Item_jp = 5;
         }
     }
-    if (((s8)game_config_lever_repeat_jp(2, 1))) {
+    if (game_config_lever_repeat_jp(2, 1)) {
         Config_Item_jp++;
         if (Config_Item_jp > 5) {
             Config_Item_jp = 0;
@@ -454,7 +458,7 @@ void game_config_print_value_jp(s16 attr, const TMSCRIPT* script) {
     y = Config_Item_jp;
     y += y;
     y += 2;
-    ((void(*)(s32 x, s32 y, s32 attr, const TMSCRIPT* scr))tilemap_print_script_seq)(24, y, attr, script);
+    tilemap_print_script_seq(24, y, attr, script);
 }
 
 
@@ -485,5 +489,5 @@ void game_config_print_cursor_jp(const TMSCRIPT* script) {
     y = Config_Item_jp;
     y += y;
     y += 2;
-    ((void(*)(s32 x, s32 y, s32 attr, const TMSCRIPT* scr))tilemap_print_script_seq)(1, y, 0xFFFF, script);
+    tilemap_print_script_seq(1, y, 0xFFFF, script);
 }

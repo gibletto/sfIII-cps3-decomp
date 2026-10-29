@@ -150,8 +150,6 @@ void stngauge_control(s32 player) {
 
 
 
-#define BAR_WORD(tbl, ix) (*(s16*)((u32)(tbl) + (ix) * 2))
-
 void stun_put(pl)
 s8 pl;
 {

@@ -281,7 +281,7 @@ void common_end_init00(s16 pl_num) {
     bg_w.scno = end_scno_tbl[end_w.type];
     n = ((end_bg_gfx_tbl[bg_w.bg_index].size << 4) + 0xFFF) / 0x1000;
     blocks = n;
-    scr_cg_c_no = ((s16)simmram_block_alloc_10(blocks, 1));
+    scr_cg_c_no = simmram_block_alloc_10(blocks, 1);
     bg_w.scroll_cg_adr = simmram_slot_to_offset(scr_cg_c_no);
     gfx = &end_bg_gfx_tbl[bg_w.bg_index];
     polygon2d_submit_line(gfx->prep, 0, 0, 3);
