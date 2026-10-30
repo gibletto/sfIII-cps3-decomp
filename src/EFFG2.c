@@ -94,7 +94,7 @@ void effect_G2_move(WORK_Other* ewk) {
         case R1_CHOOSE:
             if (bg_w.stage == 8 && Round_num == 0) {
                 ewk->wu.routine_no[1] = R1_FALL;
-                ewk->wu.routine_no[2] = 0;
+                ewk->wu.routine_no[2] = R2_WAIT;
                 ewk->wu.dir_old = stage8_base_y;
             } else {
                 ewk->wu.routine_no[1] = R1_FOLLOW;

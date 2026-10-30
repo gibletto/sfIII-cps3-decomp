@@ -113,7 +113,7 @@ void Continue_Scene(void) {
     default:
         if (--Cont_Timer == 0) {
             G_No1 = G1_GAME_OVER;
-            G_No2 = 0;
+            G_No2 = G2_OVER_INIT;
             destroy_current_task();
         }
         break;

@@ -91,7 +91,7 @@ void EFFD6_RISE_IN(WORK_Other* ewk) {
     default:
         ewk->wu.xyz[1].cal += ewk->wu.mvxy.a[1].sp;
         if (ewk->wu.hit_quake >= ewk->wu.xyz[1].disp.pos) {
-            Order[ewk->wu.dir_step] = 0;
+            Order[ewk->wu.dir_step] = R0_WAIT;
             ewk->wu.routine_no[0] = R0_WAIT;
             ewk->wu.xyz[1].disp.pos = ewk->wu.hit_quake;
         }
@@ -138,7 +138,7 @@ void EFFD6_SLIDE_IN(WORK_Other* ewk) {
         if (0 < ewk->wu.mvxy.a[0].sp) {
             if (ewk->wu.hit_quake <= ewk->wu.xyz[0].disp.pos) {
                 if (Order[ewk->wu.dir_step] == ewk->wu.routine_no[0]) {
-                    Order[ewk->wu.dir_step] = 0;
+                    Order[ewk->wu.dir_step] = R0_WAIT;
                 }
                 ewk->wu.routine_no[0] = R0_WAIT;
                 ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
@@ -146,7 +146,7 @@ void EFFD6_SLIDE_IN(WORK_Other* ewk) {
             }
         } else if (ewk->wu.hit_quake >= ewk->wu.xyz[0].disp.pos) {
             if (Order[ewk->wu.dir_step] == ewk->wu.routine_no[0]) {
-                Order[ewk->wu.dir_step] = 0;
+                Order[ewk->wu.dir_step] = R0_WAIT;
             }
             ewk->wu.routine_no[0] = R0_WAIT;
             ewk->wu.xyz[0].disp.pos = ewk->wu.hit_quake;
@@ -261,7 +261,7 @@ void EFFD6_RESET(WORK_Other* ewk) {
         ewk->wu.xyz[0].disp.pos = 0x260;
     }
     ewk->wu.disp_flag = 1;
-    Order[ewk->wu.dir_step] = 0;
+    Order[ewk->wu.dir_step] = R0_WAIT;
     ewk->wu.routine_no[0] = R0_WAIT;
     set_char_move_init2(&ewk->wu, 0, ewk->wu.char_index, ewk->wu.dir_old + 1, 0);
 }

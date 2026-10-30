@@ -23,6 +23,5 @@ u32 sound_envelope_rate(u16 level, u8 index, const u16* table) {
 }
 
 void voice_process_null(SNDVOICE* voice, u8 voice_index) {
-    SNDVOICE* volatile current = voice;
-    volatile u8 index = voice_index;
+    return;
 }

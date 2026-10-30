@@ -2005,77 +2005,51 @@ findstr /c:") : " obj\shc.log >>obj\warnings.log
 shc src\meta_col_lib.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=program=PSYS -object=obj\meta_col_lib.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=0
 shc src\meta_col_bcd.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\meta_col_bcd.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
 shc src\scrn_work.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -object=obj\scrn_work.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=0
 shc src\fifo.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\fifo.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
 shc src\scrn_ctrl.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=program=PSYS -object=obj\scrn_ctrl.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=0
 shc src\family.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\family.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\sys_test.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\sys_test.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\sys_test_2.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\sys_test_2.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\iotest_out.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\iotest_out.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\soundtest.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\soundtest.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\colortest.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\colortest.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\sys_test_2a.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\sys_test_2a.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\sys_test_2b.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\sys_test_2b.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\sys_test_2c.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\sys_test_2c.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\sys_test_3.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\sys_test_3.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\sys_test_4.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\sys_test_4.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
 shc data\sys_font.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=const=PSYS -code=asmcode -object=obj\sys_font.src >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
@@ -2083,80 +2057,52 @@ python tools\incode.py obj\sys_font.src PSYS
 if errorlevel 1 goto fail
 asmsh obj\sys_font.src -object=obj\sys_font.obj
 if errorlevel 1 goto fail
-set GEN_NARROW_CONST=0
 shc src\coin_chute.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\coin_chute.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\sys_test_5.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\sys_test_5.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\coin_sw.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\coin_sw.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\coin_sw_2.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\coin_sw_2.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\eeprom.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\eeprom.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\sys_config.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\sys_config.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\sys_config_2.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\sys_config_2.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\sys_config_3.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\sys_config_3.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\spr_pool.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\spr_pool.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\spr_pool_2.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\spr_pool_2.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
 asmsh src\simmram.src -object=obj\simmram.obj
 if errorlevel 1 goto fail
-set GEN_NARROW_CONST=0
 shc src\simmram_slot.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\simmram_slot.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
 asmsh src\simmram_10.src -object=obj\simmram_10.obj
 if errorlevel 1 goto fail
-set GEN_NARROW_CONST=0
 shc src\poly_que.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\poly_que.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\spr_list.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\spr_list.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
-set GEN_NARROW_CONST=0
 shc src\textsound.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\textsound.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
 shc src\textsound_2.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=program=PSYS,const=CTBL -object=obj\textsound_2.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
@@ -2176,17 +2122,29 @@ if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
 asmsh src\sh2_sub.src -object=obj\sh2_sub.obj
 if errorlevel 1 goto fail
-set GEN_NARROW_CONST=0
 shc src\cram_bank.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=0 -nospeed -section=program=PSYS -object=obj\cram_bank.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set GEN_NARROW_CONST=
 shc src\sound_work.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -object=obj\sound_work.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
+set ASM_READY_WAVES=1
+set GEN_AND_TEST=1
+set GEN_LAST_KEEP=1
+set MDL_SAVED_PRIO=2
+set MDL_CONST_ENTRY=1
+set ASM_SIDE_ORDER=3
+set MDL_PARAM_HOME=1
 shc src\sound_voice.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=program=PSYS -object=obj\sound_voice.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
+set ASM_READY_WAVES=
+set GEN_AND_TEST=
+set GEN_LAST_KEEP=
+set MDL_SAVED_PRIO=
+set MDL_CONST_ENTRY=
+set ASM_SIDE_ORDER=
+set MDL_PARAM_HOME=
 asmsh src\sound_voice_x1.src -object=obj\sound_voice_x1.obj
 if errorlevel 1 goto fail
 asmsh src\sound_voice_2.src -object=obj\sound_voice_2.obj
@@ -2197,6 +2155,7 @@ set GEN_LAST_KEEP=1
 set MDL_SAVED_PRIO=2
 set MDL_CONST_ENTRY=1
 set ASM_SIDE_ORDER=3
+set MDL_PARAM_HOME=1
 shc src\sound_voice_3.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=program=PSYS -object=obj\sound_voice_3.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
@@ -2206,6 +2165,7 @@ set GEN_LAST_KEEP=
 set MDL_SAVED_PRIO=
 set MDL_CONST_ENTRY=
 set ASM_SIDE_ORDER=
+set MDL_PARAM_HOME=
 shc data\textsound_tbl.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=const=PSYS -code=asmcode -object=obj\textsound_tbl.src >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log

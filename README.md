@@ -109,6 +109,7 @@ routines that show them. Those New Generation adds:
 - `GEN_LAST_KEEP=1`: only for the modules of the `SPEED_STABLE` group: releasing a node's registers keeps the register chosen last, so the next choice still passes over it
 - `MDL_SAVED_PRIO=2`: only for the modules of the `SPEED_STABLE` group: a variable of priority 2 may take a callee-saved register (Release 26: 3)
 - `MDL_CONST_ENTRY=1`: only for the modules of the `SPEED_STABLE` group: a constant kept in a register is loaded at the function's entry
+- `MDL_PARAM_HOME=1`: only for the modules of the `SPEED_STABLE` group: a parameter passed in a register that the function never reads keeps a frame slot, and the entry stores the register there
 - `ASM_SIDE_ORDER=3`: only for the modules of the `SPEED_STABLE` group: the scheduler keeps an access through a pointer it steps (`*p++`) and a store through a pointer in place, as a volatile access
 - `ASM_READY_WAVES=1`: only for the modules of the `SPEED_STABLE` group: the scheduler takes the instructions that are ready at one time as a wave and frees their successors in order as their predecessors are placed, siblings in source order (sound_voice_3)
 
@@ -124,7 +125,7 @@ spelled out in `build.bat`), each group named after its options:
   configuration menus, coin, EEPROM, memory and sprite-list code
 - `-noinline` (the `SPEED_NOINLINE` groups): no inline expansion of small routines
 - `-section=const=CTBL` (the `_CONSTTBL` groups): the module's constant data goes to the table section `CTBL`
-- `SPEED_STABLE_PSYS`: the two settings above that apply to one sound module only
+- `SPEED_STABLE_PSYS`: the settings above that apply to the `SPEED_STABLE` group only, two sound modules
 
 ### Sections
 

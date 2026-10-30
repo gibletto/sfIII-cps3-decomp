@@ -178,7 +178,7 @@ void Game_Manage_1st(void) {
     }
     appear_work_clear();
     win_sp_flag = 0;
-    BGM_No = 0;
+    BGM_No = BGMF_NONE;
     if (Play_Type == PLAY_VS_CPU) {
         paring_ctr_ori[Player_id] = paring_ctr_vs[0][Player_id] = 0;
     }
@@ -1311,7 +1311,7 @@ s32 Check_Ending(void) {
     Last_VS_Index[WINNER] = Next_VS_Index();
     if (Last_VS_Index[WINNER] >= 7) {
         G_No1 = G1_ENDING;
-        G_No2 = 0;
+        G_No2 = G2_END_INIT;
         E_No0 = E0_ENDING;
         plw[WINNER].wu.operator = 0;
         Operator_Status[WINNER] = 0;

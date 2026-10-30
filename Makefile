@@ -26,7 +26,6 @@ OPT0_PSYS = coin_chute coin_sw coin_sw_2 colortest cram_bank eeprom family fifo 
 	soundtest spr_list spr_pool spr_pool_2 sys_config sys_config_2 sys_config_3 sys_test sys_test_2 sys_test_2a sys_test_2b sys_test_2c \
 	sys_test_3 sys_test_4 sys_test_5 textsound
 $(OPT0_PSYS:%=obj/%.obj): OPT = -optimize=0 -nospeed -section=program=PSYS
-$(OPT0_PSYS:%=obj/%.obj): export GEN_NARROW_CONST = 0
 
 SPEED_AGGR = Entry
 $(SPEED_AGGR:%=obj/%.obj): OPT = -optimize=1 -speed -aggressive=1
@@ -48,10 +47,10 @@ $(SPEED_NOINLINE:%=obj/%.obj): OPT = -optimize=1 -speed -noinline
 SPEED_NOINLINE_CONSTTBL = CMD_MAIN entry_2 manage_2 sel_pl win_2
 $(SPEED_NOINLINE_CONSTTBL:%=obj/%.obj): OPT = -optimize=1 -speed -noinline -section=const=CTBL
 
-SPEED_PSYS = meta_col_lib meta_col_mem meta_col_strcpy scrn_ctrl sound_status sound_voice textsound_3
+SPEED_PSYS = meta_col_lib meta_col_mem meta_col_strcpy scrn_ctrl sound_status textsound_3
 $(SPEED_PSYS:%=obj/%.obj): OPT = -optimize=1 -speed -section=program=PSYS
 
-SPEED_STABLE_PSYS = sound_voice_3
+SPEED_STABLE_PSYS = sound_voice sound_voice_3
 $(SPEED_STABLE_PSYS:%=obj/%.obj): OPT = -optimize=1 -speed -section=program=PSYS
 $(SPEED_STABLE_PSYS:%=obj/%.obj): export ASM_READY_WAVES = 1
 $(SPEED_STABLE_PSYS:%=obj/%.obj): export GEN_AND_TEST = 1
@@ -59,6 +58,7 @@ $(SPEED_STABLE_PSYS:%=obj/%.obj): export GEN_LAST_KEEP = 1
 $(SPEED_STABLE_PSYS:%=obj/%.obj): export MDL_SAVED_PRIO = 2
 $(SPEED_STABLE_PSYS:%=obj/%.obj): export MDL_CONST_ENTRY = 1
 $(SPEED_STABLE_PSYS:%=obj/%.obj): export ASM_SIDE_ORDER = 3
+$(SPEED_STABLE_PSYS:%=obj/%.obj): export MDL_PARAM_HOME = 1
 
 # tables between the code objects of P: their constant data as code (tools/incode.py)
 INCODE = asstbl buttobi etc exchange gauge

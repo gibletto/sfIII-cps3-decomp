@@ -323,7 +323,7 @@ void Entry_03_2nd(void) {
         if (Switch_Screen() != 0) {
             Cover_Timer = 23;
             G_No1 = G1_SELECT;
-            G_No2 = 0;
+            G_No2 = G2_SEL_INIT;
             G_No3 = 0;
             E_No0 = E0_SELECT;
             E_No1 = 0;
@@ -386,7 +386,7 @@ void Entry_04_2nd(void) {
         if (Switch_Screen() != 0) {
             Cover_Timer = 23;
             G_No1 = G1_SELECT;
-            G_No2 = 0;
+            G_No2 = G2_SEL_INIT;
             G_No3 = 0;
             if (E_No3 == -1 && Continue_Flag) {
                 E_Number[LOSER][0] = ENTRY_CONTINUE;
@@ -457,7 +457,7 @@ void Entry_06_2nd(void) {
     default:
         if (Switch_Screen() != 0) {
             G_No1 = G1_SELECT;
-            G_No2 = 0;
+            G_No2 = G2_SEL_INIT;
             G_No3 = 0;
             E_No0 = E0_SELECT;
             E_No1 = 0;
@@ -532,7 +532,7 @@ void Entry_07_2nd(void) {
         if (Switch_Screen() != 0) {
             Cover_Timer = 23;
             G_No1 = G1_SELECT;
-            G_No2 = 0;
+            G_No2 = G2_SEL_INIT;
             G_No3 = 0;
             E_No0 = E0_SELECT;
             E_No1 = 0;
@@ -606,7 +606,7 @@ void Entry_08_2nd(void) {
         if (Switch_Screen() != 0) {
             Cover_Timer = 23;
             G_No1 = G1_SELECT;
-            G_No2 = 0;
+            G_No2 = G2_SEL_INIT;
             G_No3 = 0;
             E_No0 = E0_SELECT;
             E_No1 = 0;
@@ -693,7 +693,7 @@ void Entry_10_2nd(void) {
         if (Switch_Screen() != 0) {
             Cover_Timer = 23;
             G_No1 = G1_SELECT;
-            G_No2 = 0;
+            G_No2 = G2_SEL_INIT;
             G_No3 = 0;
             E_No0 = E0_SELECT;
             E_No1 = 0;
@@ -1445,57 +1445,42 @@ s16 PL_id;
 s32 Flash_More_Coins(PL_id, x, coins)
 s16 PL_id;
 s16 x;
-s32 coins;
+s8 coins;
 {
-    void (*print)(u16, u16, u16, const s8*) = tilemap_print_string_attr;
-    s16 (*timer)[2] = &F_Timer;
-    s16* line = &Text_Page_Y;
     s32 count;
-    const s8* msg;
-
-    (void)&((WORK*)coins)->be_flag;
-    (void)&((LoHi16*)coins)->h;
-    (void)&((ATTACK_ATTR*)coins)->reaction;
-    (void)&((XY*)coins)->cal;
-    count = (s8)coins;
-    (void)&((WORK*)line)->id;
-    (void)&((WORK*)x)->id;
     switch (F_No2[PL_id]) {
     case 0:
         F_No2[PL_id] += 1;
         F_No0[PL_id] = F_No1[PL_id] = 0;
-        (*timer)[PL_id] = 1;
-        print(x, *line, 18, "                   ");
+        F_Timer[PL_id] = 1;
+        tilemap_print_string_attr(x, Text_Page_Y, 18, "                   ");
         if (E_No0 == E0_LOSER && PL_id == LOSER) {
             F_No2[PL_id] = 3;
         }
         break;
-    case 1: {
-        s32 column = x;
-        s32 player = PL_id;
-        if (Disp_More_Coins(player, column, count) == 0) {
-            if (--(*timer)[PL_id] == 0) {
+    case 1:
+        count = coins;
+        if (Disp_More_Coins(PL_id, x, coins) == 0) {
+            if (--F_Timer[PL_id] == 0) {
                 F_No2[PL_id] += 1;
-                (*timer)[PL_id] = 50;
+                F_Timer[PL_id] = 50;
                 if (count == 1) {
-                    msg = "INSERT   MORE COIN ";
+                    tilemap_print_string_attr(x, Text_Page_Y, 18, "INSERT   MORE COIN ");
                 } else {
-                    msg = "INSERT   MORE COINS";
+                    tilemap_print_string_attr(x, Text_Page_Y, 18, "INSERT   MORE COINS");
                 }
-                print(x, *line, 18, msg);
-                tilemap_print_hex_block(x + 7, *line, 18, count, 1, 1);
+                tilemap_print_hex_block(x + 7, Text_Page_Y, 18, count, 1, 1);
             }
         } else {
             F_No2[PL_id] += 1;
         }
         break;
-    }
     case 2:
-        Disp_More_Coins(PL_id, x, count);
-        if (--(*timer)[PL_id] == 0) {
+        Disp_More_Coins(PL_id, x, coins);
+        if (--F_Timer[PL_id] == 0) {
             F_No2[PL_id] -= 1;
-            (*timer)[PL_id] = 30;
-            print(x, *line, 18, "                   ");
+            F_Timer[PL_id] = 30;
+            tilemap_print_string_attr(x, Text_Page_Y, 18, "                   ");
         }
         break;
     }

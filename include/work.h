@@ -445,6 +445,38 @@ extern s16 G_No3;
 #define G2_FIGHT_START  3       /* Game2_3: the round start, for G_Timer frames */
 #define G2_ROUND_RESET  4       /* Game2_4: clear the stage work and displays for the next round */
 
+/* G_No2 under G1_TITLE: the Game00 routine */
+#define G2_TITLE        0       /* Game0_0: the title */
+#define G2_TITLE_WAIT   1       /* Game0_1: until a start button */
+#define G2_TITLE_WIPE   2       /* Game0_2: save the screen and start the wipe */
+#define G2_TITLE_OUT    3       /* Game0_3: finish the wipe, on to select */
+#define G2_TITLE_FREE   4       /* Game0_2 again: a free-play start skips the title */
+
+/* G_No2 under G1_SELECT */
+#define G2_SEL_INIT     0       /* set up */
+#define G2_SEL_MAIN     1       /* the select screen, until both have chosen */
+
+/* G_No2 under G1_NEXT_CPU */
+#define G2_NEXT_INIT    0       /* set up */
+#define G2_NEXT_MAIN    1       /* the next opponent screen */
+
+/* G_No2 under G1_GAME_OVER */
+#define G2_OVER_INIT    0       /* save the screen and wipe */
+#define G2_OVER_SETUP   1       /* set up the game-over screen */
+#define G2_OVER_COVER   2       /* wait out the cover, then wipe in */
+#define G2_OVER_REVIVAL 3       /* finish the wipe */
+#define G2_OVER_WAIT    4       /* wait G_Timer */
+#define G2_OVER_MESSAGE 5       /* wait G_Timer, then the ranking or the exit */
+#define G2_OVER_NAME    6       /* until the name entries are done */
+#define G2_OVER_RANK_SEL 7      /* choose the first ranking page */
+#define G2_OVER_RANKING 8       /* the first ranking page */
+#define G2_OVER_RANKING2 9      /* the second ranking page */
+#define G2_OVER_EXIT    10      /* wait G_Timer and wipe out */
+
+/* G_No2 under G1_ENDING */
+#define G2_END_INIT     0       /* set up */
+#define G2_END_MAIN     1       /* the ending, then game over */
+
 
 extern s16 D_Timer;
 extern s16 D_No0;

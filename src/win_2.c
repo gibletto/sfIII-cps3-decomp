@@ -100,7 +100,7 @@ void Win_1st(void) {
 void Win_2nd(void) {
     s16 ofs;
     M_No0++;
-    M_No1 = 0;
+    M_No1 = M1_COVER;
     Suicide = 0;
     System_all_clear_Wait();
     base_y_pos = 40;

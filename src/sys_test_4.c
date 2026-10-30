@@ -98,7 +98,7 @@ void rewrite_cd_not_ready(void) {
     tilemap_fill_all(0, 32);
     tilemap_print_string(0, 0, 0xFFFF, rewrite_not_ready_str);
     task_sleep(180);
-    rewrite_no = 0;
+    rewrite_no = REWRITE_INIT;
 }
 
 

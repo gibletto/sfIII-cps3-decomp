@@ -75,8 +75,8 @@ extern const s8 end_type_tbl[16];
 
 
 void Ending_init(void) {
-    end_w.r_no_0 = 0;
-    end_w.r_no_1 = 0;
+    end_w.r_no_0 = END_INIT;
+    end_w.r_no_1 = END1_INIT;
     end_w.r_no_2 = 0;
     end_w.type = 0;
     end_w.end_flag = 0;

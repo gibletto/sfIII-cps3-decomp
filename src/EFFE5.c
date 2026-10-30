@@ -65,7 +65,7 @@ void effect_E5_move(WORK_Other* ewk) {
             if (ewk->wu.old_rno[2]) {
                 ewk->wu.routine_no[1] = R1_BURST;
             } else {
-                ewk->wu.routine_no[1] = 0;
+                ewk->wu.routine_no[1] = R1_TRAIL;
             }
             ewk->wu.routine_no[0] = R0_RUN;
             ewk->wu.routine_no[2] = 0;
@@ -120,7 +120,7 @@ void effect_E5_move(WORK_Other* ewk) {
         case R1_TRAIL:
             if (mwk->image_setup_flag == 0) {
                 ewk->wu.routine_no[0] = R0_WAIT;
-                ewk->wu.routine_no[1] = 0;
+                ewk->wu.routine_no[1] = R1_IDLE;
                 break;
             }
             switch (ewk->wu.routine_no[2]) {
@@ -141,7 +141,7 @@ void effect_E5_move(WORK_Other* ewk) {
         case R1_BURST:
             if (mwk->image_setup_flag == 0) {
                 ewk->wu.routine_no[0] = R0_WAIT;
-                ewk->wu.routine_no[1] = 0;
+                ewk->wu.routine_no[1] = R1_IDLE;
                 break;
             }
             switch (ewk->wu.routine_no[2]) {

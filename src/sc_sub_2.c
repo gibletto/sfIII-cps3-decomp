@@ -98,7 +98,7 @@ void fade_cont_init(void) {
     s8 i;
     s8 num;
     fade_layer_num = 0;
-    fade_cont_rno = 0;
+    fade_cont_rno = FADE_RUN;
     fade_end_timer = 1;
     tbl = fade_data_tbl[Fade_Number];
     num = *tbl;

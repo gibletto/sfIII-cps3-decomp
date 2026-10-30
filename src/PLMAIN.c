@@ -98,7 +98,7 @@ void player_mv_0000(PLW* wk) {
     wk->uot_cd_ok_flag = 0;
     wk->ukemi_success = 0;
     clear_my_shell_ix(&wk->wu);
-    wk->sa->sa_rno = 0;
+    wk->sa->sa_rno = SA_NONE;
     wk->sa->ok = 0;
     wk->dm_hos_flag = 0;
     wk->kezurijini_flag = 0;

@@ -148,7 +148,7 @@ void Sel_PL_Cont_1st(void) {
     S_No++;
     Suicide = 0;
     Face_No[0] = 0;
-    Face_No[1] = 0;
+    Face_No[1] = FACE_MOVE_IDLE;
     Sel_Sub_No[0] = 0;
     Sel_Sub_No[1] = 0;
     Exit_No = 0;
@@ -469,28 +469,28 @@ u16 sw;
         id_0 = 127;
     }
     switch (sw) {
-    case 16:
+    case BUTTON_LP:
         if (Player_Color[PL_id ^ 1] == 0 && id_0 == id_1) {
             Player_Color[PL_id] = 3;
         } else {
             Player_Color[PL_id] = 0;
         }
         break;
-    case 32:
+    case BUTTON_MP:
         if (Player_Color[PL_id ^ 1] == 1 && id_0 == id_1) {
             Player_Color[PL_id] = 4;
         } else {
             Player_Color[PL_id] = 1;
         }
         break;
-    case 64:
+    case BUTTON_HP:
         if (Player_Color[PL_id ^ 1] == 2 && id_0 == id_1) {
             Player_Color[PL_id] = 5;
         } else {
             Player_Color[PL_id] = 2;
         }
         break;
-    case 128:
+    case BUTTON_LK:
         if (Player_Color[PL_id ^ 1] == 3 && id_0 == id_1) {
             Player_Color[PL_id] = 0;
         } else if (My_char[PL_id] == PL_YUN || My_char[PL_id] == PL_YANG) {
@@ -499,7 +499,7 @@ u16 sw;
             Player_Color[PL_id] = 3;
         }
         break;
-    case 256:
+    case BUTTON_MK:
         if (Player_Color[PL_id ^ 1] == 4 && id_0 == id_1) {
             Player_Color[PL_id] = 1;
         } else if (My_char[PL_id] == PL_YUN || My_char[PL_id] == PL_YANG) {
@@ -1533,18 +1533,19 @@ void Yun_Yang_Face_Keep(s16 pl) {
 
 /* provisional name */
 const s16 Com_Color_Data[16] = {
-    16, 16, 16, 16, 16, 16, 32, 32, 64, 64, 128, 128, 256, 256, 512, 512,
+    BUTTON_LP, BUTTON_LP, BUTTON_LP, BUTTON_LP, BUTTON_LP, BUTTON_LP, BUTTON_MP, BUTTON_MP,
+    BUTTON_HP, BUTTON_HP, BUTTON_LK, BUTTON_LK, BUTTON_MK, BUTTON_MK, BUTTON_HK, BUTTON_HK,
 };
 
 
 void Setup_Com_Color(void) {
     if (EM_id == PL_GILL) {
         if (My_char[COM_id] == PL_GILL) {
-            Com_Color_Shot = 16;
+            Com_Color_Shot = BUTTON_LP;
         } else if (COM_id == 0) {
-            Com_Color_Shot = 16;
+            Com_Color_Shot = BUTTON_LP;
         } else {
-            Com_Color_Shot = 32;
+            Com_Color_Shot = BUTTON_MP;
         }
     } else if (Stock_Com_Color == -1) {
         Com_Color_Shot = Stock_Com_Color = Com_Color_Data[random_16_com()];
