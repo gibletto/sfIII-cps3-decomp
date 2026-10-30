@@ -28,7 +28,7 @@ void voice_process_null(SNDVOICE* voice, u8 voice_index);
 void voice_process_primary(SNDVOICE* voice, u8 is_bgm, u8 voice_index);
 s32 sound_note_to_pitch(s32 note);
 void sound_reg_write_verify(s16 *reg, u16 value);
-u16 sound_voice_volume_compute(u16 level, u32 pan_scale, s8 pan, SNDVOICE* v);
+u16 sound_voice_volume_compute(u16 level, u32 pan_scale, s8 vol_offset, SNDVOICE* v);
 void voice_process_secondary(SNDVOICE* voice, u8 voice_index, u8 is_bgm);
 s32 midi_vlq_decode_leading();
 s32 midi_vlq_decode_while();
@@ -75,9 +75,9 @@ void sound_init(u8* data, SNDSAMPLE* bank_a, u8** bank_b, u8 stereo, u8 volume, 
     bgm_master_vol = *data++;
     bgm_master_vol_init = bgm_master_vol;
     snd_master_vol = *data;
-    sound_sample_submit_work7 = 1;
-    voice_state_init_pair_work = 0;
-    sound_sample_submit_work4 = 0;
+    bgm_state = 1;
+    bgm_pitch_offset = 0;
+    bgm_volume_offset = 0;
     snd_fade_level = 0;
     snd_fade_speed = snd_fade_level;
     for (n = 0; n < 16; n++) {
@@ -181,11 +181,11 @@ s32 sound_seq_start(u16 code, s16 ramp) {
                 bgm_voice[i].status = 0xC0;
             }
         }
-        if (!(sound_sample_submit_work7 & 8)) {
+        if (!(bgm_state & 8)) {
             snd_fade_level = 0x8000;
         }
         bgm_tick_step = 0;
-        sound_sample_submit_work7 |= 2;
+        bgm_state |= 2;
         return;
     } else if (!(hdr & 0x80)) {
         for (i = 0; i < 16; i++) {
@@ -311,13 +311,13 @@ void sound_request_pan(u16 code, s16 vol_l, s16 vol_r, s16 time, s16 ramp) {
 
 void bgm_stop(void) {
     u8 i;
-    if (!(sound_sample_submit_work7 & 2)) {
+    if (!(bgm_state & 2)) {
         return;
     }
     for (i = 0; i < 16; i++) {
         bgm_voice[i].status = 0xC0;
     }
-    sound_sample_submit_work7 = 1;
+    bgm_state = 1;
     snd_reg_save = 0;
 }
 
@@ -325,7 +325,7 @@ void bgm_stop(void) {
 
 void bgm_pause(void) {
     u8 i;
-    if (!(sound_sample_submit_work7 & 2) || (sound_sample_submit_work7 & 4)) {
+    if (!(bgm_state & 2) || (bgm_state & 4)) {
         return;
     }
     snd_reg_save = *(u16*)(SOUND_REG + 0x200);
@@ -333,20 +333,20 @@ void bgm_pause(void) {
         bgm_status_save[i] = bgm_voice[i].status;
         bgm_voice[i].status = 0xC0;
     }
-    sound_sample_submit_work7 |= 4;
+    bgm_state |= 4;
 }
 
 
 
 void bgm_resume(void) {
     u8 i;
-    if (!(sound_sample_submit_work7 & 2) || !(sound_sample_submit_work7 & 4)) {
+    if (!(bgm_state & 2) || !(bgm_state & 4)) {
         return;
     }
     for (i = 0; i < 16; i++) {
         bgm_voice[i].status = bgm_status_save[i];
     }
-    sound_sample_submit_work7 &= ~4;
+    bgm_state &= ~4;
     *(u16*)(SOUND_REG + 0x200) |= snd_reg_save;
 }
 
@@ -356,7 +356,7 @@ void sound_fade_in_submit(u16 code_no, u16 speed)
 {
     snd_fade_level = 0;
     snd_fade_speed = speed & 0x7FFF;
-    sound_sample_submit_work7 |= 8;
+    bgm_state |= 8;
     sound_request(code_no);
 }
 
@@ -364,18 +364,18 @@ void sound_fade_in_submit(u16 code_no, u16 speed)
 
 void bgm_fade_out(u16 speed)
 {
-    if (sound_sample_submit_work7 & 2) {
+    if (bgm_state & 2) {
         snd_fade_speed = speed & 0x7FFF;
-        sound_sample_submit_work7 &= ~8;
-        sound_sample_submit_work7 |= 0x10;
+        bgm_state &= ~8;
+        bgm_state |= 0x10;
     }
 }
 
 
 
-void sound_reg_level_set(s16 level, s8 flag) {
-    voice_state_init_pair_work = level;
-    sound_sample_submit_work4 = flag;
+void sound_reg_level_set(s16 pitch, s8 volume) {
+    bgm_pitch_offset = pitch;
+    bgm_volume_offset = volume;
 }
 
 
@@ -386,7 +386,7 @@ void sound_driver_init(void) {
         bgm_voice[i].status = 0xC0;
         se_voice[i].status = 0xC0;
     }
-    sound_sample_submit_work7 = 1;
+    bgm_state = 1;
     *(u16*)(SOUND_REG + 0x200) = 0;
     snd_reg_save = 0;
 }
@@ -410,18 +410,18 @@ void se_voice_stop_all(void) {
 
 void sound_driver_tick(void) {
     u32 i;
-    if ((sound_sample_submit_work7 & 8) && !(sound_sample_submit_work7 & 4)) {
+    if ((bgm_state & 8) && !(bgm_state & 4)) {
         snd_fade_level += snd_fade_speed;
         if (snd_fade_level >= 0x8000) {
             snd_fade_level = 0x8000;
-            sound_sample_submit_work7 &= ~8;
+            bgm_state &= ~8;
         }
     }
-    if ((sound_sample_submit_work7 & 0x10) && !(sound_sample_submit_work7 & 4)) {
+    if ((bgm_state & 0x10) && !(bgm_state & 4)) {
         if (snd_fade_speed >= snd_fade_level) {
             bgm_stop();
             snd_fade_level = 0;
-            sound_sample_submit_work7 &= ~0x10;
+            bgm_state &= ~0x10;
         } else {
             snd_fade_level -= snd_fade_speed;
         }

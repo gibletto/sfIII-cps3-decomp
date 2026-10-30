@@ -45,13 +45,13 @@ const TM_STRING config_title_str_tbl[8] = {
 };
 
 const TM_STRING config_help_modify_str_tbl[2] = {
-    { 7, 26, 2, (const s8 *)str_guide_modify_setting },
+    { 7, 26, 2, str_guide_modify_setting },
     { 7, 27, 2, str_1P_SHOT1_or_SHOT2 },
 };
 
 const TM_STRING config_help_return_str_tbl[3] = {
-    { 7, 25, 2, (const s8 *)str_guide_select_option },
-    { 7, 26, 2, (const s8 *)str_guide_return_config_menu },
+    { 7, 25, 2, str_guide_select_option },
+    { 7, 26, 2, str_guide_return_config_menu },
     { 7, 27, 2, str_1P_SHOT1 },
 };
 

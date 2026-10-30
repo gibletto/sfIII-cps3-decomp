@@ -1,8 +1,8 @@
 /*
  * EFF10_TBL.C  character scene objects and animated background map tables
  *
- * scr_obj_num10 starts with the number of objects of each of the four types, followed by the
- * rows of each type (x offset from the owner, y position, animation number) reached through
+ * scr_obj_num10 gives the number of objects of each of the four types, and scr_obj_data10_N the
+ * rows of type N (x offset from the owner, y position, animation number), named by
  * scr_obj_data10; read by EFF10.C, the character scene objects. eff11_tile_tbl gives the tiles
  * (map offset and cell) written into each of the four map pages, eff11_frame_tbl the page, y
  * offset and time of each frame, and eff11_anime_tbl each animation's repeat count and frame
@@ -17,15 +17,43 @@
 #pragma section TBL
 
 extern const s16 scr_obj_num10[];
+extern const s16 scr_obj_data10_0[];
+extern const s16 scr_obj_data10_1[];
+extern const s16 scr_obj_data10_2[];
+extern const s16 scr_obj_data10_3[];
 extern const EFF11_TILE eff11_tile_tbl[][16];
 extern const EFF11_FRAME eff11_frame_tbl[][4];
 extern const EFF11_ANIME eff11_anime_tbl[];
 extern const EFF12_TILE eff12_tile_tbl[][16];
 extern const EFF12_FRAME eff12_frame_tbl[];
 
-const s16 scr_obj_num10[30] = {
-    4, 3, 1, 0, -64, 100, 8, -71, 42, 9, 26, 96, 10, 70, 26, 11,
-    16, 100, 10, -80, 48, 9, 70, 26, 11, -61, 50, 12, 0, 0,
+const s16 scr_obj_num10[4] = {
+    4, 3, 1, 0,
+};
+
+/* type 0; provisional name */
+const s16 scr_obj_data10_0[12] = {
+    -64, 100, 8,
+    -71, 42, 9,
+    26, 96, 10,
+    70, 26, 11,
+};
+
+/* type 1; provisional name */
+const s16 scr_obj_data10_1[9] = {
+    16, 100, 10,
+    -80, 48, 9,
+    70, 26, 11,
+};
+
+/* type 2; provisional name */
+const s16 scr_obj_data10_2[3] = {
+    -61, 50, 12,
+};
+
+/* type 3 with no objects; provisional name */
+const s16 scr_obj_data10_3[2] = {
+    0, 0,
 };
 
 const EFF11_TILE eff11_tile_tbl[4][16] = {

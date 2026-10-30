@@ -186,7 +186,7 @@ void efff9_wk_set(WORK_Other_CONN* ewk) {
     ewk->wu.my_col_code = 0;
     ewk->wu.my_family = 4;
     ewk->wu.my_priority = 5;
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
         ewk->wu.position_x = 376;
     } else {
         ewk->wu.position_x = 392;

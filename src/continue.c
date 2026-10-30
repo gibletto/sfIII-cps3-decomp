@@ -149,9 +149,9 @@ s16 id;
 char count;
 {
     if (id) {
-        tilemap_print_hex_block(ENTRY_MSG_X_PAIRS[3][1][Game_setting.mode] + 13, Text_Page_Y, 18, count, 1, 1);
+        tilemap_print_hex_block(ENTRY_MSG_X_PAIRS[3][1][Game_setting.Screen_Mode] + 13, Text_Page_Y, 18, count, 1, 1);
     } else {
-        tilemap_print_hex_block(ENTRY_MSG_X_PAIRS[3][0][Game_setting.mode] + 13, Text_Page_Y, 18, count, 1, 1);
+        tilemap_print_hex_block(ENTRY_MSG_X_PAIRS[3][0][Game_setting.Screen_Mode] + 13, Text_Page_Y, 18, count, 1, 1);
     }
 }
 

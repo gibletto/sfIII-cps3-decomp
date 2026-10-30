@@ -285,7 +285,7 @@ s32 effect_64_init(s16 type) {
     ewk->wu.my_col_mode = 0x4200;
     ewk->wu.type = type;
     ewk->wu.routine_no[1] = eff64_data_tbl[type].dead_f;
-    ewk->wu.step_xy_table = eff64_stepxy_table[0];
+    ewk->wu.step_xy_table = (s16*)eff64_stepxy_table[0];
     return 0;
 }
 

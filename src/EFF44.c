@@ -31,7 +31,7 @@
 
 
 extern const s16 eff44_obj_data[14][9];  /* provisional name */
-extern u32 eff44_char_table[];  /* provisional name */
+extern const u32 eff44_char_table[];  /* provisional name */
 
 
 /* provisional name */

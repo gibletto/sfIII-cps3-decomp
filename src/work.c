@@ -40,7 +40,7 @@ extern s8 Cd_Error_Flag;
 extern s16 Config_No_0;
 extern s16 Config_No_1;
 extern s16 Config_No_2;
-extern char * reg_name_tbl[];
+extern const char* reg_name_tbl[];
 extern const char str_R0[];
 extern const char str_R10[];
 extern const char str_R11[];
@@ -151,9 +151,9 @@ s16 Config_No_1 = 0;
 s16 Config_No_2 = 0;
 
 /* 02000024 */
-char* reg_name_tbl[16] = {
-    (char *)str_R0, (char *)str_R1, (char *)str_R2, (char *)str_R3,
-    (char *)str_R4, (char *)str_R5, (char *)str_R6, (char *)str_R7,
-    (char *)str_R8, (char *)str_R9, (char *)str_R10, (char *)str_R11,
-    (char *)str_R12, (char *)str_R13, (char *)str_R14, (char *)str_SP,
+const char* reg_name_tbl[16] = {
+    str_R0, str_R1, str_R2, str_R3,
+    str_R4, str_R5, str_R6, str_R7,
+    str_R8, str_R9, str_R10, str_R11,
+    str_R12, str_R13, str_R14, str_SP,
 };

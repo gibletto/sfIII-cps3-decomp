@@ -23,9 +23,9 @@ COUNT_WORK count_work;
 void count_cont_init(pl)
 u8 pl;
 {
-    (*&count_work).hoji_counter = hoji_counter_tbl[Game_setting.set3];
+    (*&count_work).hoji_counter = hoji_counter_tbl[Game_setting.Timer_Speed];
     Counter_hi = 99;
-    Counter_low = hoji_counter_tbl[Game_setting.set3];
+    Counter_low = hoji_counter_tbl[Game_setting.Timer_Speed];
     *(s16*)&round_timer = Counter_hi;
     bcount_digit_trans(pl, 9, 9);
     if (pl == 0) {
@@ -38,9 +38,9 @@ u8 pl;
 
 
 void count_cont_reset(void) {
-    (*&count_work).hoji_counter = hoji_counter_tbl[Game_setting.set3];
+    (*&count_work).hoji_counter = hoji_counter_tbl[Game_setting.Timer_Speed];
     Counter_hi = 99;
-    Counter_low = hoji_counter_tbl[Game_setting.set3];
+    Counter_low = hoji_counter_tbl[Game_setting.Timer_Speed];
     *(s16*)&round_timer = Counter_hi;
     bcount_digit_trans(0, 9, 9);
 }

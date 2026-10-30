@@ -51,8 +51,8 @@
 
 
 extern const s16 eff29_pos_tbl[2][3];
-extern u32 eff29_type0_char_table[];
-extern u32 eff29_type1_char_table[];
+extern const u32 eff29_type0_char_table[];
+extern const u32 eff29_type1_char_table[];
 
 void eff29_type0(WORK_Other* ewk);
 void eff29_type1(WORK_Other* ewk);

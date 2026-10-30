@@ -181,7 +181,7 @@ s32 effect_95_rank_init(s16 kind, s16 pl, s16 flag, s16 color) {
     ewk->wu.my_family = 1;
     ewk->wu.mvxy.a[0].sp = 0;
     ewk->wu.xyz[0].cal += ewk->wu.mvxy.a[0].sp;
-    if (Game_setting.mode) {
+    if (Game_setting.Screen_Mode) {
         ewk->wu.xyz[0].disp.pos = bg_w.bgw[0].xy[0].disp.pos - 64;
     } else {
         ewk->wu.xyz[0].disp.pos = bg_w.bgw[0].xy[0].disp.pos - 32;

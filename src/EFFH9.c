@@ -50,23 +50,23 @@
 
 
 /* 02007428 */
-s16* effH7_move_tbl[16] = {
-    (s16*)effH7_move_data_0,
-    (s16*)effH7_move_data_0,
-    (s16*)effH7_move_data_0,
-    (s16*)effH7_move_data_0,
-    (s16*)effH7_move_data_1,
-    (s16*)effH7_move_data_1,
-    (s16*)effH7_move_data_1,
-    (s16*)effH7_move_data_1,
-    (s16*)effH7_move_data_1,
-    (s16*)effH7_move_data_0,
-    (s16*)effH7_move_data_1,
-    (s16*)effH7_move_data_0,
-    (s16*)effH7_move_data_2,
-    (s16*)effH7_move_data_2,
-    (s16*)effH7_move_data_1,
-    (s16*)effH7_move_data_3,
+const s16* effH7_move_tbl[16] = {
+    effH7_move_data_0,
+    effH7_move_data_0,
+    effH7_move_data_0,
+    effH7_move_data_0,
+    effH7_move_data_1,
+    effH7_move_data_1,
+    effH7_move_data_1,
+    effH7_move_data_1,
+    effH7_move_data_1,
+    effH7_move_data_0,
+    effH7_move_data_1,
+    effH7_move_data_0,
+    effH7_move_data_2,
+    effH7_move_data_2,
+    effH7_move_data_1,
+    effH7_move_data_3,
 };
 
 
@@ -126,7 +126,7 @@ void effect_H7_move(WORK_Other* ewk) {
                 ewk->wu.routine_no[1]++;
             case R1_PICK:
                 ewk->wu.dir_timer = 0;
-                ewk->wu.move_xy_table = effH7_move_tbl[random_16_com()];
+                ewk->wu.move_xy_table = (s16*)effH7_move_tbl[random_16_com()];
                 ewk->wu.routine_no[1]++;
             default:
                 char_move(&ewk->wu);

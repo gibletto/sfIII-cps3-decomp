@@ -49,9 +49,9 @@
           .IMPORT     _snd_vol_lfo_ptr
           .IMPORT     _snd_vol_lfo_tbl
           .IMPORT     _sound_init_data
-          .IMPORT     _sound_sample_submit_work4
-          .IMPORT     _sound_sample_submit_work7
-          .IMPORT     _voice_state_init_pair_work
+          .IMPORT     _bgm_volume_offset
+          .IMPORT     _bgm_state
+          .IMPORT     _bgm_pitch_offset
           .EXPORT     _sound_init
           .EXPORT     _sound_request
           .EXPORT     _sound_seq_start
@@ -226,13 +226,13 @@ sound_init_0FA:
           MOV.L       p_snd_master_vol,R2
           MOV.B       R3,@R2
           MOV         #1,R3
-          MOV.L       p_sound_sample_submit_work7,R2
+          MOV.L       p_bgm_state,R2
           MOV.B       R3,@R2
           EXTS.W      R13,R3
-          MOV.L       p_voice_state_init_pair_work,R2
+          MOV.L       p_bgm_pitch_offset,R2
           MOV.W       R3,@R2
           EXTS.B      R13,R1
-          MOV.L       p_sound_sample_submit_work4,R2
+          MOV.L       p_bgm_volume_offset,R2
           MOV.B       R1,@R2
           MOV.L       p_snd_fade_level,R2
           MOV.L       R13,@R2
@@ -292,12 +292,12 @@ p_bgm_master_vol_init:
           .DATA.L     _bgm_master_vol_init
 p_snd_master_vol:
           .DATA.L     _snd_master_vol
-p_sound_sample_submit_work7:
-          .DATA.L     _sound_sample_submit_work7
-p_voice_state_init_pair_work:
-          .DATA.L     _voice_state_init_pair_work
-p_sound_sample_submit_work4:
-          .DATA.L     _sound_sample_submit_work4
+p_bgm_state:
+          .DATA.L     _bgm_state
+p_bgm_pitch_offset:
+          .DATA.L     _bgm_pitch_offset
+p_bgm_volume_offset:
+          .DATA.L     _bgm_volume_offset
 p_snd_fade_level:
           .DATA.L     _snd_fade_level
 p_snd_fade_speed:
@@ -572,7 +572,7 @@ sound_seq_start_1D6:
           BRA         sound_seq_start_088
           NOP
 sound_seq_start_1EC:
-          MOV.L       p_sound_sample_submit_work7_2,R0
+          MOV.L       p_bgm_state_2,R0
           MOV.B       @R0,R0
           EXTU.B      R0,R0
           TST         #8,R0
@@ -584,10 +584,10 @@ sound_seq_start_1FC:
           EXTU.W      R14,R3
           MOV.L       p_bgm_tick_step,R2
           MOV.W       R3,@R2
-          MOV.L       p_sound_sample_submit_work7_2,R0
+          MOV.L       p_bgm_state_2,R0
           MOV.B       @R0,R0
           OR          #2,R0
-          MOV.L       p_sound_sample_submit_work7_2,R2
+          MOV.L       p_bgm_state_2,R2
           MOV.B       R0,@R2
           BRA         sound_seq_start_516
           NOP
@@ -596,8 +596,8 @@ k_c0_2:
           .DATA.W     H'17A3           ; alignment pad
 p_bgm_voice_3:
           .DATA.L     _bgm_voice
-p_sound_sample_submit_work7_2:
-          .DATA.L     _sound_sample_submit_work7
+p_bgm_state_2:
+          .DATA.L     _bgm_state
 k_8000:
           .DATA.L     H'00008000
 p_snd_fade_level_2:
@@ -1050,7 +1050,7 @@ sound_request_pan_024:
 _bgm_stop:
           STS.L       MACL,@-R15
           MOV.W       k_c0_3,R5
-          MOV.L       p_sound_sample_submit_work7_3,R0
+          MOV.L       p_bgm_state_3,R0
           MOV.B       @R0,R0
           EXTU.B      R0,R0
           TST         #2,R0
@@ -1074,7 +1074,7 @@ bgm_stop_012:
           CMP/GE      R2,R3
           BF          bgm_stop_012
           MOV         #1,R2
-          MOV.L       p_sound_sample_submit_work7_3,R3
+          MOV.L       p_bgm_state_3,R3
           MOV.B       R2,@R3
           MOV         #0,R2
           MOV.L       p_snd_reg_save,R3
@@ -1088,8 +1088,8 @@ p_se_ramp_req_2:
           .DATA.L     _se_ramp_req
 o_divls:
           .DATA.L     __divls-sound_request_pan_024
-p_sound_sample_submit_work7_3:
-          .DATA.L     _sound_sample_submit_work7
+p_bgm_state_3:
+          .DATA.L     _bgm_state
 p_bgm_voice_5:
           .DATA.L     _bgm_voice
 p_snd_reg_save:
@@ -1100,7 +1100,7 @@ _bgm_pause:
           MOV         #2,R3
           STS.L       MACL,@-R15
           MOV.W       k_c0_4,R7
-          MOV.L       p_sound_sample_submit_work7_4,R6
+          MOV.L       p_bgm_state_4,R6
           MOV.B       @R6,R4
           EXTU.B      R4,R4
           AND         R4,R3
@@ -1147,8 +1147,8 @@ bgm_pause_056:
 k_c0_4:
           .DATA.W     H'00C0
           .DATA.W     H'19C8           ; alignment pad
-p_sound_sample_submit_work7_4:
-          .DATA.L     _sound_sample_submit_work7
+p_bgm_state_4:
+          .DATA.L     _bgm_state
 p_sound_reg_200_2:
           .DATA.L     SOUND_REG+H'200
 p_snd_reg_save_2:
@@ -1161,7 +1161,7 @@ p_bgm_voice_6:
 _bgm_resume:
           STS.L       MACL,@-R15
           MOV         #2,R3
-          MOV.L       p_sound_sample_submit_work7_5,R5
+          MOV.L       p_bgm_state_5,R5
           MOV.B       @R5,R4
           EXTU.B      R4,R4
           AND         R4,R3
@@ -1219,17 +1219,17 @@ _sound_fade_in_submit:
           AND         R3,R5
           MOV.L       p_snd_fade_speed_2,R3
           MOV.L       R5,@R3
-          MOV.L       p_sound_sample_submit_work7_5,R0
+          MOV.L       p_bgm_state_5,R0
           MOV.B       @R0,R0
           OR          #8,R0
-          MOV.L       p_sound_sample_submit_work7_5,R3
+          MOV.L       p_bgm_state_5,R3
           MOV.B       R0,@R3
           BRA         _sound_request
           LDS.L       @R15+,PR
 k_7fff:
           .DATA.W     H'7FFF
-p_sound_sample_submit_work7_5:
-          .DATA.L     _sound_sample_submit_work7
+p_bgm_state_5:
+          .DATA.L     _bgm_state
 p_bgm_voice_7:
           .DATA.L     _bgm_voice
 p_bgm_status_save_3:
@@ -1244,7 +1244,7 @@ p_snd_fade_speed_2:
           .DATA.L     _snd_fade_speed
 
 _bgm_fade_out:
-          MOV.L       @(H'34,PC),R5       ; _sound_sample_submit_work7: the literal at 063CDA54, in the pool after _sound_status_read
+          MOV.L       @(H'34,PC),R5       ; _bgm_state: the literal at 063CDA54, in the pool after _sound_status_read
           MOV.B       @R5,R0
           EXTU.B      R0,R0
           TST         #2,R0
@@ -1266,9 +1266,9 @@ bgm_fade_out_022:
           NOP
 
 _sound_reg_level_set:
-          MOV.L       @(H'18,PC),R3       ; _voice_state_init_pair_work: the literal at 063CDA5C, at the start of textsound_2_x2
+          MOV.L       @(H'18,PC),R3       ; _bgm_pitch_offset: the literal at 063CDA5C, at the start of textsound_2_x2
           MOV.W       R4,@R3
-          MOV.L       @(H'18,PC),R3       ; _sound_sample_submit_work4: the literal at 063CDA60, at the start of textsound_2_x2
+          MOV.L       @(H'18,PC),R3       ; _bgm_volume_offset: the literal at 063CDA60, at the start of textsound_2_x2
           RTS
           MOV.B       R5,@R3
           .END

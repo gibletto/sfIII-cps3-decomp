@@ -404,8 +404,8 @@ void tilemap_print_script_seq(u16 x, u16 y, u16 pal, const TMSCRIPT* scr) {
     register u32 h;
     register u16 d;
     register u16 attr;
-    register u16* blk;
-    register TMLINE* line;
+    register const u16* blk;
+    register const TMLINE* line;
     u8* s;
     if (scr->kind == 0) {
         line = scr->data;

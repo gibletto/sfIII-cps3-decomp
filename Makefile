@@ -14,7 +14,6 @@ export MDL_MOD_CONST = 3
 export MDL_IMM_REG = 191
 export MDL_EQ_CONST = 3
 export MDL_GCSE = 26
-export GEN_LAST_IDX = 4
 export MDL_IV_START0 = 6
 export PEP_SWITCH_END = 3
 export PEP_RETURN_EXIT = 1

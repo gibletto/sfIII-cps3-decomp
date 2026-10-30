@@ -30,18 +30,18 @@ VITAL_BAR vit_bar[2];
 
 
 const u16* vital_npos_tbl[4] = {
-    &vital_cell_1p_tbl[81],
-    &vital_cell_1p_tbl[101],
-    &vital_cell_1p_tbl[121],
-    &vital_cell_1p_tbl[141],
+    vital_npos_0,
+    vital_npos_1,
+    vital_npos_2,
+    vital_npos_3,
 };
 
 
 
 const u16* vital_attr_tbl[3] = {
-    &vital_cell_1p_tbl[161],
-    &vital_cell_1p_tbl[164],
-    &vital_cell_1p_tbl[167],
+    vital_attr_0,
+    vital_attr_1,
+    vital_attr_2,
 };
 
 
@@ -62,7 +62,7 @@ void vital_cont_init(void) {
     vit_bar[1].colnum = 0;
     vit_bar[1].cell = cell;
     vit_bar[1].attr = vital_attr_tbl[1];
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
         vit_bar[0].xpos = vital_npos_tbl[0];
         vit_bar[1].xpos = vital_npos_tbl[1];
         sc_celllist_put(1);
@@ -179,7 +179,7 @@ s32 vital_parts_allwrite(s8 pl) {
     } else {
         tbl = vital_cell_tbl;
     }
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
         cols = (const s16*)vital_npos_tbl[1];
     } else {
         cols = (const s16*)vital_npos_tbl[3];

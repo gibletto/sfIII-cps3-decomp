@@ -8,7 +8,7 @@ void attack_hit_check(void);
 void cal_combo_waribiki(PLW* as, PLW* ds);
 void cal_combo_waribiki2(PLW* ds);
 void cal_hit_mark_pos();
-void cal_hit_mark_position(WORK* wk1, WORK* wk2, s16* hd1, s16* hd2);
+void cal_hit_mark_position(WORK* wk1, WORK* wk2, const s16* hd1, const s16* hd2);
 void catch_hit_check(void);
 s32 change_damage_attribute();
 s32 check_ttk_damage_request();

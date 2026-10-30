@@ -190,9 +190,9 @@ s32 home_visitor_check(PLW* wk) {
     return hv_type;
 }
 
-void appear_data_set(PLW* wk, APPEAR_DATA* dtbl) {
+void appear_data_set(PLW* wk, const APPEAR_DATA* dtbl) {
     if (wk->wu.id) {
-        if (Game_setting.mode) {
+        if (Game_setting.Screen_Mode) {
             wk->wu.xyz[0].disp.pos = bg_w.bgw[1].pos_x_work - dtbl->whx;
         } else {
             wk->wu.xyz[0].disp.pos = bg_w.bgw[1].pos_x_work - dtbl->hx;
@@ -203,7 +203,7 @@ void appear_data_set(PLW* wk, APPEAR_DATA* dtbl) {
         Appear_flag[0] = dtbl->ixod;
         wk->wu.char_index = dtbl->char_index;
     } else {
-        if (Game_setting.mode) {
+        if (Game_setting.Screen_Mode) {
             wk->wu.xyz[0].disp.pos = bg_w.bgw[1].pos_x_work + dtbl->whx;
         } else {
             wk->wu.xyz[0].disp.pos = bg_w.bgw[1].pos_x_work + dtbl->hx;
@@ -360,7 +360,7 @@ s32 yun_yang_appear_check(PLW* wk) {
         } else {
             Appear_flag[1] = 0;
         }
-        appear_data_set(wk, (APPEAR_DATA*)&appear_data[2]);
+        appear_data_set(wk, &appear_data[2]);
         wk->wu.routine_no[4] = 1;
         Appear_01000(wk);
         return 1;
@@ -527,7 +527,7 @@ s32 yang_yun_appear_check(PLW* wk) {
         } else {
             Appear_flag[1] = 0;
         }
-        appear_data_set(wk, (APPEAR_DATA*)&appear_data[2]);
+        appear_data_set(wk, &appear_data[2]);
         wk->wu.routine_no[4] = 1;
         Appear_01000(wk);
         return 1;
@@ -624,7 +624,7 @@ void Appear_06000(PLW* wk) {
             wk->wu.my_mr_flag = 0;
             set_char_move_init(&wk->wu, 9, 0x13);
             wk->wu.position_z = wk->wu.next_z = 110;
-            if (Game_setting.mode) {
+            if (Game_setting.Screen_Mode) {
                 work = 128;
             } else {
                 work = 96;
@@ -754,7 +754,7 @@ void Appear_08000(PLW* wk) {
             bg_stop = 1;
             break;
         }
-        appear_data_set(wk, (APPEAR_DATA*)appear_data);
+        appear_data_set(wk, appear_data);
         wk->wu.routine_no[4] = 2;
         break;
     case AP08_END:
@@ -905,7 +905,7 @@ void Appear_12000(PLW* wk) {
         } else {
             set_char_move_init(&wk->wu, 9, 8);
         }
-        if (Game_setting.mode) {
+        if (Game_setting.Screen_Mode) {
             work = 128;
         } else {
             work = 96;
@@ -1036,7 +1036,7 @@ void Appear_15000(PLW* wk) {
     switch (wk->wu.routine_no[3]) {
     case RN3_START:
         if (wk->wu.operator) {
-            appear_data_set(wk, (APPEAR_DATA*)&appear_data[2]);
+            appear_data_set(wk, &appear_data[2]);
             wk->wu.routine_no[4] = 2;
             Appear_01000(wk);
             break;

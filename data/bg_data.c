@@ -68,5 +68,5 @@ const TM_STRING bg_test_menu_scr[14] = {
     { 3, 24, 0xE, str_BG_3 },
     { 3, 25, 0xE, str_BG_4 },
     { 3, 19, 0xE, str_STAGE_2 },
-    { 3, 20, 0xE, (const s8 *)str_AREA },
+    { 3, 20, 0xE, str_AREA },
 };

@@ -33,7 +33,7 @@
 
 
 
-extern u32 eff28_char_table[];
+extern const u32 eff28_char_table[];
 
 static s32 eff28_master_check(WORK_Other* ewk);
 

@@ -19,7 +19,7 @@ s32 meri_case_switch();
 s32 random_16_com(void);
 s32 random_16_ex_com(void);
 s32 random_32_com(void);
-void read_adrs_store_mvxy(WORK* wk, s16* adrs);
+void read_adrs_store_mvxy(WORK* wk, const s16* adrs);
 void remake_mvxy_PoGR(WORK* wk);
 void remake_mvxy_PoSB(WORK* wk);
 void reset_mvxy_data(WORK* wk);

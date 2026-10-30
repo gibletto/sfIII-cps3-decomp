@@ -537,7 +537,7 @@ void combo_window_trans(s8 PL) {
                 if (!(end_flag[PL] & 1)) {
                     if (cmst_buff[PL][cst_read[PL]].x_posnum[0] < cmst_buff[PL][cst_read[PL]].move[0]) {
                         combo_window_slide(PL,
-                                                cmb_pos_tbl[Game_setting.mode][PL][cmst_buff[PL][cst_read[PL]].x_posnum[0]],
+                                                cmb_pos_tbl[Game_setting.Screen_Mode][PL][cmst_buff[PL][cst_read[PL]].x_posnum[0]],
                                                 0,
                                                 cmst_buff[PL][cst_read[PL]].x_posnum[0]);
                         cmst_buff[PL][cst_read[PL]].x_posnum[0]++;
@@ -551,12 +551,12 @@ void combo_window_trans(s8 PL) {
                         if (cmst_buff[PL][cst_read[PL]].x_posnum[1] < cmst_buff[PL][cst_read[PL]].move[1] + 2) {
                             if (cmst_buff[PL][cst_read[PL]].x_posnum[1] < cmst_buff[PL][cst_read[PL]].move[1]) {
                                 combo_window_slide(PL,
-                                                        cmb_pos_tbl[Game_setting.mode][PL][cmst_buff[PL][cst_read[PL]].x_posnum[1]],
+                                                        cmb_pos_tbl[Game_setting.Screen_Mode][PL][cmst_buff[PL][cst_read[PL]].x_posnum[1]],
                                                         1,
                                                         cmst_buff[PL][cst_read[PL]].x_posnum[1]);
                             } else {
                                 combo_window_slide(PL,
-                                                        cmb_pos_tbl[Game_setting.mode][PL][cmst_buff[PL][cst_read[PL]].x_posnum[1]],
+                                                        cmb_pos_tbl[Game_setting.Screen_Mode][PL][cmst_buff[PL][cst_read[PL]].x_posnum[1]],
                                                         1,
                                                         cmst_buff[PL][cst_read[PL]].move[1] - 1);
                             }
@@ -617,7 +617,7 @@ void combo_window_trans(s8 PL) {
             case 1:
                 if (cmst_buff[PL][cst_read[PL]].x_posnum[0] < cmst_buff[PL][cst_read[PL]].move[0]) {
                     combo_window_slide(PL,
-                                            cmb_pos_tbl[Game_setting.mode][PL][cmst_buff[PL][cst_read[PL]].x_posnum[0]],
+                                            cmb_pos_tbl[Game_setting.Screen_Mode][PL][cmst_buff[PL][cst_read[PL]].x_posnum[0]],
                                             0,
                                             cmst_buff[PL][cst_read[PL]].x_posnum[0]);
                     cmst_buff[PL][cst_read[PL]].x_posnum[0]++;

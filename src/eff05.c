@@ -35,7 +35,7 @@
 
 
 /* By stage and area; the last stage has none. */
-u32* char_add[14][3] = {
+const u32* char_add[14][3] = {
     { stg00_char_table, stg00_char_table, stg00_char_table },
     { stg01_char_table, stg01_char_table, stg01_char_table },
     { stg02_char_table, stg11_char_table, stg11_char_table },
@@ -54,19 +54,19 @@ u32* char_add[14][3] = {
 
 
 const s16* scr_obj_data[14][3] = {
-    { (const s16*)scr_obj_num + 42, (const s16*)scr_obj_num + 42, (const s16*)scr_obj_num + 42 },
-    { (const s16*)scr_obj_num + 87, (const s16*)scr_obj_num + 87, (const s16*)scr_obj_num + 87 },
-    { (const s16*)scr_obj_num + 124, (const s16*)scr_obj_num + 142, (const s16*)scr_obj_num + 142 },
-    { (const s16*)scr_obj_num + 178, (const s16*)scr_obj_num + 232, (const s16*)scr_obj_num + 232 },
-    { (const s16*)scr_obj_num + 259, (const s16*)scr_obj_num + 286, (const s16*)scr_obj_num + 286 },
-    { (const s16*)scr_obj_num + 331, (const s16*)scr_obj_num + 331, (const s16*)scr_obj_num + 331 },
-    { (const s16*)scr_obj_num + 412, (const s16*)scr_obj_num + 475, (const s16*)scr_obj_num + 529 },
-    { (const s16*)scr_obj_num + 565, (const s16*)scr_obj_num + 565, (const s16*)scr_obj_num + 565 },
-    { (const s16*)scr_obj_num + 583, (const s16*)scr_obj_num + 592, (const s16*)scr_obj_num + 592 },
-    { (const s16*)scr_obj_num + 628, (const s16*)scr_obj_num + 628, (const s16*)scr_obj_num + 628 },
-    { (const s16*)scr_obj_num + 232, (const s16*)scr_obj_num + 178, (const s16*)scr_obj_num + 178 },
-    { (const s16*)scr_obj_num + 142, (const s16*)scr_obj_num + 124, (const s16*)scr_obj_num + 124 },
-    { (const s16*)scr_obj_num + 123, (const s16*)scr_obj_num + 123, (const s16*)scr_obj_num + 123 },
+    { scr_obj_data_0_0, scr_obj_data_0_0, scr_obj_data_0_0 },
+    { scr_obj_data_1_0, scr_obj_data_1_0, scr_obj_data_1_0 },
+    { scr_obj_data_2_0, scr_obj_data_2_1, scr_obj_data_2_1 },
+    { scr_obj_data_3_0, scr_obj_data_3_1, scr_obj_data_3_1 },
+    { scr_obj_data_4_0, scr_obj_data_4_1, scr_obj_data_4_1 },
+    { scr_obj_data_5_0, scr_obj_data_5_0, scr_obj_data_5_0 },
+    { scr_obj_data_6_0, scr_obj_data_6_1, scr_obj_data_6_2 },
+    { scr_obj_data_7_0, scr_obj_data_7_0, scr_obj_data_7_0 },
+    { scr_obj_data_8_0, scr_obj_data_8_1, scr_obj_data_8_1 },
+    { scr_obj_data_9_0, scr_obj_data_9_0, scr_obj_data_9_0 },
+    { scr_obj_data_3_1, scr_obj_data_3_0, scr_obj_data_3_0 },
+    { scr_obj_data_2_1, scr_obj_data_2_0, scr_obj_data_2_0 },
+    { scr_obj_data_12_0, scr_obj_data_12_0, scr_obj_data_12_0 },
     { 0, 0, 0 },
 };
 

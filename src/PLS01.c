@@ -360,7 +360,7 @@ s32 check_attbox_dir(PLW* wk) {
     s16 target_pos_x;
     s16 target_pos_y;
     s16 emdir;
-    s16* dttbl;
+    const s16* dttbl;
     get_target_att_position((WORK*)wk->wu.target_adrs, &target_pos_x, &target_pos_y);
     dttbl = sel_hd_fg_hos[wk->player_number];
     if (wk->wu.rl_flag) {

@@ -323,7 +323,7 @@ void Name_Scs_Input_end(void) {
     }
     ranking_name_entry();
     name_ptr->index = 3;
-    if (Game_setting.mode) {
+    if (Game_setting.Screen_Mode) {
         if (name_ptr->id) {
             effect_89_init(8, DE_X[3] + 38, Text_Page_Y, 8, 1);
         } else {
@@ -532,18 +532,18 @@ s16 pl_id;
 /* provisional name */
 void name_entry_commit_row(s16 pl_id, s16 pos_y) {
     u16 pos_x;
-    if (!Game_setting.mode) {
+    if (!Game_setting.Screen_Mode) {
     } else {
     }
     if (pl_id) {
-        if (Game_setting.mode) {
+        if (Game_setting.Screen_Mode) {
             pos_x = 9;
         } else {
             pos_x = 0;
         }
         pos_x += 33;
     } else {
-        if (Game_setting.mode) {
+        if (Game_setting.Screen_Mode) {
             pos_x = 7;
         } else {
             pos_x = 0;

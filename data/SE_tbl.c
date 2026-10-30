@@ -55,9 +55,9 @@ const u8 wipe_column_map_2[64] = {
 };
 
 const ByteMapSrc wipe_column_tbl[5] = {
-    { (u8 *)wipe_column_map_0, 8, 0 }, { (u8 *)wipe_column_map_0, 8, 0 },
-    { (u8 *)wipe_column_map_0, 8, 0 }, { (u8 *)wipe_column_map_1, 4, 0 },
-    { (u8 *)wipe_column_map_2, 4, 0 },
+    { wipe_column_map_0, 8, 0 }, { wipe_column_map_0, 8, 0 },
+    { wipe_column_map_0, 8, 0 }, { wipe_column_map_1, 4, 0 },
+    { wipe_column_map_2, 4, 0 },
 };
 
 const s16 stage_bgm_tbl[13] = {

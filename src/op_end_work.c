@@ -10,14 +10,14 @@
 #include "structs.h"
 
 extern void (*end_main_jp[])(s16);
-extern u32 end_map_tbl[];
-extern PANEL* end_4_panel_p[];
-extern PANEL* end_8_panel_p[];
-extern PANEL* end_10_panel_p[];
+extern const s16* end_map_tbl[];
+extern const PANEL* end_4_panel_p[];
+extern const PANEL* end_8_panel_p[];
+extern const PANEL* end_10_panel_p[];
 extern void (*end_10_jp[])();
-extern s32* end_11_cell_ptr0[];
-extern s32* end_11_cell_ptr1[];
-extern u32 end_11_cell_ptr1_tail[];
+extern const s32* end_11_cell_ptr0[];
+extern const s32* end_11_cell_ptr1[];
+extern const s32* end_11_cell_ptr1_tail[];
 extern const PANEL end_10_panel_tbl_0[];
 extern const PANEL end_10_panel_tbl_1[];
 extern const PANEL end_400_panel0[];
@@ -63,23 +63,23 @@ void (*end_main_jp[13])(s16) = {
 };
 
 /* 02006708 */
-u32 end_map_tbl[4] = {
-    (u32)end_map_data_0, (u32)end_map_data_1, (u32)end_map_data_2, (u32)end_map_data_3,
+const s16* end_map_tbl[4] = {
+    end_map_data_0, end_map_data_1, end_map_data_2, end_map_data_3,
 };
 
 /* 02006718 */
-PANEL* end_4_panel_p[2] = {
-    (PANEL *)end_400_panel0, (PANEL *)end_400_panel1,
+const PANEL* end_4_panel_p[2] = {
+    end_400_panel0, end_400_panel1,
 };
 
 /* 02006720 */
-PANEL* end_8_panel_p[2] = {
-    (PANEL *)end_800_panel0, (PANEL *)end_800_panel1,
+const PANEL* end_8_panel_p[2] = {
+    end_800_panel0, end_800_panel1,
 };
 
 /* 02006728 */
-PANEL* end_10_panel_p[2] = {
-    (PANEL *)end_10_panel_tbl_0, (PANEL *)end_10_panel_tbl_1,
+const PANEL* end_10_panel_p[2] = {
+    end_10_panel_tbl_0, end_10_panel_tbl_1,
 };
 
 /* 02006730 */
@@ -89,28 +89,27 @@ void (*end_10_jp[7])() = {
 };
 
 /* 0200674C */
-s32* end_11_cell_ptr0[9] = {
-    (s32 *)end_1100_cell0, (s32 *)end_1100_cell1, (s32 *)end_1100_cell2, (s32 *)end_1100_cell3,
-    (s32 *)end_1100_cell3, (s32 *)end_1100_cell4, (s32 *)end_1100_cell3, (s32 *)end_1100_cell5,
-    (s32 *)end_1100_cell0,
+const s32* end_11_cell_ptr0[9] = {
+    end_1100_cell0, end_1100_cell1, end_1100_cell2, end_1100_cell3,
+    end_1100_cell3, end_1100_cell4, end_1100_cell3, end_1100_cell5,
+    end_1100_cell0,
 };
 
 /* 02006770 */
-s32* end_11_cell_ptr1[9] = {
-    (s32 *)end_1100_cell6, (s32 *)end_1100_cell7, (s32 *)end_1100_cell7, (s32 *)end_1100_cell7,
-    (s32 *)end_1100_cell6, (s32 *)end_1100_cell6, (s32 *)end_1100_cell7, (s32 *)end_1100_cell6,
-    (s32 *)end_1100_cell6,
+const s32* end_11_cell_ptr1[9] = {
+    end_1100_cell6, end_1100_cell7, end_1100_cell7, end_1100_cell7,
+    end_1100_cell6, end_1100_cell6, end_1100_cell7, end_1100_cell6,
+    end_1100_cell6,
 };
 
 /* 02006794 */
-u32 end_11_cell_ptr1_tail[1] = {
-    (u32)end_1100_cell6,
+/* one more cell list pointer after end_11_cell_ptr1; nothing in the program refers to it by name or
+   address */
+const s32* end_11_cell_ptr1_tail[1] = {
+    end_1100_cell6,
 };
 
-/* the opening and ending work: the code reads it as an OP_W, whose fields past these 8 bytes are the variables
-   after it */
-u8 op_w[8];  /* 0201D6D8 */
-s16 effF6_end_flag;  /* 0201D6E0 */
+OP_W op_w;  /* 0201D6D8 */
 s16 op_end_flag;  /* 0201D6E2 */
 s16 op_obj_disp;  /* 0201D6E4 */
 s8 effE1_end_flag;  /* 0201D6E6 */

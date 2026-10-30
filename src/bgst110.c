@@ -115,7 +115,7 @@ void bg1102_init00(void) {
         effect_82_init();
         if ((plw[0].player_number == PL_IBUKI && plw[0].wu.operator == 0)
             || (plw[1].player_number == PL_IBUKI && plw[1].wu.operator == 0)) {
-            if (Game_setting.mode == 0) {
+            if (Game_setting.Screen_Mode == 0) {
                 bg_w.bg_f_x = bg_w.bg_f_y = 80;
                 Frame_Down(192, 224, 16, 16);
             }
@@ -156,7 +156,7 @@ void bg1102_init00(void) {
 /* zooms the frame in to bg_f_x 64, then Zoomf_Init */
 void bg1102_zoom_in(void) {
     if (C_No1 > 3 || Allow_a_battle_f) {
-        if (Game_setting.mode == 0) {
+        if (Game_setting.Screen_Mode == 0) {
             bg_w.bg_f_x--;
             bg_w.bg_f_y--;
             if (bg_w.bg_f_x > 64) {

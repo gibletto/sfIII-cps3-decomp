@@ -42,10 +42,10 @@
 
 /* 02006C04 */
 const s16* scr_obj_data10[4] = {
-    &scr_obj_num10[4],
-    &scr_obj_num10[16],
-    &scr_obj_num10[25],
-    &scr_obj_num10[28],
+    scr_obj_data10_0,
+    scr_obj_data10_1,
+    scr_obj_data10_2,
+    scr_obj_data10_3,
 };
 
 

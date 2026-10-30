@@ -947,8 +947,8 @@ void cal_combo_waribiki2(PLW* ds) {
 void catch_hit_check(void) {
     WORK* mad;
     WORK* sad;
-    s16* mh;
-    s16* sh;
+    const s16* mh;
+    const s16* sh;
     s16 mi;
     s16 si;
 
@@ -1041,7 +1041,7 @@ void attack_hit_check(void) {
     WORK* mad;
     WORK* sad;
     s16* mh;
-    s16* dh;
+    const s16* dh;
     s16 mi;
     s16 si;
     s16 i;
@@ -1213,7 +1213,7 @@ s32 hit_check_subroutine(WORK* wk1, WORK* wk2, const s16* hd1, const s16* hd2) {
 }
 
 
-void cal_hit_mark_position(WORK* wk1, WORK* wk2, s16* hd1, s16* hd2) {
+void cal_hit_mark_position(WORK* wk1, WORK* wk2, const s16* hd1, const s16* hd2) {
     s16 d0 = *hd1++;
     s16 d1 = *hd1++;
     s16 d2;
@@ -1255,7 +1255,7 @@ void cal_hit_mark_position(WORK* wk1, WORK* wk2, s16* hd1, s16* hd2) {
 
 void get_target_att_position(WORK* wk, s16* tx, s16* ty) {
     s16 i;
-    s16* ta;
+    const s16* ta;
     *tx = wk->xyz[0].disp.pos;
     *ty = wk->xyz[1].disp.pos;
     ta = wk->h_att->att_box[0];

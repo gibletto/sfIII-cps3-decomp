@@ -33,7 +33,7 @@ void sc_chr_clear();
 
 u16 *sc_trans_dst;
 u8 *sc_bak_ptr;
-u8 *sc_trans_src;
+const u8 *sc_trans_src;
 u8 sc_trans_src_tail[6];  /* after sc_trans_src; nothing refers to it by name or address */
 u16 sc_trans_word;
 u8 sc_chr_bak[640];
@@ -48,7 +48,7 @@ s32 sc_chr_trans(rows)
 u16 rows;
 {
     u16* dst = sc_trans_dst;
-    u8* src = sc_trans_src;
+    const u8* src = sc_trans_src;
     s32 i;
     for (i = 0; i < rows * 32; i++) {
         *dst = *src;
@@ -126,7 +126,7 @@ u16 w;
 u16 h;
 {
     s32 i, j, k;
-    u8* src;
+    const u8* src;
     u16* dst;
     sc_trans_src = (u8*)&sc_chr_data[chr * 32 / 2];
     sc_trans_dst = (u16*)(pos * 64 + (SS_RAM + 0x8000));
@@ -263,7 +263,7 @@ u16 n;
 {
     u16 i;
     u16 k;
-    u8* blank;
+    const u8* blank;
     sc_trans_src = (u8*)&sc_chr_data[0x20 * 16];       /* character 0x20, the blank */
     blank = sc_trans_src;
     sc_trans_dst = (u16*)((SS_RAM + 0x8000) + pos * 64);
@@ -429,7 +429,7 @@ void player_name(void) {
     u16 x2;
     s16 y2;
     player_name_trans();
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
         x1 = 2;
         y1 = 1;
         x2 = 40;
@@ -460,7 +460,7 @@ void sa_number_put(void) {
     u16 x1, y1, x2, y2;
     s8 arts;
     sa_number_trans();
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
         x1 = 0;
         y1 = 0;
         x2 = 46;
@@ -483,7 +483,7 @@ void sa_number_put(void) {
 
 void stun_mark_put(s8 pl) {
     u16 i;
-    const s16* pos = &smark_pos_tbl[My_char[pl] & 0x7F][pl][Game_setting.mode];
+    const s16* pos = &smark_pos_tbl[My_char[pl] & 0x7F][pl][Game_setting.Screen_Mode];
     s16 code = smark_kind_tbl[My_char[pl] & 0x7F] * 6;
     for (i = 0; i < smark_kind_tbl[My_char[pl] & 0x7F] + 6; i++) {
         tilemap_put_cell(*pos + i, 3, 2, code + i + 49);
@@ -622,7 +622,7 @@ void player_face_char_set(void) {
 void player_face(void) {
     u16 x1, y1, x2, y2;
     player_face_char_set();
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
         x1 = 1;
         y1 = 3;
         x2 = 43;
@@ -757,7 +757,7 @@ void combo_window_slide(s8 pl, s16 x, s16 y, s16 n) {
 
 
 void combo_window_erase(s8 col, s8 kind, s16 row) {
-    u32* cell = (u32*)((SS_RAM + 0x700) + combo_erase_pos_tbl[Game_setting.mode][kind][col] * 4 + row * 0x300);
+    u32* cell = (u32*)((SS_RAM + 0x700) + combo_erase_pos_tbl[Game_setting.Screen_Mode][kind][col] * 4 + row * 0x300);
     u16 i;
     for (i = 0; i < combo_erase_len_tbl[kind]; i++) {
         cell[0] = 0x200000;
@@ -772,7 +772,7 @@ void combo_window_all_clear(void) {
     u32 *cell = (u32*)(SS_RAM + 0x700);
     u16 width;
     u16 x, y;
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
         width = 48;
     } else {
         width = 62;

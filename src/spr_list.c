@@ -43,10 +43,10 @@ void sprite_list_init(s32 list) {
 
 
 /* provisional name */
-s32 sprite_list_setup(s16 slot, s16 owner, s16* data) {
+s32 sprite_list_setup(s16 slot, s16 owner, const s16* data) {
     s16 n_grp;
     s16 n_ent;
-    s16* p;
+    const s16* p;
     SPRITE_ENTRY* g;
     SPRENTRY* e;
     n_grp = 0;

@@ -3,7 +3,7 @@
  *
  * effect_F6_init creates the counter and starts effect F7 with it as master.
  * effect_F6_move advances routine_no[0] every old_rno[1] frames and sets
- * effF6_end_flag at step 23.
+ * the opening's free_work flag at step 23.
  */
 
 #include "structs.h"
@@ -25,8 +25,6 @@
 #define R1_END          2       /* one more frame */
 #define R1_KILL         3       /* put the work back */
 
-extern s16 effF6_end_flag;   /* provisional name */
-
 
 
 /* Advance the opening step counter. */
@@ -42,7 +40,7 @@ void effect_F6_move(WORK_Other* ewk) {
             ewk->wu.routine_no[0]++;
             ewk->wu.old_rno[2] = ewk->wu.old_rno[1];
             if (ewk->wu.routine_no[0] == 23) {
-                effF6_end_flag = 1;
+                op_w.free_work = 1;
                 ewk->wu.routine_no[1]++;
                 ewk->wu.old_rno[3] = 1;
             }

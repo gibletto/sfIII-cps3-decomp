@@ -1724,7 +1724,8 @@ const u8 Denjin_Data[4][16] = {
     { 56, 56, 57, 57, 57, 57, 57, 58, 58, 58, 58, 59, 59, 59, 60, 60 },
 };
 
-const u8 Correct_Cont_Time_Data[14] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 0 };
+/* 0 to 9, then 9s; nothing in the program refers to it by name or address */
+const u8 Com_Data_unref_0[14] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 0 };
 
 const s16 Dash_Distance_Data[13][2] = {
     { 165, 140 },  /* Gill */
@@ -1771,6 +1772,8 @@ const s8 PL_Blow_Off_Data[28] = { 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 1, 1
 
 const s16 Hit_Range_Data[34] = { 0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 264 };
 
+/* By player_number. Yang, Ken and Sean (10-12) read past the end, into Passive_Guard_Off_Data, whose
+   first bytes are 0. */
 const s8 PL_Body_Width_Data[10] = { 56, 56, 36, 36, 56, 46, 24, 46, 36, 36 };
 
 const s8 Passive_Guard_Off_Data[13][250] = {

@@ -85,7 +85,7 @@ s16 cal;
     ewk->wu.id = 92;
     ewk->master_id = master_id;
     ewk->wu.dmcal_m = cal;
-    ewk->wu.move_xy_table = Rewrite_Mark_Data;
+    ewk->wu.move_xy_table = (s16*)Rewrite_Mark_Data;
     ewk->wu.dir_timer = 1;
     return 0;
 }

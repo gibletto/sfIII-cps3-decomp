@@ -9,9 +9,9 @@
 #include "types.h"
 #include "structs.h"
 
-extern EFFF9_MESSAGE * effF9_mes_jp[];
-extern EFFF9_MESSAGE * effF9_mes_en[];
-extern EFFF9_MESSAGE * effF9_mes_es[];
+extern const EFFF9_MESSAGE* effF9_mes_jp[];
+extern const EFFF9_MESSAGE* effF9_mes_en[];
+extern const EFFF9_MESSAGE* effF9_mes_es[];
 extern const EFFF9_MESSAGE* effF9_mes_pt[];
 extern const u16* txt_no_00[];
 extern const u16* txt_no_02[];
@@ -130,36 +130,36 @@ extern const u16 txt_no_12_4[];
 extern const u16 txt_no_12_5[];
 
 /* 02006E88 */
-EFFF9_MESSAGE* effF9_mes_jp[13] = {
-    (EFFF9_MESSAGE *)effF9_mes_jp_0, (EFFF9_MESSAGE *)effF9_mes_jp_0,
-    (EFFF9_MESSAGE *)effF9_mes_jp_2, (EFFF9_MESSAGE *)effF9_mes_jp_3,
-    (EFFF9_MESSAGE *)effF9_mes_jp_4, (EFFF9_MESSAGE *)effF9_mes_jp_5,
-    (EFFF9_MESSAGE *)effF9_mes_jp_0, (EFFF9_MESSAGE *)effF9_mes_jp_7,
-    (EFFF9_MESSAGE *)effF9_mes_jp_8, (EFFF9_MESSAGE *)effF9_mes_jp_9,
-    (EFFF9_MESSAGE *)effF9_mes_jp_3, (EFFF9_MESSAGE *)effF9_mes_jp_11,
-    (EFFF9_MESSAGE *)effF9_mes_jp_12,
+const EFFF9_MESSAGE* effF9_mes_jp[13] = {
+    effF9_mes_jp_0, effF9_mes_jp_0,
+    effF9_mes_jp_2, effF9_mes_jp_3,
+    effF9_mes_jp_4, effF9_mes_jp_5,
+    effF9_mes_jp_0, effF9_mes_jp_7,
+    effF9_mes_jp_8, effF9_mes_jp_9,
+    effF9_mes_jp_3, effF9_mes_jp_11,
+    effF9_mes_jp_12,
 };
 
 /* 02006EBC */
-EFFF9_MESSAGE* effF9_mes_en[13] = {
-    (EFFF9_MESSAGE *)effF9_mes_en_0, (EFFF9_MESSAGE *)effF9_mes_en_0,
-    (EFFF9_MESSAGE *)effF9_mes_en_2, (EFFF9_MESSAGE *)effF9_mes_en_3,
-    (EFFF9_MESSAGE *)effF9_mes_en_4, (EFFF9_MESSAGE *)effF9_mes_en_5,
-    (EFFF9_MESSAGE *)effF9_mes_en_0, (EFFF9_MESSAGE *)effF9_mes_en_7,
-    (EFFF9_MESSAGE *)effF9_mes_en_8, (EFFF9_MESSAGE *)effF9_mes_en_9,
-    (EFFF9_MESSAGE *)effF9_mes_en_3, (EFFF9_MESSAGE *)effF9_mes_en_11,
-    (EFFF9_MESSAGE *)effF9_mes_en_12,
+const EFFF9_MESSAGE* effF9_mes_en[13] = {
+    effF9_mes_en_0, effF9_mes_en_0,
+    effF9_mes_en_2, effF9_mes_en_3,
+    effF9_mes_en_4, effF9_mes_en_5,
+    effF9_mes_en_0, effF9_mes_en_7,
+    effF9_mes_en_8, effF9_mes_en_9,
+    effF9_mes_en_3, effF9_mes_en_11,
+    effF9_mes_en_12,
 };
 
 /* 02006EF0 */
-EFFF9_MESSAGE* effF9_mes_es[13] = {
-    (EFFF9_MESSAGE *)effF9_mes_es_0, (EFFF9_MESSAGE *)effF9_mes_es_0,
-    (EFFF9_MESSAGE *)effF9_mes_es_2, (EFFF9_MESSAGE *)effF9_mes_es_3,
-    (EFFF9_MESSAGE *)effF9_mes_es_4, (EFFF9_MESSAGE *)effF9_mes_es_5,
-    (EFFF9_MESSAGE *)effF9_mes_es_0, (EFFF9_MESSAGE *)effF9_mes_es_7,
-    (EFFF9_MESSAGE *)effF9_mes_es_8, (EFFF9_MESSAGE *)effF9_mes_es_9,
-    (EFFF9_MESSAGE *)effF9_mes_es_3, (EFFF9_MESSAGE *)effF9_mes_es_11,
-    (EFFF9_MESSAGE *)effF9_mes_es_12,
+const EFFF9_MESSAGE* effF9_mes_es[13] = {
+    effF9_mes_es_0, effF9_mes_es_0,
+    effF9_mes_es_2, effF9_mes_es_3,
+    effF9_mes_es_4, effF9_mes_es_5,
+    effF9_mes_es_0, effF9_mes_es_7,
+    effF9_mes_es_8, effF9_mes_es_9,
+    effF9_mes_es_3, effF9_mes_es_11,
+    effF9_mes_es_12,
 };
 
 /* 02006F24 */

@@ -106,7 +106,7 @@ s32 Ending_main(s16 pl_num) {
         card_win_check(1);
         break;
     case END_COVER:
-        if (Cover_Timer -= 1) {
+        if (--Cover_Timer) {
             break;
         }
         end_w.r_no_0 += 1;
@@ -286,7 +286,7 @@ void common_end_init00(s16 pl_num) {
     gfx = &end_bg_gfx_tbl[bg_w.bg_index];
     polygon2d_submit_line(gfx->prep, 0, 0, 3);
     polygon2d_submit_line(gfx->src, bg_w.scroll_cg_adr, gfx->size, 1);
-    if (Game_setting.mode) {
+    if (Game_setting.Screen_Mode) {
         bg_w.pos_offset = 0xF8;
     } else {
         bg_w.pos_offset = 0xC0;
@@ -311,7 +311,7 @@ void common_end_init00(s16 pl_num) {
         bg_w.bgw[i].bg_address = (u16 *)simmram_slot_addr(bg_w.bgw[i].bg_adrs_c_no);
         scrn_map_set_now(i, (u32)bg_w.bgw[i].bg_address);
         scrn_map_set(i, (u32)bg_w.bgw[i].bg_address);
-        sprite_list_setup(i, 1, (s16*)end_map_tbl[i]);
+        sprite_list_setup(i, 1, end_map_tbl[i]);
         bg_w.bgw[i].r_no_1 = bg_w.bgw[i].r_no_2 = 0;
         bg_w.bgw[i].fam_no = i;
     }

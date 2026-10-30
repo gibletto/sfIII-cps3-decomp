@@ -294,7 +294,7 @@ s8 config_menu_run(void)
 
 void config_menu_init(void) {
     s32 i;
-    u32 table;
+    const u8** table;
     u32 dst;
     s8* src;
     Config_No_0++;
@@ -334,7 +334,7 @@ void config_menu_init(void) {
             } else {
                 i = Area_Type;
             }
-            dst = *(u32*)(table + i * 4);
+            dst = (u32)table[i];
             cfg_coin = *(u8*)(dst + 1);
         }
         cfg_continue = 0;
@@ -432,7 +432,7 @@ void config_top_game(void) {
 
 void config_top_default(void) {
     register s8 ix;
-    u32 table;
+    const u8** table;
     u32 p;
     s8* dst;
     if ((p1sw_0 & 0x30) == 0x30) {
@@ -445,7 +445,7 @@ void config_top_default(void) {
             } else {
                 ix = Area_Type;
             }
-            p = *(u32*)(table + ix * 4);
+            p = (u32)table[ix];
             cfg_coin = *(u8*)(p + 1);
             cfg_continue = *(u8*)(p + 2);
             cfg_chute = *(u8*)(p + 3);
@@ -1004,7 +1004,7 @@ void sysconfig_exit(void) {
 
 void gameconfig_page(void) {
     u32 p;
-    u32 table;
+    const u8** table;
     s32 ix;
     switch (game_config_main()) {
     case 1:
@@ -1021,7 +1021,7 @@ void gameconfig_page(void) {
                 } else {
                     ix = Area_Type;
                 }
-                p = *(u32*)(table + ix * 4);
+                p = (u32)table[ix];
                 cfg_coin = *(u8*)(p + 1);
             }
             cfg_continue = 0;
@@ -1063,7 +1063,7 @@ void sysconfig_draw_values(void) {
         tilemap_print_script_seq(0, 0, attr, sys_cfg_continue_scr_jp[cfg_continue]);
     }
     attr = 2;
-    if (Monitor_Flip != eeprom_w[6]) {
+    if (Monitor_Flip != eeprom_w[EEP_MONITOR_FLIP]) {
         attr = 8;
     }
     if (Area_Type) {
@@ -1193,7 +1193,7 @@ void config_check_changed(void) {
 
 s32 config_differs_from_default(void) {
     register s8 ix;
-    u32 table;
+    const u8** table;
     u32 p;
     s8* name;
     s32 result;
@@ -1206,7 +1206,7 @@ s32 config_differs_from_default(void) {
     } else {
         ix = Area_Type;
     }
-    p = *(u32*)(table + ix * 4);
+    p = (u32)table[ix];
     if (*(u8*)(p + 1) != cfg_coin) {
         result = -1;
     } else if (*(u8*)(p + 2) != cfg_continue) {
@@ -1366,7 +1366,7 @@ void menu_cursor_redraw(s32 x, s32 y, s32 cur, s32 old) {
 
 void config_menu_load_settings(void) {
     s32 i;
-    u32 table;
+    const u8** table;
     u32 dst;
     s8* src;
     cfg_top_cursor = 0;
@@ -1403,7 +1403,7 @@ void config_menu_load_settings(void) {
             } else {
                 i = Area_Type;
             }
-            dst = *(u32*)(table + i * 4);
+            dst = (u32)table[i];
             cfg_coin = *(u8*)(dst + 1);
         }
         cfg_continue = 0;

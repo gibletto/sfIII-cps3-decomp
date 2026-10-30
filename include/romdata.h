@@ -5,7 +5,8 @@
 
 extern const TM_STRING dbg_dump_title[1];
 extern const TM_STRING dbg_disasm_title[1];
-extern const TM_STRING monitor_msg_tbl[14];   /* provisional name: the exception messages, then the monitor screen lines */
+extern const TM_STRING monitor_msg_tbl[6];      /* provisional name: the exception monitor's messages */
+extern const TM_STRING monitor_panel_tbl[8];    /* provisional name: the exception monitor's register panel */
 extern const char sh_str_break[8];   /* provisional name: the Break: label of the disassembler */
 extern const MoveName sh_op_none_tbl[9];
 extern const MoveName sh_op_ldm_tbl[13];
@@ -99,7 +100,7 @@ extern const s8 Rapid_SA_Data[8][8];
 extern const u8 Standing_Time_Data[13][4][8];
 extern const u8 Squat_Time_Data[8][8];
 extern const u8 Denjin_Data[4][16];
-extern const u8 Correct_Cont_Time_Data[14];
+extern const u8 Com_Data_unref_0[14];
 extern const s16 Dash_Distance_Data[13][2];
 extern const s16 Get_Up_SA_Tech_Data[13][3];
 extern const s8 Passive_Guard_Off_Data[13][250];
@@ -207,16 +208,16 @@ extern const s8 Demo_PL_Data[5];
 extern const RANK_DATA Rank_Default_Data[12];
 extern const s8 Wins_Pos_X_Data[4];
 extern const s8 FBI_msg[4];
-/* The x of the entry screen's texts by player and display mode: six message pairs, then the score pairs
-   (Score_X_Pos_Data) and the loser pairs (Loser_X_Pos_Data) stored after them, which entry_2, manage_2 and
-   continue read as rows 6-7 and 8-10 of this table. */
-extern const u16 Entry_Screen_X_Pairs[6][2][2];
+/* The x of the entry and win screen texts by row, player and display mode: six message rows, then the
+   score rows (6-7) and the win record and loser rows (8-10). */
+extern const u16 Entry_Screen_X_Pairs[11][2][2];
 #define Entry_Msg_X_Data ((const u16(*)[2])Entry_Screen_X_Pairs)
 #define ENTRY_MSG_X_ROWS ((const u16(*)[2])Entry_Screen_X_Pairs)
 #define ENTRY_MSG_X_PAIRS Entry_Screen_X_Pairs
 #define ENTRY_SCORE_X_PAIRS (Entry_Screen_X_Pairs + 6)
 #define ENTRY_LOSER_X_PAIRS (Entry_Screen_X_Pairs + 8)
-extern const s16 Loser_X_Pos_Data[6][2];
+#define Score_X_Pos_Data ((const u16(*)[2])ENTRY_SCORE_X_PAIRS)
+#define Loser_X_Pos_Data ((const u16(*)[2])ENTRY_LOSER_X_PAIRS)
 extern const s16 EFFA3_Area_Data[2][2][4];
 extern const DAMAGE_DATA Damage_Power_Data[256];
 extern const s8 Face_Cursor_Data[2][2][5];
@@ -271,7 +272,44 @@ extern const s8 bg_test_stage_tbl[18][2];
 extern const s16 akebono_scrn_pos_tbl[152][2];
 extern const s16 bg_scno_tbl[20];
 extern const s16 etc_bg_scno_tbl[47];
-extern const s16 ake_scr_record_data[515];
+extern const s16 ake_scr_record_data[16];
+extern const s16 bg_scr_record_00_0[13];
+extern const s16 bg_scr_record_00_1[7];
+extern const s16 bg_scr_record_00_2[13];
+extern const s16 bg_scr_record_00_3[7];
+extern const s16 bg_scr_record_01_0[16];
+extern const s16 bg_scr_record_01_1[16];
+extern const s16 bg_scr_record_01_2[10];
+extern const s16 bg_scr_record_02_0[13];
+extern const s16 bg_scr_record_02_1[7];
+extern const s16 bg_scr_record_03_0[13];
+extern const s16 bg_scr_record_03_2[16];
+extern const s16 bg_scr_record_04_0[10];
+extern const s16 bg_scr_record_04_1[16];
+extern const s16 bg_scr_record_04_2[16];
+extern const s16 bg_scr_record_05_0[16];
+extern const s16 bg_scr_record_05_1[16];
+extern const s16 bg_scr_record_05_2[13];
+extern const s16 bg_scr_record_06_0[13];
+extern const s16 bg_scr_record_06_1[13];
+extern const s16 bg_scr_record_07_0[16];
+extern const s16 bg_scr_record_07_1[10];
+extern const s16 bg_scr_record_07_2[16];
+extern const s16 bg_scr_record_08_0[13];
+extern const s16 bg_scr_record_08_1[10];
+extern const s16 bg_scr_record_09_2[7];
+extern const s16 bg_scr_record_10_0[13];
+extern const s16 bg_scr_record_11_0[16];
+extern const s16 bg_scr_record_11_2[16];
+extern const s16 bg_scr_record_14_0[22];
+extern const s16 bg_scr_record_14_1[7];
+extern const s16 bg_scr_record_15_1[28];
+extern const s16 bg_scr_record_16_0[10];
+extern const s16 bg_scr_record_16_2[10];
+extern const s16 bg_scr_record_19_0[13];
+extern const s16 bg_scr_record_20_0[16];
+extern const s16 bg_scr_record_20_1[16];
+extern const s16 bg_scr_record_20_2[16];
 extern const s32 bg_speed_tbl[19][4][2];
 extern const s32 etc_bg_speed_tbl[5][4][2];
 extern const s32 etc_bg_zuubun_tbl[5][4];
@@ -348,7 +386,15 @@ extern const s16 combo_hitpos_tbl[3][2];
 extern const u16 combo_erase_pos_tbl[2][8][2];
 extern const u16 combo_erase_len_tbl[8];
 extern const u16 vital_cell_tbl[81];
-extern const u16 vital_cell_1p_tbl[219];
+extern const u16 vital_cell_1p_tbl[81];
+extern const u16 vital_npos_0[20];
+extern const u16 vital_npos_1[20];
+extern const u16 vital_npos_2[20];
+extern const u16 vital_npos_3[20];
+extern const u16 vital_attr_0[3];
+extern const u16 vital_attr_1[3];
+extern const u16 vital_attr_2[3];
+extern const u16 vital_unref_0[49];
 extern const s16 hoji_counter_tbl[4];
 extern const u16 sa_time_data_tbl[2][6];
 extern const s16 fade_param_tbl[31][6];
@@ -364,7 +410,41 @@ extern const s16 parts_colcd_table[6];
 extern const PLEF plef_data[71];
 extern const s16 plef_kage_data[1][4];
 extern const s16 scr_obj_num[14][3];   /* by stage and area */
+extern const s16 scr_obj_data_0_0[45];
+extern const s16 scr_obj_data_1_0[36];
+extern const s16 scr_obj_data_12_0[1];
+extern const s16 scr_obj_data_2_0[9];
+extern const s16 scr_obj_data_unref_0[9];
+extern const s16 scr_obj_data_2_1[36];
+extern const s16 scr_obj_data_3_0[54];
+extern const s16 scr_obj_data_3_1[27];
+extern const s16 scr_obj_data_4_0[27];
+extern const s16 scr_obj_data_4_1[45];
+extern const s16 scr_obj_data_5_0[81];
+extern const s16 scr_obj_data_6_0[63];
+extern const s16 scr_obj_data_6_1[54];
+extern const s16 scr_obj_data_6_2[36];
+extern const s16 scr_obj_data_7_0[18];
+extern const s16 scr_obj_data_8_0[9];
+extern const s16 scr_obj_data_8_1[36];
+extern const s16 scr_obj_data_9_0[18];
 extern const s16 scr_obj_num6[14][3];   /* by stage and area */
+extern const s16 scr_obj_data6_0_0[90];
+extern const s16 scr_obj_data6_1_0[72];
+extern const s16 scr_obj_data6_12_0[18];
+extern const s16 scr_obj_data6_2_0[36];
+extern const s16 scr_obj_data6_2_1[99];
+extern const s16 scr_obj_data6_3_0[63];
+extern const s16 scr_obj_data6_3_1[27];
+extern const s16 scr_obj_data6_4_0[108];
+extern const s16 scr_obj_data6_4_1[135];
+extern const s16 scr_obj_data6_5_0[153];
+extern const s16 scr_obj_data6_6_0[81];
+extern const s16 scr_obj_data6_6_1[63];
+extern const s16 scr_obj_data6_7_0[18];
+extern const s16 scr_obj_data6_8_0[81];
+extern const s16 scr_obj_data6_8_1[18];
+extern const s16 scr_obj_data6_9_0[90];
 extern const s16 eff09_data[4][9];
 extern const s16 eff09_data2[10][8];
 extern const s32 eff09_2000_data[2][4];
@@ -372,17 +452,23 @@ extern const s32 eff09_add_tbl0[2][2];
 extern const s32 eff09_add_tbl1[2][2];
 extern const s32 eff09_add_tbl2[2][2];
 extern const s16 sean_ball_hit[4];
-extern const s16 scr_obj_num10[30];
+extern const s16 scr_obj_num10[4];
+extern const s16 scr_obj_data10_0[12];
+extern const s16 scr_obj_data10_1[9];
+extern const s16 scr_obj_data10_2[3];
+extern const s16 scr_obj_data10_3[2];
 extern const TAMA tama_data[];
 extern const s16 tcct[8];
 extern void (*const kind_of_tama_process[])(WORK_Other* ewk, TAMA* twk);
 extern const s16 kage_tbl[6][4];
-extern const u16 eff14_ofs_tbl[183];
+extern const u16 eff14_ofs_tbl[11];
 extern const u32 eff14_data_tbl[11][5];
 extern const s16 scr_obj_num18[6][4];
 extern const s16 eff21_data_adrs_0[16];   /* three parts of 5 (pattern, X, Y, priority, flip) */
 extern const s32 eff21_sp_tbl[3][4];   /* a[0], a[1], d[0], d[1] per part */
-extern const s16 eff26_num[36];
+extern const s16 eff26_num[2];
+extern const s16 scr_obj_data26_0[17];
+extern const s16 scr_obj_data26_1[17];
 extern const s16 scr_obj_num27[7];   /* seven types */
 extern const s16 panel_pos_hosei[7][4][2];
 extern void (*const EFF38_Jmp_Tbl[7])();
@@ -398,7 +484,17 @@ extern void (*const EFF76_Jmp_Tbl[8])();
 extern const s8 Time_Data[8];
 extern const s16 eff87_loop_tbl[5][4];
 extern const s16 eff88_loop_tbl[5][4];
-extern const s16 scr_obj_data88_0[81];   /* provisional name: effect 88 object list */
+extern const s16 scr_obj_data88_0[9];
+extern const s16 scr_obj_data88_1_0[36];
+extern const s16 scr_obj_data88_1_2[27];
+extern const s16 scr_obj_data88_1_3[9];
+extern const s16 scr_obj_data88_2_0[18];
+extern const s16 scr_obj_data88_2_1[9];
+extern const s16 scr_obj_data88_2_2[9];
+extern const s16 scr_obj_data88_2_3[9];
+extern const s16 scr_obj_data88_3_0[9];
+extern const s16 scr_obj_data88_3_2[9];
+extern const s16 scr_obj_data88_4_0[28];
 extern const s16 Rewrite_Mark_Data[26];
 extern const s16 win_mark_col_tbl[10];
 extern const Eff93_Jmp_Tbl_t Eff93_Jmp_Tbl[2];
@@ -688,7 +784,6 @@ extern const s16 Lv10_Time_Data[3][1][9];
 extern const s16 cell_size_tbl[16];
 extern const u16 flip_attr_tbl[4];
 extern const s16 stage_bgm_tbl[13];
-extern const u16 Score_X_Pos_Data[4][2];
 extern const s8 debug_blank6_msg[8];
 extern const u16 dbg_cg_group_top_tbl[];
 extern const u32 dbg_char_color_tbl[10];
@@ -762,7 +857,11 @@ extern const char dbg_free_str[8];
 extern const char dbg_copy_str[8];
 extern const char dbg_user_str[8];
 extern const char dbg_define_str[8];
-extern const s16 bg_scr_record_data[92];
+extern const s16 bg_scr_record_data[16];
+extern const s16 bg_scr_record_03_1[16];
+extern const s16 etc_bg_scr_record_0_2[16];
+extern const s16 etc_bg_scr_record_0_3[16];
+extern const s16 bg_scr_record_unref_0[28];
 extern const u16 end_100_scrn_data[13][16][32];
 extern const s8 Flip_Attack_Data[3][13][8];   /* [player][CC_Type][lv] */
 extern const s16 illusion_setup_table[7][2];
@@ -779,7 +878,7 @@ extern const TM_STRING config_top_menu_scr[5];
 extern const TM_STRING config_saving_scr[2];
 extern const u32 snd_seq_rom_data[1076];
 extern const SNDSAMPLE snd_sample_rom_tbl[373];
-extern u8* snd_bank_rom_tbl[];
+extern const u8* const snd_bank_rom_tbl[];
 extern const CharGfxEntry cg_data_tbl[];
 extern const PANEL ake_cell0_data[8];
 extern const u32 result_char_table[7]; /* provisional name: result figures */

@@ -16,12 +16,12 @@
           .IMPORT     _snd_fade_level
           .IMPORT     _snd_fade_speed
           .IMPORT     _snd_reg_save
-          .IMPORT     _sound_sample_submit_work4
-          .IMPORT     _sound_sample_submit_work7
+          .IMPORT     _bgm_volume_offset
+          .IMPORT     _bgm_state
           .IMPORT     _voice_process_null
           .IMPORT     _voice_process_primary
           .IMPORT     _voice_process_secondary
-          .IMPORT     _voice_state_init_pair_work
+          .IMPORT     _bgm_pitch_offset
           .EXPORT     _sound_driver_init
           .EXPORT     _se_voice_stop
           .EXPORT     _se_voice_stop_all
@@ -29,10 +29,10 @@
           .SECTION    PSYS,CODE,ALIGN=4
 p_snd_fade_speed:
           .DATA.L     _snd_fade_speed
-p_voice_state_init_pair_work:
-          .DATA.L     _voice_state_init_pair_work
-p_sound_sample_submit_work4:
-          .DATA.L     _sound_sample_submit_work4
+p_bgm_pitch_offset:
+          .DATA.L     _bgm_pitch_offset
+p_bgm_volume_offset:
+          .DATA.L     _bgm_volume_offset
 
 _sound_driver_init:
           STS.L       MACL,@-R15
@@ -62,7 +62,7 @@ sound_driver_init_00A:
           CMP/GE      R2,R3
           BF          sound_driver_init_00A
           MOV         #1,R2
-          MOV.L       p_sound_sample_submit_work7,R3
+          MOV.L       p_bgm_state,R3
           MOV.B       R2,@R3
           EXTU.W      R7,R2
           MOV.L       p_sound_reg_200,R3
@@ -93,8 +93,8 @@ p_bgm_voice:
           .DATA.L     _bgm_voice
 p_se_voice:
           .DATA.L     _se_voice
-p_sound_sample_submit_work7:
-          .DATA.L     _sound_sample_submit_work7
+p_bgm_state:
+          .DATA.L     _bgm_state
 p_sound_reg_200:
           .DATA.L     SOUND_REG+H'200
 p_snd_reg_save:
@@ -140,7 +140,7 @@ _sound_driver_tick:
           STS.L       PR,@-R15
           MOV         #0,R8
           STS.L       MACL,@-R15
-          MOV.L       p_sound_sample_submit_work7_2,R9
+          MOV.L       p_bgm_state_2,R9
           MOV.W       k_80,R10
           MOV.L       p_snd_fade_level,R11
           MOV.L       p_se_voice_3,R12
@@ -247,8 +247,8 @@ sound_driver_tick_0D4:
 k_80:
           .DATA.W     H'0080
           .DATA.W     H'9E56           ; alignment pad
-p_sound_sample_submit_work7_2:
-          .DATA.L     _sound_sample_submit_work7
+p_bgm_state_2:
+          .DATA.L     _bgm_state
 p_snd_fade_level:
           .DATA.L     _snd_fade_level
 p_se_voice_3:

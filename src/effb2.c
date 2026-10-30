@@ -4,7 +4,7 @@
  * effect_B2_move waits for the display children's rf_b2_flag counts and timers,
  * then sets Next_Step so the round can begin. It checks Break_Into after each of
  * its first five states. effect_B2_init creates the family-2 controller, chooses
- * normal or final round from Game_setting.set4 and Round_num, then starts effect B3.
+ * normal or final round from Game_setting.Battle_Number and Round_num, then starts effect B3.
  */
 
 #include "structs.h"
@@ -144,7 +144,7 @@ s32 b3_Break_Into_check(WORK_Other* ewk) {
 
 
 
-/* Family 2; round type comes from Game_setting.set4. */
+/* Family 2; round type comes from Game_setting.Battle_Number. */
 s32 effect_B2_init(void) {
     WORK_Other* ewk;
     s16 ix;
@@ -156,7 +156,7 @@ s32 effect_B2_init(void) {
     ewk->wu.id = 0x70;
     ewk->wu.work_id = 0x10;
     ewk->wu.my_family = 2;
-    switch (Game_setting.set4) {
+    switch (Game_setting.Battle_Number) {
     case 0:
         ewk->wu.type = 0;
         break;

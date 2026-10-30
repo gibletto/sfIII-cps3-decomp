@@ -36,7 +36,7 @@ s32 scsi_read_10(s32 lba, s32 count, s32 blk, s32 unused, void* buf);
 s32 scsi_read_capacity(s32 len, void* buf);
 s32 scsi_request_sense(s32 len, s32 lun, u8* buf);
 s32 scsi_send_cdb_and_read(s32 lba, u8* buf);
-s32 scsi_send_cdb_bytes(s32 n, s8* cdb);
+s32 scsi_send_cdb_bytes(s32 n, const s8* cdb);
 s32 scsi_start_stop_unit(s32 start, s32 immed);
 s32 scsi_test_unit_ready(s32 lun);
 

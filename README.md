@@ -97,7 +97,7 @@ Apart from the alignment-gap bytes (`tools/gaps.tsv`, below), nothing from the R
 
 New Generation was built with the arcade compiler of 2nd Impact and 3rd Strike, [SHC 5.0 Release 26, decompiled and
 rebuilt in C](https://github.com/gibletto/shc-5r26-decomp-sf3), in a slightly different revision. The rebuilt stages
-in `bin/` carry the rules found for those games, and `build.bat` and the `Makefile` set 10 settings at
+in `bin/` carry the rules found for those games, and `build.bat` and the `Makefile` set 9 settings at
 the top (and a few more for the modules compiled with other options) for the revision that built New Generation. The
 compiler project's [SF3.md](https://github.com/gibletto/shc-5r26-decomp-sf3/blob/main/SF3.md) lists the rules with the
 routines that show them. Those New Generation adds:

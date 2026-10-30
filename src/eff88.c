@@ -39,13 +39,12 @@
 
 
 
-const s16* scr_obj_data88[1][4] = {
+const s16* scr_obj_data88[5][4] = {
     { scr_obj_data88_0, scr_obj_data88_0, scr_obj_data88_0, scr_obj_data88_0 },
-};
-/* Stored after scr_obj_data88. Nothing in the program refers to it by name or address; if it is read,
-   it is through an index past the end of scr_obj_data88. */
-const s16* scr_obj_data88_tail[1][4] = {
-    { &scr_obj_data88_0[9], &scr_obj_data88_0[9], &scr_obj_data88_0[45], &scr_obj_data88_0[72] },
+    { scr_obj_data88_1_0, scr_obj_data88_1_0, scr_obj_data88_1_2, scr_obj_data88_1_3 },
+    { scr_obj_data88_2_0, scr_obj_data88_2_1, scr_obj_data88_2_2, scr_obj_data88_2_3 },
+    { scr_obj_data88_3_0, scr_obj_data88_3_0, scr_obj_data88_3_2, scr_obj_data88_3_2 },
+    { scr_obj_data88_4_0, scr_obj_data88_4_0, scr_obj_data88_4_0, scr_obj_data88_4_0 },
 };
 
 

@@ -4,7 +4,7 @@
  * effA6_x_tbl_wide holds the x targets of the BG 0 scroll on the wide screen, three per battle
  * country, of which effect A6 reads one (Battle_Country * 3); effA6_x_wide_lead holds the two
  * values stored before it and is not referred to by name. Read by EFFA6.C, the BG 0 scroll to
- * the battle country, in place of effA6_x_tbl when Game_setting.mode is set.
+ * the battle country, in place of effA6_x_tbl when Game_setting.Screen_Mode is set.
  */
 
 #include "types.h"

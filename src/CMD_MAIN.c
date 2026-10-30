@@ -220,7 +220,7 @@ void debug_menu_player_setup(void) {
     dbg_cmd_panel = 0;
     dbg_hud_mode = 0;
     Game_pause = 0;
-    if (Game_setting.mode) {
+    if (Game_setting.Screen_Mode) {
         dbg_hud_x = 8;
     } else {
         dbg_hud_x = 0;
@@ -1510,7 +1510,7 @@ void debug_bg_test_init(void) {
     polygon2d_submit_line(gfx->prep, 0, 0, 3);
     mode = gfx->mode;
     polygon2d_submit_line(gfx->src, bg_w.scroll_cg_adr, gfx->size, mode);
-    if (Game_setting.mode) {
+    if (Game_setting.Screen_Mode) {
         bg_w.pos_offset = 0xF8;
     } else {
         bg_w.pos_offset = 0xC0;
@@ -1532,7 +1532,7 @@ void debug_bg_test_init(void) {
         bg_w.bgw[i].bg_address = (u16 *)simmram_slot_addr(bg_w.bgw[i].bg_adrs_c_no);
         scrn_map_set_now(i, (u32)bg_w.bgw[i].bg_address);
         scrn_map_set(i, (u32)bg_w.bgw[i].bg_address);
-        ptr = (const s16*)bg_map_tbl2[4][i];
+        ptr = bg_map_tbl2[4][i];
         sprite_list_setup(i, 1, ptr);
         bg_w.bgw[i].r_no_1 = bg_w.bgw[i].r_no_2 = 0;
         bg_w.bgw[i].fam_no = i;
@@ -3032,7 +3032,7 @@ void debug_char_disp_once(WORK* wk) {
 /* provisional name */
 /* provisional name */
 void debug_pattern_edit_init_counts(void) {
-    u32** pat;
+    const u32** pat;
     ((DBG_SLOT*)&dbg_slot_w[0])->sel[0] = 1;
     ((DBG_SLOT*)&dbg_slot_w[1])->sel[0] = 1;
     ((DBG_SLOT*)&dbg_slot_w[0])->sel0_max = 0;
@@ -3046,7 +3046,7 @@ void debug_pattern_edit_init_counts(void) {
 
 /* provisional name */
 void debug_motion_list_count(void) {
-    u32* p;
+    const u32* p;
     dbg_slot->sel[1] = 1;
     if (dbg_slot->sel[0] > 0x90) {
         p = dbg_pl->wu.char_table[0];
@@ -3117,7 +3117,7 @@ void debug_pattern_entry_copy_dual(s16 n, u16* q, s16 box) {
     u16* a;
     u16* b;
     s16 i;
-    HIT_IX* ix;
+    const HIT_IX* ix;
     src = (u16*)&dbg_pl->wu.hit_ix_table[box];
     a = (u16*)((u8*)dbg_look_buf.hit_ix + n * 8);
     b = (u16*)((u8*)dbg_edit_buf.hit_ix + n * 8);
@@ -3728,7 +3728,7 @@ void debug_draw_record_info(void) {
 /* provisional name */
 void debug_char_init(void) {
     s16 x;
-    if (Game_setting.mode) {
+    if (Game_setting.Screen_Mode) {
         x = 32;
     } else {
         x = 0;

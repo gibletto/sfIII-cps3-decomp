@@ -40,18 +40,21 @@
 
 
 extern const s16 scr_obj_data87_0[];
+extern const s16 scr_obj_data87_1_0[];
+extern const s16 scr_obj_data87_1_1[];
+extern const s16 scr_obj_data87_1_2[];
+extern const s16 scr_obj_data87_1_3[];
+extern const s16 scr_obj_data87_2_0[];
+extern const s16 scr_obj_data87_3_0[];
+extern const s16 scr_obj_data87_4_0[];
 
 /* 02006D8C */
-const s16* scr_obj_data87[1][4] = {
+const s16* scr_obj_data87[5][4] = {
     { scr_obj_data87_0, scr_obj_data87_0, scr_obj_data87_0, scr_obj_data87_0 },
-};
-/* Stored after scr_obj_data87. Nothing in the program refers to it by name or address; if it is read,
-   it is through an index past the end of scr_obj_data87. */
-const s16* scr_obj_data87_tail[4][4] = {
-    { &scr_obj_data87_0[9], &scr_obj_data87_0[10], &scr_obj_data87_0[19], &scr_obj_data87_0[28] },
-    { &scr_obj_data87_0[55], &scr_obj_data87_0[55], &scr_obj_data87_0[55], &scr_obj_data87_0[55] },
-    { &scr_obj_data87_0[64], &scr_obj_data87_0[64], &scr_obj_data87_0[64], &scr_obj_data87_0[64] },
-    { &scr_obj_data87_0[73], &scr_obj_data87_0[73], &scr_obj_data87_0[73], &scr_obj_data87_0[73] },
+    { scr_obj_data87_1_0, scr_obj_data87_1_1, scr_obj_data87_1_2, scr_obj_data87_1_3 },
+    { scr_obj_data87_2_0, scr_obj_data87_2_0, scr_obj_data87_2_0, scr_obj_data87_2_0 },
+    { scr_obj_data87_3_0, scr_obj_data87_3_0, scr_obj_data87_3_0, scr_obj_data87_3_0 },
+    { scr_obj_data87_4_0, scr_obj_data87_4_0, scr_obj_data87_4_0, scr_obj_data87_4_0 },
 };
 
 

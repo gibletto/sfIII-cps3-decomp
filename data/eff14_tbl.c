@@ -1,9 +1,11 @@
 /*
  * EFF14_TBL.C  background colour-cycle, falling stone and blinking object tables
  *
- * eff14_data_tbl gives each of the 11 colour-cycle ids its scroll layer, work slot, script and
- * cell patterns (in eff14_pattern_0); eff14_ofs_tbl starts with the map offset of each id's
- * rectangle, followed by the scripts. Read by EFF14.C, the background colour-cycle writer.
+ * eff14_ofs_tbl is the map offset of each of the 11 colour-cycle ids' cell rectangle;
+ * eff14_data_tbl gives each id its scroll layer, work slot, script (eff14_script_n: rows of
+ * timer and colour, looping at a -1 timer), cell pattern mask (eff14_pattern_n, 1 = recolour)
+ * and size in columns and rows (eff14_size_n). Read by EFF14.C, the background colour-cycle
+ * writer.
  * eff15_data_tbl holds the position, priority, cell, side speed limit and floor of each
  * falling stone, and eff15_y_speed_tbl, eff15_x_speed_tbl, eff15_x_acc_tbl and
  * eff15_x_acc_tbl2 the random speeds it picks from; read by EFF15.C. eff16_data_tbl is the x,
@@ -15,8 +17,40 @@
 
 #pragma section TBL
 
+/* a script step: the frames it lasts, then the colour, a big-endian word (EFF14.C reads it with *(s16*)) */
+#define EFF14_STEP(time, col)   0, (time), (s8)((col) >> 8), (s8)(col)
+#define EFF14_END               -1, -1
+
 extern const u16 eff14_ofs_tbl[];
+extern const s8 eff14_script_0[];
+extern const s8 eff14_script_1[];
+extern const s8 eff14_script_2[];
+extern const s8 eff14_script_3[];
+extern const s8 eff14_script_4[];
+extern const s8 eff14_script_9[];
+extern const s8 eff14_script_10[];
 extern const s8 eff14_pattern_0[];
+extern const s8 eff14_size_0[];
+extern const s8 eff14_pattern_1[];
+extern const s8 eff14_size_1[];
+extern const s8 eff14_pattern_2[];
+extern const s8 eff14_size_2[];
+extern const s8 eff14_pattern_3[];
+extern const s8 eff14_size_3[];
+extern const s8 eff14_pattern_4[];
+extern const s8 eff14_size_4[];
+extern const s8 eff14_pattern_5[];
+extern const s8 eff14_size_5[];
+extern const s8 eff14_pattern_6[];
+extern const s8 eff14_size_6[];
+extern const s8 eff14_pattern_7[];
+extern const s8 eff14_size_7[];
+extern const s8 eff14_pattern_8[];
+extern const s8 eff14_size_8[];
+extern const s8 eff14_pattern_9[];
+extern const s8 eff14_size_9[];
+extern const s8 eff14_pattern_10[];
+extern const s8 eff14_size_10[];
 extern const u32 eff14_data_tbl[][5];
 extern const s16 eff15_data_tbl[];
 extern const s32 eff15_y_speed_tbl[];
@@ -25,33 +59,61 @@ extern const s32 eff15_x_acc_tbl[];
 extern const s32 eff15_x_acc_tbl2[];
 extern const s16 eff16_data_tbl[][4];
 
-const u16 eff14_ofs_tbl[183] = {
-    0x1660, 0x197C, 0x1894, 0x1584, 0x1688, 0x1494, 0xDA0, 0xAA8,
-    0xACC, 0x19B8, 0x1618, 5, 0x54, 5, 0x55, 5,
-    0x56, 5, 0x57, 5, 0x58, 5, 0x59, 5,
-    0x5A, 5, 0x5B, 5, 0x5C, 5, 0x5D, 5,
-    0x5E, 5, 0x5F, 0xFFFF, 0, 3, 0x59, 3,
-    0x60, 3, 0x61, 0xFFFF, 0, 3, 0x52, 3,
-    0x5C, 3, 0x5D, 0xFFFF, 0, 3, 0x41, 3,
-    0x5E, 3, 0x5F, 0xFFFF, 0, 4, 0x45, 4,
-    0x49, 4, 0x4A, 4, 0x4B, 4, 0x4C, 4,
-    0x4D, 0xFFFF, 0, 4, 0x43, 4, 0x4E, 4,
-    0x43, 4, 0x4E, 2, 0x43, 2, 0x4E, 4,
-    0x43, 4, 0x4E, 5, 0x43, 3, 0x4E, 4,
-    0x43, 4, 0x4E, 4, 0x43, 4, 0x4E, 6,
-    0x43, 5, 0x4E, 4, 0x43, 4, 0x4E, 4,
-    0x43, 4, 0x4E, 5, 0x43, 4, 0x4E, 4,
-    0x43, 4, 0x4E, 6, 0x43, 6, 0x4E, 0xFFFF,
-    0, 4, 0x40, 4, 0x4F, 4, 0x40, 4,
-    0x4F, 3, 0x40, 3, 0x4F, 2, 0x40, 3,
-    0x4F, 4, 0x40, 5, 0x4F, 4, 0x40, 4,
-    0x4F, 4, 0x40, 4, 0x4F, 2, 0x40, 3,
-    0x4F, 4, 0x40, 5, 0x4F, 4, 0x40, 4,
-    0x4F, 4, 0x40, 4, 0x4F, 5, 0x40, 6,
-    0x4F, 5, 0x40, 4, 0x4F, 0xFFFF, 0,
+const u16 eff14_ofs_tbl[11] = {
+    0x1660, 0x197C, 0x1894, 0x1584, 0x1688, 0x1494, 0xDA0, 0xAA8, 0xACC, 0x19B8, 0x1618,
 };
 
-const s8 eff14_pattern_0[566] = {
+const s8 eff14_script_0[52] = {
+    EFF14_STEP(5, 0x54), EFF14_STEP(5, 0x55), EFF14_STEP(5, 0x56), EFF14_STEP(5, 0x57),
+    EFF14_STEP(5, 0x58), EFF14_STEP(5, 0x59), EFF14_STEP(5, 0x5A), EFF14_STEP(5, 0x5B),
+    EFF14_STEP(5, 0x5C), EFF14_STEP(5, 0x5D), EFF14_STEP(5, 0x5E), EFF14_STEP(5, 0x5F),
+    EFF14_END, 0, 0,
+};
+
+const s8 eff14_script_1[16] = {
+    EFF14_STEP(3, 0x59), EFF14_STEP(3, 0x60), EFF14_STEP(3, 0x61),
+    EFF14_END, 0, 0,
+};
+
+const s8 eff14_script_2[16] = {
+    EFF14_STEP(3, 0x52), EFF14_STEP(3, 0x5C), EFF14_STEP(3, 0x5D),
+    EFF14_END, 0, 0,
+};
+
+const s8 eff14_script_3[16] = {
+    EFF14_STEP(3, 0x41), EFF14_STEP(3, 0x5E), EFF14_STEP(3, 0x5F),
+    EFF14_END, 0, 0,
+};
+
+const s8 eff14_script_4[28] = {
+    EFF14_STEP(4, 0x45), EFF14_STEP(4, 0x49), EFF14_STEP(4, 0x4A), EFF14_STEP(4, 0x4B),
+    EFF14_STEP(4, 0x4C), EFF14_STEP(4, 0x4D),
+    EFF14_END, 0, 0,
+};
+
+const s8 eff14_script_9[108] = {
+    EFF14_STEP(4, 0x43), EFF14_STEP(4, 0x4E), EFF14_STEP(4, 0x43), EFF14_STEP(4, 0x4E),
+    EFF14_STEP(2, 0x43), EFF14_STEP(2, 0x4E), EFF14_STEP(4, 0x43), EFF14_STEP(4, 0x4E),
+    EFF14_STEP(5, 0x43), EFF14_STEP(3, 0x4E), EFF14_STEP(4, 0x43), EFF14_STEP(4, 0x4E),
+    EFF14_STEP(4, 0x43), EFF14_STEP(4, 0x4E), EFF14_STEP(6, 0x43), EFF14_STEP(5, 0x4E),
+    EFF14_STEP(4, 0x43), EFF14_STEP(4, 0x4E), EFF14_STEP(4, 0x43), EFF14_STEP(4, 0x4E),
+    EFF14_STEP(5, 0x43), EFF14_STEP(4, 0x4E), EFF14_STEP(4, 0x43), EFF14_STEP(4, 0x4E),
+    EFF14_STEP(6, 0x43), EFF14_STEP(6, 0x4E),
+    EFF14_END, 0, 0,
+};
+
+const s8 eff14_script_10[108] = {
+    EFF14_STEP(4, 0x40), EFF14_STEP(4, 0x4F), EFF14_STEP(4, 0x40), EFF14_STEP(4, 0x4F),
+    EFF14_STEP(3, 0x40), EFF14_STEP(3, 0x4F), EFF14_STEP(2, 0x40), EFF14_STEP(3, 0x4F),
+    EFF14_STEP(4, 0x40), EFF14_STEP(5, 0x4F), EFF14_STEP(4, 0x40), EFF14_STEP(4, 0x4F),
+    EFF14_STEP(4, 0x40), EFF14_STEP(4, 0x4F), EFF14_STEP(2, 0x40), EFF14_STEP(3, 0x4F),
+    EFF14_STEP(4, 0x40), EFF14_STEP(5, 0x4F), EFF14_STEP(4, 0x40), EFF14_STEP(4, 0x4F),
+    EFF14_STEP(4, 0x40), EFF14_STEP(4, 0x4F), EFF14_STEP(5, 0x40), EFF14_STEP(6, 0x4F),
+    EFF14_STEP(5, 0x40), EFF14_STEP(4, 0x4F),
+    EFF14_END, 0, 0,
+};
+
+const s8 eff14_pattern_0[190] = {
     1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1,
     0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1,
     1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -63,15 +125,61 @@ const s8 eff14_pattern_0[566] = {
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 19, 10,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+};
+
+const s8 eff14_size_0[2] = {
+    19, 10,
+};
+
+const s8 eff14_pattern_1[35] = {
     0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 7, 5, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 3,
+    1, 1, 1,
+};
+
+const s8 eff14_size_1[2] = {
+    7, 5,
+};
+
+const s8 eff14_pattern_2[2] = {
+    1, 1,
+};
+
+const s8 eff14_size_2[2] = {
+    2, 1,
+};
+
+const s8 eff14_pattern_3[21] = {
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1,
+};
+
+const s8 eff14_size_3[2] = {
+    7, 3,
+};
+
+const s8 eff14_pattern_4[18] = {
     0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 6, 3, 1, 1, 1, 2, 0, 0, 1, 1, 1, 1, 1, 1,
-    1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1,
+    1, 1,
+};
+
+const s8 eff14_size_4[2] = {
+    6, 3,
+};
+
+const s8 eff14_pattern_5[2] = {
+    1, 1,
+};
+
+const s8 eff14_size_5[2] = {
+    1, 2,
+};
+
+const s8 eff14_pattern_6[192] = {
+    0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -81,27 +189,59 @@ const s8 eff14_pattern_0[566] = {
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 16, 12, 0, 0, 0, 0, 1, 0,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 3, 0, 0, 0, 1, 1,
-    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 3, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 6, 3,
+};
+
+const s8 eff14_size_6[2] = {
+    16, 12,
+};
+
+const s8 eff14_pattern_7[15] = {
+    0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+};
+
+const s8 eff14_size_7[2] = {
+    5, 3,
+};
+
+const s8 eff14_pattern_8[15] = {
+    0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+};
+
+const s8 eff14_size_8[2] = {
+    5, 3,
+};
+
+const s8 eff14_pattern_9[18] = {
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1,
+    1, 1,
+};
+
+const s8 eff14_size_9[2] = {
+    6, 3,
+};
+
+const s8 eff14_pattern_10[36] = {
     0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 0, 0, 0, 9, 4,
+    1, 0, 0, 0,
+};
+
+const s8 eff14_size_10[2] = {
+    9, 4,
 };
 
 const u32 eff14_data_tbl[11][5] = {
-    { 0, 0, (u32)&eff14_ofs_tbl[11], (u32)eff14_pattern_0, (u32)&eff14_pattern_0[190] },
-    { 0, 0, (u32)&eff14_ofs_tbl[37], (u32)&eff14_pattern_0[192], (u32)&eff14_pattern_0[227] },
-    { 0, 1, (u32)&eff14_ofs_tbl[45], (u32)&eff14_pattern_0[229], (u32)&eff14_pattern_0[231] },
-    { 2, 2, (u32)&eff14_ofs_tbl[53], (u32)&eff14_pattern_0[233], (u32)&eff14_pattern_0[254] },
-    { 0, 0, (u32)&eff14_ofs_tbl[61], (u32)&eff14_pattern_0[256], (u32)&eff14_pattern_0[274] },
-    { 0, 1, (u32)&eff14_ofs_tbl[61], (u32)&eff14_pattern_0[276], (u32)&eff14_pattern_0[278] },
-    { 0, 2, (u32)&eff14_ofs_tbl[61], (u32)&eff14_pattern_0[280], (u32)&eff14_pattern_0[472] },
-    { 0, 3, (u32)&eff14_ofs_tbl[61], (u32)&eff14_pattern_0[474], (u32)&eff14_pattern_0[489] },
-    { 0, 4, (u32)&eff14_ofs_tbl[61], (u32)&eff14_pattern_0[491], (u32)&eff14_pattern_0[506] },
-    { 1, 6, (u32)&eff14_ofs_tbl[75], (u32)&eff14_pattern_0[508], (u32)&eff14_pattern_0[526] },
-    { 1, 7, (u32)&eff14_ofs_tbl[129], (u32)&eff14_pattern_0[528], (u32)&eff14_pattern_0[564] },
+    { 0, 0, (u32)eff14_script_0, (u32)eff14_pattern_0, (u32)eff14_size_0 },
+    { 0, 0, (u32)eff14_script_1, (u32)eff14_pattern_1, (u32)eff14_size_1 },
+    { 0, 1, (u32)eff14_script_2, (u32)eff14_pattern_2, (u32)eff14_size_2 },
+    { 2, 2, (u32)eff14_script_3, (u32)eff14_pattern_3, (u32)eff14_size_3 },
+    { 0, 0, (u32)eff14_script_4, (u32)eff14_pattern_4, (u32)eff14_size_4 },
+    { 0, 1, (u32)eff14_script_4, (u32)eff14_pattern_5, (u32)eff14_size_5 },
+    { 0, 2, (u32)eff14_script_4, (u32)eff14_pattern_6, (u32)eff14_size_6 },
+    { 0, 3, (u32)eff14_script_4, (u32)eff14_pattern_7, (u32)eff14_size_7 },
+    { 0, 4, (u32)eff14_script_4, (u32)eff14_pattern_8, (u32)eff14_size_8 },
+    { 1, 6, (u32)eff14_script_9, (u32)eff14_pattern_9, (u32)eff14_size_9 },
+    { 1, 7, (u32)eff14_script_10, (u32)eff14_pattern_10, (u32)eff14_size_10 },
 };
 
 const s16 eff15_data_tbl[66] = {

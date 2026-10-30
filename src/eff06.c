@@ -32,19 +32,19 @@
 
 /* By stage and area; the last stage has none. */
 const s16* scr_obj_data6[14][3] = {
-    { (const s16*)scr_obj_num6 + 42, (const s16*)scr_obj_num6 + 42, (const s16*)scr_obj_num6 + 42 },
-    { (const s16*)scr_obj_num6 + 132, (const s16*)scr_obj_num6 + 132, (const s16*)scr_obj_num6 + 132 },
-    { (const s16*)scr_obj_num6 + 222, (const s16*)scr_obj_num6 + 258, (const s16*)scr_obj_num6 + 258 },
-    { (const s16*)scr_obj_num6 + 357, (const s16*)scr_obj_num6 + 420, (const s16*)scr_obj_num6 + 420 },
-    { (const s16*)scr_obj_num6 + 447, (const s16*)scr_obj_num6 + 555, (const s16*)scr_obj_num6 + 555 },
-    { (const s16*)scr_obj_num6 + 690, (const s16*)scr_obj_num6 + 690, (const s16*)scr_obj_num6 + 690 },
-    { (const s16*)scr_obj_num6 + 843, (const s16*)scr_obj_num6 + 924, (const s16*)scr_obj_num6 + 924 },
-    { (const s16*)scr_obj_num6 + 987, (const s16*)scr_obj_num6 + 987, (const s16*)scr_obj_num6 + 987 },
-    { (const s16*)scr_obj_num6 + 1005, (const s16*)scr_obj_num6 + 1086, (const s16*)scr_obj_num6 + 1086 },
-    { (const s16*)scr_obj_num6 + 1104, (const s16*)scr_obj_num6 + 1104, (const s16*)scr_obj_num6 + 1104 },
-    { (const s16*)scr_obj_num6 + 420, (const s16*)scr_obj_num6 + 357, (const s16*)scr_obj_num6 + 357 },
-    { (const s16*)scr_obj_num6 + 258, (const s16*)scr_obj_num6 + 222, (const s16*)scr_obj_num6 + 222 },
-    { (const s16*)scr_obj_num6 + 204, (const s16*)scr_obj_num6 + 204, (const s16*)scr_obj_num6 + 204 },
+    { scr_obj_data6_0_0, scr_obj_data6_0_0, scr_obj_data6_0_0 },
+    { scr_obj_data6_1_0, scr_obj_data6_1_0, scr_obj_data6_1_0 },
+    { scr_obj_data6_2_0, scr_obj_data6_2_1, scr_obj_data6_2_1 },
+    { scr_obj_data6_3_0, scr_obj_data6_3_1, scr_obj_data6_3_1 },
+    { scr_obj_data6_4_0, scr_obj_data6_4_1, scr_obj_data6_4_1 },
+    { scr_obj_data6_5_0, scr_obj_data6_5_0, scr_obj_data6_5_0 },
+    { scr_obj_data6_6_0, scr_obj_data6_6_1, scr_obj_data6_6_1 },
+    { scr_obj_data6_7_0, scr_obj_data6_7_0, scr_obj_data6_7_0 },
+    { scr_obj_data6_8_0, scr_obj_data6_8_1, scr_obj_data6_8_1 },
+    { scr_obj_data6_9_0, scr_obj_data6_9_0, scr_obj_data6_9_0 },
+    { scr_obj_data6_3_1, scr_obj_data6_3_0, scr_obj_data6_3_0 },
+    { scr_obj_data6_2_1, scr_obj_data6_2_0, scr_obj_data6_2_0 },
+    { scr_obj_data6_12_0, scr_obj_data6_12_0, scr_obj_data6_12_0 },
     { 0, 0, 0 },
 };
 

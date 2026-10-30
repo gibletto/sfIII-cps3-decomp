@@ -140,7 +140,7 @@ s16 id;
         i--;
         div = div / 10;
     }
-    x = Score_X_Pos_Data[id][Game_setting.mode] - top - 1;
+    x = Score_X_Pos_Data[id][Game_setting.Screen_Mode] - top - 1;
     for (i = top; i >= 1; i--, x++) {
         score8x16_put(x, 0, 38, digit[i]);
     }
@@ -176,7 +176,7 @@ s16 id;
         i--;
         div = div / 10;
     }
-    x = Score_X_Pos_Data[id][Game_setting.mode] - top - 1;
+    x = Score_X_Pos_Data[id][Game_setting.Screen_Mode] - top - 1;
     for (i = top; i >= 0; i--, x++) {
         score8x16_put(x, 18, 38, digit[i]);
     }
@@ -189,23 +189,23 @@ void Score_Sub(void) {
     u16 num;
     u16 tens;
     if (plw[0].wu.operator != 0 && Demo_Flag != 0) {
-        tilemap_clear_rect(Score_X_Pos_Data[0][Game_setting.mode] - 7, 0, Score_X_Pos_Data[0][Game_setting.mode], 1);
+        tilemap_clear_rect(Score_X_Pos_Data[0][Game_setting.Screen_Mode] - 7, 0, Score_X_Pos_Data[0][Game_setting.Screen_Mode], 1);
         Disp_Player_Score(0);
         tens = Continue_Coin[0];
         num = Continue_Coin[0];
         tens = tens / 10;
-        score8x16_put(Score_X_Pos_Data[0][Game_setting.mode] - 1, 0, 38, tens);
+        score8x16_put(Score_X_Pos_Data[0][Game_setting.Screen_Mode] - 1, 0, 38, tens);
         num -= tens * 10;
-        score8x16_put(Score_X_Pos_Data[0][Game_setting.mode], 0, 38, num);
+        score8x16_put(Score_X_Pos_Data[0][Game_setting.Screen_Mode], 0, 38, num);
     }
     if (plw[1].wu.operator != 0 && Demo_Flag != 0) {
-        tilemap_clear_rect(Score_X_Pos_Data[1][Game_setting.mode] - 7, 0, Score_X_Pos_Data[1][Game_setting.mode], 1);
+        tilemap_clear_rect(Score_X_Pos_Data[1][Game_setting.Screen_Mode] - 7, 0, Score_X_Pos_Data[1][Game_setting.Screen_Mode], 1);
         Disp_Player_Score(1);
         tens = Continue_Coin[1];
         num = Continue_Coin[1];
         tens = tens / 10;
-        score8x16_put(Score_X_Pos_Data[1][Game_setting.mode] - 1, 0, 38, tens);
+        score8x16_put(Score_X_Pos_Data[1][Game_setting.Screen_Mode] - 1, 0, 38, tens);
         num -= tens * 10;
-        score8x16_put(Score_X_Pos_Data[1][Game_setting.mode], 0, 38, num);
+        score8x16_put(Score_X_Pos_Data[1][Game_setting.Screen_Mode], 0, 38, num);
     }
 }

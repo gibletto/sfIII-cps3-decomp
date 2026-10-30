@@ -74,7 +74,7 @@ u32 staff_roll_cnt = 0;  /* 020067C8 */
 extern const STAFF_LINE staff_roll_last[4];
 
 
-s32 effect_H6_init(s16 timer, s8* str, s16 X, s16 Y, s16 Original_Color, s32 unused);
+s32 effect_H6_init(s16 timer, const s8* str, s16 X, s16 Y, s16 Original_Color, s32 unused);
 
 extern s32 staff_r_no;
 
@@ -161,9 +161,9 @@ void staff_roll_put(x, y, a, b)
 s32 x;
 s32 y;
 s32 a;
-s8* b;
+const s8* b;
 {
-    s8* su;
+    const s8* su;
     s16 xu;
     s16 yu;
     su = b;

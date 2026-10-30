@@ -2,7 +2,7 @@
  * EFFA6.C  Effect A6: BG 0 scroll to the battle country
  *
  * effect_A6_init (from sel_pl.c) takes the target from effA6_x_tbl by Battle_Country (effA6_x_tbl_wide
- * when Game_setting.mode is set) and the direction (effA6_set_target). A frame later effect_A6_move
+ * when Game_setting.Screen_Mode is set) and the direction (effA6_set_target). A frame later effect_A6_move
  * scrolls BG 0 toward it, accelerating up to 8 dots a frame (faster with the cut button,
  * Cut_Cut_Sub), stops on the target and sets Next_Step. It waits while Break_Into is set.
  */
@@ -89,7 +89,7 @@ s32 effect_A6_init(void) {
 /* provisional name */
 void effA6_set_target(WORK_Other* ewk) {
     ewk->wu.hit_quake = effA6_x_tbl[Battle_Country * 3 + 2];
-    if (Game_setting.mode) {
+    if (Game_setting.Screen_Mode) {
         ewk->wu.hit_quake = effA6_x_tbl_wide[Battle_Country * 3].x;
     } else {
         ewk->wu.hit_quake = effA6_x_tbl[Battle_Country * 3 + 2];

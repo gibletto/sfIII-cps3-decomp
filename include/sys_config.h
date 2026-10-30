@@ -4,7 +4,7 @@
 #include "structs.h"
 
 void eeprom_config_reset(void);
-s8 config_bytes_equal(u8* a, u8* b, s32 n);
+s8 config_bytes_equal(const u8* a, const u8* b, s32 n);
 void eeprom_config_save(void);
 void eeprom_config_default(void);
 void eeprom_config_verify(void);
@@ -41,6 +41,6 @@ void sprite_poly_queue_drain_wait(void);
 void sprite_polygon_flush_queue(s32 kind);
 void sprite_list_init(s32 list);
 void sprite_pools_init(void);
-s32 sprite_list_setup(s16 slot, s16 owner, s16* data);
+s32 sprite_list_setup(s16 slot, s16 owner, const s16* data);
 
 #endif

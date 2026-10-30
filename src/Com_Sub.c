@@ -3167,7 +3167,7 @@ s32 Select_Reflection_Time(PLW* wk) {
     s8 xx;
     s8 zz;
     xx = random_32_com();
-    Lv = Setup_Lv18(Game_setting.level);
+    Lv = Setup_Lv18(Game_setting.Difficulty);
     Lv += CC_Value[0];
     if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
         Lv = 2;
@@ -4617,9 +4617,9 @@ void Setup_Com_Max_Range(void) {
     const s16* row;
     u8 type = CC_Type;
     if (type == 2) {
-        limit = Lv18_Time_Data[type][Game_setting.level][14] + 20;
+        limit = Lv18_Time_Data[type][Game_setting.Difficulty][14] + 20;
     } else {
-        limit = ((const s16*)&Lv18_Time_Data[type][Game_setting.level][0])[16] + 20;
+        limit = ((const s16*)&Lv18_Time_Data[type][Game_setting.Difficulty][0])[16] + 20;
     }
     if (type == 2) {
         xx = Lv18_Time_Data[type][8][14] + 20;

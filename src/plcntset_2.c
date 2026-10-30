@@ -423,7 +423,7 @@ static void move_player_work(void) {
     s16 scr_r;
     s16 scr_l;
     center = get_center_position();
-    if (Game_setting.mode) {
+    if (Game_setting.Screen_Mode) {
         scr_r = center + 248;
         scr_l = center - 248;
     } else {

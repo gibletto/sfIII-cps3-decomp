@@ -26,8 +26,8 @@
           .IMPORT     _snd_stereo
           .IMPORT     _snd_wave_bias
           .IMPORT     _sound_envelope_rate
-          .IMPORT     _sound_sample_submit_work4
-          .IMPORT     _voice_state_init_pair_work
+          .IMPORT     _bgm_volume_offset
+          .IMPORT     _bgm_pitch_offset
           .EXPORT     _sound_note_to_pitch
           .EXPORT     _sound_voice_volume_compute
           .EXPORT     _voice_process_secondary
@@ -1524,7 +1524,7 @@ voice_process_secondary_8AA:
           CMP/GE      R2,R3
           BT          voice_process_secondary_900
           MOV         R14,R7
-          MOV.L       p_sound_sample_submit_work4,R6
+          MOV.L       p_bgm_volume_offset,R6
           MOV         #16,R0
           MOV.L       @(32,R14),R5
           MOV.B       @R6,R6
@@ -1544,7 +1544,7 @@ voice_process_secondary_8AA:
           EXTU.W      R4,R4
           MOV.W       R0,@(30,R13)
           MOV         R14,R7
-          MOV.L       p_sound_sample_submit_work4,R6
+          MOV.L       p_bgm_volume_offset,R6
           MOV         #66,R0
           MOV.L       @(32,R14),R5
           MOV.B       @R6,R6
@@ -1556,7 +1556,7 @@ voice_process_secondary_900:
           MOV         R14,R7
           MOV         #16,R0
           MOV         #127,R4
-          MOV.L       p_sound_sample_submit_work4,R6
+          MOV.L       p_bgm_volume_offset,R6
           MOV.L       @(32,R14),R5
           MOV.B       @(R0,R15),R2
           MOV.B       @R6,R6
@@ -1577,7 +1577,7 @@ voice_process_secondary_900:
           EXTU.W      R4,R4
           MOV.W       R0,@(28,R13)
           MOV         R14,R7
-          MOV.L       p_sound_sample_submit_work4,R6
+          MOV.L       p_bgm_volume_offset,R6
           MOV         #66,R0
           MOV.L       @(32,R14),R5
           MOV.B       @R6,R6
@@ -1652,8 +1652,8 @@ voice_process_secondary_982:
 voice_process_secondary_9BC:
           BRA         voice_process_secondary_A0C
           NOP
-p_sound_sample_submit_work4:
-          .DATA.L     _sound_sample_submit_work4
+p_bgm_volume_offset:
+          .DATA.L     _bgm_volume_offset
 voice_process_secondary_9C4:
           MOV.B       @(4,R15),R0
           MOV         R0,R0
@@ -1662,7 +1662,7 @@ voice_process_secondary_9C4:
           BT          voice_process_secondary_9F0
           MOV         R14,R7
           MOV         #66,R0
-          MOV.L       p_sound_sample_submit_work4_2,R6
+          MOV.L       p_bgm_volume_offset_2,R6
           MOV.L       @(32,R14),R5
           MOV.B       @R6,R6
           JSR         @R9
@@ -1670,7 +1670,7 @@ voice_process_secondary_9C4:
           MOV         R14,R7
           MOV.W       R0,@(30,R13)
           MOV         #66,R0
-          MOV.L       p_sound_sample_submit_work4_2,R6
+          MOV.L       p_bgm_volume_offset_2,R6
           MOV.L       @(32,R14),R5
           MOV.B       @R6,R6
           JSR         @R9
@@ -1731,7 +1731,7 @@ voice_process_secondary_A0C:
           SHAR        R2
           SHAR        R2
           SHAR        R2
-          MOV.L       p_voice_state_init_pair_work,R3
+          MOV.L       p_bgm_pitch_offset,R3
           ADD         R2,R4
           MOV.W       @R3,R3
           ADD         R3,R4
@@ -1739,10 +1739,10 @@ voice_process_secondary_A0C:
           NOP
           BRA         voice_process_secondary_AB6
           NOP
-p_sound_sample_submit_work4_2:
-          .DATA.L     _sound_sample_submit_work4
-p_voice_state_init_pair_work:
-          .DATA.L     _voice_state_init_pair_work
+p_bgm_volume_offset_2:
+          .DATA.L     _bgm_volume_offset
+p_bgm_pitch_offset:
+          .DATA.L     _bgm_pitch_offset
 voice_process_secondary_A70:
           MOV.L       @(28,R14),R4
           MOV         #95,R0

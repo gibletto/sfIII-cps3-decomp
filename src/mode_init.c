@@ -154,21 +154,21 @@ extern const u8 sys_cfg_default_1_0[];
 
 /* 0200011C */
 TM_STRING warning_mes[8][11] = {
-    { { 19, 2, 2, (void*)(str_WARNING) }, { 2, 4, 2, (void*)(str_This_game_is_for_use_in_japan_on) }, { 2, 6, 2, (void*)(str_Sales_export_or_operation_outsid) }, { 2, 8, 2, (void*)(str_country_may_be_construed_as_copy) }, { 2, 10, 2, (void*)(str_and_trademark_infringement_and_i) }, { 2, 12, 2, (void*)(str_prohibited) }, { 2, 14, 2, (void*)(str_Violators_are_subject_to_severe_) }, { 2, 16, 2, (void*)(str_and_will_be_prosecuted_to_the_fu) }, { 2, 18, 2, (void*)(str_of_the_law) }, { 2, 20, 2, (void*)(str_blank_2) }, { 2, 22, 2, (void*)(str_blank_2) } },
-    { { 19, 2, 4, (void*)(str_WARNING) }, { 2, 4, 4, (void*)(str_This_game_is_for_use_in_the_sout) }, { 2, 6, 4, (void*)(str_Asian_countries_only) }, { 2, 8, 4, (void*)(str_Sales_export_or_operation_outsid_2) }, { 2, 10, 4, (void*)(str_countries_may_be_construed_as_co) }, { 2, 12, 4, (void*)(str_trademark_infringement_and_is_st) }, { 2, 14, 4, (void*)(str_prohibited) }, { 2, 16, 4, (void*)(str_Violators_are_subject_to_severe_) }, { 2, 18, 4, (void*)(str_and_will_be_prosecuted_to_the_fu) }, { 2, 20, 4, (void*)(str_of_the_law) }, { 2, 22, 4, (void*)(str_blank_2) } },
-    { { 19, 2, 6, (void*)(str_WARNING) }, { 1, 4, 6, (void*)(str_This_game_is_for_use_in_the_Euro) }, { 1, 6, 6, (void*)(str_only) }, { 1, 8, 6, (void*)(str_Sales_export_or_operation_outsid_2) }, { 1, 10, 6, (void*)(str_countries_may_be_construed_as_co) }, { 1, 12, 6, (void*)(str_trademark_infringement_and_is_st) }, { 1, 14, 6, (void*)(str_prohibited) }, { 1, 16, 6, (void*)(str_Violators_are_subject_to_severe_) }, { 1, 18, 6, (void*)(str_and_will_be_prosecuted_to_the_fu) }, { 1, 20, 6, (void*)(str_of_the_law) }, { 1, 22, 6, (void*)(str_blank_2) } },
-    { { 19, 2, 8, (void*)(str_WARNING) }, { 2, 4, 8, (void*)(str_This_game_is_for_use_in_the_Unit) }, { 2, 6, 8, (void*)(str_of_America_and_Canada_only) }, { 2, 8, 8, (void*)(str_Sales_export_or_operation_outsid_2) }, { 2, 10, 8, (void*)(str_countries_may_be_construed_as_co) }, { 2, 12, 8, (void*)(str_trademark_infringement_and_is_st) }, { 2, 14, 8, (void*)(str_prohibited) }, { 2, 16, 8, (void*)(str_Violators_are_subject_to_severe_) }, { 2, 18, 8, (void*)(str_and_will_be_prosecuted_to_the_fu) }, { 2, 20, 8, (void*)(str_of_the_law) }, { 2, 22, 8, (void*)(str_blank_2) } },
-    { { 19, 2, 0xA, (void*)(str_WARNING) }, { 1, 4, 0xA, (void*)(str_This_game_is_for_use_in_the_West) }, { 1, 6, 0xA, (void*)(str_countries_except_the_United_Stat) }, { 1, 8, 0xA, (void*)(str_Canada_and_the_Federative_Republ) }, { 1, 10, 0xA, (void*)(str_Sales_export_or_operation_outsid_2) }, { 1, 12, 0xA, (void*)(str_countries_may_be_construed_as_co) }, { 1, 14, 0xA, (void*)(str_trademark_infringement_and_is_st) }, { 1, 16, 0xA, (void*)(str_prohibited) }, { 1, 18, 0xA, (void*)(str_Violators_are_subject_to_severe_) }, { 1, 20, 0xA, (void*)(str_and_will_be_prosecuted_to_the_fu) }, { 1, 22, 0xA, (void*)(str_of_the_law) } },
-    { { 19, 2, 0xC, (void*)(str_WARNING) }, { 1, 4, 0xC, (void*)(str_This_game_is_for_use_in_the_Fede) }, { 1, 6, 0xC, (void*)(str_of_Brazil_only) }, { 1, 8, 0xC, (void*)(str_Sales_export_or_operation_outsid) }, { 1, 10, 0xC, (void*)(str_country_may_be_construed_as_copy_2) }, { 1, 12, 0xC, (void*)(str_trademark_infringement_and_is_st) }, { 1, 14, 0xC, (void*)(str_prohibited) }, { 1, 16, 0xC, (void*)(str_Violators_are_subject_to_severe_) }, { 1, 18, 0xC, (void*)(str_and_will_be_prosecuted_to_the_fu) }, { 1, 20, 0xC, (void*)(str_of_the_law) }, { 1, 22, 0xC, (void*)(str_blank_2) } },
-    { { 19, 2, 0xE, (void*)(str_WARNING) }, { 1, 4, 0xE, (void*)(str_This_game_is_for_use_in_the_Ocea) }, { 1, 6, 0xE, (void*)(str_only) }, { 1, 8, 0xE, (void*)(str_Sales_export_or_operation_outsid_2) }, { 1, 10, 0xE, (void*)(str_countries_may_be_construed_as_co) }, { 1, 12, 0xE, (void*)(str_trademark_infringement_and_is_st) }, { 1, 14, 0xE, (void*)(str_prohibited) }, { 1, 16, 0xE, (void*)(str_Violators_are_subject_to_severe_) }, { 1, 18, 0xE, (void*)(str_and_will_be_prosecuted_to_the_fu) }, { 1, 20, 0xE, (void*)(str_of_the_law) }, { 1, 22, 0xE, (void*)(str_blank_2) } },
-    { { 19, 2, 4, (void*)(str_WARNING) }, { 2, 4, 4, (void*)(str_This_game_is_for_use_in_the_sout) }, { 2, 6, 4, (void*)(str_Asian_countries_only) }, { 2, 8, 4, (void*)(str_Sales_export_or_operation_outsid_2) }, { 2, 10, 4, (void*)(str_countries_may_be_construed_as_co) }, { 2, 12, 4, (void*)(str_trademark_infringement_and_is_st) }, { 2, 14, 4, (void*)(str_prohibited) }, { 2, 16, 4, (void*)(str_Violators_are_subject_to_severe_) }, { 2, 18, 4, (void*)(str_and_will_be_prosecuted_to_the_fu) }, { 2, 20, 4, (void*)(str_of_the_law) }, { 2, 22, 4, (void*)(str_blank_2) } },
+    { { 19, 2, 2, str_WARNING }, { 2, 4, 2, str_This_game_is_for_use_in_japan_on }, { 2, 6, 2, str_Sales_export_or_operation_outsid }, { 2, 8, 2, str_country_may_be_construed_as_copy }, { 2, 10, 2, str_and_trademark_infringement_and_i }, { 2, 12, 2, str_prohibited }, { 2, 14, 2, str_Violators_are_subject_to_severe_ }, { 2, 16, 2, str_and_will_be_prosecuted_to_the_fu }, { 2, 18, 2, str_of_the_law }, { 2, 20, 2, str_blank_2 }, { 2, 22, 2, str_blank_2 } },
+    { { 19, 2, 4, str_WARNING }, { 2, 4, 4, str_This_game_is_for_use_in_the_sout }, { 2, 6, 4, str_Asian_countries_only }, { 2, 8, 4, str_Sales_export_or_operation_outsid_2 }, { 2, 10, 4, str_countries_may_be_construed_as_co }, { 2, 12, 4, str_trademark_infringement_and_is_st }, { 2, 14, 4, str_prohibited }, { 2, 16, 4, str_Violators_are_subject_to_severe_ }, { 2, 18, 4, str_and_will_be_prosecuted_to_the_fu }, { 2, 20, 4, str_of_the_law }, { 2, 22, 4, str_blank_2 } },
+    { { 19, 2, 6, str_WARNING }, { 1, 4, 6, str_This_game_is_for_use_in_the_Euro }, { 1, 6, 6, str_only }, { 1, 8, 6, str_Sales_export_or_operation_outsid_2 }, { 1, 10, 6, str_countries_may_be_construed_as_co }, { 1, 12, 6, str_trademark_infringement_and_is_st }, { 1, 14, 6, str_prohibited }, { 1, 16, 6, str_Violators_are_subject_to_severe_ }, { 1, 18, 6, str_and_will_be_prosecuted_to_the_fu }, { 1, 20, 6, str_of_the_law }, { 1, 22, 6, str_blank_2 } },
+    { { 19, 2, 8, str_WARNING }, { 2, 4, 8, str_This_game_is_for_use_in_the_Unit }, { 2, 6, 8, str_of_America_and_Canada_only }, { 2, 8, 8, str_Sales_export_or_operation_outsid_2 }, { 2, 10, 8, str_countries_may_be_construed_as_co }, { 2, 12, 8, str_trademark_infringement_and_is_st }, { 2, 14, 8, str_prohibited }, { 2, 16, 8, str_Violators_are_subject_to_severe_ }, { 2, 18, 8, str_and_will_be_prosecuted_to_the_fu }, { 2, 20, 8, str_of_the_law }, { 2, 22, 8, str_blank_2 } },
+    { { 19, 2, 0xA, str_WARNING }, { 1, 4, 0xA, str_This_game_is_for_use_in_the_West }, { 1, 6, 0xA, str_countries_except_the_United_Stat }, { 1, 8, 0xA, str_Canada_and_the_Federative_Republ }, { 1, 10, 0xA, str_Sales_export_or_operation_outsid_2 }, { 1, 12, 0xA, str_countries_may_be_construed_as_co }, { 1, 14, 0xA, str_trademark_infringement_and_is_st }, { 1, 16, 0xA, str_prohibited }, { 1, 18, 0xA, str_Violators_are_subject_to_severe_ }, { 1, 20, 0xA, str_and_will_be_prosecuted_to_the_fu }, { 1, 22, 0xA, str_of_the_law } },
+    { { 19, 2, 0xC, str_WARNING }, { 1, 4, 0xC, str_This_game_is_for_use_in_the_Fede }, { 1, 6, 0xC, str_of_Brazil_only }, { 1, 8, 0xC, str_Sales_export_or_operation_outsid }, { 1, 10, 0xC, str_country_may_be_construed_as_copy_2 }, { 1, 12, 0xC, str_trademark_infringement_and_is_st }, { 1, 14, 0xC, str_prohibited }, { 1, 16, 0xC, str_Violators_are_subject_to_severe_ }, { 1, 18, 0xC, str_and_will_be_prosecuted_to_the_fu }, { 1, 20, 0xC, str_of_the_law }, { 1, 22, 0xC, str_blank_2 } },
+    { { 19, 2, 0xE, str_WARNING }, { 1, 4, 0xE, str_This_game_is_for_use_in_the_Ocea }, { 1, 6, 0xE, str_only }, { 1, 8, 0xE, str_Sales_export_or_operation_outsid_2 }, { 1, 10, 0xE, str_countries_may_be_construed_as_co }, { 1, 12, 0xE, str_trademark_infringement_and_is_st }, { 1, 14, 0xE, str_prohibited }, { 1, 16, 0xE, str_Violators_are_subject_to_severe_ }, { 1, 18, 0xE, str_and_will_be_prosecuted_to_the_fu }, { 1, 20, 0xE, str_of_the_law }, { 1, 22, 0xE, str_blank_2 } },
+    { { 19, 2, 4, str_WARNING }, { 2, 4, 4, str_This_game_is_for_use_in_the_sout }, { 2, 6, 4, str_Asian_countries_only }, { 2, 8, 4, str_Sales_export_or_operation_outsid_2 }, { 2, 10, 4, str_countries_may_be_construed_as_co }, { 2, 12, 4, str_trademark_infringement_and_is_st }, { 2, 14, 4, str_prohibited }, { 2, 16, 4, str_Violators_are_subject_to_severe_ }, { 2, 18, 4, str_and_will_be_prosecuted_to_the_fu }, { 2, 20, 4, str_of_the_law }, { 2, 22, 4, str_blank_2 } },
 };
 /* 0200053C */
 TM_STRING parental_advisory_msg[4] = {
-    { 6, 22, 0x12, (void*)(str_Parental_Advisory) },
-    { 6, 23, 0x12, (void*)(str_Animated_violence_Mild) },
-    { 1, 25, 0x12, (void*)(str_Contains_scenes_of_violence) },
-    { 1, 26, 0x12, (void*)(str_cartoon_like_characters) },
+    { 6, 22, 0x12, str_Parental_Advisory },
+    { 6, 23, 0x12, str_Animated_violence_Mild },
+    { 1, 25, 0x12, str_Contains_scenes_of_violence },
+    { 1, 26, 0x12, str_cartoon_like_characters },
 };
 /* 0200056C */
 /* The default settings rows of each cabinet type (sys_cfg_default_tbl), nine per type. */
@@ -178,23 +178,22 @@ const u8* sys_cfg_default_list[3][9] = {
     { sys_cfg_default_2_0, sys_cfg_default_2_1, sys_cfg_default_2_2, sys_cfg_default_2_3, sys_cfg_default_2_4, sys_cfg_default_2_5, sys_cfg_default_2_6, sys_cfg_default_2_7, sys_cfg_default_2_8 },
 };
 /* 020005D8 */
-u32 sys_cfg_default_tbl[3] = {
-    (u32)sys_cfg_default_list[0], (u32)sys_cfg_default_list[1], (u32)sys_cfg_default_list[2],
+const u8** sys_cfg_default_tbl[3] = {
+    sys_cfg_default_list[0], sys_cfg_default_list[1], sys_cfg_default_list[2],
 };
 /* 020005E4 */
-u8* game_cfg_default_tbl[9] = {
-    (void*)(game_cfg_default_tbl_row0),
-    (void*)(game_cfg_default_tbl_row1),
-    (void*)(game_cfg_default_tbl_row2),
-    (void*)(game_cfg_default_tbl_row3),
-    (void*)(game_cfg_default_tbl_row4),
-    (void*)(game_cfg_default_tbl_row5),
-    (void*)(game_cfg_default_tbl_row6),
-    (void*)(game_cfg_default_tbl_row7),
-    (void*)(game_cfg_default_tbl_row8),
+const u8* game_cfg_default_tbl[9] = {
+    game_cfg_default_tbl_row0,
+    game_cfg_default_tbl_row1,
+    game_cfg_default_tbl_row2,
+    game_cfg_default_tbl_row3,
+    game_cfg_default_tbl_row4,
+    game_cfg_default_tbl_row5,
+    game_cfg_default_tbl_row6,
+    game_cfg_default_tbl_row7,
+    game_cfg_default_tbl_row8,
 };
-/* Stored after game_cfg_default_tbl. Nothing in the program refers to it by name or address; if it is read,
-   it is through an index past the end of game_cfg_default_tbl. */
+/* Stored after game_cfg_default_tbl. Nothing in the program refers to it by name or address. */
 u32 game_cfg_default_tbl_tail[1] = {
     0x10000,
 };
@@ -260,7 +259,7 @@ void mode_init_task(void) {
         credit_2p = 9;
     }
     /* the screen mode and the column table */
-    if (Game_setting.mode) {
+    if (Game_setting.Screen_Mode) {
         set_screen_mode(7);
         DE_X[0] = 8;
         DE_X[1] = 16;

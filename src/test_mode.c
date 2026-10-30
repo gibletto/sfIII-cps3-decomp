@@ -142,7 +142,7 @@ void test_mode_wait(void)
     if ((syssw_0 & 2) && test_sw_lock == 0) {
         test_flag = 1;
         coin_lock_set(-1);
-        if (Game_setting.mode) {
+        if (Game_setting.Screen_Mode) {
             set_screen_mode(7);
         } else {
             set_screen_mode(3);
@@ -297,7 +297,7 @@ void test_mode_exit(void)
     coin_lock_set(-1);
     Cd_Error_Flag = 1;
     switch_read(1);
-    if (Game_setting.mode) {
+    if (Game_setting.Screen_Mode) {
         set_screen_mode(7);
     } else {
         set_screen_mode(3);

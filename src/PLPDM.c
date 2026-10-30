@@ -143,7 +143,13 @@ extern const s16 tsuujyou_dageki_01[];
 extern const s16 tsuujyou_dageki_02[];
 extern const s16 tsuujyou_nage_00[];
 extern const s16 tsuujyou_nage_01[];
-extern const s16 tsuujyou_nage_02[112];
+extern const s16 tsuujyou_nage_02[];
+extern const s16 hissatsu_nage_00[];
+extern const s16 hissatsu_nage_01[];
+extern const s16 hissatsu_nage_02[];
+extern const s16 super_arts_dageki_00[];
+extern const s16 super_arts_dageki_01[];
+extern const s16 super_arts_dageki_02[];
 
 const s16* kizetsu_timer_table_0[4] = {
     tsuujyou_dageki_00, tsuujyou_dageki_01, tsuujyou_dageki_02, tsuujyou_dageki_02,
@@ -155,10 +161,10 @@ const s16* kizetsu_timer_table_2[4] = {
     tsuujyou_nage_00, tsuujyou_nage_01, tsuujyou_nage_02, tsuujyou_nage_02,
 };
 const s16* kizetsu_timer_table_3[4] = {
-    &tsuujyou_nage_02[16], &tsuujyou_nage_02[32], &tsuujyou_nage_02[48], &tsuujyou_nage_02[48],
+    hissatsu_nage_00, hissatsu_nage_01, hissatsu_nage_02, hissatsu_nage_02,
 };
 const s16* kizetsu_timer_table_4[4] = {
-    &tsuujyou_nage_02[64], &tsuujyou_nage_02[80], &tsuujyou_nage_02[96], &tsuujyou_nage_02[96],
+    super_arts_dageki_00, super_arts_dageki_01, super_arts_dageki_02, super_arts_dageki_02,
 };
 const s16* kizetsu_timer_table_5[4] = {
     super_arts_nage_00, super_arts_nage_01, super_arts_nage_02, super_arts_nage_02,
@@ -1048,7 +1054,7 @@ void buttobi_chakuchi_cg_type_check(PLW* wk) {
 
 
 void setup_smoke_type(PLW* wk) {
-    s8* step_tbl;
+    const s8* step_tbl;
     u8 ix;
     s16 i;
     s16 total;

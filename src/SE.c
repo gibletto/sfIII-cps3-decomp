@@ -23,8 +23,8 @@
 
 u16 * wipe_dst_ptr;  /* 0200EED4 */
 u8 * wipe_back_ptr;  /* 0200EED8 */
-u8 * wipe_pat_top;  /* 0200EEDC */
-u8 * wipe_pat_ptr;  /* 0200EEE0 */
+const u8 * wipe_pat_top;  /* 0200EEDC */
+const u8 * wipe_pat_ptr;  /* 0200EEE0 */
 
 void mix_or_128(void);
 
@@ -34,8 +34,8 @@ void mix_put_128(void);
 
 /* provisional name */
 void wipe_pattern_or_cols(s16 kind, s16 row) {
-    u8* src;
-    u8* map;
+    const u8* src;
+    const u8* map;
     u16* dst;
     s16 x;
     s16 y;
@@ -55,8 +55,8 @@ void wipe_pattern_or_cols(s16 kind, s16 row) {
 
 /* provisional name */
 void wipe_pattern_restore_cols(s16 kind, s16 row) {
-    u8* src;
-    u8* map;
+    const u8* src;
+    const u8* map;
     u8* cell;
     u32 dst;
     s16 x;

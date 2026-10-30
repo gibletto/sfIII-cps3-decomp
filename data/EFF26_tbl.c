@@ -1,8 +1,8 @@
 /*
  * EFF26_TBL.C  breakable object parts, flying pieces and flying object tables
  *
- * eff26_num gives the number of effect 26 parts of each type, followed by the part rows
- * reached through scr_obj_data26; read by EFF26.C, the parts of breakable stage objects.
+ * eff26_num gives the number of effect 26 parts of each type, and scr_obj_data26_0 and
+ * scr_obj_data26_1 the part rows named by scr_obj_data26; read by EFF26.C, the parts of breakable stage objects.
  * scr_obj_num27 gives the number of pieces thrown out for each type and scr_obj_data27_0 ..
  * scr_obj_data27_6 their rows, reached through scr_obj_data27; read by EFF27.C, the flying
  * pieces. eff29_pos_tbl gives the start x, y and priority of the two walking objects of
@@ -19,6 +19,8 @@
 #pragma section TBL
 
 extern const s16 eff26_num[];
+extern const s16 scr_obj_data26_0[];
+extern const s16 scr_obj_data26_1[];
 extern const s16 scr_obj_num27[];
 extern const s16 scr_obj_data27_0[][19];
 extern const s16 scr_obj_data27_1[][19];
@@ -38,10 +40,18 @@ extern const s32 eff35_speed_tbl[];
 extern const s32 eff35_accel1_tbl[];
 extern const s32 eff35_accel2_tbl[];
 
-const s16 eff26_num[36] = {
-    1, 1, 0, 5, 2, 8256, 672, 96, 96, 4, 0, 0, -1, 10, 11, 32,
-    75, 0, 5, 1, 6, 2, 8280, -304, 55, 78, 18, 0, 1, -1, 19, 4,
-    19, 19, 0, -1,
+const s16 eff26_num[2] = {
+    1, 1,
+};
+
+/* type 0; provisional name */
+const s16 scr_obj_data26_0[17] = {
+    0, 5, 2, 8256, 672, 96, 96, 4, 0, 0, -1, 10, 11, 32, 75, 0, 5,
+};
+
+/* type 1; provisional name */
+const s16 scr_obj_data26_1[17] = {
+    1, 6, 2, 8280, -304, 55, 78, 18, 0, 1, -1, 19, 4, 19, 19, 0, -1,
 };
 
 const s16 scr_obj_num27[7] = {

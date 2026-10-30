@@ -54,13 +54,13 @@ void effect_H6_move(WORK_Other* ewk) {
     }
 }
 
-s32 effect_H6_init(s16 timer, s8* str, s16 X, s16 Y, s16 Original_Color) {
+s32 effect_H6_init(s16 timer, const s8* str, s16 X, s16 Y, s16 Original_Color, s32 unused) {
     WORK_Other_CONN* ewk;
     s16 ix;
     s16 x;
     s16 i;
     s16 c;
-    s8* su = str;
+    const s8* su = str;
     if ((ix = pull_effect_work(4)) == -1) {
         return -1;
     }

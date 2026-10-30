@@ -316,7 +316,7 @@ void Sel_PL_2nd(void) {
         Sound_SE(158);
     }
     if (Demo_Flag == 0) {
-        Demo_Ptr[ID] = Demo_Lever_Data[Select_Demo_Index];
+        Demo_Ptr[ID] = (s8*)Demo_Lever_Data[Select_Demo_Index];
     }
 }
 
@@ -530,10 +530,10 @@ u16 sw_0;
     if (Sel_Arts_Complete[PL_id]) {
         return;
     }
-    if (Moving_Plate_Counter[PL_id]) {
+    if (Moving_Plate_Counter[PL_id] != 0) {
         return;
     }
-    if (Time_Over) {
+    if (Time_Over != 0) {
         sw = BUTTON_LP;
     }
     if (Sel_Arts_Sub_Check(PL_id, sw, sw_0)) {

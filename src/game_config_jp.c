@@ -92,55 +92,55 @@ s8 Config_Rep_Count_jp[4];  /* 0201391C */
 
 /* 02000D7C */
 TMSCRIPT gcfg_title_scr_jp[1] = {
-    { 1, 0, (void*)gcfg_title_scr_jp_0 },
+    { 1, 0, gcfg_title_scr_jp_0 },
 };
 /* 02000D84 */
 TMSCRIPT gcfg_guide_scr_jp[1] = {
-    { 1, 0, (void*)gcfg_guide_scr_jp_0 },
+    { 1, 0, gcfg_guide_scr_jp_0 },
 };
 /* 02000D8C */
 TMSCRIPT gcfg_exit_guide_scr_jp[1] = {
-    { 1, 0, (void*)gcfg_exit_guide_scr_jp_0 },
+    { 1, 0, gcfg_exit_guide_scr_jp_0 },
 };
 /* 02000D94 */
 TMSCRIPT gcfg_screen_scr_jp[2] = {
-    { 1, 0, (void*)gcfg_screen_scr_jp_0 },
-    { 1, 0, (void*)gcfg_screen_scr_jp_1 },
+    { 1, 0, gcfg_screen_scr_jp_0 },
+    { 1, 0, gcfg_screen_scr_jp_1 },
 };
 /* 02000DA4 */
 TMSCRIPT gcfg_round_scr_jp[4] = {
-    { 1, 0, (void*)gcfg_round_scr_jp_0 },
-    { 1, 0, (void*)gcfg_round_scr_jp_1 },
-    { 1, 0, (void*)gcfg_round_scr_jp_2 },
-    { 1, 0, (void*)gcfg_round_scr_jp_3 },
+    { 1, 0, gcfg_round_scr_jp_0 },
+    { 1, 0, gcfg_round_scr_jp_1 },
+    { 1, 0, gcfg_round_scr_jp_2 },
+    { 1, 0, gcfg_round_scr_jp_3 },
 };
 /* 02000DC4 */
 TMSCRIPT gcfg_event_scr_jp[2] = {
-    { 1, 0, (void*)gcfg_event_scr_jp_0 },
-    { 1, 0, (void*)gcfg_event_scr_jp_1 },
+    { 1, 0, gcfg_event_scr_jp_0 },
+    { 1, 0, gcfg_event_scr_jp_1 },
 };
 /* 02000DD4 */
 TMSCRIPT gcfg_cursor_scr_jp[1] = {
-    { 1, 0, (void*)gcfg_cursor_scr_jp_0 },
+    { 1, 0, gcfg_cursor_scr_jp_0 },
 };
 /* 02000DDC */
 TMSCRIPT gcfg_cursor_clr_scr_jp[1] = {
-    { 1, 0, (void*)gcfg_cursor_clr_scr_jp_0 },
+    { 1, 0, gcfg_cursor_clr_scr_jp_0 },
 };
 /* 02000DE4 */
 TMSCRIPT gcfg_gauge_scr_jp[8] = {
-    { 1, 0, (void*)gcfg_gauge_scr_jp_0 },
-    { 1, 0, (void*)gcfg_gauge_scr_jp_1 },
-    { 1, 0, (void*)gcfg_gauge_scr_jp_2 },
-    { 1, 0, (void*)gcfg_gauge_scr_jp_3 },
-    { 1, 0, (void*)gcfg_gauge_scr_jp_4 },
-    { 1, 0, (void*)gcfg_gauge_scr_jp_5 },
-    { 1, 0, (void*)gcfg_gauge_scr_jp_6 },
-    { 1, 0, (void*)gcfg_gauge_scr_jp_7 },
+    { 1, 0, gcfg_gauge_scr_jp_0 },
+    { 1, 0, gcfg_gauge_scr_jp_1 },
+    { 1, 0, gcfg_gauge_scr_jp_2 },
+    { 1, 0, gcfg_gauge_scr_jp_3 },
+    { 1, 0, gcfg_gauge_scr_jp_4 },
+    { 1, 0, gcfg_gauge_scr_jp_5 },
+    { 1, 0, gcfg_gauge_scr_jp_6 },
+    { 1, 0, gcfg_gauge_scr_jp_7 },
 };
 /* 02000E24 */
 TMSCRIPT gcfg_gauge_clr_scr_jp[1] = {
-    { 1, 0, (void*)gcfg_gauge_clr_scr_jp_0 },
+    { 1, 0, gcfg_gauge_clr_scr_jp_0 },
 };
 
 
@@ -157,24 +157,24 @@ void game_config_init_jp(void) {
     tilemap_print_script_seq(0, 0, 0xFFFF, gcfg_title_scr_jp);
     Config_Attr_jp = 2;
     Config_Item_jp = 4;
-    Config_New_jp = game_config_work.set5;
-    Config_Attr_jp = (Config_New_jp != Game_setting.set5) ? 8 : 2;
+    Config_New_jp = game_config_work.Event;
+    Config_Attr_jp = (Config_New_jp != Game_setting.Event) ? 8 : 2;
     game_config_print_value_jp(Config_Attr_jp, &gcfg_event_scr_jp[Config_New_jp]);
     Config_Item_jp = 3;
-    Config_New_jp = game_config_work.set4;
-    Config_Attr_jp = (Config_New_jp != Game_setting.set4) ? 8 : 2;
+    Config_New_jp = game_config_work.Battle_Number;
+    Config_Attr_jp = (Config_New_jp != Game_setting.Battle_Number) ? 8 : 2;
     game_config_print_value_jp(Config_Attr_jp, &gcfg_round_scr_jp[Config_New_jp]);
     Config_Item_jp = 2;
-    Config_New_jp = game_config_work.set3;
-    Config_Attr_jp = (Config_New_jp != Game_setting.set3) ? 8 : 2;
+    Config_New_jp = game_config_work.Timer_Speed;
+    Config_Attr_jp = (Config_New_jp != Game_setting.Timer_Speed) ? 8 : 2;
     game_config_print_gauge_jp(Config_New_jp, 0xFFFF, Config_Attr_jp);
     Config_Item_jp = 1;
-    Config_New_jp = game_config_work.set2;
-    Config_Attr_jp = (Config_New_jp != Game_setting.set2) ? 8 : 2;
+    Config_New_jp = game_config_work.Damage_Level;
+    Config_Attr_jp = (Config_New_jp != Game_setting.Damage_Level) ? 8 : 2;
     game_config_print_gauge_jp(Config_New_jp, 0xFFFF, Config_Attr_jp);
     Config_Item_jp = 0;
-    Config_New_jp = game_config_work.level;
-    Config_Attr_jp = (Config_New_jp != Game_setting.level) ? 8 : 2;
+    Config_New_jp = game_config_work.Difficulty;
+    Config_Attr_jp = (Config_New_jp != Game_setting.Difficulty) ? 8 : 2;
     game_config_print_gauge_jp(Config_New_jp, 0xFFFF, Config_Attr_jp);
     game_config_print_cursor_jp(gcfg_cursor_scr_jp);
 }
@@ -202,7 +202,7 @@ void game_config_force_wide(void) {
     u16 sw2 = p2sw_0 & BUTTON_SHOTS;
     if (sw1 == 0x3F0 && sw2 == 0x3F0) {
         set_screen_mode(7);
-        game_config_work.mode = 1;
+        game_config_work.Screen_Mode = 1;
     }
 }
 
@@ -224,15 +224,15 @@ void game_config_screen_item_jp(void) {
         }
     }
     if (Config_Move_jp) {
-        game_config_work.mode += Config_Move_jp;
-        game_config_work.mode &= 1;
-        if (game_config_work.mode) {
+        game_config_work.Screen_Mode += Config_Move_jp;
+        game_config_work.Screen_Mode &= 1;
+        if (game_config_work.Screen_Mode) {
             set_screen_mode(7);
         } else {
             set_screen_mode(3);
         }
-        tilemap_print_script_seq(24, 2, 0xFFFF, &gcfg_screen_scr_jp[game_config_work.mode]);
-        if (game_config_work.mode != Game_setting.mode) {
+        tilemap_print_script_seq(24, 2, 0xFFFF, &gcfg_screen_scr_jp[game_config_work.Screen_Mode]);
+        if (game_config_work.Screen_Mode != Game_setting.Screen_Mode) {
             tilemap_rect_fill(24, 2, 8, 2, 8, 0xFFFF);
         } else {
             tilemap_rect_fill(24, 2, 8, 2, 2, 0xFFFF);
@@ -257,13 +257,13 @@ void game_config_level_item_jp(void) {
             Config_Move_jp = 1;
         }
     }
-    game_config_work.level &= 7;
+    game_config_work.Difficulty &= 7;
     if (Config_Move_jp) {
-        Config_Old_jp = game_config_work.level;
-        game_config_work.level += Config_Move_jp;
-        game_config_work.level &= 7;
-        Config_New_jp = game_config_work.level;
-        Config_Attr_jp = Config_New_jp != Game_setting.level ? 8 : 2;
+        Config_Old_jp = game_config_work.Difficulty;
+        game_config_work.Difficulty += Config_Move_jp;
+        game_config_work.Difficulty &= 7;
+        Config_New_jp = game_config_work.Difficulty;
+        Config_Attr_jp = Config_New_jp != Game_setting.Difficulty ? 8 : 2;
         game_config_print_gauge_jp(Config_New_jp, Config_Old_jp, Config_Attr_jp);
     }
 }
@@ -287,11 +287,11 @@ void game_config_damage_item_jp(void) {
         }
     }
     if (Config_Move_jp) {
-        Config_Old_jp = game_config_work.set2;
-        game_config_work.set2 += Config_Move_jp;
-        game_config_work.set2 &= 3;
-        Config_New_jp = game_config_work.set2;
-        Config_Attr_jp = Config_New_jp != Game_setting.set2 ? 8 : 2;
+        Config_Old_jp = game_config_work.Damage_Level;
+        game_config_work.Damage_Level += Config_Move_jp;
+        game_config_work.Damage_Level &= 3;
+        Config_New_jp = game_config_work.Damage_Level;
+        Config_Attr_jp = Config_New_jp != Game_setting.Damage_Level ? 8 : 2;
         game_config_print_gauge_jp(Config_New_jp, Config_Old_jp, Config_Attr_jp);
     }
 }
@@ -314,11 +314,11 @@ void game_config_timer_item_jp(void) {
         }
     }
     if (Config_Move_jp) {
-        Config_Old_jp = game_config_work.set3;
-        game_config_work.set3 += Config_Move_jp;
-        game_config_work.set3 &= 3;
-        Config_New_jp = game_config_work.set3;
-        Config_Attr_jp = Config_New_jp != Game_setting.set3 ? 8 : 2;
+        Config_Old_jp = game_config_work.Timer_Speed;
+        game_config_work.Timer_Speed += Config_Move_jp;
+        game_config_work.Timer_Speed &= 3;
+        Config_New_jp = game_config_work.Timer_Speed;
+        Config_Attr_jp = Config_New_jp != Game_setting.Timer_Speed ? 8 : 2;
         game_config_print_gauge_jp(Config_New_jp, Config_Old_jp, Config_Attr_jp);
     }
 }
@@ -341,10 +341,10 @@ void game_config_1p_round_item_jp(void) {
         }
     }
     if (Config_Move_jp) {
-        game_config_work.set4 += Config_Move_jp;
-        game_config_work.set4 &= 3;
-        Config_New_jp = game_config_work.set4;
-        Config_Attr_jp = (Config_New_jp != Game_setting.set4) ? 8 : 2;
+        game_config_work.Battle_Number += Config_Move_jp;
+        game_config_work.Battle_Number &= 3;
+        Config_New_jp = game_config_work.Battle_Number;
+        Config_Attr_jp = (Config_New_jp != Game_setting.Battle_Number) ? 8 : 2;
         game_config_print_value_jp(Config_Attr_jp, &gcfg_round_scr_jp[Config_New_jp]);
     }
 }
@@ -368,10 +368,10 @@ void game_config_event_item_jp(void) {
         }
     }
     if (Config_Move_jp) {
-        game_config_work.set5 += Config_Move_jp;
-        game_config_work.set5 &= 1;
-        Config_New_jp = game_config_work.set5;
-        Config_Attr_jp = (Config_New_jp != Game_setting.set5) ? 8 : 2;
+        game_config_work.Event += Config_Move_jp;
+        game_config_work.Event &= 1;
+        Config_New_jp = game_config_work.Event;
+        Config_Attr_jp = (Config_New_jp != Game_setting.Event) ? 8 : 2;
         game_config_print_value_jp(Config_Attr_jp, &gcfg_event_scr_jp[Config_New_jp]);
     }
 }
@@ -389,13 +389,13 @@ void game_config_exit_item_jp(void) {
 
 /* provisional name */
 void game_config_settings_commit(void) {
-    Game_setting.mode = game_config_work.mode;
-    Game_setting.level = game_config_work.level;
-    Game_setting.set2 = game_config_work.set2;
-    Game_setting.set3 = game_config_work.set3;
-    Game_setting.set4 = game_config_work.set4;
-    Game_setting.set5 = game_config_work.set5;
-    Game_setting.set6 = game_config_work.set6;
+    Game_setting.Screen_Mode = game_config_work.Screen_Mode;
+    Game_setting.Difficulty = game_config_work.Difficulty;
+    Game_setting.Damage_Level = game_config_work.Damage_Level;
+    Game_setting.Timer_Speed = game_config_work.Timer_Speed;
+    Game_setting.Battle_Number = game_config_work.Battle_Number;
+    Game_setting.Event = game_config_work.Event;
+    Game_setting.Spare = game_config_work.Spare;
 }
 
 
@@ -444,7 +444,7 @@ void game_config_cursor_move_jp(void) {
 
 /* provisional name */
 void game_config_apply(void) {
-    if (game_config_work.set5) {
+    if (game_config_work.Event) {
         event_off_flag = 0;
     } else {
         event_off_flag = 1;

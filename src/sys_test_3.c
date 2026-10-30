@@ -57,15 +57,15 @@ s16 scsi_cdb_len;  /* 0206AA68 */
 
 
 /* 02007CB0 */
-s8* simm_name_tbl[8] = {
-    (s8*)str_ONBOARD,
-    (s8*)str_SIMM1,
-    (s8*)str_SIMM2,
-    (s8*)str_SIMM3,
-    (s8*)str_SIMM4,
-    (s8*)str_SIMM5,
-    (s8*)str_SIMM6,
-    (s8*)str_SIMM7,
+const s8* simm_name_tbl[8] = {
+    str_ONBOARD,
+    str_SIMM1,
+    str_SIMM2,
+    str_SIMM3,
+    str_SIMM4,
+    str_SIMM5,
+    str_SIMM6,
+    str_SIMM7,
 };
 u8 no_cd_flag = 0;  /* 02007CD0 */
 s16 memtest_error = 0;  /* 02007CD2 */
@@ -951,9 +951,9 @@ s32 scsi_read_10(s32 lba, s32 count, s32 blk, s32 unused, void* buf) {
 
 
 /* provisional name */
-s32 scsi_send_cdb_bytes(s32 n, s8* cdb) {
+s32 scsi_send_cdb_bytes(s32 n, const s8* cdb) {
     s32 i;
-    s8* p;
+    const s8* p;
     p = cdb;
     scsi_cdb_len = n;
     *(volatile u16*)CD_REG = 3;

@@ -49,8 +49,8 @@ extern TM_STRING dbg_koc_str[];
 extern TM_STRING dbg_waza_kind_str[];
 extern TM_STRING dbg_char_name_str[];
 extern TM_STRING dbg_act_kind_str[];
-extern TM_STRING * dbg_act_name_tbl[];
-extern u32 * dbg_pl_char_tbl[][9];
+extern const TM_STRING* dbg_act_name_tbl[];
+extern const u32 * dbg_pl_char_tbl[][9];
 extern const s8 str_1DATA_SH5[];
 extern const s8 str_ADD_ARTS[];
 extern const s8 str_AFRICA_1[];
@@ -988,7 +988,7 @@ extern const u32 yun_exca[];
 extern const u32 yun_nmca[];
 extern const u32 yun_saca[];
 extern const u32 yun_yuca[];
-extern u32 eff44_char_table[];
+extern const u32 eff44_char_table[];
 
 /* 02000E8C */
 TM_STRING dbg_menu_str[7] = {
@@ -2307,8 +2307,11 @@ TM_STRING dbg_act_kind_str[666] = {
     { 3, 7, 4, str_blank_14 },
 };
 
+/* Where each kind's script names start in dbg_act_kind_str, by kind. The editor shows script number n
+   of a kind as entry n - 1 from there; some characters have more scripts of a kind than the list has
+   names, and their higher numbers show the names of the kind after it. */
 /* 02004C24 */
-TM_STRING* dbg_act_name_tbl[11] = {
+const TM_STRING* dbg_act_name_tbl[11] = {
     &dbg_act_kind_str[12], &dbg_act_kind_str[70],
     &dbg_act_kind_str[301], &dbg_act_kind_str[314],
     &dbg_act_kind_str[326], &dbg_act_kind_str[426],
@@ -2318,111 +2321,39 @@ TM_STRING* dbg_act_name_tbl[11] = {
 };
 
 /* 02004C50 */
-u32* dbg_pl_char_tbl[20][9] = {
+const u32* dbg_pl_char_tbl[20][9] = {
+    { gill_nmca, gill_dmca, gill_caca, gill_cuca, gill_atca, gill_saca, gill_btca, gill_exca, gill_yuca },
+    { alex_nmca, alex_dmca, alex_caca, alex_cuca, alex_atca, alex_saca, alex_btca, alex_exca, alex_yuca },
+    { ryu_nmca, ryu_dmca, ryu_caca, ryu_cuca, ryu_atca, ryu_saca, ryu_btca, ryu_exca, ryu_yuca },
+    { yun_nmca, yun_dmca, yun_caca, yun_cuca, yun_atca, yun_saca, yun_btca, yun_exca, yun_yuca },
     {
-        (u32 *)gill_nmca, (u32 *)gill_dmca, (u32 *)gill_caca, (u32 *)gill_cuca,
-        (u32 *)gill_atca, (u32 *)gill_saca, (u32 *)gill_btca, (u32 *)gill_exca,
-        (u32 *)gill_yuca,
+        dudley_nmca, dudley_dmca, dudley_caca, dudley_cuca, dudley_atca, dudley_saca, dudley_btca, dudley_exca,
+        dudley_yuca,
+    },
+    { necro_nmca, necro_dmca, necro_caca, necro_cuca, necro_atca, necro_saca, necro_btca, necro_exca, necro_yuca },
+    { hugo_nmca, hugo_dmca, hugo_caca, hugo_cuca, hugo_atca, hugo_saca, hugo_btca, hugo_exca, hugo_yuca },
+    { ibuki_nmca, ibuki_dmca, ibuki_caca, ibuki_cuca, ibuki_atca, ibuki_saca, ibuki_btca, ibuki_exca, ibuki_yuca },
+    { elena_nmca, elena_dmca, elena_caca, elena_cuca, elena_atca, elena_saca, elena_btca, elena_exca, elena_yuca },
+    { oro_nmca, oro_dmca, oro_caca, oro_cuca, oro_atca, oro_saca, oro_btca, oro_exca, oro_yuca },
+    { yang_nmca, yang_dmca, yang_caca, yang_cuca, yang_atca, yang_saca, yang_btca, yang_exca, yang_yuca },
+    { ken_nmca, ken_dmca, ken_caca, ken_cuca, ken_atca, ken_saca, ken_btca, ken_exca, ken_yuca },
+    { sean_nmca, sean_dmca, sean_caca, sean_cuca, sean_atca, sean_saca, sean_btca, sean_exca, sean_yuca },
+    { alex_nmca, alex_dmca, alex_caca, alex_cuca, alex_atca, alex_saca, alex_btca, alex_exca, alex_yuca },
+    { alex_nmca, alex_dmca, alex_caca, alex_cuca, alex_atca, alex_saca, alex_btca, alex_exca, alex_yuca },
+    { alex_nmca, alex_dmca, alex_caca, alex_cuca, alex_atca, alex_saca, alex_btca, alex_exca, alex_yuca },
+    {
+        ef01_char_table, ef13_char_table, stg00_char_table, stg01_char_table, stg12_char_table, eff44_char_table,
+        stg02_char_table, stg11_char_table, stg03_char_table,
     },
     {
-        (u32 *)alex_nmca, (u32 *)alex_dmca, (u32 *)alex_caca, (u32 *)alex_cuca,
-        (u32 *)alex_atca, (u32 *)alex_saca, (u32 *)alex_btca, (u32 *)alex_exca,
-        (u32 *)alex_yuca,
+        stg10_char_table, stg04_char_table, stg05_char_table, stg06_char_table, stg07_char_table, eff45_char_table,
+        eff86_char_table, brz_char_table, eff77_char_table,
     },
     {
-        (u32 *)ryu_nmca, (u32 *)ryu_dmca, (u32 *)ryu_caca, (u32 *)ryu_cuca,
-        (u32 *)ryu_atca, (u32 *)ryu_saca, (u32 *)ryu_btca, (u32 *)ryu_exca,
-        (u32 *)ryu_yuca,
+        direct_03_char_table, etc_char_table, etc2_char_table, ag_char_table_1, ag_char_table_2, ag_char_table_3,
+        ag_char_table_4, ag_char_table_5, ag_char_table_6,
     },
-    {
-        (u32 *)yun_nmca, (u32 *)yun_dmca, (u32 *)yun_caca, (u32 *)yun_cuca,
-        (u32 *)yun_atca, (u32 *)yun_saca, (u32 *)yun_btca, (u32 *)yun_exca,
-        (u32 *)yun_yuca,
-    },
-    {
-        (u32 *)dudley_nmca, (u32 *)dudley_dmca, (u32 *)dudley_caca, (u32 *)dudley_cuca,
-        (u32 *)dudley_atca, (u32 *)dudley_saca, (u32 *)dudley_btca, (u32 *)dudley_exca,
-        (u32 *)dudley_yuca,
-    },
-    {
-        (u32 *)necro_nmca, (u32 *)necro_dmca, (u32 *)necro_caca, (u32 *)necro_cuca,
-        (u32 *)necro_atca, (u32 *)necro_saca, (u32 *)necro_btca, (u32 *)necro_exca,
-        (u32 *)necro_yuca,
-    },
-    {
-        (u32 *)hugo_nmca, (u32 *)hugo_dmca, (u32 *)hugo_caca, (u32 *)hugo_cuca,
-        (u32 *)hugo_atca, (u32 *)hugo_saca, (u32 *)hugo_btca, (u32 *)hugo_exca,
-        (u32 *)hugo_yuca,
-    },
-    {
-        (u32 *)ibuki_nmca, (u32 *)ibuki_dmca, (u32 *)ibuki_caca, (u32 *)ibuki_cuca,
-        (u32 *)ibuki_atca, (u32 *)ibuki_saca, (u32 *)ibuki_btca, (u32 *)ibuki_exca,
-        (u32 *)ibuki_yuca,
-    },
-    {
-        (u32 *)elena_nmca, (u32 *)elena_dmca, (u32 *)elena_caca, (u32 *)elena_cuca,
-        (u32 *)elena_atca, (u32 *)elena_saca, (u32 *)elena_btca, (u32 *)elena_exca,
-        (u32 *)elena_yuca,
-    },
-    {
-        (u32 *)oro_nmca, (u32 *)oro_dmca, (u32 *)oro_caca, (u32 *)oro_cuca,
-        (u32 *)oro_atca, (u32 *)oro_saca, (u32 *)oro_btca, (u32 *)oro_exca,
-        (u32 *)oro_yuca,
-    },
-    {
-        (u32 *)yang_nmca, (u32 *)yang_dmca, (u32 *)yang_caca, (u32 *)yang_cuca,
-        (u32 *)yang_atca, (u32 *)yang_saca, (u32 *)yang_btca, (u32 *)yang_exca,
-        (u32 *)yang_yuca,
-    },
-    {
-        (u32 *)ken_nmca, (u32 *)ken_dmca, (u32 *)ken_caca, (u32 *)ken_cuca,
-        (u32 *)ken_atca, (u32 *)ken_saca, (u32 *)ken_btca, (u32 *)ken_exca,
-        (u32 *)ken_yuca,
-    },
-    {
-        (u32 *)sean_nmca, (u32 *)sean_dmca, (u32 *)sean_caca, (u32 *)sean_cuca,
-        (u32 *)sean_atca, (u32 *)sean_saca, (u32 *)sean_btca, (u32 *)sean_exca,
-        (u32 *)sean_yuca,
-    },
-    {
-        (u32 *)alex_nmca, (u32 *)alex_dmca, (u32 *)alex_caca, (u32 *)alex_cuca,
-        (u32 *)alex_atca, (u32 *)alex_saca, (u32 *)alex_btca, (u32 *)alex_exca,
-        (u32 *)alex_yuca,
-    },
-    {
-        (u32 *)alex_nmca, (u32 *)alex_dmca, (u32 *)alex_caca, (u32 *)alex_cuca,
-        (u32 *)alex_atca, (u32 *)alex_saca, (u32 *)alex_btca, (u32 *)alex_exca,
-        (u32 *)alex_yuca,
-    },
-    {
-        (u32 *)alex_nmca, (u32 *)alex_dmca, (u32 *)alex_caca, (u32 *)alex_cuca,
-        (u32 *)alex_atca, (u32 *)alex_saca, (u32 *)alex_btca, (u32 *)alex_exca,
-        (u32 *)alex_yuca,
-    },
-    {
-        (u32 *)ef01_char_table, (u32 *)ef13_char_table, (u32 *)stg00_char_table, (u32 *)stg01_char_table,
-        (u32 *)stg12_char_table, eff44_char_table, (u32 *)stg02_char_table, (u32 *)stg11_char_table,
-        (u32 *)stg03_char_table,
-    },
-    {
-        (u32 *)stg10_char_table, (u32 *)stg04_char_table, (u32 *)stg05_char_table, (u32 *)stg06_char_table,
-        (u32 *)stg07_char_table, (u32 *)eff45_char_table, (u32 *)eff86_char_table, (u32 *)brz_char_table,
-        (u32 *)eff77_char_table,
-    },
-    {
-        (u32 *)direct_03_char_table, (u32 *)etc_char_table,
-        (u32 *)etc2_char_table, (u32 *)ag_char_table_1,
-        (u32 *)ag_char_table_2, (u32 *)ag_char_table_3,
-        (u32 *)ag_char_table_4, (u32 *)ag_char_table_5,
-        (u32 *)ag_char_table_6,
-    },
-    {
-        (u32 *)ag_char_table_0, (u32 *)ag_face_panel_table,
-        (u32 *)plef_char_table, (u32 *)effH3_char_table,
-        0, 0,
-        0, 0,
-        0,
-    },
+    { ag_char_table_0, ag_face_panel_table, plef_char_table, effH3_char_table, 0, 0, 0, 0, 0 },
 };
 
 s8 Debug_R_No;  /* 02013934 */

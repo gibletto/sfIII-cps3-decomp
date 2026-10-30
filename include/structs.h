@@ -253,15 +253,15 @@ typedef struct {
     CHAR_CMD cmr0;      /* provisional name: one CHAR_CMD, unreferenced */
     s16 cmwk[16];
     s16 my_bright_type;
-    u32* char_table[12];
-    u32* se_random_table;
+    const u32* char_table[12];
+    const u32* se_random_table;
     s16* step_xy_table;
     s16* move_xy_table;
-    OVERLAP_PARTS* overlap_char_tbl;
-    OLC_IX* olc_ix_table;
+    const OVERLAP_PARTS* overlap_char_tbl;
+    const OLC_IX* olc_ix_table;
     OLC_IX cg_olc;
-    CatchTable* rival_catch_tbl;
-    CatchTable* curr_rca;
+    const CatchTable* rival_catch_tbl;
+    const CatchTable* curr_rca;
     u32* set_char_ad;
     s16 cg_ix;
     s16 now_koc;
@@ -313,17 +313,17 @@ typedef struct {
     s16 waku_work_index;    /* also the shell reflect flag (EFF13, HITEFEF) */
     s16 olc_work_ix[4];
     u8 pad1[0x2];
-    HIT_IX* hit_ix_table;
+    const HIT_IX* hit_ix_table;
     HIT_IX cg_ja;
-    BODY_BOX* body_adrs;
-    BODY_BOX* h_bod;
-    ATTACK_BOX* attack_adrs;    /* the attack boxes also serve as catch boxes (catch_hit_check) */
-    ATTACK_BOX* h_att;
-    CAUGHT_BOX* caught_adrs;
-    CAUGHT_BOX* h_cau;
-    HOSEI_BOX* hosei_adrs;
-    HOSEI_BOX* h_hos;
-    ATTACK_ATTR* att_ix_table;
+    const BODY_BOX* body_adrs;
+    const BODY_BOX* h_bod;
+    const ATTACK_BOX* attack_adrs;    /* the attack boxes also serve as catch boxes (catch_hit_check) */
+    const ATTACK_BOX* h_att;
+    const CAUGHT_BOX* caught_adrs;
+    const CAUGHT_BOX* h_cau;
+    const HOSEI_BOX* hosei_adrs;
+    const HOSEI_BOX* h_hos;
+    const ATTACK_ATTR* att_ix_table;
     ATTACK_ATTR att;
     u16 zu_flag;
     u16 at_attribute;
@@ -473,7 +473,7 @@ typedef struct {
     s8 hoshi_flag;
     s8 the_same_players;
     u8 pad0[0x1];
-    s8* dm_step_tbl;
+    const s8* dm_step_tbl;
     s8 running_f;
     s8 cancel_timer;
     s8 jpdir;
@@ -990,8 +990,8 @@ typedef struct {
     u8 dm_body;
     u16 my_hit;
     u16 dm_me;
-    s16* ah;
-    s16* dh;
+    const s16* ah;
+    const s16* dh;
 } HS;
 
 typedef struct {
@@ -1088,35 +1088,35 @@ typedef struct {
     CatchTable* rict;
     HIT_IX* hiit;
     BODY_BOX* boda;
-    ATTACK_BOX* atta;
-    CAUGHT_BOX* caua;
-    HOSEI_BOX* hosa;
-    ATTACK_ATTR* atit;
+    const ATTACK_BOX* atta;
+    const CAUGHT_BOX* caua;
+    const HOSEI_BOX* hosa;
+    const ATTACK_ATTR* atit;
     PARABORA_DATA* prot;
 } CharInitData;
 
 typedef struct {
-    u32* nmca;
-    u32* dmca;
-    u32* btca;
-    u32* caca;
-    u32* cuca;
-    u32* atca;
-    u32* saca;
-    u32* exca;
-    u32* cbca;
-    u32* yuca;
-    s16* stxy;
-    s16* mvxy;
-    OVERLAP_PARTS* ovct;
-    OLC_IX* ovix;
-    CatchTable* rict;
-    HIT_IX* hiit;
-    BODY_BOX* boda;
-    ATTACK_BOX* atta;
-    CAUGHT_BOX* caua;
-    HOSEI_BOX* hosa;
-    ATTACK_ATTR* atit;
+    const u32* nmca;
+    const u32* dmca;
+    const u32* btca;
+    const u32* caca;
+    const u32* cuca;
+    const u32* atca;
+    const u32* saca;
+    const u32* exca;
+    const u32* cbca;
+    const u32* yuca;
+    const s16* stxy;
+    const s16* mvxy;
+    const OVERLAP_PARTS* ovct;
+    const OLC_IX* ovix;
+    const CatchTable* rict;
+    const HIT_IX* hiit;
+    const BODY_BOX* boda;
+    const ATTACK_BOX* atta;
+    const CAUGHT_BOX* caua;
+    const HOSEI_BOX* hosa;
+    const ATTACK_ATTR* atit;
     s8 cgromtype;
     s16 my_cm;
     s16 my_cc;
@@ -1537,14 +1537,6 @@ typedef struct {
 } JMP_TBL3;
 
 typedef struct {
-    s8 r_no_0;          /* routine number of this BG layer's task */
-    s8 r_no_1;          /* sub routine number */
-    s8 dir;             /* scroll direction */
-    s8 ctr;             /* step counter */
-    s16 bg_no;          /* BG layer this task drives */
-} OPBW;
-
-typedef struct {
     s16 pos;
     s16 size;
     s16 mask;
@@ -1643,16 +1635,19 @@ typedef struct {
     s16 timer[2];
 } CMST_WIN_R;
 
+/* the game settings (test menu 7-2), stored after the system settings in each EEPROM copy */
 typedef struct {
-    s8 mode;
-    s8 level;
-    s8 set2;
-    s8 set3;
-    s8 set4;
-    s8 set5;
-    s8 set6;
-    s8 bonus;
-    s8 check[8];
+    s8 Screen_Mode;    /* 0 normal, 1 wide */
+    s8 Difficulty;     /* 0 (easy) - 7 (hard) */
+    s8 Damage_Level;   /* 0 (low) - 3 (high) */
+    s8 Timer_Speed;    /* 0 (slow) - 3 (fast) */
+    s8 Battle_Number;  /* max rounds */
+    s8 Event;          /* 1: event mode */
+    s8 Spare;
+    s8 Bonus_Game;     /* 1: bonus game on */
+    s8 date[3];        /* version stamp, checked against the defaults on load: release date in BCD (yy mm dd), */
+    s8 region;         /* the region, */
+    s8 game_code[4];   /* and the game code */
 } SETTINGS;
 
 typedef struct {
@@ -1736,13 +1731,13 @@ struct _TASK {
 };
 
 typedef struct {
-    u8* adr;
+    const u8* adr;
     s16 w;
     s16 pad0;
 } ByteMapSrc;
 
 typedef struct {
-    u8* adr;
+    const u8* adr;
     u8 pad0;
     u8 limit;
     s16 pad1;
@@ -2259,8 +2254,7 @@ typedef struct {
     s16 r_no_2;         /* step within the current scene */
     s16 index;          /* timeline index: effects run while their start..end range contains it */
     s16 mv_ctr;         /* frame counter for the current move */
-    s16 free_work;      /* general timer (the wait before the title) */
-    OPBW bgw[3];        /* per-BG-layer tasks, BG0..BG2 */
+    s16 free_work;      /* general timer (the wait before the title); effect F5's and F6's done flag */
 } OP_W;
 
 typedef struct {
@@ -2287,7 +2281,7 @@ typedef struct {
 typedef struct {
     s16 kind;
     s16 pad;
-    void* data;
+    const void* data;
 } TMSCRIPT;
 
 typedef struct {

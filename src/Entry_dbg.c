@@ -78,7 +78,7 @@ void cpu_hang_forever(void) {
     } while (*(volatile u16*)IO_REG == 0xFFFF);
     tilemap_print_string_attr(30, 22, 14, sh_str_break);
     tilemap_print_string_attr(37, 22, 14, (const s8*)current_task->timer);
-    tilemap_print_string(1, 0, 0xFFFF, &monitor_msg_tbl[6]);
+    tilemap_print_string(1, 0, 0xFFFF, monitor_panel_tbl);
     tilemap_print_hex_block(7, 2, 14, exception_regs.r0, 8, 0);
     tilemap_print_hex_block(22, 2, 14, exception_regs.r1, 8, 0);
     tilemap_print_hex_block(37, 2, 14, exception_regs.r2, 8, 0);

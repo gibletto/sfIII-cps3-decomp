@@ -144,7 +144,7 @@ s32 effC5_init_sub(s16 pl) {
         ewk->wu.xyz[1].cal = 0;
         ewk->wu.rl_flag = 0;
         ewk->wu.old_rno[0] = 60;
-        if (Game_setting.mode) {
+        if (Game_setting.Screen_Mode) {
             work = (bg_w.bgw[1].pos_x_work + 208) & 0x3FF;
             ewk->wu.xyz[0].disp.pos = (bg_w.bgw[1].pos_x_work + 352) & 0x3FF;
         } else {
@@ -157,7 +157,7 @@ s32 effC5_init_sub(s16 pl) {
         ewk->wu.xyz[0].disp.low = 0;
         ewk->wu.rl_flag = 1;
         ewk->wu.old_rno[0] = 60;
-        if (Game_setting.mode) {
+        if (Game_setting.Screen_Mode) {
             work = (bg_w.bgw[1].pos_x_work - 216) & 0x3FF;
             ewk->wu.xyz[0].disp.pos = (bg_w.bgw[1].pos_x_work - 352) & 0x3FF;
         } else {

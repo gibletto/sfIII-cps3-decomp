@@ -47,7 +47,7 @@ void effect_A3_move(WORK_Other* ewk) {
         ewk->wu.routine_no[0]++;
         ewk->wu.dir_timer = 1;
         ewk->wu.dir_step = ewk->wu.vitality;
-        ewk->wu.step_xy_table = &EFF91_Step_Data[ewk->wu.direction];
+        ewk->wu.step_xy_table = (s16*)&EFF91_Step_Data[ewk->wu.direction];
         ewk->wu.move_xy_table = ewk->wu.step_xy_table;
     case R0_MOVE:
         if (--ewk->wu.dir_timer == 0) {
@@ -81,10 +81,10 @@ void effA3_area_clear(WORK_Other* ewk) {
     s16 y1;
     s16 x2;
     s16 y2;
-    x1 = EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.mode][AREA_X1];
-    y1 = Text_Page_Y + EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.mode][AREA_Y1];
-    x2 = EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.mode][AREA_X2];
-    y2 = Text_Page_Y + EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.mode][AREA_Y2];
+    x1 = EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.Screen_Mode][AREA_X1];
+    y1 = Text_Page_Y + EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.Screen_Mode][AREA_Y1];
+    x2 = EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.Screen_Mode][AREA_X2];
+    y2 = Text_Page_Y + EFFA3_Area_Data[ewk->wu.kage_hx][Game_setting.Screen_Mode][AREA_Y2];
     tilemap_clear_rect(x1, y1, x2, y2);
 }
 

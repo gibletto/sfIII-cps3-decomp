@@ -519,7 +519,7 @@ s16 y;
 /* provisional name */
 void Disp_Win_Type(void) {
     s16 i;
-    for (i = 0; i <= Game_setting.set4; i++) {
+    for (i = 0; i <= Game_setting.Battle_Number; i++) {
         win_mark_put(i, win_type[0][i], 28);
         win_mark_put(i + 4, win_type[1][i], 28);
     }

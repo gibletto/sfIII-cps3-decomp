@@ -34,7 +34,7 @@ const u16* stngauge_puttbl[2] = {
     stngauge_puttbl_0,
     stngauge_puttbl_1,
 };
-/* 020078F0: one pair of gauge positions per Game_setting.mode */
+/* 020078F0: one pair of gauge positions per Game_setting.Screen_Mode */
 const u16* stngauge_postbl[4] = {
     stngauge_postbl_0,
     stngauge_postbl_1,
@@ -47,7 +47,7 @@ void stun_mark_put(s8 pl);
 
 
 
-/* colours 18/146, gauge positions by Game_setting.mode */
+/* colours 18/146, gauge positions by Game_setting.Screen_Mode */
 void stngauge_cont_init(void) {
     sdat[0].cstn = 0;
     sdat[0].ostn = 0;
@@ -71,7 +71,7 @@ void stngauge_cont_init(void) {
     sdat[1].slen = piyori_type[1].genkai / 8;
     sdat[1].dotlen = piyori_type[1].genkai;
     sdat[1].proccess_dead = 0;
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
         sdat[0].stnptbl_ptr = stngauge_postbl[0];
         sdat[1].stnptbl_ptr = stngauge_postbl[1];
     } else {
@@ -174,7 +174,7 @@ s8 pl;
 
 
 
-/* attributes 4 and 132; the Game_setting.mode test has empty arms */
+/* attributes 4 and 132; the Game_setting.Screen_Mode test has empty arms */
 void stun_mark_write(s8 pl, s8 kind) {
     const u16* cells;
     s16 attr;
@@ -195,7 +195,7 @@ void stun_mark_write(s8 pl, s8 kind) {
     if (kind == 1 && pl == 1) {
         attr = 132;
     }
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
     } else {
     }
     pt = &piyori_type[pl];
@@ -218,10 +218,10 @@ void stun_mark_write(s8 pl, s8 kind) {
 
 
 
-/* frame by Game_setting.mode, attribute 34, no end cell */
+/* frame by Game_setting.Screen_Mode, attribute 34, no end cell */
 void stun_gauge_waku_write(s8 pl) {
     s8 i;
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
         if (pl == 0) {
             for (i = 0; i < 9 - sdat[0].slen; i++) {
                 tilemap_put_cell(i + 12, 3, 2, 0x10F);

@@ -49,7 +49,7 @@
 
 extern s8 Select_Flow_Akebono;   /* provisional name (sel_flow.c): the akebono form of the select flow scene */
 extern s16 effg0_judge_count;   /* provisional name: initialised work RAM */
-extern u32* effg0_char_tbl[];   /* provisional name: initialised work RAM */
+extern const u32* effg0_char_tbl[];   /* provisional name: initialised work RAM */
 extern const s16 effg0_col_tbl[7];
 extern const s16 effg0_pos_tbl[7][3];
 extern const s16 effg0_flash_tbl[40][4];

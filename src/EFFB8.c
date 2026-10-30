@@ -274,7 +274,7 @@ void wk_set(WORK_Other_CONN* ewk) {
     ewk->wu.my_col_code = 88;
     ewk->wu.my_family = 2;
     ewk->wu.my_priority = 35;
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
         ewk->wu.position_x = 0x238;
     } else {
         ewk->wu.position_x = 0x280;

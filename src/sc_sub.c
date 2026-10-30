@@ -84,9 +84,9 @@ void win_mark_control(s16 pl) {
 void win_mark_pos_set(s16 pl) {
     win_mark_num[pl] = PL_Wins[pl] * 2;
     if (pl != 0) {
-        win_mark_pos[1] = win_mark_pos_tbl[Game_setting.mode][4];
+        win_mark_pos[1] = win_mark_pos_tbl[Game_setting.Screen_Mode][4];
     } else {
-        win_mark_pos[0] = win_mark_pos_tbl[Game_setting.mode][0];
+        win_mark_pos[0] = win_mark_pos_tbl[Game_setting.Screen_Mode][0];
     }
 }
 

@@ -51,14 +51,14 @@
 extern const u32 ag_char_table_0[], ag_char_table_1[], ag_char_table_2[], ag_char_table_3[], ag_char_table_4[],
                  ag_char_table_5[], ag_char_table_6[];
 
-u32* ag_char_table[7] = {
-    (u32*)ag_char_table_0,
-    (u32*)ag_char_table_1,
-    (u32*)ag_char_table_2,
-    (u32*)ag_char_table_3,
-    (u32*)ag_char_table_4,
-    (u32*)ag_char_table_5,
-    (u32*)ag_char_table_6,
+const u32* ag_char_table[7] = {
+    ag_char_table_0,
+    ag_char_table_1,
+    ag_char_table_2,
+    ag_char_table_3,
+    ag_char_table_4,
+    ag_char_table_5,
+    ag_char_table_6,
 };
 
 

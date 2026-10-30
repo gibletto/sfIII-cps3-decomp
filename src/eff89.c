@@ -49,7 +49,7 @@ void effect_89_move(WORK_Other* ewk)
         ewk->wu.routine_no[0]++;
         ewk->wu.dir_timer = 1;
         ewk->wu.dir_step = ewk->wu.vitality;
-        ewk->wu.step_xy_table = &EFF89_Step_Data[ewk->wu.direction];
+        ewk->wu.step_xy_table = (s16*)&EFF89_Step_Data[ewk->wu.direction];
         ewk->wu.move_xy_table = ewk->wu.step_xy_table;
         /* fall through */
     case R0_MOVE:

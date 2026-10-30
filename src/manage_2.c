@@ -137,7 +137,7 @@ s32 effect_58_init();
 #define BGMF_WAIT       1       /* wait BGM_Timer, then (default) raise the volume */
 
 
-void sound_reg_level_set(s16 level, s8 flag);
+void sound_reg_level_set(s16 pitch, s8 volume);
 
 s32 effect_32_init(void);
 s32 PL_Sel_Mode_2(void);
@@ -298,10 +298,10 @@ void Game_Manage_4th(void) {
         win_type[1][PL_Wins[1]] = WIN_MARK_DRAW;
         PL_Wins[0]++;
         PL_Wins[1]++;
-        if (PL_Wins[0] >= Game_setting.set4 + 1) {
+        if (PL_Wins[0] >= Game_setting.Battle_Number + 1) {
             Winner_id = 0;
             Loser_id = 1;
-        } else if (PL_Wins[1] >= Game_setting.set4 + 1) {
+        } else if (PL_Wins[1] >= Game_setting.Battle_Number + 1) {
             Winner_id = 1;
             Loser_id = 0;
         }
@@ -585,7 +585,7 @@ void Game_Manage_7th(void) {
 
 
 void Stock_Loser_Char(void) {
-    if (PL_Wins[WINNER] >= Game_setting.set4 + 1) {
+    if (PL_Wins[WINNER] >= Game_setting.Battle_Number + 1) {
         if (Round_Operator[LOSER] != 0) {
             Win_Record[LOSER] = 0;
             Stock_My_char[LOSER] = My_char[LOSER];
@@ -598,7 +598,7 @@ void Stock_Loser_Char(void) {
 
 void Check_Fade_Out_BGM(s16 Time) {
     if (!BGM_Fade_Out_Flag) {
-        if (PL_Wins[Winner_id] >= Game_setting.set4 + 1) {
+        if (PL_Wins[Winner_id] >= Game_setting.Battle_Number + 1) {
             BGM_Fade_Out_Flag = 1;
             bgm_fade_out(Time);
         }
@@ -868,7 +868,7 @@ void Restore_Loser_Score(void) {
     if (Play_Type == PLAY_VS_PLAYER) {
         return;
     }
-    if (PL_Wins[Winner_id] >= Game_setting.set4 + 1) {
+    if (PL_Wins[Winner_id] >= Game_setting.Battle_Number + 1) {
         return;
     }
 }
@@ -973,7 +973,7 @@ void Game_Manage_9th(void) {
     s8 *winner;
     switch (C_No1) {
     case CM9_WIPE:
-        if (*(*(winner = &WINNER) + PL_Wins) >= Game_setting.set4 + 1) {
+        if (*(*(winner = &WINNER) + PL_Wins) >= Game_setting.Battle_Number + 1) {
             C_No0++;
             C_Timer = 75;
             sc_vram_to_ram();
@@ -1109,7 +1109,7 @@ void Game_Manage_10th(void) {
 void Check_Naming(id)
 s16 id;
 {
-    if (Game_setting.set5) {
+    if (Game_setting.Event) {
         return;
     }
     if (E_Number[id][0] != ENTRY_NAME) {
@@ -1124,8 +1124,8 @@ void Ck_Win_Record(void) {
     s16 w;
     s16 l;
     if (Play_Type == PLAY_VS_PLAYER) {
-        if (PL_Wins[0] >= Game_setting.set4 + 1 || PL_Wins[1] >= Game_setting.set4 + 1) {
-            if (PL_Wins[0] >= Game_setting.set4 + 1) {
+        if (PL_Wins[0] >= Game_setting.Battle_Number + 1 || PL_Wins[1] >= Game_setting.Battle_Number + 1) {
+            if (PL_Wins[0] >= Game_setting.Battle_Number + 1) {
                 w = 0;
                 l = 1;
             } else {
@@ -1151,18 +1151,18 @@ s16 PL_id;
     s16 Wins_Buff;
     switch (Win_Record[PL_id]) {
     case 1:
-        tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.mode], 0, 18, "WIN");
+        tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.Screen_Mode], 0, 18, "WIN");
         break;
     case 2:
-        tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.mode], 0, 18, "WINS");
+        tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.Screen_Mode], 0, 18, "WINS");
         break;
     }
     xx = Win_Record[PL_id] / 10;
     if (xx > 0) {
-        tilemap_print_hex_block(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.mode] - 3, 0, 18, (s8)xx, 1, 1);
+        tilemap_print_hex_block(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.Screen_Mode] - 3, 0, 18, (s8)xx, 1, 1);
     }
     Wins_Buff = Win_Record[PL_id] % 10;
-    tilemap_print_hex_block(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.mode] - 2, 0, 18, (s8)Wins_Buff, 1, 1);
+    tilemap_print_hex_block(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.Screen_Mode] - 2, 0, 18, (s8)Wins_Buff, 1, 1);
 }
 
 
@@ -1183,16 +1183,16 @@ void Disp_Win_Record(void) {
         pl = 1;
     }
     if (Win_Record[Winner_id] > 1) {
-        tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[0][pl][Game_setting.mode], 0, 18, "WINS");
+        tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[0][pl][Game_setting.Screen_Mode], 0, 18, "WINS");
     } else {
-        tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[0][pl][Game_setting.mode], 0, 18, "WIN");
+        tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[0][pl][Game_setting.Screen_Mode], 0, 18, "WIN");
     }
     digit = Win_Record[pl] / 10;
     if (digit > 0) {
-        tilemap_print_hex_block(ENTRY_LOSER_X_PAIRS[0][pl][Game_setting.mode] - 3, 0, 18, (s8)digit, 1, 1);
+        tilemap_print_hex_block(ENTRY_LOSER_X_PAIRS[0][pl][Game_setting.Screen_Mode] - 3, 0, 18, (s8)digit, 1, 1);
     }
     num = Win_Record[pl] % 10;
-    tilemap_print_hex_block(ENTRY_LOSER_X_PAIRS[0][pl][Game_setting.mode] - 2, 0, 18, (s8)num, 1, 1);
+    tilemap_print_hex_block(ENTRY_LOSER_X_PAIRS[0][pl][Game_setting.Screen_Mode] - 2, 0, 18, (s8)num, 1, 1);
 }
 
 
@@ -1201,7 +1201,7 @@ void Erase_Win_Record(PL_id)
 s16 PL_id;
 {
     if (Win_Record[PL_id] != 0) {
-        tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.mode] - 3, 0, 18, "       ");
+        tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.Screen_Mode] - 3, 0, 18, "       ");
         Win_Record[PL_id] = 0;
     }
 }
@@ -1270,7 +1270,7 @@ s32 Judge_Next_Disposal(void) {
     if (*(p = &PL_Wins[0]) != PL_Wins[1]) {
         return 0;
     }
-    if (*p >= Game_setting.set4) {
+    if (*p >= Game_setting.Battle_Number) {
         return 1;
     }
     return 0;
@@ -1354,7 +1354,7 @@ void Quick_Entry(void) {
     if (Check_Entry_Again()) {
         Forbid_Break = 0;
     }
-    if (PL_Wins[Winner_id] >= Game_setting.set4 + 1) {
+    if (PL_Wins[Winner_id] >= Game_setting.Battle_Number + 1) {
         if (plw[LOSER].wu.operator) {
             Loser_Sub();
             Be_Continue();
@@ -1382,16 +1382,16 @@ void Loser_Sub(void) {
     Operator_Status[LOSER] = 0;
     Sel_PL_Complete[LOSER] = 0;
     Sel_Arts_Complete[LOSER] = 0;
-    if (Game_setting.set5 == 0) {
-        tilemap_clear_rect(Score_X_Pos_Data[LOSER][Game_setting.mode] - 7, Text_Page_Y, Score_X_Pos_Data[LOSER][Game_setting.mode], Text_Page_Y + 1);
+    if (Game_setting.Event == 0) {
+        tilemap_clear_rect(Score_X_Pos_Data[LOSER][Game_setting.Screen_Mode] - 7, Text_Page_Y, Score_X_Pos_Data[LOSER][Game_setting.Screen_Mode], Text_Page_Y + 1);
     }
-    tilemap_print_string_attr(Loser_X_Pos_Data[LOSER][Game_setting.mode] - 2, 0, 18, "      ");
+    tilemap_print_string_attr(Loser_X_Pos_Data[LOSER][Game_setting.Screen_Mode] - 2, 0, 18, "      ");
 }
 
 
 
 void Be_Continue(void) {
-    if (Continue_Flag != 0 && Game_setting.set5 == 0) {
+    if (Continue_Flag != 0 && Game_setting.Event == 0) {
         Continue_Count[LOSER] = 9;
         E_Number[LOSER][0] = ENTRY_LOSER;
         E_Number[LOSER][1] = 0;
@@ -1410,7 +1410,7 @@ void Be_Continue(void) {
 
 
 void Update_VS_Data(void) {
-    if (PL_Wins[Winner_id] < Game_setting.set4 + 1) {
+    if (PL_Wins[Winner_id] < Game_setting.Battle_Number + 1) {
         return;
     }
     WINNER = Winner_id;

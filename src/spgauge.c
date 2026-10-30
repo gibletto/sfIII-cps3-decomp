@@ -125,7 +125,7 @@ void spgauge_cont_init(void) {
     } else {
         spg_dat[1].time = 0;
     }
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
         spg_dat[0].spgptbl_ptr = spgauge_postbl[0];
         spg_dat[1].spgptbl_ptr = spgauge_postbl[1];
     } else {
@@ -202,7 +202,7 @@ void spgauge_cont_demo_init(void) {
     } else {
         spg_dat[1].time = 0;
     }
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
         spg_dat[0].spgptbl_ptr = spgauge_postbl[0];
         spg_dat[1].spgptbl_ptr = spgauge_postbl[1];
     } else {
@@ -302,7 +302,7 @@ void wipe_check(void) {
         if (spg_dat[0].time == 1 && time_clear[0] == 1) {
             spgauge_work_clear(0);
             x = 0;
-            if (Game_setting.mode != 0) {
+            if (Game_setting.Screen_Mode != 0) {
                 x = 1;
             }
             tilemap_clear_rect(x, 25, x + 3, 27);
@@ -311,7 +311,7 @@ void wipe_check(void) {
         if (spg_dat[1].time == 1 && time_clear[1] == 1) {
             spgauge_work_clear(1);
             x = 44;
-            if (Game_setting.mode != 0) {
+            if (Game_setting.Screen_Mode != 0) {
                 x = 57;
             }
             tilemap_clear_rect(x, 25, x + 3, 27);
@@ -543,7 +543,7 @@ s8 pl;
     if (pl == 0) {
         sa_stock_chr_trans(0, n);
         x = 2;
-        if (Game_setting.mode != 0) {
+        if (Game_setting.Screen_Mode != 0) {
             x = 3;
         }
         tilemap_put_cell(x, 25, ix - 20, 0xD0);
@@ -554,7 +554,7 @@ s8 pl;
     } else {
         sa_stock_chr_trans(1, n);
         x = 44;
-        if (Game_setting.mode != 0) {
+        if (Game_setting.Screen_Mode != 0) {
             x = 57;
         }
         tilemap_put_cell(x, 25, ix - 20, 0xE0);
@@ -573,12 +573,12 @@ s8 OnOff;
     u16 x;
     if (Stpl_Num == 0) {
         x = 2 - Kind;
-        if (Game_setting.mode != 0) {
+        if (Game_setting.Screen_Mode != 0) {
             x++;
         }
     } else {
         x = 43;
-        if (Game_setting.mode != 0) {
+        if (Game_setting.Screen_Mode != 0) {
             x = 56;
         }
     }
@@ -614,12 +614,12 @@ s16 attr;
     u16 x;
     if (pl == 0) {
         x = 2;
-        if (Game_setting.mode != 0) {
+        if (Game_setting.Screen_Mode != 0) {
             x = 3;
         }
     } else {
         x = 43;
-        if (Game_setting.mode != 0) {
+        if (Game_setting.Screen_Mode != 0) {
             x = 56;
         }
     }
@@ -678,7 +678,7 @@ void sa_waku_trans(s8 pl_kind, s8 pl) {
     spg_work = 0;
     spg_number = 0;
     sa_char_ptr = spgauge_puttbl[0];
-    if (Game_setting.mode == 0) {
+    if (Game_setting.Screen_Mode == 0) {
     }
     len = super_arts[pl_kind].gauge_len / 8;
     i = 0;
@@ -745,7 +745,7 @@ void spgauge_wipe_write(s8 Stpl_Num) {
     u16 x;
     if (Stpl_Num == 0) {
         x = 0;
-        if (Game_setting.mode != 0) {
+        if (Game_setting.Screen_Mode != 0) {
             x = 1;
         }
         tilemap_put_cell(x, 25, 8, 32);
@@ -759,7 +759,7 @@ void spgauge_wipe_write(s8 Stpl_Num) {
         sa_gauge_end_trans(Stpl_Num, x + 2, 28);
     } else {
         x = 44;
-        if (Game_setting.mode != 0) {
+        if (Game_setting.Screen_Mode != 0) {
             x = 57;
         }
         tilemap_put_cell(x, 25, 8, 0xE0);

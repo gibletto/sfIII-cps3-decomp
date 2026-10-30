@@ -112,7 +112,7 @@ extern const s8 test_menu_str_10[];
 extern const s8 test_menu_str_11[];
 extern const s8 test_menu_str_12[];
 extern const s8 test_menu_str_asia_9[];
-extern const u16 sys_cfg_sound_scr_jp_0[];
+extern const u16 sys_cfg_sound_page_scr_jp_0[];
 
 const u16 test_menu_scr_jp_0[155] = {
     7, 17, 0, 2,    0x12C4, 0x12B0, 0x12CC, 0x1300, 0x12D4, 0x1308, 0x13C8,
@@ -646,7 +646,7 @@ const s8 test_menu_str_12[20] = "START  = 1P SHOT1";
 
 const s8 test_menu_str_asia_9[12] = " 9. EXIT\n";
 
-const u16 sys_cfg_sound_scr_jp_0[50] = {
+const u16 sys_cfg_sound_page_scr_jp_0[50] = {
     15, 12, 0, 14,  0x12B0, 0x1200, 0x12DC, 0x1200, 0x121C, 0x12C8, 0x128C, 0x1200, 0x12C4, 0x12B0,
                     0x12CC, 0x1300, 0x12D4, 0x1308, 0x1200,
     3, 18, 4, 14,   0x1330, 0x1310, 0x1228,

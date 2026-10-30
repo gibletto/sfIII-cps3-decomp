@@ -18,7 +18,7 @@ void Appear_17000(PLW* wk);
 s32 yun_yang_appear_check(PLW* wk);
 s32 yang_yun_appear_check(PLW* wk);
 void Appear_11000(PLW* wk);
-void appear_data_set(PLW* wk, APPEAR_DATA* dtbl);
+void appear_data_set(PLW* wk, const APPEAR_DATA* dtbl);
 void appear_player(PLW* wk);
 void appear_work_clear(void);
 void Appear_03000(PLW* wk);

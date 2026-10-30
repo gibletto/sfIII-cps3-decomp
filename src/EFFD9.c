@@ -36,10 +36,10 @@ void effect_D9_move(WORK_Other* ewk) {
         r = t;
         if (ewk->master_id) {
             r += ewk->wu.direction;
-            ewk->wu.step_xy_table = r->changetbl_2p;
+            ewk->wu.step_xy_table = (s16*)r->changetbl_2p;
         } else {
             r += ewk->wu.direction;
-            ewk->wu.step_xy_table = r->changetbl_1p;
+            ewk->wu.step_xy_table = (s16*)r->changetbl_1p;
         }
         ewk->wu.vital_old = t[ewk->wu.direction].flag;
         ewk->wu.dir_timer = t[ewk->wu.direction].timer;

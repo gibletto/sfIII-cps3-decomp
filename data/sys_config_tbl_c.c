@@ -118,8 +118,8 @@ const TM_STRING sysconfig_return_guide[3] = {
 };
 
 const TM_STRING config_saving_scr[2] = {
-    { 5, 12, 0xE, (const s8 *)str_saving_configuration },
-    { 5, 14, 0xE, (const s8 *)str_IN_EEPROM },
+    { 5, 12, 0xE, str_saving_configuration },
+    { 5, 14, 0xE, str_IN_EEPROM },
 };
 
 const s8 str_config_menu_title[40] = "7. C O N F I G U R A T I O N   M E N U\n";

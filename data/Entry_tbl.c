@@ -1,10 +1,10 @@
 /*
  * ENTRY_TBL.C  debug monitor and disassembler strings and opcode tables
  *
- * monitor_msg_tbl holds the text lines of the exception monitor (exception names, title and
- * register lines), and dbg_dump_title and dbg_disasm_title the memory dump and disassembly
- * headers. The sh_op_*_tbl lists give { opcode, mnemonic } pairs for each SH-2 operand form,
- * ending with 0xFFFF; sh_mn_* are the mnemonic strings and sh_str_* the monitor text. Read by
+ * monitor_msg_tbl holds the exception monitor's messages and monitor_panel_tbl its register panel
+ * (title and register lines), and dbg_dump_title and dbg_disasm_title the memory dump and
+ * disassembly headers. The sh_op_*_tbl lists give { opcode, mnemonic } pairs for each SH-2 operand
+ * form, ending with 0xFFFF; sh_mn_* are the mnemonic strings and sh_str_* the monitor text. Read by
  * ENTRY_DBG.C, the debug screens. str_R0 .. str_SP are the register names, reached through
  * reg_name_tbl in WORK.C.
  */
@@ -15,6 +15,7 @@
 #pragma section TBL
 
 extern const TM_STRING monitor_msg_tbl[];
+extern const TM_STRING monitor_panel_tbl[];
 extern const TM_STRING dbg_dump_title[];
 extern const TM_STRING dbg_disasm_title[];
 extern const MoveName sh_op_none_tbl[];
@@ -207,14 +208,20 @@ extern const char str_R13[];
 extern const char str_R14[];
 extern const char str_SP[];
 
-/* provisional name */
-const TM_STRING monitor_msg_tbl[14] = {
+/* provisional name: the exception monitor's messages, one per exception; nothing in the program refers
+   to them */
+const TM_STRING monitor_msg_tbl[6] = {
     { 1, 22, 0xE, sh_str_monitor_entry },
     { 1, 22, 0xE, sh_str_illegal_inst },
     { 1, 22, 0xE, sh_str_slot_illegal_inst },
     { 1, 22, 0xE, sh_str_cpu_addr_error },
     { 1, 22, 0xE, sh_str_dma_addr_error },
     { 1, 22, 0xE, sh_str_unknown_exception },
+};
+
+/* provisional name: the register panel of the exception monitor (cpu_hang_forever): the title and the
+   register lines, printed as one text whose line feeds step to the next record */
+const TM_STRING monitor_panel_tbl[8] = {
     { 12, 0, 0xE, sh_str_monitor_title },
     { 0, 2, 0xE, sh_str_regs_r0_r2 },
     { 0, 3, 0xE, sh_str_regs_r3_r5 },

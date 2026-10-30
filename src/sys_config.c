@@ -25,12 +25,7 @@
 #include "sys_config_3.h"
 #include "sys_config.h"
 #include "cps3.h"
-/* eeprom_w is the start of the 128-byte EEPROM image; the variables up to eeprom_backup_cfg are its parts */
-u8 eeprom_w[6];  /* 0206ABE0 */
-u8 eeprom_saved_flip;  /* 0206ABE6 */
-u8 eeprom_saved_flip_tail[25];  /* after eeprom_saved_flip; nothing refers to it by name or address */
-u8 eeprom_game_cfg[16];  /* 0206AC00 */
-u8 eeprom_backup_cfg[80];  /* 0206AC10 */
+u8 eeprom_w[128];  /* 0206ABE0 */
 s16 eeprom_retry;  /* 0206AC60 */
 SETTINGS Game_setting;  /* 0206AC62 */
 
@@ -39,9 +34,9 @@ SETTINGS Game_setting;  /* 0206AC62 */
 void eeprom_config_load(void) {
     register s8 side;
     register s16 i;
-    u32 tbl;
+    const u8** tbl;
     u8* q;
-    u8* p;
+    const u8* p;
     eeprom_config_verify();
     tbl = sys_cfg_default_tbl[Cabinet_Type];
     if (Area_Type) {
@@ -51,12 +46,12 @@ void eeprom_config_load(void) {
     } else {
         side = Area_Type;
     }
-    p = *(u8**)(tbl + side * 4);
-    if ((s8)*eeprom_w != (s8)*p) {
+    p = tbl[side];
+    if ((s8)eeprom_w[EEP_VERSION] != (s8)*p) {
         eeprom_config_reset();
         return;
     }
-    q = eeprom_game_cfg + 8;
+    q = &eeprom_w[EEP_GAME + 8];
     p = game_cfg_default_tbl[side];
     p = p + 8;
     for (i = 0; i < 8; i++) {
@@ -68,11 +63,10 @@ void eeprom_config_load(void) {
         p++;
     }
     eeprom_config_apply((u32)eeprom_w);
-    /* the bookkeeping counters follow the two config copies in the EEPROM image */
-    book_coin_count = *(u32*)&eeprom_w[0x60];
-    book_service_count = *(u32*)&eeprom_w[0x64];
-    book_free_count = *(u32*)&eeprom_w[0x68];
-    book_card_count = *(u32*)&eeprom_w[0x6C];
+    book_coin_count = *(u32*)&eeprom_w[EEP_BOOK_COIN];
+    book_service_count = *(u32*)&eeprom_w[EEP_BOOK_SERVICE];
+    book_free_count = *(u32*)&eeprom_w[EEP_BOOK_FREE];
+    book_card_count = *(u32*)&eeprom_w[EEP_BOOK_CARD];
 }
 
 
@@ -82,11 +76,11 @@ void eeprom_config_reset(void) {
     register s8 ix;
     register s16 k;
     register s16 j;
-    u32 table;
+    const u8** table;
     u8* rec;
     u8* ref;
     u8* key;
-    u8* name;
+    const u8* name;
     for (eeprom_retry = 10; eeprom_retry > 0; eeprom_retry--) {
         eeprom_config_default();
         if (eeprom_write(64, (u16*)(EEP_ROM + 0x80), (u16*)eeprom_w)) {
@@ -104,10 +98,10 @@ void eeprom_config_reset(void) {
         } else {
             ix = Area_Type;
         }
-        key = *(u8**)(table + ix * 4);
-        ref = eeprom_game_cfg;
+        key = (u8*)table[ix];
+        ref = &eeprom_w[EEP_GAME];
         name = game_cfg_default_tbl[ix];
-        if (config_bytes_equal(rec, key, 32)) {
+        if (config_bytes_equal(rec, key, EEP_SYSTEM_SIZE)) {
             if (config_bytes_equal(ref, name, 16)) {
                 eeprom_config_apply(eeprom_w);
                 return;
@@ -120,7 +114,7 @@ void eeprom_config_reset(void) {
 
 
 /* provisional name */
-s8 config_bytes_equal(u8* a, u8* b, s32 n) {
+s8 config_bytes_equal(const u8* a, const u8* b, s32 n) {
     register s32 i;
     for (i = 0; i < n; i++) {
         if (*a != *b) {
@@ -141,23 +135,23 @@ u32 rec;
     s32 i;
     u8* src;
     s8* dst;
-    Coin_Mode = *(s8*)(rec + 1);
-    Continue_Flag = *(s8*)(rec + 2);
-    Chute_Mode = *(s8*)(rec + 3);
-    Sound_Mode = *(s8*)(rec + 4);
-    Demo_Sound = *(s8*)(rec + 5);
-    Monitor_Flip = *(s8*)(rec + 6);
-    Language = *(s8*)(rec + 9);
-    Free_Play_Enable = *(s8*)(rec + 8);
+    Coin_Mode = *(s8*)(rec + EEP_COIN_MODE);
+    Continue_Flag = *(s8*)(rec + EEP_CONTINUE);
+    Chute_Mode = *(s8*)(rec + EEP_CHUTE_MODE);
+    Sound_Mode = *(s8*)(rec + EEP_SOUND_MODE);
+    Demo_Sound = *(s8*)(rec + EEP_DEMO_SOUND);
+    Monitor_Flip = *(s8*)(rec + EEP_MONITOR_FLIP);
+    Language = *(s8*)(rec + EEP_LANGUAGE);
+    Free_Play_Enable = *(s8*)(rec + EEP_FREE_PLAY);
     if (Sound_Mode == 0) {
-        sound_init((u8*)snd_seq_rom_data, snd_sample_rom_tbl, snd_bank_rom_tbl, 1, 0, 1);
+        sound_init((u8*)snd_seq_rom_data, (SNDSAMPLE*)snd_sample_rom_tbl, (u8**)snd_bank_rom_tbl, 1, 0, 1);
     } else {
-        sound_init((u8*)snd_seq_rom_data, snd_sample_rom_tbl, snd_bank_rom_tbl, 1, 0, 0);
+        sound_init((u8*)snd_seq_rom_data, (SNDSAMPLE*)snd_sample_rom_tbl, (u8**)snd_bank_rom_tbl, 1, 0, 0);
     }
-    Card_Dispenser = *(s8*)(rec + 10);
-    Win_Point_Com = *(s8*)(rec + 11);
-    Win_Point_Human = *(s8*)(rec + 12);
-    Voice_Type = *(s8*)(rec + 13);
+    Card_Dispenser = *(s8*)(rec + EEP_CARD_DISPENSER);
+    Win_Point_Com = *(s8*)(rec + EEP_WIN_POINT_COM);
+    Win_Point_Human = *(s8*)(rec + EEP_WIN_POINT_HUMAN);
+    Voice_Type = *(s8*)(rec + EEP_VOICE_TYPE);
     if (Coin_Mode > 18) {
         Coin_Mode = 8;
     }
@@ -186,7 +180,7 @@ u32 rec;
         Two_Coin_Start = 1;
         Continue_Flag = 1;
     }
-    src = eeprom_game_cfg;
+    src = &eeprom_w[EEP_GAME];
     dst = (s8 *)&Game_setting;
     for (i = 0; i < 16; i++) {
         *dst = *src;
@@ -205,27 +199,27 @@ void eeprom_config_save(void) {
     s8* src;
     p = (u32)eeprom_w;
     for (k = 0; k < 2; k++) {
-        *(u8*)(p + 1) = Coin_Mode;
-        *(u8*)(p + 2) = Continue_Flag;
-        *(u8*)(p + 3) = Chute_Mode;
-        *(u8*)(p + 4) = Sound_Mode;
-        *(u8*)(p + 5) = Demo_Sound;
-        *(u8*)(p + 6) = Monitor_Flip;
-        *(u8*)(p + 9) = Language;
-        *(u8*)(p + 8) = Free_Play_Enable;
-        *(u8*)(p + 10) = ((s8)Card_Dispenser);
-        *(u8*)(p + 11) = Win_Point_Com;
-        *(u8*)(p + 12) = Win_Point_Human;
-        *(u8*)(p + 13) = Voice_Type;
+        *(u8*)(p + EEP_COIN_MODE) = Coin_Mode;
+        *(u8*)(p + EEP_CONTINUE) = Continue_Flag;
+        *(u8*)(p + EEP_CHUTE_MODE) = Chute_Mode;
+        *(u8*)(p + EEP_SOUND_MODE) = Sound_Mode;
+        *(u8*)(p + EEP_DEMO_SOUND) = Demo_Sound;
+        *(u8*)(p + EEP_MONITOR_FLIP) = Monitor_Flip;
+        *(u8*)(p + EEP_LANGUAGE) = Language;
+        *(u8*)(p + EEP_FREE_PLAY) = Free_Play_Enable;
+        *(u8*)(p + EEP_CARD_DISPENSER) = ((s8)Card_Dispenser);
+        *(u8*)(p + EEP_WIN_POINT_COM) = Win_Point_Com;
+        *(u8*)(p + EEP_WIN_POINT_HUMAN) = Win_Point_Human;
+        *(u8*)(p + EEP_VOICE_TYPE) = Voice_Type;
         if (Sound_Mode == 0) {
-            sound_init((u8*)snd_seq_rom_data, snd_sample_rom_tbl, snd_bank_rom_tbl, 1, 0, 1);
+            sound_init((u8*)snd_seq_rom_data, (SNDSAMPLE*)snd_sample_rom_tbl, (u8**)snd_bank_rom_tbl, 1, 0, 1);
         } else {
-            sound_init((u8*)snd_seq_rom_data, snd_sample_rom_tbl, snd_bank_rom_tbl, 1, 0, 0);
+            sound_init((u8*)snd_seq_rom_data, (SNDSAMPLE*)snd_sample_rom_tbl, (u8**)snd_bank_rom_tbl, 1, 0, 0);
         }
         if (Free_Play_Enable == 0) {
-            *(u8*)(p + 8) = 0;
+            *(u8*)(p + EEP_FREE_PLAY) = 0;
         }
-        p += 32;
+        p += EEP_GAME;
         src = (s8 *)&Game_setting;
         for (j = 0; j < 16; j++) {
             *(u8*)p = *src;
@@ -246,9 +240,9 @@ void eeprom_config_default(void) {
     register s8 ix;
     register s16 k;
     register s16 j;
-    u32 table;
+    const u8** table;
     u8* dst;
-    u8* src;
+    const u8* src;
     dst = eeprom_w;
     for (k = 0; k < 2; k++) {
         table = sys_cfg_default_tbl[Cabinet_Type];
@@ -259,8 +253,8 @@ void eeprom_config_default(void) {
         } else {
             ix = Area_Type;
         }
-        src = *(u8**)(table + ix * 4);
-        for (j = 0; j < 32; j++) {
+        src = table[ix];
+        for (j = 0; j < EEP_SYSTEM_SIZE; j++) {
             *dst = *src;
             dst++;
             src++;
@@ -291,15 +285,15 @@ void eeprom_config_verify(void) {
             eeprom_error_halt();
         }
         a = eeprom_w;
-        b = eeprom_backup_cfg;
-        for (i = 0; i < 48; i++) {
+        b = &eeprom_w[EEP_BACKUP];
+        for (i = 0; i < EEP_COPY_SIZE; i++) {
             if (*a != *b) {
                 break;
             }
             a++;
             b++;
         }
-        if (i == 48) {
+        if (i == EEP_COPY_SIZE) {
             return;
         }
         eeprom_retry--;
