@@ -962,7 +962,7 @@ s32 comm_quax(WORK* _p0, CHAR_CMD* ctc) {
     return 1;
 }
 
-s32 comm_quay(s32 wk_adrs, CHAR_CMD* ctc)
+s32 comm_quay(WORK* wk, CHAR_CMD* ctc)
 {
 
     bg_w.quake_y_index = ctc->koc;
@@ -1653,8 +1653,8 @@ s32 comm_emhp(WORK* wk, CHAR_CMD* ctc) {
     return 1;
 }
 
-u32 comm_exbgs(u32 wk_adrs, CHAR_CMD* ctc, u32 _p2, u32 _p3) {
-    effect_F1_init(wk_adrs, (u8)ctc->koc);
+u32 comm_exbgs(WORK* wk, CHAR_CMD* ctc) {
+    effect_F1_init(wk, (u8)ctc->koc);
     return 1;
 }
 

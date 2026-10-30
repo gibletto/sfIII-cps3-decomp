@@ -2191,13 +2191,21 @@ asmsh src\sound_voice_x1.src -object=obj\sound_voice_x1.obj
 if errorlevel 1 goto fail
 asmsh src\sound_voice_2.src -object=obj\sound_voice_2.obj
 if errorlevel 1 goto fail
-set PEP_AUTOINC=0
 set ASM_READY_WAVES=1
+set GEN_AND_TEST=1
+set GEN_LAST_KEEP=1
+set MDL_SAVED_PRIO=2
+set MDL_CONST_ENTRY=1
+set ASM_SIDE_ORDER=3
 shc src\sound_voice_3.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=program=PSYS -object=obj\sound_voice_3.obj >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log
-set PEP_AUTOINC=
 set ASM_READY_WAVES=
+set GEN_AND_TEST=
+set GEN_LAST_KEEP=
+set MDL_SAVED_PRIO=
+set MDL_CONST_ENTRY=
+set ASM_SIDE_ORDER=
 shc data\textsound_tbl.c -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -include=include -optimize=1 -speed -section=const=PSYS -code=asmcode -object=obj\textsound_tbl.src >obj\shc.log 2>&1
 if errorlevel 1 goto fail
 findstr /c:") : " obj\shc.log >>obj\warnings.log

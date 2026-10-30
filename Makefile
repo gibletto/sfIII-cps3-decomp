@@ -53,8 +53,12 @@ $(SPEED_PSYS:%=obj/%.obj): OPT = -optimize=1 -speed -section=program=PSYS
 
 SPEED_STABLE_PSYS = sound_voice_3
 $(SPEED_STABLE_PSYS:%=obj/%.obj): OPT = -optimize=1 -speed -section=program=PSYS
-$(SPEED_STABLE_PSYS:%=obj/%.obj): export PEP_AUTOINC = 0
 $(SPEED_STABLE_PSYS:%=obj/%.obj): export ASM_READY_WAVES = 1
+$(SPEED_STABLE_PSYS:%=obj/%.obj): export GEN_AND_TEST = 1
+$(SPEED_STABLE_PSYS:%=obj/%.obj): export GEN_LAST_KEEP = 1
+$(SPEED_STABLE_PSYS:%=obj/%.obj): export MDL_SAVED_PRIO = 2
+$(SPEED_STABLE_PSYS:%=obj/%.obj): export MDL_CONST_ENTRY = 1
+$(SPEED_STABLE_PSYS:%=obj/%.obj): export ASM_SIDE_ORDER = 3
 
 # tables between the code objects of P: their constant data as code (tools/incode.py)
 INCODE = asstbl buttobi etc exchange gauge

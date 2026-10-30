@@ -249,7 +249,7 @@ s32 effect_29_init(void) {
         if ((ix = pull_effect_work(4)) == -1) {
             return -1;
         }
-        ewk = (WORK_Other*)frw[ix];
+        ewk = (WORK_Other*)((u32)frw + (ix << 11));
         ewk->wu.be_flag = 1;
         ewk->wu.id = 29;
         ewk->wu.work_id = 16;
@@ -269,7 +269,6 @@ s32 effect_29_init(void) {
             ewk->wu.char_table[0] = eff29_type0_char_table;
         }
     }
-    (void)&((WORK*)eff29_type1_char_table)->id;
     (void)&((WORK*)eff29_type0_char_table)->id;
     return 0;
 }

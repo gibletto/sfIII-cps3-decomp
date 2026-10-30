@@ -867,7 +867,7 @@ extern const s8 Flip_Attack_Data[3][13][8];   /* [player][CC_Type][lv] */
 extern const s16 illusion_setup_table[7][2];
 extern const s16 EFF89_Step_Data[132];
 extern const s32 Score_Data[44];
-extern const u8 super_arts_data[16][4][12];   /* 16 characters, 12-byte rows */
+extern const SA_DATA super_arts_data[16][4];   /* 16 characters */
 extern const s16 random_tbl_32_ex[32];
 extern const s16 random_tbl_16_ex_com[16];
 extern const s16 dir16_hddm[16];

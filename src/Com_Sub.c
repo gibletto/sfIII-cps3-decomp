@@ -881,7 +881,7 @@ u16 Term_No;
 s32 DENJIN_Check(wk, SA2, xx, Term_No)
 PLW* wk;
 u16 SA2;
-u16* xx;
+s16* xx;
 u16 Term_No;
 {
     if (plw[wk->wu.id].sa->kind_of_arts != 2) {
@@ -2960,15 +2960,13 @@ s16 Jump_Dir;
 {
     u16* a;
     u16* b;
-    s32 i;
 
     a = Lever_Buff;
     b = Lever_Pool;
     switch (Jump_Dir) {
     case 0:
         Ck_Distance_LvJ(wk);
-        i = wk->wu.id * 2;
-        *(u16*)((s32)a + i) = *(u16*)((s32)b + i);
+        a[wk->wu.id] = b[wk->wu.id];
         break;
     case 2:
         b[wk->wu.id] = 1;
@@ -2977,8 +2975,7 @@ s16 Jump_Dir;
     default:
         Ck_Distance_LvJ(wk);
         b[wk->wu.id] ^= 0xC;
-        i = wk->wu.id * 2;
-        *(u16*)((s32)a + i) = *(u16*)((s32)b + i);
+        a[wk->wu.id] = b[wk->wu.id];
         break;
     }
 }
@@ -3181,8 +3178,8 @@ s32 Setup_Lv04(xx)
 s16 xx;
 {
     s16 i;
-    s16* zz;
-    zz = (s16*)(Lv04_Time_Data[CC_Type] + xx);
+    const s16* zz;
+    zz = (const s16*)(Lv04_Time_Data[CC_Type] + xx);
     for (i = 0; i < 3; i++) {
         if (Control_Time <= zz[i]) {
             return i;
@@ -3197,8 +3194,8 @@ s32 Setup_Lv08(xx)
 s16 xx;
 {
     s16 i;
-    s16* zz;
-    zz = (s16*)(Lv08_Time_Data[CC_Type] + xx);
+    const s16* zz;
+    zz = (const s16*)(Lv08_Time_Data[CC_Type] + xx);
     for (i = 0; i < 7; i++) {
         if (Control_Time <= zz[i]) {
             break;
@@ -3213,8 +3210,8 @@ s32 Setup_Lv10(xx)
 s16 xx;
 {
     s16 i;
-    s16* zz;
-    zz = (s16*)(Lv10_Time_Data[CC_Type] + xx);
+    const s16* zz;
+    zz = (const s16*)(Lv10_Time_Data[CC_Type] + xx);
     for (i = 0; i < 9; i++) {
         if (Control_Time <= zz[i]) {
             break;
@@ -3229,8 +3226,8 @@ s32 Setup_Lv18(xx)
 s16 xx;
 {
     s16 i;
-    s16* zz;
-    zz = (s16*)(Lv18_Time_Data[CC_Type] + xx);
+    const s16* zz;
+    zz = (const s16*)(Lv18_Time_Data[CC_Type] + xx);
     for (i = 0; i < 17; i++) {
         if (Control_Time <= zz[i]) {
             break;

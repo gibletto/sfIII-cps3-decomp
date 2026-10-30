@@ -41,8 +41,8 @@ void effect_43_slide();
 
 
 
-void effect_43_move(WORK_Other* ewk) {
-    u16 speed = Cut_Cut_Sub(3);
+void effect_43_move(register WORK_Other* ewk) {
+    register u16 speed = Cut_Cut_Sub(3);
     switch (ewk->wu.routine_no[0]) {
     case R0_WAIT:
         if (--ewk->wu.dir_timer != 0) {
@@ -62,10 +62,7 @@ void effect_43_move(WORK_Other* ewk) {
         }
         break;
     case R0_SLIDE_IN:
-        for (;;) {
-            effect_43_slide(ewk, speed);
-            break;
-        }
+        effect_43_slide(ewk, speed);
         if ((ewk->wu.my_mr.size.x -= *(s16*)&ewk->wu.mvxy.a[0] * speed) <= 63) {
             ewk->wu.my_mr.size.x = 63;
         }

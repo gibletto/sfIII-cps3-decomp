@@ -61,7 +61,7 @@ s32 effect_D2_init(WORK_Other* oya) {
         if ((ix = pull_effect_work(3)) == -1) {
             return -1;
         }
-        ewk = (WORK_Other*)frw[ix];
+        ewk = (WORK_Other*)((u32)frw + (ix << 11));
         ewk->wu.id = 132;
         ewk->wu.be_flag = 1;
         ewk->wu.work_id = 16;
@@ -77,7 +77,6 @@ s32 effect_D2_init(WORK_Other* oya) {
         ewk->wu.my_priority = ewk->wu.position_z = 80;
         ewk->wu.char_index = i + 18;
     }
-    (void)&((WORK*)etc_char_table)->id;
 }
 
 
@@ -90,7 +89,7 @@ s32 effect_D2_init2(WORK_Other* oya) {
         if ((ix = pull_effect_work(3)) == -1) {
             return -1;
         }
-        ewk = (WORK_Other*)frw[ix];
+        ewk = (WORK_Other*)((u32)frw + (ix << 11));
         ewk->wu.id = 132;
         ewk->wu.be_flag = 1;
         ewk->wu.work_id = 16;
@@ -106,5 +105,4 @@ s32 effect_D2_init2(WORK_Other* oya) {
         ewk->wu.my_priority = ewk->wu.position_z = 80;
         ewk->wu.char_index = i + 18;
     }
-    (void)&((WORK*)etc_char_table)->id;
 }

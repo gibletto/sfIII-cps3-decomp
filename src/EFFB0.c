@@ -295,7 +295,6 @@ s32 effect_B0_init(void) {
     }
     (void)&((WORK*)0x200)->id;
     scrn_reg_w[0].ctrl &= 0xFE7F;
-    
     end_ake_cell_put(0, 0x3040, 6, (u32)effb0_scrn_data);
     end_ake_cell_put(0, 0x3080, 7, (u32)effb0_scrn_data);
     Bg_Off_R(1);

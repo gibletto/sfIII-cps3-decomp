@@ -12,6 +12,7 @@
 
 #include "types.h"
 #include "structs.h"
+#include "work.h"
 
 #pragma section TBL
 
@@ -37,13 +38,13 @@ extern void Exit_Term_0006();
 extern void Exit_Term_0007();
 
 const u16 cancel_shot_tbl[7][8] = {
-    { 0x10, 0x20, 0x40, 0x80, 0x100, 0x200, 0xFFFF, 0x10 },
-    { 0x10, 0x20, 0x40, 0x80, 0x100, 0x200, 0xFFFF, 0x10 },
-    { 0x10, 0x20, 0x40, 0x80, 0x100, 0x200, 0xFFFF, 0x20 },
-    { 0x10, 0x20, 0x40, 0x80, 0x100, 0x200, 0xFFFF, 0x40 },
-    { 0x10, 0x20, 0x40, 0x80, 0x100, 0x200, 0xFFFF, 0x80 },
-    { 0x10, 0x20, 0x40, 0x80, 0x100, 0x200, 0xFFFF, 0x100 },
-    { 0x10, 0x20, 0x40, 0x80, 0x100, 0x200, 0xFFFF, 0x200 },
+    { BUTTON_LP, BUTTON_MP, BUTTON_HP, BUTTON_LK, BUTTON_MK, BUTTON_HK, 0xFFFF, BUTTON_LP },
+    { BUTTON_LP, BUTTON_MP, BUTTON_HP, BUTTON_LK, BUTTON_MK, BUTTON_HK, 0xFFFF, BUTTON_LP },
+    { BUTTON_LP, BUTTON_MP, BUTTON_HP, BUTTON_LK, BUTTON_MK, BUTTON_HK, 0xFFFF, BUTTON_MP },
+    { BUTTON_LP, BUTTON_MP, BUTTON_HP, BUTTON_LK, BUTTON_MK, BUTTON_HK, 0xFFFF, BUTTON_HP },
+    { BUTTON_LP, BUTTON_MP, BUTTON_HP, BUTTON_LK, BUTTON_MK, BUTTON_HK, 0xFFFF, BUTTON_LK },
+    { BUTTON_LP, BUTTON_MP, BUTTON_HP, BUTTON_LK, BUTTON_MK, BUTTON_HK, 0xFFFF, BUTTON_MK },
+    { BUTTON_LP, BUTTON_MP, BUTTON_HP, BUTTON_LK, BUTTON_MK, BUTTON_HK, 0xFFFF, BUTTON_HK },
 };
 
 const u8 YAGYOU_Data[16] = {
@@ -51,7 +52,8 @@ const u8 YAGYOU_Data[16] = {
 };
 
 const u16 Rolling_Lv_Data[2][5] = {
-    { 4, 1, 8, 2, 0xFFFF }, { 0x90, 0x120, 0x240, 0x3F0, 0xFFFF },
+    { LEVER_LEFT, LEVER_UP, LEVER_RIGHT, LEVER_DOWN, 0xFFFF },
+    { BUTTON_LP | BUTTON_LK, BUTTON_MP | BUTTON_MK, BUTTON_HP | BUTTON_HK, BUTTON_SHOTS, 0xFFFF },
 };
 
 const u16 Meoshi_Lever_Data[16] = {

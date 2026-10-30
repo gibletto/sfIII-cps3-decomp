@@ -27,6 +27,32 @@
 #include "sys_test_3.h"
 #include "cps3.h"
 
+/* the CD-ROM drive's SCSI controller (WD33C93): a register number written to CD_SELECT picks the register
+   that CD_DATA reads or writes (the number steps on after each access); reading CD_REG gives the auxiliary
+   status */
+#define CD_SELECT           (*(volatile u16*)CD_REG)
+#define CD_AUX_STATUS       (*(volatile u16*)CD_REG)
+#define CD_DATA             (*(volatile u16*)(CD_REG + 0x2))
+
+#define AUX_INT             0x80    /* interrupt pending */
+#define AUX_BUSY            0x30    /* busy, command in progress */
+#define AUX_DBR             0x01    /* data buffer ready */
+
+#define SCSI_OWN_ID         0       /* own ID, here the CDB size */
+#define SCSI_CONTROL        1
+#define SCSI_CDB1           3       /* the CDB bytes follow */
+#define SCSI_TARGET_LUN     15
+#define SCSI_COMMAND_PHASE  16
+#define SCSI_SYNC_TRANSFER  17
+#define SCSI_COUNT_MSB      18      /* transfer count: MSB, 2nd, LSB */
+#define SCSI_COUNT_2ND      19
+#define SCSI_DEST_ID        21
+#define SCSI_STATUS         23
+#define SCSI_COMMAND        24
+#define SCSI_DATA           25
+
+#define SCSI_SEL_ATN_XFER   8       /* command: select with ATN and transfer */
+
 /* memtest_no: the memory test page step */
 #define MEMTEST_INIT    0       /* memtest_menu_init: draw the menu */
 #define MEMTEST_SELECT  1       /* memtest_menu_select: choose a test */
@@ -753,7 +779,7 @@ u32 simm_full_checksum(s32 rom, s32 wide) {
         count = 0x800000;
         sum = 0;
         addr = (chip << 23) + 0x26000000;
-        p = (u8*)((u32)&a + 0x20000000);
+        p = (u8*)((u32)&a + CACHE_THRU);
         for (; count > 0; addr++, count--) {
             dma0_transfer_wait(addr, (u32)p, 1, 0);
             sum += *p;
@@ -855,7 +881,7 @@ s32 simm_quick_checksum(s32 slot, s32 mode) {
     } else {
         base = bank * 0x800000 + 0x26000000;
         sum = 0;
-        p = (u8*)((u32)&b + 0x20000000);
+        p = (u8*)((u32)&b + CACHE_THRU);
         for (i = 0; i < 16; i++) {
             dma0_transfer_wait(simm_sum_offset_tbl[i] + base, (u32)p, 1, 0);
             sum += *p;
@@ -956,10 +982,10 @@ s32 scsi_send_cdb_bytes(s32 n, const s8* cdb) {
     const s8* p;
     p = cdb;
     scsi_cdb_len = n;
-    *(volatile u16*)CD_REG = 3;
+    CD_SELECT = SCSI_CDB1;
     delay_cycles(17);
     for (i = 0; i < n; i++, p++) {
-        *(volatile u16*)(CD_REG + 0x2) = *p;
+        CD_DATA = *p;
         delay_cycles(17);
     }
     return 0;
@@ -982,33 +1008,33 @@ s32 scsi_send_cdb_and_read(s32 lba, u8* buf) {
     cmd = 33;
     tries = 0;
     scsi_error = 0;
-    (*(volatile u16*)CD_REG) = 0;
+    CD_SELECT = SCSI_OWN_ID;
     delay_cycles(17);
-    (*(volatile u16*)(CD_REG + 0x2)) = scsi_cdb_len;
+    CD_DATA = scsi_cdb_len;
     delay_cycles(17);
     cmd |= 0x40;
-    (*(volatile u16*)CD_REG) = 15;
+    CD_SELECT = SCSI_TARGET_LUN;
     delay_cycles(17);
-    (*(volatile u16*)(CD_REG + 0x2)) = 0;
+    CD_DATA = 0;
     delay_cycles(17);
-    (*(volatile u16*)(CD_REG + 0x2)) = 0;
+    CD_DATA = 0;
     delay_cycles(17);
-    (*(volatile u16*)(CD_REG + 0x2)) = 32;
+    CD_DATA = 32;
     delay_cycles(17);
-    (*(volatile u16*)(CD_REG + 0x2)) = (s16)((lba & 0xFF0000) >> 16);
+    CD_DATA = (s16)((lba & 0xFF0000) >> 16);
     delay_cycles(17);
-    (*(volatile u16*)(CD_REG + 0x2)) = (lba & 0xFF00) >> 8;
+    CD_DATA = (lba & 0xFF00) >> 8;
     delay_cycles(17);
-    (*(volatile u16*)(CD_REG + 0x2)) = lba & 0xFF;
+    CD_DATA = lba & 0xFF;
     delay_cycles(17);
-    (*(volatile u16*)CD_REG) = 21;
+    CD_SELECT = SCSI_DEST_ID;
     delay_cycles(17);
-    (*(volatile u16*)(CD_REG + 0x2)) = cmd;
+    CD_DATA = cmd;
     delay_cycles(17);
     while (1) {
         tries++;
         for (count = 255; count > 0; count--) {
-            if (((*(volatile u16*)CD_REG) & 0x30) == 0) {
+            if ((CD_AUX_STATUS & AUX_BUSY) == 0) {
                 break;
             }
         }
@@ -1017,29 +1043,29 @@ s32 scsi_send_cdb_and_read(s32 lba, u8* buf) {
             return -1;
         }
         while (1) {
-            if (((*(volatile u16*)CD_REG) & 0x80) == 0) {
+            if ((CD_AUX_STATUS & AUX_INT) == 0) {
                 break;
             }
-            (*(volatile u16*)CD_REG) = 23;
+            CD_SELECT = SCSI_STATUS;
             delay_cycles(17);
-            w14 = (*(volatile u16*)(CD_REG + 0x2));
+            w14 = CD_DATA;
         }
-        (*(volatile u16*)CD_REG) = 24;
+        CD_SELECT = SCSI_COMMAND;
         delay_cycles(17);
-        (*(volatile u16*)(CD_REG + 0x2)) = 8;
+        CD_DATA = SCSI_SEL_ATN_XFER;
         delay_cycles(17);
         count = 0;
         while (1) {
-            if ((*(volatile u16*)CD_REG) & 1) {
+            if (CD_AUX_STATUS & AUX_DBR) {
                 count = 0;
-                (*(volatile u16*)CD_REG) = 25;
+                CD_SELECT = SCSI_DATA;
                 delay_cycles(17);
-                *dst = (*(volatile u16*)(CD_REG + 0x2));
+                *dst = CD_DATA;
                 dst++;
             } else {
                 count++;
             }
-            if ((*(volatile u16*)CD_REG) & 0x80) {
+            if (CD_AUX_STATUS & AUX_INT) {
                 break;
             }
             if (count == 0xFFFF0) {
@@ -1047,33 +1073,33 @@ s32 scsi_send_cdb_and_read(s32 lba, u8* buf) {
                 return -1;
             }
         }
-        (*(volatile u16*)CD_REG) = 23;
+        CD_SELECT = SCSI_STATUS;
         delay_cycles(17);
-        phase = (*(volatile u16*)(CD_REG + 0x2)) & 0xFF;
+        phase = CD_DATA & 0xFF;
         if (phase == 22) {
             break;
         }
-        (*(volatile u16*)CD_REG) = 19;
+        CD_SELECT = SCSI_COUNT_2ND;
         delay_cycles(17);
-        addr = ((*(volatile u16*)(CD_REG + 0x2)) & 0xFF) << 16;
-        addr |= ((*(volatile u16*)(CD_REG + 0x2)) & 0xFF) << 8;
-        addr |= (*(volatile u16*)(CD_REG + 0x2)) & 0xFF;
-        (*(volatile u16*)CD_REG) = 16;
+        addr = (CD_DATA & 0xFF) << 16;
+        addr |= (CD_DATA & 0xFF) << 8;
+        addr |= CD_DATA & 0xFF;
+        CD_SELECT = SCSI_COMMAND_PHASE;
         delay_cycles(17);
-        msg = (*(volatile u16*)(CD_REG + 0x2)) & 0xFF;
+        msg = CD_DATA & 0xFF;
         switch (phase) {
         case 75:
-            (*(volatile u16*)CD_REG) = 16;
+            CD_SELECT = SCSI_COMMAND_PHASE;
             delay_cycles(17);
-            (*(volatile u16*)(CD_REG + 0x2)) = 70;
+            CD_DATA = 70;
             delay_cycles(17);
-            (*(volatile u16*)CD_REG) = 18;
+            CD_SELECT = SCSI_COUNT_MSB;
             delay_cycles(17);
-            (*(volatile u16*)(CD_REG + 0x2)) = 0;
+            CD_DATA = 0;
             delay_cycles(17);
-            (*(volatile u16*)(CD_REG + 0x2)) = 0;
+            CD_DATA = 0;
             delay_cycles(17);
-            (*(volatile u16*)(CD_REG + 0x2)) = 0;
+            CD_DATA = 0;
             delay_cycles(17);
             break;
         case 133:
@@ -1081,35 +1107,35 @@ s32 scsi_send_cdb_and_read(s32 lba, u8* buf) {
                 scsi_error = 1;
                 return -1;
             }
-            while (((*(volatile u16*)CD_REG) & 0x80) == 0) {
+            while ((CD_AUX_STATUS & AUX_INT) == 0) {
             }
-            phase = (*(volatile u16*)(CD_REG + 0x2)) & 0xFF;
+            phase = CD_DATA & 0xFF;
             if (phase == 128) {
-                (*(volatile u16*)CD_REG) = 16;
+                CD_SELECT = SCSI_COMMAND_PHASE;
                 delay_cycles(17);
-                (*(volatile u16*)(CD_REG + 0x2)) = 68;
+                CD_DATA = 68;
                 delay_cycles(17);
             } else if (phase == 129) {
-                (*(volatile u16*)CD_REG) = 25;
+                CD_SELECT = SCSI_DATA;
                 delay_cycles(17);
-                w14 = (*(volatile u16*)(CD_REG + 0x2));
-                (*(volatile u16*)CD_REG) = 16;
+                w14 = CD_DATA;
+                CD_SELECT = SCSI_COMMAND_PHASE;
                 delay_cycles(17);
-                (*(volatile u16*)(CD_REG + 0x2)) = 69;
+                CD_DATA = 69;
                 delay_cycles(17);
             } else {
                 scsi_error = 1;
                 return -1;
             }
-            (*(volatile u16*)CD_REG) = 17;
+            CD_SELECT = SCSI_SYNC_TRANSFER;
             delay_cycles(17);
-            (*(volatile u16*)(CD_REG + 0x2)) = 32;
+            CD_DATA = 32;
             delay_cycles(17);
-            (*(volatile u16*)(CD_REG + 0x2)) = (addr & 0xFF0000) >> 16;
+            CD_DATA = (addr & 0xFF0000) >> 16;
             delay_cycles(17);
-            (*(volatile u16*)(CD_REG + 0x2)) = (addr & 0xFF00) >> 8;
+            CD_DATA = (addr & 0xFF00) >> 8;
             delay_cycles(17);
-            (*(volatile u16*)(CD_REG + 0x2)) = addr & 0xFF;
+            CD_DATA = addr & 0xFF;
             delay_cycles(17);
             break;
         default:
@@ -1117,29 +1143,29 @@ s32 scsi_send_cdb_and_read(s32 lba, u8* buf) {
             return -1;
         }
     }
-    (*(volatile u16*)CD_REG) = 1;
+    CD_SELECT = SCSI_CONTROL;
     delay_cycles(17);
-    w14 = (*(volatile u16*)(CD_REG + 0x2));
+    w14 = CD_DATA;
     if ((w14 & 8) == 0) {
         while (1) {
-            if ((*(volatile u16*)CD_REG) & 0x80) {
+            if (CD_AUX_STATUS & AUX_INT) {
                 break;
             }
         }
-        (*(volatile u16*)CD_REG) = 23;
+        CD_SELECT = SCSI_STATUS;
         delay_cycles(17);
-        phase = (*(volatile u16*)(CD_REG + 0x2)) & 0xFF;
+        phase = CD_DATA & 0xFF;
         if (phase != 133) {
-            (*(volatile u16*)CD_REG) = 15;
+            CD_SELECT = SCSI_TARGET_LUN;
             delay_cycles(17);
-            result = (*(volatile u16*)(CD_REG + 0x2)) & 0x1F;
+            result = CD_DATA & 0x1F;
             scsi_error = 1;
             return -1;
         }
     }
-    (*(volatile u16*)CD_REG) = 15;
+    CD_SELECT = SCSI_TARGET_LUN;
     delay_cycles(17);
-    result = (*(volatile u16*)(CD_REG + 0x2)) & 0x1F;
+    result = CD_DATA & 0x1F;
     return result;
 }
 

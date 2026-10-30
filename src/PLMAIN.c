@@ -81,9 +81,8 @@ void Player_move(PLW* wk, u16 lv_data) {
 
 void player_mv_0000(PLW* wk) {
     s16 i;
-    s32 k;
-    for (i = 0, k = 0; i < 8; i++, k += 2) {
-        *(s16*)((s32)wk->old_pos_data + k) = 0;
+    for (i = 0; i < 8; i++) {
+        wk->old_pos_data[i] = 0;
     }
     setup_vitality(&wk->wu, (wk->player_number));
     set_player_shadow(wk);

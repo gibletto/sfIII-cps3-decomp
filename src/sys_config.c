@@ -83,10 +83,10 @@ void eeprom_config_reset(void) {
     const u8* name;
     for (eeprom_retry = 10; eeprom_retry > 0; eeprom_retry--) {
         eeprom_config_default();
-        if (eeprom_write(64, (u16*)(EEP_ROM + 0x80), (u16*)eeprom_w)) {
+        if (eeprom_write(64, (u16*)EEP_ROM_WRITE, (u16*)eeprom_w)) {
             eeprom_error_halt();
         }
-        if (eeprom_read(64, (u16*)(EEP_ROM + 0x100), (u16*)eeprom_w)) {
+        if (eeprom_read(64, (u16*)EEP_ROM_READ, (u16*)eeprom_w)) {
             eeprom_error_halt();
         }
         rec = eeprom_w;
@@ -102,8 +102,8 @@ void eeprom_config_reset(void) {
         ref = &eeprom_w[EEP_GAME];
         name = game_cfg_default_tbl[ix];
         if (config_bytes_equal(rec, key, EEP_SYSTEM_SIZE)) {
-            if (config_bytes_equal(ref, name, 16)) {
-                eeprom_config_apply(eeprom_w);
+            if (config_bytes_equal(ref, name, EEP_GAME_SIZE)) {
+                eeprom_config_apply((u32)eeprom_w);
                 return;
             }
         }
@@ -182,7 +182,7 @@ u32 rec;
     }
     src = &eeprom_w[EEP_GAME];
     dst = (s8 *)&Game_setting;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < EEP_GAME_SIZE; i++) {
         *dst = *src;
         dst++;
         src++;
@@ -221,16 +221,16 @@ void eeprom_config_save(void) {
         }
         p += EEP_GAME;
         src = (s8 *)&Game_setting;
-        for (j = 0; j < 16; j++) {
+        for (j = 0; j < EEP_GAME_SIZE; j++) {
             *(u8*)p = *src;
             p++;
             src++;
         }
     }
-    if (eeprom_write(48, (u16*)(EEP_ROM + 0x80), (u16*)eeprom_w)) {
+    if (eeprom_write(48, (u16*)EEP_ROM_WRITE, (u16*)eeprom_w)) {
         eeprom_error_halt();
     }
-    eeprom_config_apply(eeprom_w);
+    eeprom_config_apply((u32)eeprom_w);
 }
 
 
@@ -260,7 +260,7 @@ void eeprom_config_default(void) {
             src++;
         }
         src = game_cfg_default_tbl[ix];
-        for (j = 0; j < 16; j++) {
+        for (j = 0; j < EEP_GAME_SIZE; j++) {
             *dst = *src;
             dst++;
             src++;
@@ -281,7 +281,7 @@ void eeprom_config_verify(void) {
     u8* b;
     eeprom_retry = 10;
     while (eeprom_retry > 0) {
-        if (eeprom_read(64, (u16*)(EEP_ROM + 0x100), (u16*)eeprom_w)) {
+        if (eeprom_read(64, (u16*)EEP_ROM_READ, (u16*)eeprom_w)) {
             eeprom_error_halt();
         }
         a = eeprom_w;

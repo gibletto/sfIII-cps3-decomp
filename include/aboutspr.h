@@ -18,7 +18,7 @@ s32 char_cell_unflip_xy(WORK* wk);
 void count_conn_cells(WORK_Other_CONN* ewk);
 s32 make_conn_cells(WORK_Other_CONN* ewk);
 void release_char_cell_blocks(WORK* wk);
-void push_char_sprite(WORK* wk, u16* spr, s16 y_ofs);
+void push_char_sprite(WORK* wk, SPRITE_ENTRY* spr, s16 y_ofs);
 s32 sort_push_request8(WORK* wk);
 s16 get_kage_width();
 void char_sprite_zoom_cells(WORK* wk);

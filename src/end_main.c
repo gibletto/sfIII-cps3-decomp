@@ -211,7 +211,7 @@ void op_02_move(void) {
         debug_bg_tile_put(0, 0, 16, (u32)&op_bg_scrn_data);
         debug_bg_tile_put(0, 0, 17, (u32)&op_bg_scrn_data);
         p = op_prio_tbl;
-        oh_opening_demo(eff_bg_adrs[0].adrs, 0, 32, 0x800, 16, 0x240, op_prio_tbl[0].prio);
+        oh_opening_demo((u16*)eff_bg_adrs[0].adrs, 0, 32, 0x800, 16, 0x240, op_prio_tbl[0].prio);
         op_scrn_map_set(op_w.r_no_2);
         bg_w.bgw[0].r_limit = p->time;
         break;
@@ -224,7 +224,7 @@ void op_02_move(void) {
                 op_w.r_no_1++;
             } else {
                 bg_w.bgw[0].r_limit = op_prio_tbl[bg_w.bgw[0].l_limit].time;
-                oh_opening_demo(eff_bg_adrs[0].adrs, 0, 32, 0x800, 16, 0x240,
+                oh_opening_demo((u16*)eff_bg_adrs[0].adrs, 0, 32, 0x800, 16, 0x240,
                                 op_prio_tbl[bg_w.bgw[0].l_limit].prio);
             }
         }
@@ -383,7 +383,7 @@ void op_08_move(void) {
         op_w.r_no_2 = 18;
         scrn_map_set_now(0, eff_bg_adrs[p->bg].adrs);
         op_scrn_map_set(18);
-        oh_opening_demo(eff_bg_adrs[4].adrs, 64, 32, 0x1800, 16, 0x240, 13);
+        oh_opening_demo((u16*)eff_bg_adrs[4].adrs, 64, 32, 0x1800, 16, 0x240, 13);
         break;
     case 1:
         op_w.free_work--;

@@ -28,6 +28,12 @@
 #include "sys_test.h"
 #include "cps3.h"
 
+/* the SS layer scroll position, written a byte at a time: the low byte, then the high byte */
+#define SS_SCROLL_X_LO      (*(volatile u16*)(SS_REG + 0x0E))
+#define SS_SCROLL_X_HI      (*(volatile u16*)(SS_REG + 0x10))
+#define SS_SCROLL_Y_LO      (*(volatile u16*)(SS_REG + 0x20))
+#define SS_SCROLL_Y_HI      (*(volatile u16*)(SS_REG + 0x22))
+
 extern volatile s16 flip_crt_ofs_x;
 extern volatile s16 flip_crt_ofs_y;
 
@@ -381,13 +387,13 @@ void scroll_layers_finalize_frame(void) {
         scrn_mode_prm[i].cur = scrn_mode_prm[i].set;
     }
     w = scrn_pos[4].cur_x.disp.pos + screen_base_x + flip_crt_ofs_x;
-    (*(volatile u16*)(SS_REG + (0x0E))) = w;
+    SS_SCROLL_X_LO = w;
     w >>= 8;
-    (*(volatile u16*)(SS_REG + (0x10))) = w;
+    SS_SCROLL_X_HI = w;
     w = -scrn_pos[4].cur_y.disp.pos + screen_base_y + flip_crt_ofs_y;
-    (*(volatile u16*)(SS_REG + (0x20))) = w;
+    SS_SCROLL_Y_LO = w;
     w >>= 8;
-    (*(volatile u16*)(SS_REG + (0x22))) = w;
+    SS_SCROLL_Y_HI = w;
     scrn_pos[4].cur_x.cal = scrn_pos[4].set_x.cal;
     scrn_pos[4].cur_y.cal = scrn_pos[4].set_y.cal;
 }

@@ -105,7 +105,11 @@ routines that show them. Those New Generation adds:
 - `MDL_IMM_REG=191`: bit 128 (with bit 4): a nonzero constant a register already holds may serve an arithmetic expression of scalar variables, constants and casts, globals included (RANKING)
 - `PEP_SWITCH_END=3`: bits 1 and 2: a nested switch keeps its own break label (bit 1), also where nested switches end one after another (bit 2)
 - `PEP_RETURN_EXIT=1`: when a return to the adjacent epilogue is removed and a final immediate load is left in a block of its own, the conditional-branch delay-slot pass may still take it if the next block holds only the exit (all its other checks stay)
-- `PEP_AUTOINC=0`: only for the modules of the `SPEED_STABLE` group: no folding of a load and a later pointer `add` into a post-increment load (as Release 26)
+- `GEN_AND_TEST=1`: only for the modules of the `SPEED_STABLE` group: a bit-and whose value is only tested is computed into a register and that register is tested (`and` + `tst Rn,Rn`)
+- `GEN_LAST_KEEP=1`: only for the modules of the `SPEED_STABLE` group: releasing a node's registers keeps the register chosen last, so the next choice still passes over it
+- `MDL_SAVED_PRIO=2`: only for the modules of the `SPEED_STABLE` group: a variable of priority 2 may take a callee-saved register (Release 26: 3)
+- `MDL_CONST_ENTRY=1`: only for the modules of the `SPEED_STABLE` group: a constant kept in a register is loaded at the function's entry
+- `ASM_SIDE_ORDER=3`: only for the modules of the `SPEED_STABLE` group: the scheduler keeps an access through a pointer it steps (`*p++`) and a store through a pointer in place, as a volatile access
 - `ASM_READY_WAVES=1`: only for the modules of the `SPEED_STABLE` group: the scheduler takes the instructions that are ready at one time as a wave and frees their successors in order as their predecessors are placed, siblings in source order (sound_voice_3)
 
 None of them tests for a function's name or address, but several have been seen in only one routine so far and rest

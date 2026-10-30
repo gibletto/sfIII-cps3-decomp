@@ -61,7 +61,7 @@ s32 effect_A1_init(s16 type, s16 family) {
     ewk->wu.my_col_code = 0x2040;
     ewk->wu.my_family = family;
     ewk->wu.position_z = 1;
-    ewk->wu.char_table[0] = (u32*)eff99_char_table;
+    ewk->wu.char_table[0] = eff99_char_table;
     ewk->wu.char_index = type + 1;
     ewk->wu.my_mr_flag = 1;
     ewk->wu.my_mr.size.x = 20;

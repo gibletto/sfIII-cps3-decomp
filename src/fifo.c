@@ -12,16 +12,16 @@
 #include "extern.h"
 #include "fifo.h"
 /* provisional name */
-void fifo_init(fifo, buf, size)
-u32 *fifo;
-u32 buf;
-u32 size;
+void fifo_init(q, buf, size)
+FIFO32* q;
+u32* buf;
+s32 size;
 {
-    fifo[0] = size;
-    fifo[1] = buf;      /* write pointer */
-    fifo[2] = buf;      /* read pointer */
-    fifo[3] = 0;        /* entries queued */
-    fifo[4] = buf;      /* buffer top */
+    q->size = size;
+    q->wr = buf;
+    q->rd = buf;
+    q->count = 0;
+    q->base = buf;
 }
 
 

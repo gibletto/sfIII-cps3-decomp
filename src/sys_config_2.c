@@ -318,7 +318,7 @@ void config_menu_init(void) {
     cfg_extra = Voice_Type;
     dst = (u32)&game_config_work;
     src = (s8 *)&Game_setting;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < EEP_GAME_SIZE; i++) {
         *(u8*)dst = *src;
         dst++;
         src++;
@@ -335,7 +335,7 @@ void config_menu_init(void) {
                 i = Area_Type;
             }
             dst = (u32)table[i];
-            cfg_coin = *(u8*)(dst + 1);
+            cfg_coin = *(u8*)(dst + EEP_COIN_MODE);
         }
         cfg_continue = 0;
     }
@@ -446,18 +446,18 @@ void config_top_default(void) {
                 ix = Area_Type;
             }
             p = (u32)table[ix];
-            cfg_coin = *(u8*)(p + 1);
-            cfg_continue = *(u8*)(p + 2);
-            cfg_chute = *(u8*)(p + 3);
-            cfg_sound_mode = *(u8*)(p + 4);
-            cfg_voice = *(u8*)(p + 9);
-            Monitor_Flip = *(u8*)(p + 6);
-            cfg_demo_sound = *(u8*)(p + 5);
+            cfg_coin = *(u8*)(p + EEP_COIN_MODE);
+            cfg_continue = *(u8*)(p + EEP_CONTINUE);
+            cfg_chute = *(u8*)(p + EEP_CHUTE_MODE);
+            cfg_sound_mode = *(u8*)(p + EEP_SOUND_MODE);
+            cfg_voice = *(u8*)(p + EEP_LANGUAGE);
+            Monitor_Flip = *(u8*)(p + EEP_MONITOR_FLIP);
+            cfg_demo_sound = *(u8*)(p + EEP_DEMO_SOUND);
             cfg_coin_special = Free_Play;
-            cfg_dispenser = *(u8*)(p + 10);
-            cfg_win_point = *(u8*)(p + 11);
-            cfg_win_point_vs = *(u8*)(p + 12);
-            cfg_extra = *(u8*)(p + 13);
+            cfg_dispenser = *(u8*)(p + EEP_CARD_DISPENSER);
+            cfg_win_point = *(u8*)(p + EEP_WIN_POINT_COM);
+            cfg_win_point_vs = *(u8*)(p + EEP_WIN_POINT_HUMAN);
+            cfg_extra = *(u8*)(p + EEP_VOICE_TYPE);
             if (Coin_Mode == 17) {
                 cfg_free_play = 1;
                 cfg_continue = 1;
@@ -466,7 +466,7 @@ void config_top_default(void) {
             }
             p = (u32)game_cfg_default_tbl[ix];
             dst = (s8 *)&game_config_work;
-            for (ix = 0; ix < 16; ix++) {
+            for (ix = 0; ix < EEP_GAME_SIZE; ix++) {
                 *dst = *(s8*)p;
                 dst++;
                 p++;
@@ -511,7 +511,7 @@ void config_top_save_exit(void) {
         Voice_Type = cfg_extra;
         s = (s8*)&game_config_work;
         d = (s8*)&Game_setting;
-        for (i = 0; i < 16; i++) {
+        for (i = 0; i < EEP_GAME_SIZE; i++) {
             *d = *s;
             s++;
             d++;
@@ -1022,7 +1022,7 @@ void gameconfig_page(void) {
                     ix = Area_Type;
                 }
                 p = (u32)table[ix];
-                cfg_coin = *(u8*)(p + 1);
+                cfg_coin = *(u8*)(p + EEP_COIN_MODE);
             }
             cfg_continue = 0;
         }
@@ -1207,27 +1207,27 @@ s32 config_differs_from_default(void) {
         ix = Area_Type;
     }
     p = (u32)table[ix];
-    if (*(u8*)(p + 1) != cfg_coin) {
+    if (*(u8*)(p + EEP_COIN_MODE) != cfg_coin) {
         result = -1;
-    } else if (*(u8*)(p + 2) != cfg_continue) {
+    } else if (*(u8*)(p + EEP_CONTINUE) != cfg_continue) {
         result = -1;
-    } else if (*(u8*)(p + 3) != cfg_chute) {
+    } else if (*(u8*)(p + EEP_CHUTE_MODE) != cfg_chute) {
         result = -1;
-    } else if (*(u8*)(p + 4) != cfg_sound_mode) {
+    } else if (*(u8*)(p + EEP_SOUND_MODE) != cfg_sound_mode) {
         result = -1;
-    } else if (*(u8*)(p + 5) != cfg_demo_sound) {
+    } else if (*(u8*)(p + EEP_DEMO_SOUND) != cfg_demo_sound) {
         result = -1;
-    } else if (*(u8*)(p + 6) != Monitor_Flip) {
+    } else if (*(u8*)(p + EEP_MONITOR_FLIP) != Monitor_Flip) {
         result = -1;
-    } else if (*(u8*)(p + 9) != cfg_voice) {
+    } else if (*(u8*)(p + EEP_LANGUAGE) != cfg_voice) {
         result = -1;
-    } else if (*(u8*)(p + 10) != cfg_dispenser) {
+    } else if (*(u8*)(p + EEP_CARD_DISPENSER) != cfg_dispenser) {
         result = -1;
-    } else if (*(u8*)(p + 11) != cfg_win_point) {
+    } else if (*(u8*)(p + EEP_WIN_POINT_COM) != cfg_win_point) {
         result = -1;
-    } else if (*(u8*)(p + 12) != cfg_win_point_vs) {
+    } else if (*(u8*)(p + EEP_WIN_POINT_HUMAN) != cfg_win_point_vs) {
         result = -1;
-    } else if (*(u8*)(p + 13) != cfg_extra) {
+    } else if (*(u8*)(p + EEP_VOICE_TYPE) != cfg_extra) {
         result = -1;
     }
     p = (u32)game_cfg_default_tbl[ix];
@@ -1387,7 +1387,7 @@ void config_menu_load_settings(void) {
     cfg_extra = Voice_Type;
     dst = (u32)&game_config_work;
     src = (s8 *)&Game_setting;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < EEP_GAME_SIZE; i++) {
         *(u8*)dst = *src;
         dst++;
         src++;
@@ -1404,7 +1404,7 @@ void config_menu_load_settings(void) {
                 i = Area_Type;
             }
             dst = (u32)table[i];
-            cfg_coin = *(u8*)(dst + 1);
+            cfg_coin = *(u8*)(dst + EEP_COIN_MODE);
         }
         cfg_continue = 0;
     }

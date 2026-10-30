@@ -78,7 +78,7 @@
 #include "fighter.h"
 #include "RANKING.h"
 
-TASK_QUEUE task_req_queue;  /* 0200D9B4 */
+FIFO32 task_req_queue;  /* 0200D9B4 */
 u8 task_req_buff[716];  /* 0200D9C8 */
 
 #pragma noregsave(boot_task)
@@ -97,14 +97,14 @@ void boot_task(void) {
     void (*initial_entry)();
 
     task_sleep(3);
-    fifo_init((u32*)&task_req_queue, (u32)task_req_buff, 200);
+    fifo_init(&task_req_queue, (u32*)task_req_buff, 200);
     initial_task = task_tbl;
     initial_entry = mode_init_task;
     while (create_task(initial_entry, 0, initial_task, 1, 0) == 0) {
     }
     do {
         if (task_tbl[6].status == 0) {
-            req = (TASK_REQ*)fifo_get((FIFO32*)&task_req_queue);
+            req = (TASK_REQ*)fifo_get(&task_req_queue);
             if (req == 0) {
             } else {
                 create_task(req->func, 2, &task_tbl[6], 4, req->arg);
@@ -119,7 +119,7 @@ void boot_task(void) {
 
 /* provisional name */
 void kill_mode_tasks(void) {
-    fifo_init(&task_req_queue, task_req_buff, 200);
+    fifo_init(&task_req_queue, (u32*)task_req_buff, 200);
     kill_tasks_by_priority(4, 2);
 }
 

@@ -76,6 +76,6 @@ s32 effect_H0_init(PLW* wk, u8 data) {
     ewk->master_work_id = wk->wu.work_id;
     ewk->master_id = wk->wu.id;
     ewk->wu.blink_timing = wk->wu.blink_timing;
-    ewk->wu.char_table[0] = (u32*)effh0_char_table;
+    ewk->wu.char_table[0] = effh0_char_table;
     return 0;
 }

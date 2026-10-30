@@ -60,7 +60,7 @@ void reset_entry(void)
     *(u8*)SH2_OCRL = 0x33;
     *(u8*)SH2_FTCSR = 1;
     *(u8*)SH2_TIER = 9;
-    *(u16*)(VIDEO_REG + 0x82) = 9;
+    *(u16*)DMA_CTRL_REG = 9;
 
     Free_Play_Enable = boot_setting_defaults[0];
     Area_Type = boot_setting_defaults[1];

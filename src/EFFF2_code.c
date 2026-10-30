@@ -114,13 +114,11 @@ s32 effect_F2_init(s16 no) {
     s16 ix;
     s16 i;
     const s16* data_ptr = &efff2_data_tbl[no][0];
-    (void)&((WORK*)data_ptr)->id;
     for (i = 0; i < 4; i++) {
-        ix = pull_effect_work(4);
-        if (ix == -1) {
+        if ((ix = pull_effect_work(4)) == -1) {
             return -1;
         }
-        ewk = (WORK_Other*)frw[ix];
+        ewk = (WORK_Other*)((u32)frw + (ix << 11));
         ewk->wu.be_flag = 1;
         ewk->wu.id = 152;
         ewk->wu.work_id = 16;
@@ -141,7 +139,6 @@ s32 effect_F2_init(s16 no) {
         }
         ewk->wu.old_rno[3] = *data_ptr++;
     }
-
 }
 
 

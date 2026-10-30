@@ -15,17 +15,14 @@
 /* provisional name */
 s32 midi_vlq_decode_while(p, out)
 u8* p;
-register u32* out;
+s32* out;
 {
     u8* start = p;
     u32 val = 0;
-    u32 byte;
-    while (!(s32)(*p & 0x80U)) {
-        (void)&((WORK*)start)->id;
-        val = (val << 7) + (byte = *(const volatile u8*)p++);
+    while (!(*p & 0x80)) {
+        val = (val << 7) + *p++;
     }
-    (void)&((WORK*)byte)->id;
-    *(volatile u32*)out = val;
+    *out = val;
     return p - start;
 }
 
@@ -34,22 +31,17 @@ register u32* out;
 /* provisional name */
 s32 midi_vlq_decode_leading(p, out)
 u8* p;
-register u32* out;
+s32* out;
 {
-    u8* start;
+    u8* start = p;
     u32 val;
-    (void)&((WORK*)0x80U)->id;
-    start = p;
     val = *p++;
-    if ((s32)(val & 0x80U) != 0) {
-        val = val & 0x7F;
+    if (val & 0x80) {
+        val &= 0x7F;
         do {
-            (void)&((WORK*)start)->id;
             val = (val << 7) + (*p & 0x7F);
-        } while ((s32)(((u8 (*)[1])p++)[0][0] & 0x80U) != 0);
-        (void)&((WORK*)0x7FU)->id;
+        } while (*p++ & 0x80);
     }
-    (void)&((WORK*)0x7FU)->id;
     *out = val;
-    return ((void)&((WORK*)0x80U)->id, p - start);
+    return p - start;
 }

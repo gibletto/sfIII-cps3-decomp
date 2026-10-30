@@ -131,14 +131,14 @@ void sprite_template_chain_init(void) {
 void dma_src_ack_seq(void)
 {
     s32 unused;
-    *(volatile u16 *)(VIDEO_REG + 0x82) = 8;
-    *(volatile u16 *)(VIDEO_REG + 0x82) = 9;
-    *(volatile u16 *)(VIDEO_REG + 0x82) = 8;
-    *(volatile u16 *)(VIDEO_REG + 0x82) = 9;
-    *(volatile u16 *)(VIDEO_REG + 0x82) = 8;
-    *(volatile u16 *)(VIDEO_REG + 0x82) = 9;
-    *(volatile u16 *)(VIDEO_REG + 0x82) = 8;
-    *(volatile u16 *)(VIDEO_REG + 0x82) = 9;
+    *(volatile u16 *)DMA_CTRL_REG = 8;
+    *(volatile u16 *)DMA_CTRL_REG = 9;
+    *(volatile u16 *)DMA_CTRL_REG = 8;
+    *(volatile u16 *)DMA_CTRL_REG = 9;
+    *(volatile u16 *)DMA_CTRL_REG = 8;
+    *(volatile u16 *)DMA_CTRL_REG = 9;
+    *(volatile u16 *)DMA_CTRL_REG = 8;
+    *(volatile u16 *)DMA_CTRL_REG = 9;
 }
 
 /* Called from the vertical blank interrupt: wait until the sprite DMA has
@@ -146,7 +146,7 @@ void dma_src_ack_seq(void)
 /* provisional name */
 void sprite_dma_end_wait(void)
 {
-    while (*(volatile u16 *)(VIDEO_REG + 0xC) & 1) {
+    while (*(volatile u16 *)DMA_STATUS_REG & 1) {
     }
-    *(volatile u16 *)(VIDEO_REG + 0x82) = 0;
+    *(volatile u16 *)DMA_CTRL_REG = 0;
 }

@@ -3,7 +3,7 @@
 
 #include "structs.h"
 
-void game_frame_task(void);
+void game_frame_task();
 void bg0001(void);
 
 #endif

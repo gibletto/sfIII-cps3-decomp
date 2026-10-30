@@ -31,6 +31,12 @@
 #include "sys_test_5.h"
 #include "cps3.h"
 
+/* the switch inputs (a pressed switch reads 0) */
+#define SW_SYSTEM           (*(volatile u16*)IO_REG)            /* bits 8-11 coins 1-4, bits 12-15 starts 1-4 */
+#define SW_PLAYER12         (*(volatile u16*)(IO_REG + 0x2))    /* player 1 in the low byte, player 2 in the high */
+#define SW_PLAYER34         (*(volatile u16*)(IO_REG + 0x4))    /* player 3 in the low byte, player 4 in the high */
+#define SW_EXTRA            ((volatile u16*)EXT_SW)
+
 
 
 COINCHUTE coin_chute1_w;
@@ -420,31 +426,31 @@ void switch_read(s8 mode) {
     switch (mode) {
     case 2:
         p4sw_1 = p4sw_0;
-        p4sw_0 = (~(*(volatile u16*)(IO_REG + 0x4)) >> 8) % 256U;
-        lo = ~(s16)(*(volatile u16*)IO_REG) & 0x800;
-        hi = (~(*(volatile u16*)IO_REG) & 0x8000) >> 3;
+        p4sw_0 = (~SW_PLAYER34 >> 8) % 256U;
+        lo = ~(s16)SW_SYSTEM & 0x800;
+        hi = (~SW_SYSTEM & 0x8000) >> 3;
         p4sw_0 |= lo | hi;
     case 1:
         p3sw_1 = p3sw_0;
-        p3sw_0 = ~(s16)(*(volatile u16*)(IO_REG + 0x4)) % 256U;
-        lo = (~(*(volatile u16*)IO_REG) & 0x400) << 1;
-        hi = (~(*(volatile u16*)IO_REG) & 0x4000) >> 2;
+        p3sw_0 = ~(s16)SW_PLAYER34 % 256U;
+        lo = (~SW_SYSTEM & 0x400) << 1;
+        hi = (~SW_SYSTEM & 0x4000) >> 2;
         p3sw_0 |= lo | hi;
     case 0:
         p2sw_1 = p2sw_0;
-        p2sw_0 = (~(*(volatile u16*)(IO_REG + 0x2)) >> 8) % 256U;
-        lo = (~(*(volatile u16*)IO_REG) & 0x200) << 2;
-        hi = (~(*(volatile u16*)IO_REG) & 0x2000) >> 1;
+        p2sw_0 = (~SW_PLAYER12 >> 8) % 256U;
+        lo = (~SW_SYSTEM & 0x200) << 2;
+        hi = (~SW_SYSTEM & 0x2000) >> 1;
         p2sw_0 |= lo | hi;
         p1sw_1 = p1sw_0;
-        p1sw_0 = ~(s16)(*(volatile u16*)(IO_REG + 0x2)) % 256U;
-        lo = (~(*(volatile u16*)IO_REG) & 0x100) << 3;
-        hi = ~(s16)(*(volatile u16*)IO_REG) & 0x1000;
+        p1sw_0 = ~(s16)SW_PLAYER12 % 256U;
+        lo = (~SW_SYSTEM & 0x100) << 3;
+        hi = ~(s16)SW_SYSTEM & 0x1000;
         p1sw_0 |= lo | hi;
         break;
     }
     syssw_1 = syssw_0;
-    syssw_0 = ~(*(volatile u16*)IO_REG);
+    syssw_0 = ~SW_SYSTEM;
     return;
 }
 
@@ -456,49 +462,49 @@ void switch_read_six_button(void) {
     register u16 hi;
     ext_switch_read();
     p1sw_1 = p1sw_0;
-    p1sw_0 = ~(s16)(*(volatile u16*)(IO_REG + 0x2)) % 256U;
+    p1sw_0 = ~(s16)SW_PLAYER12 % 256U;
     lo = p1sw_0;
     p1sw_0 = ((lo & 0x80) << 3) | (p1sw_0 & 0x7F);
-    lo = (~(*(volatile u16*)(IO_REG + 0x4)) << 4) & 0x80;
-    lo |= (~(*(volatile u16*)(IO_REG + 0x4)) << 6) & 0x100;
-    lo |= (~(*(volatile u16*)(IO_REG + 0x4)) << 8) & 0x200;
+    lo = (~SW_PLAYER34 << 4) & 0x80;
+    lo |= (~SW_PLAYER34 << 6) & 0x100;
+    lo |= (~SW_PLAYER34 << 8) & 0x200;
     p1sw_0 |= lo;
-    lo = (~(*(volatile u16*)IO_REG) & 0x100) << 3;
-    hi = ~(s16)(*(volatile u16*)IO_REG) & 0x1000;
+    lo = (~SW_SYSTEM & 0x100) << 3;
+    hi = ~(s16)SW_SYSTEM & 0x1000;
     p1sw_0 |= lo | hi;
     p2sw_1 = p2sw_0;
-    p2sw_0 = (~(*(volatile u16*)(IO_REG + 0x2)) >> 8) % 256U;
+    p2sw_0 = (~SW_PLAYER12 >> 8) % 256U;
     lo = p2sw_0;
     p2sw_0 = ((lo & 0x80) << 3) | (p2sw_0 & 0x7F);
-    lo = ((~(*(volatile u16*)(IO_REG + 0x4)) << 3) & 0x180) | ((~(*(volatile u16*)IO_REG) >> 1) & 0x200);
+    lo = ((~SW_PLAYER34 << 3) & 0x180) | ((~SW_SYSTEM >> 1) & 0x200);
     p2sw_0 |= lo;
-    lo = (~(*(volatile u16*)IO_REG) & 0x200) << 2;
-    hi = (~(*(volatile u16*)IO_REG) & 0x2000) >> 1;
+    lo = (~SW_SYSTEM & 0x200) << 2;
+    hi = (~SW_SYSTEM & 0x2000) >> 1;
     p2sw_0 |= lo | hi;
     syssw_1 = syssw_0;
-    syssw_0 = ~(*(volatile u16*)IO_REG);
+    syssw_0 = ~SW_SYSTEM;
 }
 
 
 
 /* provisional name */
 void ext_switch_read(void) {
-    exsw_0 = ~((volatile u16*)EXT_SW)[0];
-    exsw_1 = ~((volatile u16*)EXT_SW)[1];
-    exsw_2 = ~((volatile u16*)EXT_SW)[2];
-    exsw_3 = ~((volatile u16*)EXT_SW)[3];
-    exsw_4 = ~((volatile u16*)EXT_SW)[4];
-    exsw_5 = ~((volatile u16*)EXT_SW)[5];
-    exsw_6 = ~((volatile u16*)EXT_SW)[6];
-    exsw_7 = ~((volatile u16*)EXT_SW)[7];
-    exsw_0 |= ~((volatile u16*)EXT_SW)[8];
-    exsw_1 |= ~((volatile u16*)EXT_SW)[9];
-    exsw_2 |= ~((volatile u16*)EXT_SW)[10];
-    exsw_3 |= ~((volatile u16*)EXT_SW)[11];
-    exsw_4 |= ~((volatile u16*)EXT_SW)[12];
-    exsw_5 |= ~((volatile u16*)EXT_SW)[13];
-    exsw_6 |= ~((volatile u16*)EXT_SW)[14];
-    exsw_7 |= ~((volatile u16*)EXT_SW)[15];
+    exsw_0 = ~SW_EXTRA[0];
+    exsw_1 = ~SW_EXTRA[1];
+    exsw_2 = ~SW_EXTRA[2];
+    exsw_3 = ~SW_EXTRA[3];
+    exsw_4 = ~SW_EXTRA[4];
+    exsw_5 = ~SW_EXTRA[5];
+    exsw_6 = ~SW_EXTRA[6];
+    exsw_7 = ~SW_EXTRA[7];
+    exsw_0 |= ~SW_EXTRA[8];
+    exsw_1 |= ~SW_EXTRA[9];
+    exsw_2 |= ~SW_EXTRA[10];
+    exsw_3 |= ~SW_EXTRA[11];
+    exsw_4 |= ~SW_EXTRA[12];
+    exsw_5 |= ~SW_EXTRA[13];
+    exsw_6 |= ~SW_EXTRA[14];
+    exsw_7 |= ~SW_EXTRA[15];
 }
 
 
@@ -519,10 +525,10 @@ void coin_sw_shift(void) {
 
 /* provisional name */
 void coin_sw_sample(void) {
-    coin_sw_now[0] = (~(*(volatile u16*)IO_REG) & 0x100) >> 8;
-    coin_sw_now[1] = (~(*(volatile u16*)IO_REG) & 0x200) >> 9;
-    coin_sw_now[2] = (~(*(volatile u16*)IO_REG) & 0x400) >> 10;
-    coin_sw_now[3] = (~(*(volatile u16*)IO_REG) & 0x800) >> 11;
+    coin_sw_now[0] = (~SW_SYSTEM & 0x100) >> 8;
+    coin_sw_now[1] = (~SW_SYSTEM & 0x200) >> 9;
+    coin_sw_now[2] = (~SW_SYSTEM & 0x400) >> 10;
+    coin_sw_now[3] = (~SW_SYSTEM & 0x800) >> 11;
 }
 
 
@@ -530,5 +536,5 @@ void coin_sw_sample(void) {
 /* provisional name */
 void dispenser_sw_read(void) {
     card_sw_1 = card_sw_0;
-    card_sw_0 = (~(*(volatile u16*)(IO_REG + 0x4)) >> 8) % 256U;
+    card_sw_0 = (~SW_PLAYER34 >> 8) % 256U;
 }

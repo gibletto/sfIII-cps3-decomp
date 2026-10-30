@@ -23,34 +23,34 @@
 
 
 
-extern const u16 fade_adrs_tbl_0[];
-extern const u16 fade_adrs_tbl_1[];
-extern const u16 fade_adrs_tbl_10[];
-extern const u16 fade_adrs_tbl_11[];
-extern const u16 fade_adrs_tbl_12[];
-extern const u16 fade_adrs_tbl_13[];
-extern const u16 fade_adrs_tbl_14[];
-extern const u16 fade_adrs_tbl_15[];
-extern const u16 fade_adrs_tbl_16[];
-extern const u16 fade_adrs_tbl_17[];
-extern const u16 fade_adrs_tbl_18[];
-extern const u16 fade_adrs_tbl_19[];
-extern const u16 fade_adrs_tbl_2[];
-extern const u16 fade_adrs_tbl_20[];
-extern const u16 fade_adrs_tbl_21[];
-extern const u16 fade_adrs_tbl_22[];
-extern const u16 fade_adrs_tbl_23[];
-extern const u16 fade_adrs_tbl_25[];
-extern const u16 fade_adrs_tbl_26[];
-extern const u16 fade_adrs_tbl_27[];
-extern const u16 fade_adrs_tbl_28[];
-extern const u16 fade_adrs_tbl_3[];
-extern const u16 fade_adrs_tbl_4[];
-extern const u16 fade_adrs_tbl_5[];
-extern const u16 fade_adrs_tbl_6[];
-extern const u16 fade_adrs_tbl_7[];
-extern const u16 fade_adrs_tbl_8[];
-extern const u16 fade_adrs_tbl_9[];
+extern const u32 fade_adrs_tbl_0[];
+extern const u32 fade_adrs_tbl_1[];
+extern const u32 fade_adrs_tbl_10[];
+extern const u32 fade_adrs_tbl_11[];
+extern const u32 fade_adrs_tbl_12[];
+extern const u32 fade_adrs_tbl_13[];
+extern const u32 fade_adrs_tbl_14[];
+extern const u32 fade_adrs_tbl_15[];
+extern const u32 fade_adrs_tbl_16[];
+extern const u32 fade_adrs_tbl_17[];
+extern const u32 fade_adrs_tbl_18[];
+extern const u32 fade_adrs_tbl_19[];
+extern const u32 fade_adrs_tbl_2[];
+extern const u32 fade_adrs_tbl_20[];
+extern const u32 fade_adrs_tbl_21[];
+extern const u32 fade_adrs_tbl_22[];
+extern const u32 fade_adrs_tbl_23[];
+extern const u32 fade_adrs_tbl_25[];
+extern const u32 fade_adrs_tbl_26[];
+extern const u32 fade_adrs_tbl_27[];
+extern const u32 fade_adrs_tbl_28[];
+extern const u32 fade_adrs_tbl_3[];
+extern const u32 fade_adrs_tbl_4[];
+extern const u32 fade_adrs_tbl_5[];
+extern const u32 fade_adrs_tbl_6[];
+extern const u32 fade_adrs_tbl_7[];
+extern const u32 fade_adrs_tbl_8[];
+extern const u32 fade_adrs_tbl_9[];
 
 s8 fade_layer_num;  /* 02028718 */
 s16 fade_cont_rno;  /* 0202871A */
@@ -59,36 +59,36 @@ FADE_LAYER fade_layer[7];  /* 02028720 */
 
 
 /* 020069D8 */
-u32 fade_adrs_tbl[29] = {
-    (u32)fade_adrs_tbl_0,
-    (u32)fade_adrs_tbl_1,
-    (u32)fade_adrs_tbl_2,
-    (u32)fade_adrs_tbl_3,
-    (u32)fade_adrs_tbl_4,
-    (u32)fade_adrs_tbl_5,
-    (u32)fade_adrs_tbl_6,
-    (u32)fade_adrs_tbl_7,
-    (u32)fade_adrs_tbl_8,
-    (u32)fade_adrs_tbl_9,
-    (u32)fade_adrs_tbl_10,
-    (u32)fade_adrs_tbl_11,
-    (u32)fade_adrs_tbl_12,
-    (u32)fade_adrs_tbl_13,
-    (u32)fade_adrs_tbl_14,
-    (u32)fade_adrs_tbl_15,
-    (u32)fade_adrs_tbl_16,  /* Dedicated table for fade 16. */
-    (u32)fade_adrs_tbl_17,
-    (u32)fade_adrs_tbl_18,
-    (u32)fade_adrs_tbl_19,
-    (u32)fade_adrs_tbl_20,
-    (u32)fade_adrs_tbl_21,
-    (u32)fade_adrs_tbl_22,
-    (u32)fade_adrs_tbl_23,
-    (u32)fade_adrs_tbl_22,
-    (u32)fade_adrs_tbl_25,
-    (u32)fade_adrs_tbl_26,
-    (u32)fade_adrs_tbl_27,
-    (u32)fade_adrs_tbl_28,
+const u32* fade_adrs_tbl[29] = {
+    fade_adrs_tbl_0,
+    fade_adrs_tbl_1,
+    fade_adrs_tbl_2,
+    fade_adrs_tbl_3,
+    fade_adrs_tbl_4,
+    fade_adrs_tbl_5,
+    fade_adrs_tbl_6,
+    fade_adrs_tbl_7,
+    fade_adrs_tbl_8,
+    fade_adrs_tbl_9,
+    fade_adrs_tbl_10,
+    fade_adrs_tbl_11,
+    fade_adrs_tbl_12,
+    fade_adrs_tbl_13,
+    fade_adrs_tbl_14,
+    fade_adrs_tbl_15,
+    fade_adrs_tbl_16,  /* Dedicated table for fade 16. */
+    fade_adrs_tbl_17,
+    fade_adrs_tbl_18,
+    fade_adrs_tbl_19,
+    fade_adrs_tbl_20,
+    fade_adrs_tbl_21,
+    fade_adrs_tbl_22,
+    fade_adrs_tbl_23,
+    fade_adrs_tbl_22,
+    fade_adrs_tbl_25,
+    fade_adrs_tbl_26,
+    fade_adrs_tbl_27,
+    fade_adrs_tbl_28,
 };
 
 
@@ -151,8 +151,8 @@ s32 fade_cont_main(void)
                     fade_layer[i].timer = fade_layer[i].interval;
                     fl = &fade_layer[i];
                     for (j = 0; j < fl->count; j++) {
-                        load_any_color_req(*(u32 *)fl->adrs, fl->r + fl->step, fl->g + fl->step, fl->b + fl->step);
-                        fl->adrs += 4;
+                        load_any_color_req(*fl->adrs, fl->r + fl->step, fl->g + fl->step, fl->b + fl->step);
+                        fl->adrs++;
                     }
                     if (fade_layer[i].r == fade_layer[i].target) {
                         fade_layer[i].on = 0;

@@ -7,6 +7,8 @@
 
 #include "types.h"
 #include "structs.h"
+#include "fighter.h"
+#include "work.h"
 
 #pragma section TBL
 
@@ -810,40 +812,40 @@ const u8 LOOK_POSITION_Data[8][32] = {
 
 const s8 EM_Candidate_Data[13][4][6] = {
     {  /* Gill */
-        { 1, 2, 7, 4, 5, 3 },
-        { 4, 3, 11, 8, 9, 12 },
-        { 2, 4, 7, 8, 12, 1 },
-        { 3, 5, 11, 9, 1, 2 },
+        { PL_ALEX, PL_RYU, PL_IBUKI, PL_DUDLEY, PL_NECRO, PL_YUN },
+        { PL_DUDLEY, PL_YUN, PL_KEN, PL_ELENA, PL_ORO, PL_SEAN },
+        { PL_RYU, PL_DUDLEY, PL_IBUKI, PL_ELENA, PL_SEAN, PL_ALEX },
+        { PL_YUN, PL_NECRO, PL_KEN, PL_ORO, PL_ALEX, PL_RYU },
     },
     {  /* Alex */
-        { 2, 3, 4, 5, 11, 7 },
-        { 9, 7, 8, 12, 1, 11 },
-        { 7, 2, 3, 4, 5, 11 },
-        { 8, 9, 12, 5, 3, 2 },
+        { PL_RYU, PL_YUN, PL_DUDLEY, PL_NECRO, PL_KEN, PL_IBUKI },
+        { PL_ORO, PL_IBUKI, PL_ELENA, PL_SEAN, PL_ALEX, PL_KEN },
+        { PL_IBUKI, PL_RYU, PL_YUN, PL_DUDLEY, PL_NECRO, PL_KEN },
+        { PL_ELENA, PL_ORO, PL_SEAN, PL_NECRO, PL_YUN, PL_RYU },
     },
     {  /* Ryu */
-        { 8, 4, 5, 11, 7, 3 },
-        { 7, 8, 12, 9, 2, 1 },
-        { 8, 3, 7, 4, 5, 11 },
-        { 4, 7, 1, 9, 12, 3 },
+        { PL_ELENA, PL_DUDLEY, PL_NECRO, PL_KEN, PL_IBUKI, PL_YUN },
+        { PL_IBUKI, PL_ELENA, PL_SEAN, PL_ORO, PL_RYU, PL_ALEX },
+        { PL_ELENA, PL_YUN, PL_IBUKI, PL_DUDLEY, PL_NECRO, PL_KEN },
+        { PL_DUDLEY, PL_IBUKI, PL_ALEX, PL_ORO, PL_SEAN, PL_YUN },
     },
     {  /* Yun */
-        { 4, 5, 12, 7, 8, 11 },
-        { 8, 12, 9, 1, 10, 2 },
-        { 12, 4, 8, 5, 7, 11 },
-        { 2, 7, 1, 4, 9, 5 },
+        { PL_DUDLEY, PL_NECRO, PL_SEAN, PL_IBUKI, PL_ELENA, PL_KEN },
+        { PL_ELENA, PL_SEAN, PL_ORO, PL_ALEX, PL_YANG, PL_RYU },
+        { PL_SEAN, PL_DUDLEY, PL_ELENA, PL_NECRO, PL_IBUKI, PL_KEN },
+        { PL_RYU, PL_IBUKI, PL_ALEX, PL_DUDLEY, PL_ORO, PL_NECRO },
     },
     {  /* Dudley */
-        { 7, 9, 5, 8, 12, 11 },
-        { 9, 12, 1, 2, 4, 3 },
-        { 8, 7, 12, 9, 5, 11 },
-        { 11, 1, 8, 3, 2, 5 },
+        { PL_IBUKI, PL_ORO, PL_NECRO, PL_ELENA, PL_SEAN, PL_KEN },
+        { PL_ORO, PL_SEAN, PL_ALEX, PL_RYU, PL_DUDLEY, PL_YUN },
+        { PL_ELENA, PL_IBUKI, PL_SEAN, PL_ORO, PL_NECRO, PL_KEN },
+        { PL_KEN, PL_ALEX, PL_ELENA, PL_YUN, PL_RYU, PL_NECRO },
     },
     {  /* Necro */
-        { 1, 7, 8, 12, 9, 11 },
-        { 2, 9, 1, 4, 8, 3 },
-        { 7, 8, 9, 1, 12, 11 },
-        { 4, 11, 7, 8, 3, 5 },
+        { PL_ALEX, PL_IBUKI, PL_ELENA, PL_SEAN, PL_ORO, PL_KEN },
+        { PL_RYU, PL_ORO, PL_ALEX, PL_DUDLEY, PL_ELENA, PL_YUN },
+        { PL_IBUKI, PL_ELENA, PL_ORO, PL_ALEX, PL_SEAN, PL_KEN },
+        { PL_DUDLEY, PL_KEN, PL_IBUKI, PL_ELENA, PL_YUN, PL_NECRO },
     },
     {  /* Hugo */
         { -1, -1, -1, -1, -1, -1 },
@@ -852,40 +854,40 @@ const s8 EM_Candidate_Data[13][4][6] = {
         { -1, -1, -1, -1, -1, -1 },
     },
     {  /* Ibuki */
-        { 8, 12, 9, 1, 3, 2 },
-        { 2, 3, 4, 5, 7, 11 },
-        { 12, 1, 8, 9, 2, 3 },
-        { 4, 8, 12, 3, 11, 5 },
+        { PL_ELENA, PL_SEAN, PL_ORO, PL_ALEX, PL_YUN, PL_RYU },
+        { PL_RYU, PL_YUN, PL_DUDLEY, PL_NECRO, PL_IBUKI, PL_KEN },
+        { PL_SEAN, PL_ALEX, PL_ELENA, PL_ORO, PL_RYU, PL_YUN },
+        { PL_DUDLEY, PL_ELENA, PL_SEAN, PL_YUN, PL_KEN, PL_NECRO },
     },
     {  /* Elena */
-        { 12, 9, 1, 4, 3, 2 },
-        { 3, 4, 2, 7, 5, 11 },
-        { 4, 12, 3, 9, 1, 2 },
-        { 7, 1, 9, 8, 11, 5 },
+        { PL_SEAN, PL_ORO, PL_ALEX, PL_DUDLEY, PL_YUN, PL_RYU },
+        { PL_YUN, PL_DUDLEY, PL_RYU, PL_IBUKI, PL_NECRO, PL_KEN },
+        { PL_DUDLEY, PL_SEAN, PL_YUN, PL_ORO, PL_ALEX, PL_RYU },
+        { PL_IBUKI, PL_ALEX, PL_ORO, PL_ELENA, PL_KEN, PL_NECRO },
     },
     {  /* Oro */
-        { 1, 2, 3, 4, 5, 11 },
-        { 4, 12, 7, 8, 11, 5 },
-        { 11, 1, 5, 2, 4, 3 },
-        { 12, 9, 8, 3, 1, 2 },
+        { PL_ALEX, PL_RYU, PL_YUN, PL_DUDLEY, PL_NECRO, PL_KEN },
+        { PL_DUDLEY, PL_SEAN, PL_IBUKI, PL_ELENA, PL_KEN, PL_NECRO },
+        { PL_KEN, PL_ALEX, PL_NECRO, PL_RYU, PL_DUDLEY, PL_YUN },
+        { PL_SEAN, PL_ORO, PL_ELENA, PL_YUN, PL_ALEX, PL_RYU },
     },
     {  /* Yang */
-        { 4, 8, 12, 7, 5, 11 },
-        { 8, 12, 9, 1, 4, 2 },
-        { 12, 4, 8, 5, 7, 11 },
-        { 9, 1, 5, 4, 2, 3 },
+        { PL_DUDLEY, PL_ELENA, PL_SEAN, PL_IBUKI, PL_NECRO, PL_KEN },
+        { PL_ELENA, PL_SEAN, PL_ORO, PL_ALEX, PL_DUDLEY, PL_RYU },
+        { PL_SEAN, PL_DUDLEY, PL_ELENA, PL_NECRO, PL_IBUKI, PL_KEN },
+        { PL_ORO, PL_ALEX, PL_NECRO, PL_DUDLEY, PL_RYU, PL_YUN },
     },
     {  /* Ken */
-        { 2, 7, 4, 8, 3, 5 },
-        { 7, 12, 1, 9, 8, 2 },
-        { 4, 8, 7, 3, 5, 2 },
-        { 12, 4, 9, 1, 3, 11 },
+        { PL_RYU, PL_IBUKI, PL_DUDLEY, PL_ELENA, PL_YUN, PL_NECRO },
+        { PL_IBUKI, PL_SEAN, PL_ALEX, PL_ORO, PL_ELENA, PL_RYU },
+        { PL_DUDLEY, PL_ELENA, PL_IBUKI, PL_YUN, PL_NECRO, PL_RYU },
+        { PL_SEAN, PL_DUDLEY, PL_ORO, PL_ALEX, PL_YUN, PL_KEN },
     },
     {  /* Sean */
-        { 3, 4, 8, 11, 7, 5 },
-        { 7, 8, 9, 1, 12, 2 },
-        { 8, 3, 7, 4, 5, 11 },
-        { 1, 5, 4, 12, 2, 3 },
+        { PL_YUN, PL_DUDLEY, PL_ELENA, PL_KEN, PL_IBUKI, PL_NECRO },
+        { PL_IBUKI, PL_ELENA, PL_ORO, PL_ALEX, PL_SEAN, PL_RYU },
+        { PL_ELENA, PL_YUN, PL_IBUKI, PL_DUDLEY, PL_NECRO, PL_KEN },
+        { PL_ALEX, PL_NECRO, PL_DUDLEY, PL_SEAN, PL_RYU, PL_YUN },
     },
 };
 
@@ -1859,4 +1861,6 @@ const u8 Com_Rnd_Select_Data[5][16] = {
 
 const s16 KA_Jump_Data[26] = { 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64 };
 
-const u16 Free_Lever_Data[4] = { 16, 32, 64, 112 };
+const u16 Free_Lever_Data[4] = {
+    BUTTON_LP, BUTTON_MP, BUTTON_HP, BUTTON_PUNCHES,
+};

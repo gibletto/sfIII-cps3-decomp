@@ -32,7 +32,7 @@ s16 backup_test_no = 0;  /* 02007CA8 */
 void gamedata_print_counters(void) {
     s32 unused;
     u32 val[4];
-    eeprom_read(8, (volatile u16*)(EEP_ROM + 0x160), (u16*)val);
+    eeprom_read(8, (volatile u16*)(EEP_ROM_READ + EEP_BOOK_COIN), (u16*)val);
     tilemap_print_hex_block(30, 7, 2, hex_to_bcd(val[0]), 6, 0);
     tilemap_print_hex_block(30, 9, 2, hex_to_bcd(val[1]), 6, 0);
     if (Free_Play_Enable != 0) {

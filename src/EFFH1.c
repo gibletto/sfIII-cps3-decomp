@@ -70,8 +70,6 @@ void effect_H1_move(WORK_Other* ewk) {
 
 
 
-static void end_rno_disp(s16 r_no_2) {}
-
 s32 effect_H1_init(void) {
     WORK_Other* ewk;
     s16 ix;
@@ -81,7 +79,7 @@ s32 effect_H1_init(void) {
         if ((ix = pull_effect_work(4)) == -1) {
             return -1;
         }
-        ewk = (WORK_Other*)frw[ix];
+        ewk = (WORK_Other*)((u32)frw + (ix << 11));
         ewk->wu.id = 171;
         ewk->wu.be_flag = 1;
         ewk->wu.type = i;
@@ -99,6 +97,5 @@ s32 effect_H1_init(void) {
         ewk->wu.my_priority = ewk->wu.position_z = *data_ptr++;
         ewk->wu.old_rno[0] = ewk->wu.char_index - 1;
     }
-    end_rno_disp(end_w.r_no_2);
     return 0;
 }

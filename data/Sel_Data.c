@@ -11,6 +11,7 @@
 
 #include "types.h"
 #include "structs.h"
+#include "fighter.h"
 
 #pragma section TBL
 
@@ -28,8 +29,8 @@ const u8 sel_digit_tbl[13] = {
 
 /* the face grid; the second grid has Yang in Yun's cell */
 const s8 Face_Cursor_Data[2][2][5] = {
-    { { 2, 4, 1, 3, 11 }, { 7, 5, 12, 9, 8 } },
-    { { 2, 4, 1, 10, 11 }, { 7, 5, 12, 9, 8 } },
+    { { PL_RYU, PL_DUDLEY, PL_ALEX, PL_YUN, PL_KEN }, { PL_IBUKI, PL_NECRO, PL_SEAN, PL_ORO, PL_ELENA } },
+    { { PL_RYU, PL_DUDLEY, PL_ALEX, PL_YANG, PL_KEN }, { PL_IBUKI, PL_NECRO, PL_SEAN, PL_ORO, PL_ELENA } },
 };
 
 /* x, y of each face on the character select screen. */

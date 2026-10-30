@@ -19,6 +19,12 @@
 #include "eeprom.h"
 #include "cps3.h"
 
+/* the EEPROM interface (EEP_ROM_WRITE and EEP_ROM_READ, the word windows, are in cps3.h) */
+#define EEP_ROM_OPEN        (*(volatile u16*)(EEP_ROM + 0x60))      /* read three times before a transfer */
+#define EEP_ROM_CLOSE       (*(volatile u16*)EEP_ROM)               /* read three times after it */
+#define EEP_ROM_STATUS      (*(volatile u16*)(EEP_ROM + 0x200))     /* bit 0 set while busy */
+#define EEP_ROM_DATA        (*(volatile u16*)(EEP_ROM + 0x202))     /* the word a load from EEP_ROM_READ fetched */
+
 
 
 u32 book_coin_count;  /* 0206AB48 */
@@ -44,7 +50,7 @@ s8 eeprom_test(u16* buf) {
     register s16 i;
     u16* p;
     u16* q;
-    if (eeprom_read(64, (volatile u16*)(EEP_ROM + 0x100), buf)) {
+    if (eeprom_read(64, (volatile u16*)EEP_ROM_READ, buf)) {
         return 1;
     }
     for (p = buf, q = eeprom_test_save, i = 0; i < 64; i++) {
@@ -69,7 +75,7 @@ s8 eeprom_test(u16* buf) {
         p++;
         q++;
     }
-    if (eeprom_write(64, (volatile u16*)(EEP_ROM + 0x80), buf)) {
+    if (eeprom_write(64, (volatile u16*)EEP_ROM_WRITE, buf)) {
         return 1;
     }
     return 0;
@@ -85,10 +91,10 @@ s8 eeprom_fill_verify(u16 fill, u16* buf) {
         *p = fill;
         p++;
     }
-    if (eeprom_write(64, (volatile u16*)(EEP_ROM + 0x80), buf)) {
+    if (eeprom_write(64, (volatile u16*)EEP_ROM_WRITE, buf)) {
         return 1;
     }
-    if (eeprom_read(64, (volatile u16*)(EEP_ROM + 0x100), buf)) {
+    if (eeprom_read(64, (volatile u16*)EEP_ROM_READ, buf)) {
         return 1;
     }
     for (p = buf, i = 0; i < 64; i++) {
@@ -105,16 +111,16 @@ s8 eeprom_fill_verify(u16 fill, u16* buf) {
 /* provisional name */
 s8 eeprom_read(s16 n, volatile u16* rom, u16* buf) {
     register s16 i;
-    eep_strobe_0 = (*(volatile u16*)(EEP_ROM + 0x60));
-    eep_strobe_1 = (*(volatile u16*)(EEP_ROM + 0x60));
-    eep_strobe_2 = (*(volatile u16*)(EEP_ROM + 0x60));
+    eep_strobe_0 = EEP_ROM_OPEN;
+    eep_strobe_1 = EEP_ROM_OPEN;
+    eep_strobe_2 = EEP_ROM_OPEN;
     delay_cycles(161);
     eep_dummy = *rom;
     delay_cycles(161);
     if (eeprom_wait_ready()) {
         return 1;
     }
-    eep_dummy = (*(volatile u16*)(EEP_ROM + 0x202));
+    eep_dummy = EEP_ROM_DATA;
     delay_cycles(161);
     if (eeprom_wait_ready()) {
         return 1;
@@ -125,7 +131,7 @@ s8 eeprom_read(s16 n, volatile u16* rom, u16* buf) {
         if (eeprom_wait_ready()) {
             return 1;
         }
-        *buf = (*(volatile u16*)(EEP_ROM + 0x202));
+        *buf = EEP_ROM_DATA;
         delay_cycles(161);
         if (eeprom_wait_ready()) {
             return 1;
@@ -133,9 +139,9 @@ s8 eeprom_read(s16 n, volatile u16* rom, u16* buf) {
         rom++;
         buf++;
     }
-    eep_strobe_0 = (*(volatile u16*)EEP_ROM);
-    eep_strobe_1 = (*(volatile u16*)EEP_ROM);
-    eep_strobe_2 = (*(volatile u16*)EEP_ROM);
+    eep_strobe_0 = EEP_ROM_CLOSE;
+    eep_strobe_1 = EEP_ROM_CLOSE;
+    eep_strobe_2 = EEP_ROM_CLOSE;
     delay_cycles(3);
     return 0;
 }
@@ -149,9 +155,9 @@ u16* dst;
 u16* src;
 {
     register s16 i;
-    eep_strobe_0 = *(volatile u16*)(EEP_ROM + 0x60);
-    eep_strobe_1 = *(volatile u16*)(EEP_ROM + 0x60);
-    eep_strobe_2 = *(volatile u16*)(EEP_ROM + 0x60);
+    eep_strobe_0 = EEP_ROM_OPEN;
+    eep_strobe_1 = EEP_ROM_OPEN;
+    eep_strobe_2 = EEP_ROM_OPEN;
     delay_cycles(0xA1);
     for (i = 0; i < n; i++) {
         *(u16*)((u8*)dst + 0x100) = 0;
@@ -167,9 +173,9 @@ u16* src;
         dst += 1;
         src += 1;
     }
-    eep_strobe_0 = *(volatile u16*)EEP_ROM;
-    eep_strobe_1 = *(volatile u16*)EEP_ROM;
-    eep_strobe_2 = *(volatile u16*)EEP_ROM;
+    eep_strobe_0 = EEP_ROM_CLOSE;
+    eep_strobe_1 = EEP_ROM_CLOSE;
+    eep_strobe_2 = EEP_ROM_CLOSE;
     delay_cycles(0xA1);
     return 0;
 }
@@ -180,7 +186,7 @@ u16* src;
 s8 eeprom_wait_ready(void) {
     s32 i;
     for (i = 0; i < 0x30000; i++) {
-        if ((*(volatile u16*)(EEP_ROM + 0x200) & 1) == 0) {
+        if ((EEP_ROM_STATUS & 1) == 0) {
             return 0;
         }
     }
@@ -202,7 +208,7 @@ void eeprom_error_halt(void)
 /* provisional name */
 void bookkeep_coin_count(void) {
     book_coin_count++;
-    if (eeprom_write(2, (u16*)(EEP_ROM + 0xE0), (u16*)&book_coin_count)) {
+    if (eeprom_write(2, (u16*)(EEP_ROM_WRITE + EEP_BOOK_COIN), (u16*)&book_coin_count)) {
         eeprom_error_halt();
     }
 }
@@ -212,7 +218,7 @@ void bookkeep_coin_count(void) {
 /* provisional name */
 void bookkeep_service_count(void) {
     book_service_count++;
-    if (eeprom_write(2, (u16*)(EEP_ROM + 0xE4), (u16*)&book_service_count)) {
+    if (eeprom_write(2, (u16*)(EEP_ROM_WRITE + EEP_BOOK_SERVICE), (u16*)&book_service_count)) {
         eeprom_error_halt();
     }
 }
@@ -222,7 +228,7 @@ void bookkeep_service_count(void) {
 /* provisional name */
 void bookkeep_freeplay_count(void) {
     book_free_count++;
-    if (eeprom_write(2, (u16*)(EEP_ROM + 0xE8), (u16*)&book_free_count)) {
+    if (eeprom_write(2, (u16*)(EEP_ROM_WRITE + EEP_BOOK_FREE), (u16*)&book_free_count)) {
         eeprom_error_halt();
     }
 }
@@ -232,7 +238,7 @@ void bookkeep_freeplay_count(void) {
 /* provisional name */
 void bookkeep_card_count(void) {
     book_card_count++;
-    if (eeprom_write(2, (u16*)(EEP_ROM + 0xEC), (u16*)&book_card_count)) {
+    if (eeprom_write(2, (u16*)(EEP_ROM_WRITE + EEP_BOOK_CARD), (u16*)&book_card_count)) {
         eeprom_error_halt();
     }
 }
@@ -246,7 +252,7 @@ void bookkeep_clear_all(void) {
     buf[1] = book_service_count = 0;
     buf[2] = book_free_count = 0;
     buf[3] = book_card_count = 0;
-    if (eeprom_write(8, (u16*)(EEP_ROM + 0xE0), (u16*)buf)) {
+    if (eeprom_write(8, (u16*)(EEP_ROM_WRITE + EEP_BOOK_COIN), (u16*)buf)) {
         eeprom_error_halt();
     }
 }
@@ -258,28 +264,28 @@ void bookkeep_clear_all(void) {
 s32 bookkeep_flush(void) {
     if (bookkeep_add0 > 0) {
         book_coin_count += bookkeep_add0;
-        if (eeprom_write(2, (u16*)(EEP_ROM + 0xE0), (u16*)&book_coin_count)) {
+        if (eeprom_write(2, (u16*)(EEP_ROM_WRITE + EEP_BOOK_COIN), (u16*)&book_coin_count)) {
             eeprom_error_halt();
         }
         bookkeep_add0 = 0;
     }
     if (bookkeep_add1 > 0) {
         book_service_count += bookkeep_add1;
-        if (eeprom_write(2, (u16*)(EEP_ROM + 0xE4), (u16*)&book_service_count)) {
+        if (eeprom_write(2, (u16*)(EEP_ROM_WRITE + EEP_BOOK_SERVICE), (u16*)&book_service_count)) {
             eeprom_error_halt();
         }
         bookkeep_add1 = 0;
     }
     if (bookkeep_add2 > 0) {
         book_free_count += bookkeep_add2;
-        if (eeprom_write(2, (u16*)(EEP_ROM + 0xE8), (u16*)&book_free_count)) {
+        if (eeprom_write(2, (u16*)(EEP_ROM_WRITE + EEP_BOOK_FREE), (u16*)&book_free_count)) {
             eeprom_error_halt();
         }
         bookkeep_add2 = 0;
     }
     if (bookkeep_add3 > 0) {
         book_card_count += bookkeep_add3;
-        if (eeprom_write(2, (u16*)(EEP_ROM + 0xEC), (u16*)&book_card_count)) {
+        if (eeprom_write(2, (u16*)(EEP_ROM_WRITE + EEP_BOOK_CARD), (u16*)&book_card_count)) {
             eeprom_error_halt();
         }
         bookkeep_add3 = 0;

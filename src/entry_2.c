@@ -1450,7 +1450,7 @@ s16 x;
 s32 coins;
 {
     void (*print)(u16, u16, u16, const s8*) = tilemap_print_string_attr;
-    s16 (*timer)[2] = (s16(*)[2])F_Timer;
+    s16 (*timer)[2] = &F_Timer;
     s16* line = &Text_Page_Y;
     s32 count;
     const s8* msg;

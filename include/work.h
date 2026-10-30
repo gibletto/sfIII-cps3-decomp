@@ -185,7 +185,7 @@ extern const u16* vital_npos_tbl[4];
 extern const u16* vital_attr_tbl[3];
 extern const u16 * spgauge_puttbl[2];
 extern const u16 * spgauge_postbl[4];
-extern u32 fade_adrs_tbl[29];
+extern const u32* fade_adrs_tbl[29];
 extern const u16 * stngauge_puttbl[2];
 extern const u16 * stngauge_postbl[4];
 extern const s16 * scr_obj_data[14][3];   /* per stage and area */
@@ -284,7 +284,7 @@ extern u16 sprite_pad_y;
 extern u32 spr_pool_busy;
 extern u32 poly_buf_offset;
 extern s32 poly_cram_bank;
-extern TASK_QUEUE task_req_queue;
+extern FIFO32 task_req_queue;
 extern u8 task_req_buff[716];
 extern s16 test_rno;
 extern s16 test_menu_no;
@@ -1093,6 +1093,7 @@ extern u16 eeprom_test_save[64];
 #define EEP_WIN_POINT_HUMAN 12
 #define EEP_VOICE_TYPE      13
 #define EEP_SYSTEM_SIZE     32
+#define EEP_GAME_SIZE       16  /* sizeof(SETTINGS) */
 #define EEP_GAME            32  /* the SETTINGS of a copy */
 #define EEP_COPY_SIZE       48
 #define EEP_BACKUP          48  /* the second copy */
@@ -1313,20 +1314,5 @@ extern s16 Random_ix32_ex_com;
 extern SUZI_CALC suzi_calc_w[2];
 extern s16 ls_cnt1;
 extern s16 ls_rate1;
-
-/* Records of these arrays are reached the way the game computes their offset: with shifts and adds,
- * cut to 16 bits. */
-#define WCP(x) (*(WORK_CP*)((u8*)wcp + (s16)(((x) << 10) + ((x) << 2) + ((x) << 1))))
-#define WAZA(x, j) (*(WAZA_WORK*)((u8*)waza_work + (s16)(((x) << 10) + ((x) << 8) + ((x) << 6)) + (s16)(((j) << 5) - ((j) << 2))))
-#define PLAYER(x) (*(PLW*)((u8*)plw + (s16)(((x) << 10) + ((x) << 7) + ((x) << 4) + ((x) << 3))))
-#define CMST(x, j) (*(CMST_WIN_R*)((u8*)cmst_buff + (u8)((x) * 112) + (s8)(((j) << 5) - ((j) << 2))))
-#define SE_VOICE(x) (*(SNDVOICE*)((u8*)se_voice + (s16)((x) * sizeof(SNDVOICE))))
-/* Record offsets computed per use: WCP_OFS(ofs, n) sets ofs to the offset of record n, WCP_AT(ofs)
-   is the record, WCP_MUL(ofs, n) does both in one expression (one use per full expression). */
-#define WCP_OFS(ofs, n) ((ofs) = (n), (ofs) *= (s16)sizeof(WORK_CP))
-#define WCP_AT(ofs) (*(WORK_CP*)((u8*)wcp + (ofs)))
-#define WCP_MUL(ofs, n) WCP_AT((WCP_OFS(ofs, n), (ofs)))
-#define PL_CMD_NUM(x) ((const s16*)((const u8*)pl_cmd_num + (s16)((x) << 4)))
-#define CMB_POS(mode, pl, k) (*(const s16*)((u8*)cmb_pos_tbl + (u8)(((mode) << 6) + ((mode) << 4) + ((mode) << 2)) + (s8)(((pl) << 5) + ((pl) << 3) + ((pl) << 1)) + (k) * 2))
 
 #endif

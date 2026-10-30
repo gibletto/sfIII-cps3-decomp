@@ -16,7 +16,7 @@
 #include "cps3.h"
 
 /* video DMA status: the sprite and polygon list transfers are busy */
-#define VIDEO_DMA_STATUS    (*(volatile u16*)(VIDEO_REG + 0xC))
+#define VIDEO_DMA_STATUS    (*(volatile u16*)DMA_STATUS_REG)
 #define VIDEO_DMA_BUSY      6
 
 /* polygon line list address (in CHARACTER RAM, in words) */

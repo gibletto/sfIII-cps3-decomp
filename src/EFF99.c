@@ -60,7 +60,7 @@ s32 effect_99_init(s16 index, s16 x, s16 y, s16 family) {
     ewk->wu.my_col_code = 0x2040;
     ewk->wu.my_family = family;
     ewk->wu.position_z = 1;
-    ewk->wu.char_table[0] = (u32*)eff99_char_table;
+    ewk->wu.char_table[0] = eff99_char_table;
     ewk->wu.char_index = index;
     ewk->wu.xyz[0].disp.pos = x;
     ewk->wu.xyz[1].disp.pos = y;
