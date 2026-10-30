@@ -309,7 +309,7 @@ s32 effect_B0_init(void) {
     bg_w.bgw[3].bg_address = (u16*)simmram_slot_addr(bg_w.bgw[3].bg_adrs_c_no);
     scrn_attr_set(3, 0, 31);
     scrn_reg_w[3].ctrl &= 0xFE7F;
-    sprite_list_setup(3, 1, (s16*)effb0_scr_record_data);
+    sprite_list_setup(3, 1, effb0_scr_record_data);
     end_ake_cell_put(3, 0x3040, 8, (u32)effb0_scrn_data);
     end_ake_cell_put(3, 0x3080, 9, (u32)effb0_scrn_data);
     Bg_Off_R(8);
@@ -327,7 +327,7 @@ s32 effect_B0_init(void) {
 
 /* Write into the background's map using its scroll character base. */
 void end_ake_cell_put(s16 map, s32 ofs, s32 cell, u32 src) {
-    register u16* s;
+    u16* s;
     s32 x;
     u16* dst;
     u32 adrs;

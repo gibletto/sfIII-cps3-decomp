@@ -22,7 +22,7 @@ void scfont_page1_fill(u32 attr, u16 code);
 s32 Button_Cut_Hold(s16* timer, s16 first, s16 repeat);
 void Disp_Digit8x16(u32 value, s16 x, s16 y);
 void Disp_Win_Type(void);
-void Disp_Capcom_Rights(void);
+void Disp_Copyright(void);
 s32 Cut_Cut_Sub(s16 xx);
 void Setup_Play_Type(void);
 void scrn_pos_clear(void);
@@ -30,7 +30,7 @@ void challenger_banner_clear(void);
 void commit_name_entry_row_both_players();
 void Clear_Flash_No(void);
 s32 Check_Sort_Ranking();       /* provisional name */
-s32 cut_button_side(void);
+s32 Setup_Target_PL(void);
 u32 Check_Ranking();
 void Check_Partners_Rank();
 void Fade_Cont(void);

@@ -2,10 +2,10 @@
  * BG000_TBL_C.C  stage background clear cell and scroll limit tables
  *
  * bg_clear_cell_tbl gives, per stage and area, the cell used to clear the scroll layers;
- * bg_limit_tbl gives, per stage background and layer, the left and right scroll limits (normal
+ * limit_tbl3 gives, per stage background and layer, the left and right scroll limits (normal
  * and wide screen) and the two vertical limits. Read by BG000.C, the stage background
- * services. bg_limit_unref_tbl, rows of bg_limit_tbl's form after bg_clear_cell_tbl, and bg_limit_tbl_tail,
- * a short row after bg_limit_tbl, are not referred to.
+ * services. bg_limit_unref_tbl, rows of limit_tbl3's form after bg_clear_cell_tbl, and bg_limit_tbl_tail,
+ * a short row after limit_tbl3, are not referred to.
  */
 
 #include "types.h"
@@ -14,7 +14,7 @@
 #pragma section TBL
 
 extern const u32 bg_clear_cell_tbl[][3];
-extern const s16 bg_limit_tbl[][4][6];
+extern const s16 limit_tbl3[][4][6];
 extern const s16 bg_limit_tbl_tail[];
 
 const u32 bg_clear_cell_tbl[14][3] = {
@@ -27,7 +27,7 @@ const u32 bg_clear_cell_tbl[14][3] = {
     { 0, 0, 0 }, { 0, 0, 0 },
 };
 
-/* after bg_clear_cell_tbl, rows of bg_limit_tbl's form; nothing in the program refers to them (provisional name) */
+/* after bg_clear_cell_tbl, rows of limit_tbl3's form; nothing in the program refers to them (provisional name) */
 static const s16 bg_limit_unref_tbl[20][6] = {
     { 196, 764, 252, 708, 160, 176 }, { 274, 752, 330, 696, 160, 176 },
     { 298, 750, 354, 694, 160, 176 }, { -198, 196, -142, 140, 160, 176 },
@@ -41,7 +41,7 @@ static const s16 bg_limit_unref_tbl[20][6] = {
     { 328, 688, 384, 632, 144, 160 }, { -336, 352, -281, 297, 80, 128 },
 };
 
-const s16 bg_limit_tbl[21][4][6] = {
+const s16 limit_tbl3[21][4][6] = {
     {
         { 209, 756, 265, 700, 224, 256 }, { 196, 764, 252, 708, 224, 256 },
         { 209, 756, 265, 700, 224, 256 }, { 269, 707, 325, 651, 224, 256 },
@@ -128,7 +128,7 @@ const s16 bg_limit_tbl[21][4][6] = {
     },
 };
 
-/* after bg_limit_tbl, a row of its form cut short; nothing in the program refers to it (provisional name) */
+/* after limit_tbl3, a row of its form cut short; nothing in the program refers to it (provisional name) */
 const s16 bg_limit_tbl_tail[14] = {
     160, 176, 160, 176, 160, 176, 144, 160, 144, 160, 160, 176, 144, 160,
 };

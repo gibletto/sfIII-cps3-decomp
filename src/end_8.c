@@ -51,7 +51,7 @@ void end_08000(u16 pl_num) {
         load_char_gfx(0x73E8, 1);
         common_end_init01();
         end_800_cell_set();
-        bgm_request(25);
+        BGM_Request(25);
         end_w.timer = timer_8_tbl[end_w.r_no_2];
         break;
     case END1_SCENES:
@@ -61,7 +61,7 @@ void end_08000(u16 pl_num) {
             if (end_w.r_no_2 == 4) {
                 end_w.r_no_1++;
                 end_w.end_flag = 1;
-                bgm_request(27);
+                BGM_Request(27);
                 fadeout_to_staff_roll();
             } else {
                 end_w.timer = timer_8_tbl[end_w.r_no_2];

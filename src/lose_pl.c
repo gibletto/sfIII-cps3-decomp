@@ -50,7 +50,7 @@ s16 lose_free[2];  /* 02023A82 */
 
 void lose_player(PLW* wk) {
     void (*lose_jp_tbl[2])(PLW*) = { Lose_00000, Lose_10000 };
-    lose_jp_tbl[lose_type_tbl[wk->player_number]](wk);
+    lose_jp_tbl[loser_type_tbl[wk->player_number]](wk);
 }
 
 

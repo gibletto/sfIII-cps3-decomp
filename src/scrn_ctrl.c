@@ -72,8 +72,6 @@ s32 mode;
 
 
 
-static void screen_mode_disp(s32 mode) {}
-
 /* provisional name */
 void screen_window_regs_update(void) {
     u16 ctrl;
@@ -95,7 +93,6 @@ void screen_window_regs_update(void) {
     *(u16*)(VIDEO_REG + 0x72) = screen_window[1].t;
     *(u16*)(VIDEO_REG + 0x74) = screen_window[1].r;
     *(u16*)(VIDEO_REG + 0x76) = screen_window[1].b;
-    screen_mode_disp(screen_mode);
     ctrl = screen_disp_ctrl;
     if (Monitor_Flip) {
         *(u16*)(VIDEO_REG + 0x80) = ctrl | 24;
@@ -104,7 +101,7 @@ void screen_window_regs_update(void) {
     }
     t = screen_window[0].l;
     *(u16*)SS_REG = t;
-    *(u16*)(SS_REG + 0x2) = screen_disp_reg_tbl[screen_mode][0];
+    *(u16*)(SS_REG + 0x2) = (*(screen_mode + screen_disp_reg_tbl))[0];
     *(u16*)(SS_REG + 0x4) = screen_disp_reg_tbl[screen_mode][1];
     *(u16*)(SS_REG + 0x6) = screen_disp_reg_tbl[screen_mode][2];
     *(u16*)(SS_REG + 0x8) = screen_disp_reg_tbl[screen_mode][3];
@@ -134,7 +131,6 @@ void screen_window_regs_update(void) {
 
 
 
-/* provisional name */
 void Zoomf_Init(void) {
     zoom_frame[0].pos = 0;
     zoom_frame[0].size = 0;

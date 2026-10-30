@@ -108,7 +108,7 @@ s16 bg_no;
 
 s32 range_x_check(WORK* wk) {
     s16 x;
-    if ((s8)bg_w.chase_flag & 0xF) {
+    if (bg_w.chase_flag & 0xF) {
         x = bg_w.bgw[wk->my_family - 1].chase_xy[0].disp.pos;
     } else {
         x = bg_w.bgw[wk->my_family - 1].wxy[0].disp.pos;

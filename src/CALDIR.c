@@ -70,8 +70,7 @@ s16 caldir_pos_128(s16 x1, s16 x2, s16 y1, s16 y2) {
 
 
 
-/* provisional name */
-s16 caldir_pos_64(s16 x1, s16 x2, s16 y1, s16 y2) {
+s16 caldir_pos_064(s16 x1, s16 x2, s16 y1, s16 y2) {
     return (caldir_pos_256(x1, x2, y1, y2) + 2) >> 2 & 0x3F;
 }
 
@@ -88,15 +87,13 @@ s16 y2;
 
 
 
-/* provisional name */
-s16 caldir_pos_16(s16 x1, s16 x2, s16 y1, s16 y2) {
+s16 caldir_pos_016(s16 x1, s16 x2, s16 y1, s16 y2) {
     return (caldir_pos_256(x1, x2, y1, y2) + 8) >> 4 & 0xF;
 }
 
 
 
-/* provisional name */
-s16 caldir_pos_8(s16 x1, s16 x2, s16 y1, s16 y2) {
+s16 caldir_pos_008(s16 x1, s16 x2, s16 y1, s16 y2) {
     return (caldir_pos_256(x1, x2, y1, y2) + 16) >> 5 & 7;
 }
 
@@ -116,32 +113,28 @@ s16 caldir_wk_128(WORK* wk, WORK* emwk) {
 
 
 
-/* provisional name */
-s16 caldir_wk_64(WORK* wk, WORK* emwk) {
+s16 caldir_wk_064(WORK* wk, WORK* emwk) {
     return (caldir_pos_256(wk->xyz[0].disp.pos, wk->xyz[1].disp.pos, emwk->xyz[0].disp.pos, emwk->xyz[1].disp.pos) + 2) >>
            2 & 0x3F;
 }
 
 
 
-/* provisional name */
-s16 caldir_wk_32(WORK* wk, WORK* emwk) {
+s16 caldir_wk_032(WORK* wk, WORK* emwk) {
     return (caldir_pos_256(wk->xyz[0].disp.pos, wk->xyz[1].disp.pos, emwk->xyz[0].disp.pos, emwk->xyz[1].disp.pos) + 4) >>
            3 & 0x1F;
 }
 
 
 
-/* provisional name */
-s16 caldir_wk_16(WORK* wk, WORK* emwk) {
+s16 caldir_wk_016(WORK* wk, WORK* emwk) {
     return (caldir_pos_256(wk->xyz[0].disp.pos, wk->xyz[1].disp.pos, emwk->xyz[0].disp.pos, emwk->xyz[1].disp.pos) + 8) >>
            4 & 0xF;
 }
 
 
 
-/* provisional name */
-s16 caldir_wk_8(WORK* wk, WORK* emwk) {
+s16 caldir_wk_008(WORK* wk, WORK* emwk) {
     return (caldir_pos_256(wk->xyz[0].disp.pos, wk->xyz[1].disp.pos, emwk->xyz[0].disp.pos, emwk->xyz[1].disp.pos) +
             16) >>
            5 & 7;

@@ -278,11 +278,10 @@ void bg_pos_hosei_sub3(s32 bg_no) {
 
 /* provisional name */
 void bg_frame_deff_init(void) {
-    BGW* bgw = &bg_w.bgw[1];
     if (!Game_setting.Screen_Mode) {
-        bgw->frame_deff = 0xC0;
+        bg_w.bgw[1].frame_deff = 0xC0;
     } else {
-        bgw->frame_deff = 0xF8;
+        bg_w.bgw[1].frame_deff = 0xF8;
     }
 }
 
@@ -371,14 +370,12 @@ void bg_pos_hosei2(void)
     s32 pos;
     s32 pos2;
     s16 i;
-    BGW* bgw;
 
     for (i = 0; i < bg_w.scno; i++) {
-        bgw = &bg_w.bgw[i];
         if (bg_w.chase_flag & 0xF) {
-            pos2 = bgw->chase_xy[0].disp.pos;
+            pos2 = bg_w.bgw[i].chase_xy[0].disp.pos;
         } else {
-            pos2 = bgw->wxy[0].disp.pos;
+            pos2 = bg_w.bgw[i].wxy[0].disp.pos;
         }
         pos = pos2 & 0x3FF;
         pos -= bg_w.pos_offset;
@@ -394,8 +391,8 @@ void bg_pos_hosei2(void)
             pos2 = bg_w.bgw[i].xy[1].disp.pos;
         }
         pos = pos2 & 0x3FF;
-        pos = pos + quake_y_tbl[bg_w.quake_y_index];
-        pos2 = pos2 + quake_y_tbl[bg_w.quake_y_index];
+        pos += quake_y_tbl[bg_w.quake_y_index];
+        pos2 += quake_y_tbl[bg_w.quake_y_index];
         bg_w.bgw[i].position_y = pos & 0x3FF;
         bg_w.bgw[i].abs_y = pos2;
     }
@@ -981,7 +978,7 @@ void suzi_line_calc_fill(s16 bg_num) {
         }
         do {
             *dst = *(u16*)line;
-            dst = dst + 2;
+            dst += 2;
             i++;
         } while (i < count);
     } else {
@@ -1634,7 +1631,6 @@ s32 chase_xy_move(void) {
 
 
 
-/* provisional name */
 void bg_base_y_move_check(void) {
     s32 pos_w;
     s32 kake;
@@ -1691,21 +1687,21 @@ void bg_x_move_check(void) {
 
 
 void bg_y_move_check(void) {
-    BGW* l;
-    s32 k;
     if (bg_stop) {
         return;
     }
-    if (l = bgw_ptr, k = bg_w.bg2_sp_y, (s8)bg_w.chase_flag & 0xF0) {
-        l->chase_xy[1].cal = l->speed_y * k;
+    if (bg_w.chase_flag & 0xF0) {
+        bgw_ptr->chase_xy[1].cal = bgw_ptr->speed_y * bg_w.bg2_sp_y;
         if (bgw_ptr->y_limit2 < bgw_ptr->chase_xy[1].disp.pos) {
-            bgw_ptr->chase_xy[1].disp.pos = bgw_ptr->y_limit2, bgw_ptr->chase_xy[1].disp.low = 0;
+            bgw_ptr->chase_xy[1].disp.pos = bgw_ptr->y_limit2;
+            bgw_ptr->chase_xy[1].disp.low = 0;
         }
         bgw_ptr->chase_xy[1].disp.pos += bgw_ptr->pos_y_work;
     } else {
-        l->xy[1].cal = l->speed_y * k;
+        bgw_ptr->xy[1].cal = bgw_ptr->speed_y * bg_w.bg2_sp_y;
         if (bgw_ptr->y_limit2 < bgw_ptr->xy[1].disp.pos) {
-            bgw_ptr->xy[1].disp.pos = bgw_ptr->y_limit2, bgw_ptr->xy[1].disp.low = 0;
+            bgw_ptr->xy[1].disp.pos = bgw_ptr->y_limit2;
+            bgw_ptr->xy[1].disp.low = 0;
         }
         bgw_ptr->xy[1].disp.pos += bgw_ptr->pos_y_work;
         bgw_ptr->wxy[1].cal = bgw_ptr->xy[1].cal;
@@ -1714,7 +1710,6 @@ void bg_y_move_check(void) {
 
 
 
-/* provisional name */
 void bg_initialize(void) {
     const s16* ptr;
     const BG_GFX* gfx;
@@ -1726,7 +1721,7 @@ void bg_initialize(void) {
     scrn_pos_clear();
     Zoomf_Init();
     bg_w.bg_index = bg_index_tbl[bg_w.stage][bg_w.area];
-    bg_w.scno = bg_scno_tbl[bg_w.bg_index];
+    bg_w.scno = use_scr[bg_w.bg_index];
     n = bg_gfx_tbl[bg_w.bg_index].size << 4;
     blocks = (n + 0xFFF) / 0x1000;
     scr_cg_c_no = simmram_block_alloc_10(blocks, 1);
@@ -1769,11 +1764,11 @@ void bg_initialize(void) {
         Bg_Off_R(16 << i);
         scrn_attr_set(i, 0, 31);
         scrn_reg_w[i].ctrl &= 0xFE7F;
-        bg_w.bgw[i].speed_x = bg_speed_tbl[bg_w.bg_index][i][0];
-        bg_w.bgw[i].speed_y = bg_speed_tbl[bg_w.bg_index][i][1];
+        bg_w.bgw[i].speed_x = msp[bg_w.bg_index][i][0];
+        bg_w.bgw[i].speed_y = msp[bg_w.bg_index][i][1];
         bg_w.bgw[i].rewrite_flag = 0;
         bg_w.bgw[i].xy[1].disp.pos = bg_w.bgw[i].wxy[1].disp.pos = bg_w.bgw[i].pos_y_work = 0;
-        ptr = bg_limit_tbl[bg_w.bg_index][i];
+        ptr = limit_tbl3[bg_w.bg_index][i];
         bg_w.bgw[i].l_limit = *ptr++;
         bg_w.bgw[i].r_limit = *ptr++;
         bg_w.bgw[i].l_limit2 = *ptr++;
@@ -1841,7 +1836,7 @@ void bg_initialize(void) {
     ake_scrl_w[0].pos_y = 0;
     ake_scrl_w[0].xy[0].cal = 0x2000000;
     ake_scrl_w[0].xy[1].cal = 0;
-    sprite_list_setup(3, 1, (s16*)ake_scr_record_data);
+    sprite_list_setup(3, 1, ake_scr_record_data);
     bg_w.bgw[3].r_no_1 = bg_w.bgw[3].r_no_2 = 0;
     bg_w.bgw[3].fam_no = 3;
     akebono_scr_write();
@@ -1855,7 +1850,6 @@ void bg_initialize(void) {
 
 
 
-/* provisional name */
 void compel_bg_init_position(void) {
     s16 i;
     bg_w.compel_on = 1;
@@ -1899,7 +1893,7 @@ s16 kind;
     blocks = (n + 0xFFF) / 0x1000;
     scr_cg_c_no = simmram_block_alloc_10(blocks, 1);
     bg_w.scroll_cg_adr = simmram_slot_to_offset(scr_cg_c_no);
-    bg_w.scno = etc_bg_scno_tbl[type];
+    bg_w.scno = use_scr2[type];
     load_any_color(etc_bg_color_tbl[type]);
     gfx = &etc_bg_gfx_tbl[type];
     polygon2d_submit_line(gfx->prep, 0, 0, 3);
@@ -1939,12 +1933,12 @@ s16 kind;
         Bg_On_R(1 << j);
         scrn_attr_set(j, 0, 31);
         scrn_reg_w[j].ctrl &= 0xFE7F;
-        bg_w.bgw[j].hos_xy[0].cal = bg_w.bgw[j].wxy[0].cal = bg_w.bgw[j].xy[0].cal = etc_bg_pos_tbl[type][j][0];
-        bg_w.bgw[j].hos_xy[1].cal = bg_w.bgw[j].wxy[1].cal = bg_w.bgw[j].xy[1].cal = etc_bg_pos_tbl[type][j][1];
+        bg_w.bgw[j].hos_xy[0].cal = bg_w.bgw[j].wxy[0].cal = bg_w.bgw[j].xy[0].cal = bg_pos_tbl2[type][j][0];
+        bg_w.bgw[j].hos_xy[1].cal = bg_w.bgw[j].wxy[1].cal = bg_w.bgw[j].xy[1].cal = bg_pos_tbl2[type][j][1];
         bg_w.bgw[j].old_pos_x = bg_w.bgw[j].pos_x_work = bg_w.bgw[j].xy[0].disp.pos;
         bg_w.bgw[j].pos_y_work = bg_w.bgw[j].xy[1].disp.pos;
-        bg_w.bgw[j].speed_x = etc_bg_speed_tbl[type][j][0];
-        bg_w.bgw[j].speed_y = etc_bg_speed_tbl[type][j][1];
+        bg_w.bgw[j].speed_x = msp2[type][j][0];
+        bg_w.bgw[j].speed_y = msp2[type][j][1];
         bg_w.bgw[j].rewrite_flag = 0;
         bg_w.bgw[j].zuubun = etc_bg_zuubun_tbl[type][j];
         bg_w.bgw[j].xy[1].disp.pos = bg_w.bgw[j].wxy[1].disp.pos = bg_w.bgw[j].pos_y_work = 0;
@@ -2061,7 +2055,6 @@ s16 capcom_logo_anim(void) {
 
 
 
-/* provisional name */
 void check_cg_zoom(void) {
     s16 i;
     s16 zoom_wk;

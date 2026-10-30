@@ -5,7 +5,7 @@
  * plural ones carrying the coin count, 2 to 9, as a code between the words; placed through the
  * message lists of ENTRY_2.C, the player entry and credit task. region_type_tbl turns the
  * Country into the area type, region_cc_type_tbl gives the CC type of each country and
- * region_param_tbl the two CC values of each CC type; read by MODE_INIT.C.
+ * Difficult_V_Data the two CC values of each CC type; read by MODE_INIT.C.
  */
 
 #include "types.h"
@@ -24,7 +24,7 @@ extern const s8 str_INSERT_COINS_7[];
 extern const s8 str_INSERT_COINS_8[];
 extern const s8 region_type_tbl[];
 extern const s8 region_cc_type_tbl[];
-extern const s8 region_param_tbl[][2];
+extern const s8 Difficult_V_Data[][2];
 
 const s8 str_INSERT_COIN[12] = "INSERT COIN";
 
@@ -70,6 +70,6 @@ const s8 region_cc_type_tbl[8] = {
     0, 2, 1, 1, 1, 1, 1, 2,
 };
 
-const s8 region_param_tbl[3][2] = {
+const s8 Difficult_V_Data[3][2] = {
     { 0, 0 }, { 1, 2 }, { 2, 4 },
 };

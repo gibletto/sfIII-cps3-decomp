@@ -1,8 +1,8 @@
 /*
  * END_SUB_2.C  CD keep-alive checks and the staff roll
  *
- * Routines: cd_keep_spinning_tick, cd_selftest_periodic, cd_error_fatal_hang, staff_roll_skip_check,
- * staff_roll_put, staff_roll_main.
+ * Routines: cd_keep_spinning_tick, cd_selftest_periodic, cd_error_fatal_hang, check_shortcut,
+ * set_credit_string, staff_credits.
  */
 
 #include "structs.h"
@@ -138,8 +138,7 @@ void cd_error_fatal_hang(s32 kind) {
 
 
 
-/* provisional name */
-s32 staff_roll_skip_check(void) {
+s32 check_shortcut(void) {
     u16 v;
     if (!end_no_cut) {
         if (WINNER) {
@@ -156,8 +155,7 @@ s32 staff_roll_skip_check(void) {
 
 
 
-/* provisional name */
-void staff_roll_put(x, y, a, b)
+void set_credit_string(x, y, a, b)
 s32 x;
 s32 y;
 s32 a;
@@ -177,8 +175,7 @@ const s8* b;
 
 
 
-/* provisional name */
-s32 staff_roll_main(flag)
+s32 staff_credits(flag)
 s16 flag;
 {
     s32 fx;
@@ -216,7 +213,7 @@ s16 flag;
         }
         break;
     case 1:
-        if (staff_roll_skip_check()) {
+        if (check_shortcut()) {
             roll_rate2 = 8;
         } else {
             roll_rate2 = 1;
@@ -233,16 +230,16 @@ s16 flag;
             Family_Set_W(6, fx, fy);
             if ((staff_roll_cnt >> 16) >= end_w.timer) {
                 staff_roll_cnt = 0;
-                if (staff_roll_tbl[staff_name_ptr].str == 0) {
+                if (sf3_staff[staff_name_ptr].str == 0) {
                     staff_r_no = 3;
-                    end_w.timer = staff_roll_tbl[staff_name_ptr].wait;
+                    end_w.timer = sf3_staff[staff_name_ptr].wait;
                     roll_stop = 1;
                 } else {
-                    x = staff_roll_tbl[staff_name_ptr].x;
-                    y = staff_roll_tbl[staff_name_ptr].y;
-                    attr = staff_roll_tbl[staff_name_ptr].attr;
-                    staff_roll_put(x, y, attr, staff_roll_tbl[staff_name_ptr].str);
-                    end_w.timer = staff_roll_tbl[staff_name_ptr].wait;
+                    x = sf3_staff[staff_name_ptr].x;
+                    y = sf3_staff[staff_name_ptr].y;
+                    attr = sf3_staff[staff_name_ptr].attr;
+                    set_credit_string(x, y, attr, sf3_staff[staff_name_ptr].str);
+                    end_w.timer = sf3_staff[staff_name_ptr].wait;
                     staff_name_ptr++;
                 }
             }
@@ -257,7 +254,7 @@ s16 flag;
             x = staff_roll_last[staff_name_ptr].x;
             y = staff_roll_last[staff_name_ptr].y;
             attr = staff_roll_last[staff_name_ptr].attr;
-            staff_roll_put(x, y, attr, staff_roll_last[staff_name_ptr].str);
+            set_credit_string(x, y, attr, staff_roll_last[staff_name_ptr].str);
             staff_name_ptr++;
         }
         end_w.timer = staff_roll_last[staff_name_ptr].wait;

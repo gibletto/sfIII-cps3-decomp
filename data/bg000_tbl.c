@@ -2,8 +2,8 @@
  * BG000_TBL.C  stage background set-up tables
  *
  * Per stage background (bg_index), and for the special screens drawn by bg_etc_write (the etc_
- * tables, by screen type): the scroll graphics count (bg_scno_tbl), graphics transfer data
- * (bg_gfx_tbl), layer scroll speeds (bg_speed_tbl), layer zoom split flags
+ * tables, by screen type): the scroll graphics count (use_scr), graphics transfer data
+ * (bg_gfx_tbl), layer scroll speeds (msp), layer zoom split flags
  * (etc_bg_zuubun_tbl), cell attributes, cell counts per layer and cell graphics sources in the
  * scrn_ files (bg_attr_tbl, bg_cell_cnt_tbl, bg_cg_src_tbl). Then the screen map records of the
  * layers, set up with sprite_list_setup and reached per stage through bg_map_tbl and bg_map_tbl2
@@ -24,8 +24,8 @@
 
 #pragma section TBL
 
-extern const s16 bg_scno_tbl[];
-extern const s16 etc_bg_scno_tbl[];
+extern const s16 use_scr[];
+extern const s16 use_scr2[];
 extern const s16 bg_scr_record_data[16];
 extern const s16 bg_scr_record_03_1[16];
 extern const s16 etc_bg_scr_record_0_2[16];
@@ -69,8 +69,8 @@ extern const s16 bg_scr_record_19_0[13];
 extern const s16 bg_scr_record_20_0[16];
 extern const s16 bg_scr_record_20_1[16];
 extern const s16 bg_scr_record_20_2[16];
-extern const s32 bg_speed_tbl[][4][2];
-extern const s32 etc_bg_speed_tbl[][4][2];
+extern const s32 msp[][4][2];
+extern const s32 msp2[][4][2];
 extern const s32 etc_bg_zuubun_tbl[][4];
 extern const BG_GFX bg_gfx_tbl[];
 extern const BG_GFX etc_bg_gfx_tbl[];
@@ -98,12 +98,12 @@ extern const u16 bg100_scrn_data[][16][32];
 extern const u16 effb0_scrn_data[][16][32];
 extern const u16 bg150_scrn_data[][16][32];
 
-const s16 bg_scno_tbl[20] = {
+const s16 use_scr[20] = {
     2, 3, 2, 3, 3, 3, 2, 3, 2, 3, 2, 3, 3, 3, 2, 2,
     3, 3, 2, 1,
 };
 
-const s16 etc_bg_scno_tbl[47] = {
+const s16 use_scr2[47] = {
     1, 1, 1, 1, 1, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024,
     1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -370,7 +370,7 @@ const s16 bg_scr_record_20_2[16] = {
     -1,
 };
 
-const s32 bg_speed_tbl[19][4][2] = {
+const s32 msp[19][4][2] = {
     { { 0xE000, 0x10000 }, { 0x10000, 0x10000 }, { 0, 0 }, { 0x10000, 0x10000 } },
     { { 0xE000, 0xE000 }, { 0x10000, 0x10000 }, { 0xA000, 0x10000 }, { 0, 0 } },
     { { 0xA000, 0xF000 }, { 0x10000, 0x10000 }, { 0, 0 }, { 0, 0 } },
@@ -392,7 +392,7 @@ const s32 bg_speed_tbl[19][4][2] = {
     { { 0xE000, 0x11000 }, { 0x10000, 0x10000 }, { 0, 0 }, { 0, 0 } },
 };
 
-const s32 etc_bg_speed_tbl[5][4][2] = {
+const s32 msp2[5][4][2] = {
     { { 0x10000, 0x10000 }, { 0x10000, 0x10000 }, { 0xF800, 0xF000 }, { 0x10000, 0x10000 } },
     { { 0x10000, 0x10000 }, { 0x10000, 0x10000 }, { 0xE000, 0xE000 }, { 0, 0 } },
     { { 0x10000, 0x10000 }, { 0x10000, 0x10000 }, { 0xE000, 0xE000 }, { 0, 0 } },

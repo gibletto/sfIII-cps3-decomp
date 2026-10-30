@@ -137,7 +137,7 @@ s32 vital_control(s8 pl) {
                 } else {
                     vital_yel_ofs = VITAL_CELL_DOTS;
                 }
-                tilemap_put_cell((s16)vit_bar[pl].xpos[vital_col_ix], 2, (s16)vit_bar[pl].attr[vit_bar[pl].colnum],
+                tilemap_put_cell((s16)vit_bar[pl].xpos[vital_col_ix], 2, vit_bar[pl].attr[vit_bar[pl].colnum],
                                  (s16)vit_bar[pl].cell[vital_yel_ofs * (VITAL_CELL_DOTS + 1) + vital_red_ofs]);
                 vital_col_ix++;
                 continue;
@@ -148,11 +148,11 @@ s32 vital_control(s8 pl) {
                     vital_red_ofs = VITAL_CELL_DOTS - (vit_bar[pl].cred - vital_dot_pos);
                 }
                 vital_yel_ofs = 0;
-                tilemap_put_cell((s16)vit_bar[pl].xpos[vital_col_ix], 2, (s16)vit_bar[pl].attr[vit_bar[pl].colnum],
+                tilemap_put_cell((s16)vit_bar[pl].xpos[vital_col_ix], 2, vit_bar[pl].attr[vit_bar[pl].colnum],
                                  (s16)vit_bar[pl].cell[vital_red_ofs]);
             }
         } else {
-            tilemap_put_cell((s16)vit_bar[pl].xpos[vital_col_ix], 2, (s16)vit_bar[pl].attr[vit_bar[pl].colnum], 0xAC);
+            tilemap_put_cell((s16)vit_bar[pl].xpos[vital_col_ix], 2, vit_bar[pl].attr[vit_bar[pl].colnum], 0xAC);
         }
         vital_col_ix++;
     }

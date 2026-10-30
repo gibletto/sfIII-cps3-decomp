@@ -65,7 +65,7 @@ extern const EFFF9_MESSAGE effF9_mes_pt_5[];
 extern const EFFF9_MESSAGE effF9_mes_pt_7[];
 extern const EFFF9_MESSAGE effF9_mes_pt_8[];
 extern const EFFF9_MESSAGE effF9_mes_pt_9[];
-extern const u16 efff9_no_scene[];
+extern const u16 plXXtxt0[];
 extern const u16 txt_no_00_1[];
 extern const u16 txt_no_00_2[];
 extern const u16 txt_no_00_3[];
@@ -176,7 +176,7 @@ const EFFF9_MESSAGE* effF9_mes_pt[13] = {
 /* 02006F58 */
 /* provisional name */
 const u16* txt_no_00[9] = {
-    efff9_no_scene, txt_no_00_1,
+    plXXtxt0, txt_no_00_1,
     txt_no_00_2, txt_no_00_3,
     txt_no_00_4, txt_no_00_5,
     txt_no_00_6, txt_no_00_7,
@@ -186,7 +186,7 @@ const u16* txt_no_00[9] = {
 /* 02006F7C */
 /* provisional name */
 const u16* txt_no_02[5] = {
-    efff9_no_scene, txt_no_02_1,
+    plXXtxt0, txt_no_02_1,
     txt_no_02_2, txt_no_02_3,
     txt_no_02_4,
 };
@@ -194,7 +194,7 @@ const u16* txt_no_02[5] = {
 /* 02006F90 */
 /* provisional name */
 const u16* txt_no_03[10] = {
-    efff9_no_scene, txt_no_03_1,
+    plXXtxt0, txt_no_03_1,
     txt_no_03_2, txt_no_03_3,
     txt_no_03_4, txt_no_03_5,
     txt_no_03_6, txt_no_03_7,
@@ -204,7 +204,7 @@ const u16* txt_no_03[10] = {
 /* 02006FB8 */
 /* provisional name */
 const u16* txt_no_10[10] = {
-    efff9_no_scene, txt_no_03_2,
+    plXXtxt0, txt_no_03_2,
     txt_no_03_1, txt_no_03_3,
     txt_no_03_4, txt_no_03_5,
     txt_no_03_7, txt_no_03_6,
@@ -214,7 +214,7 @@ const u16* txt_no_10[10] = {
 /* 02006FE0 */
 /* provisional name */
 const u16* txt_no_04[6] = {
-    efff9_no_scene, txt_no_04_1,
+    plXXtxt0, txt_no_04_1,
     txt_no_04_2, txt_no_04_3,
     txt_no_04_4, txt_no_04_5,
 };
@@ -222,7 +222,7 @@ const u16* txt_no_04[6] = {
 /* 02006FF8 */
 /* provisional name */
 const u16* txt_no_05[7] = {
-    efff9_no_scene, txt_no_05_1,
+    plXXtxt0, txt_no_05_1,
     txt_no_05_2, txt_no_05_3,
     txt_no_05_4, txt_no_05_5,
     txt_no_05_6,
@@ -231,7 +231,7 @@ const u16* txt_no_05[7] = {
 /* 02007014 */
 /* provisional name */
 const u16* txt_no_07[11] = {
-    efff9_no_scene, txt_no_07_1,
+    plXXtxt0, txt_no_07_1,
     txt_no_07_2, txt_no_07_3,
     txt_no_07_4, txt_no_07_5,
     txt_no_07_6, txt_no_07_7,
@@ -242,7 +242,7 @@ const u16* txt_no_07[11] = {
 /* 02007040 */
 /* provisional name */
 const u16* txt_no_08[5] = {
-    efff9_no_scene, txt_no_08_1,
+    plXXtxt0, txt_no_08_1,
     txt_no_08_2, txt_no_08_3,
     txt_no_08_4,
 };
@@ -250,7 +250,7 @@ const u16* txt_no_08[5] = {
 /* 02007054 */
 /* provisional name */
 const u16* txt_no_09[6] = {
-    efff9_no_scene, txt_no_09_1,
+    plXXtxt0, txt_no_09_1,
     txt_no_09_2, txt_no_09_3,
     txt_no_09_4, txt_no_09_5,
 };
@@ -258,7 +258,7 @@ const u16* txt_no_09[6] = {
 /* 0200706C */
 /* provisional name */
 const u16* txt_no_11[7] = {
-    efff9_no_scene, txt_no_11_1,
+    plXXtxt0, txt_no_11_1,
     txt_no_11_2, txt_no_11_3,
     txt_no_11_4, txt_no_11_5,
     txt_no_11_6,
@@ -267,7 +267,7 @@ const u16* txt_no_11[7] = {
 /* 02007088 */
 /* provisional name */
 const u16* txt_no_12[6] = {
-    efff9_no_scene, txt_no_12_1,
+    plXXtxt0, txt_no_12_1,
     txt_no_12_2, txt_no_12_3,
     txt_no_12_4, txt_no_12_5,
 };

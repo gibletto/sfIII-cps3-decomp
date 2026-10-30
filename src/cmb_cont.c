@@ -120,7 +120,6 @@ void combo_cont_main(void) {
 
 
 void combo_control(s8 PL) {
-    PLW* wk;
     s16 cmb_flag;
     cmb_flag = check_combo_end(PL);
     if (reversal_check(PL) != 0) {
@@ -132,10 +131,9 @@ void combo_control(s8 PL) {
     if (paring_check(PL) != 0) {
         return;
     }
-    wk = &plw[PL];
-    if (wk->cb->total) {
+    if (plw[PL].cb->total) {
         if (first_attack == 0) {
-            first_attack = wk->wu.id + 1;
+            first_attack = plw[PL].wu.id + 1;
             combo_window_push(PL, 4);
             return;
         }

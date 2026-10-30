@@ -60,7 +60,7 @@ void end_05000(u16 pl_num) {
         common_end_init01();
         end_500_cell_set();
         load_any_color(0x91);
-        bgm_request(22);
+        BGM_Request(22);
         break;
     case E5_FADE:
         if (Request_Fade(53, 0) == 0) {
@@ -271,7 +271,7 @@ void end_500_5000(void) {
     switch (bgw_ptr->r_no_1) {
     case 0:
         bgw_ptr->r_no_1++;
-        bgm_request(23);
+        BGM_Request(23);
         if ((scrn_reg_w[bgw_ptr->fam_no].ctrl & 0x8000) == 0) {
             Bg_On_W(1 << bgw_ptr->fam_no);
         }

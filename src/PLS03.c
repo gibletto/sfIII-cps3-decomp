@@ -143,34 +143,32 @@ s32 execute_super_arts(PLW* wk) {
     if ((wk->sa->gauge_type != SA_GAUGE_REBIRTH) && pcon_dp_flag) {
         return 0;
     }
-    if (wk->wu.xyz[1].disp.pos > 0) {
-        goto air;
+    if (wk->wu.xyz[1].disp.pos <= 0) {
+        if (wk->spmv_ng_flag & 0x40000000) {
+            return 0;
+        }
+        if (wk->sa->ok != 1) {
+            return 0;
+        }
+        if (wk->sa->nmsa_g_ix > 30) {
+            return 0;
+        }
+        setup_comm_back(&wk->wu);
+        wk->as = &asstbl_sa_ground[wk->player_number][wk->sa->nmsa_g_ix - 16][0].as;
+        wk->wu.routine_no[1] = PLAYER_ATTACK;
+        wk->wu.routine_no[2] = wk->cp->waza_r[wk->sa->nmsa_g_ix][0];
+        wk->wu.routine_no[3] = RN3_START;
+        wk->wu.cg_cancel = 0;
+        wk->cancel_timer = 0;
+        wk->wu.cg_type = 0;
+        wk->wu.att_hit_ok = 0;
+        wk->wu.hf.hit_flag = 0;
+        wk->wu.meoshi_hit_flag = 0;
+        wk->wu.paring_attack_flag = 0;
+        wk->sa->ok = -1;
+        waza_compel_all_init2(wk);
+        return 1;
     }
-    if (wk->spmv_ng_flag & 0x40000000) {
-        return 0;
-    }
-    if (wk->sa->ok != 1) {
-        return 0;
-    }
-    if (wk->sa->nmsa_g_ix > 30) {
-        return 0;
-    }
-    setup_comm_back(&wk->wu);
-    wk->as = &asstbl_sa_ground[wk->player_number][wk->sa->nmsa_g_ix - 16][0].as;
-    wk->wu.routine_no[1] = PLAYER_ATTACK;
-    wk->wu.routine_no[2] = wk->cp->waza_r[wk->sa->nmsa_g_ix][0];
-    wk->wu.routine_no[3] = RN3_START;
-    wk->wu.cg_cancel = 0;
-    wk->cancel_timer = 0;
-    wk->wu.cg_type = 0;
-    wk->wu.att_hit_ok = 0;
-    wk->wu.hf.hit_flag = 0;
-    wk->wu.meoshi_hit_flag = 0;
-    wk->wu.paring_attack_flag = 0;
-    wk->sa->ok = -1;
-    waza_compel_all_init2(wk);
-    return 1;
-air:
     if (wk->spmv_ng_flag & 0x80000000) {
         return 0;
     }
@@ -211,60 +209,58 @@ s32 check_special_attack(PLW* wk) {
     if (pcon_dp_flag) {
         return 0;
     }
-    if (wk->wu.xyz[1].disp.pos > 0) {
-        goto air;
-    }
-    if (wk->spmv_ng_flag & 0x10000000) {
-        return 0;
-    }
-    conpane = (u16*)wk->cp;
-    for (i = 22; i < 30; i++) {
-        if (wk->cp->waza_flag[i] == -1) {
-            continue;
+    if (wk->wu.xyz[1].disp.pos <= 0) {
+        if (wk->spmv_ng_flag & 0x10000000) {
+            return 0;
         }
-        if (wk->wu.shell_ix[0] != -1) {
-            if ((wk->player_number == PL_RYU || wk->player_number == PL_KEN) && i == 23) {
+        conpane = (u16*)wk->cp;
+        for (i = 22; i < 30; i++) {
+            if (wk->cp->waza_flag[i] == -1) {
                 continue;
             }
-            if (wk->player_number == PL_GILL && i == 24) {
-                continue;
+            if (wk->wu.shell_ix[0] != -1) {
+                if ((wk->player_number == PL_RYU || wk->player_number == PL_KEN) && i == 23) {
+                    continue;
+                }
+                if (wk->player_number == PL_GILL && i == 24) {
+                    continue;
+                }
+                if (wk->player_number == PL_ORO && i == 24) {
+                    continue;
+                }
             }
-            if (wk->player_number == PL_ORO && i == 24) {
-                continue;
-            }
-        }
-        if (wk->cp->btix[i] != CMD_BT_NONE) {
-            if (wk->cp->waza_flag[i]) {
-                cusw = conpane[wk->cp->btix[i]];
-                for (j = 3; j >= 0; j--) {
-                    exsw = wk->cp->exdt[i][j];
-                    if (exsw & CMD_EX_ALL) {
-                        exsw &= CMD_SW_SHOT;
-                        if (exsw != (cusw & exsw)) {
+            if (wk->cp->btix[i] != CMD_BT_NONE) {
+                if (wk->cp->waza_flag[i]) {
+                    cusw = conpane[wk->cp->btix[i]];
+                    for (j = 3; j >= 0; j--) {
+                        exsw = wk->cp->exdt[i][j];
+                        if (exsw & CMD_EX_ALL) {
+                            exsw &= CMD_SW_SHOT;
+                            if (exsw != (cusw & exsw)) {
+                                continue;
+                            }
+                        } else if (!(exsw & cusw)) {
                             continue;
                         }
-                    } else if (!(exsw & cusw)) {
-                        continue;
+                        setup_comm_back(&wk->wu);
+                        wk->as = &asstbl_sa_ground[wk->player_number][i - 16][j].as;
+                        wk->wu.routine_no[1] = PLAYER_ATTACK;
+                        wk->wu.routine_no[2] = wk->cp->waza_r[i][j];
+                        wk->wu.routine_no[3] = RN3_START;
+                        wk->wu.cg_cancel &= 0x40;
+                        wk->cancel_timer = 0;
+                        wk->wu.cg_type = 0;
+                        wk->wu.att_hit_ok = 0;
+                        wk->wu.hf.hit_flag = 0;
+                        wk->wu.meoshi_hit_flag = 0;
+                        wk->wu.paring_attack_flag = 0;
+                        return 1;
                     }
-                    setup_comm_back(&wk->wu);
-                    wk->as = &asstbl_sa_ground[wk->player_number][i - 16][j].as;
-                    wk->wu.routine_no[1] = PLAYER_ATTACK;
-                    wk->wu.routine_no[2] = wk->cp->waza_r[i][j];
-                    wk->wu.routine_no[3] = RN3_START;
-                    wk->wu.cg_cancel &= 0x40;
-                    wk->cancel_timer = 0;
-                    wk->wu.cg_type = 0;
-                    wk->wu.att_hit_ok = 0;
-                    wk->wu.hf.hit_flag = 0;
-                    wk->wu.meoshi_hit_flag = 0;
-                    wk->wu.paring_attack_flag = 0;
-                    return 1;
                 }
             }
         }
+        return 0;
     }
-    return 0;
-air:
     if (wk->spmv_ng_flag & 0x20000000) {
         return 0;
     }

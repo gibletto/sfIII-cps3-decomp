@@ -52,7 +52,6 @@ void effect_E5_move(WORK_Other* ewk) {
     s16 i;
     s32 rno;
     s16* er;
-    s16* mr;
     switch (ewk->wu.routine_no[0]) {
     case R0_WAIT:
         switch (ewk->wu.routine_no[1]) {
@@ -86,7 +85,7 @@ void effect_E5_move(WORK_Other* ewk) {
         }
         if (ewk->wu.dir_old & 2) {
             er = ewk->wu.routine_no;
-            if (er[5] != (mr = mwk->wu.routine_no)[1] || er[6] != mr[2]) {
+            if (er[5] != mwk->wu.routine_no[1] || er[6] != mwk->wu.routine_no[2]) {
                 goto off;
             }
         }

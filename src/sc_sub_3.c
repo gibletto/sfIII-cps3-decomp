@@ -111,7 +111,7 @@ void stngauge_control(s32 player) {
         stun_put(pl);
         return;
     }
-    if ((plw[pl].wu.routine_no[1] == PLAYER_DAMAGE && plw[pl].wu.routine_no[2] == DAMAGE_STUN && plw[pl].wu.routine_no[3] != 0) ||
+    if ((plw[pl].wu.routine_no[1] == PLAYER_DAMAGE && plw[pl].wu.routine_no[2] == DAMAGE_STUN && plw[pl].wu.routine_no[3] != RN3_START) ||
         plw[pl].py->flag == 1) {
         sdat[pl].sflag = 1;
         if (sdat[pl].osflag == 0) {

@@ -99,7 +99,6 @@ void effect_01_move(WORK_Other* ewk) {
 
 
 
-/* provisional name */
 void get_new_parts_data(WORK_Other* ewk, PLW* mwk) {
     ewk->wu.overlap_char_tbl = mwk->wu.overlap_char_tbl + ewk->wu.now_koc;
     ewk->wu.cg_ctr = ewk->wu.overlap_char_tbl->parts_timer;

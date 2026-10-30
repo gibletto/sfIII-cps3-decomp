@@ -1660,6 +1660,44 @@ typedef struct {
     s8 game_code[4];   /* and the game code */
 } SETTINGS;
 
+/* provisional names */
+/* the system settings (test menu 7-1) at the start of each EEPROM copy */
+typedef struct {
+    u8 version;         /* checked against the defaults on load */
+    u8 coin_mode;
+    u8 continue_flag;
+    u8 chute_mode;
+    u8 sound_mode;
+    u8 demo_sound;
+    u8 monitor_flip;
+    u8 unused_7;
+    u8 free_play;
+    u8 language;
+    u8 card_dispenser;
+    u8 win_point_com;
+    u8 win_point_human;
+    u8 voice_type;
+    u8 spare[18];
+} SYS_SETTINGS;
+
+/* provisional names */
+/* one copy of the operator settings in the EEPROM */
+typedef struct {
+    SYS_SETTINGS system;
+    SETTINGS game;
+} EEP_COPY;
+
+/* provisional names */
+/* the 128-byte EEPROM image: two copies of the settings, then the bookkeeping counters */
+typedef struct {
+    EEP_COPY copy[2];
+    u32 book_coin;
+    u32 book_service;
+    u32 book_free;
+    u32 book_card;
+    u8 spare[16];
+} EEP_IMAGE;
+
 typedef struct {
     s32 ofs;
     s32 cell;

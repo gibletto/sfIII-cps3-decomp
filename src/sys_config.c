@@ -98,7 +98,7 @@ void eeprom_config_reset(void) {
         } else {
             ix = Area_Type;
         }
-        key = (u8*)table[ix];
+        key = table[ix];
         ref = &eeprom_w[EEP_GAME];
         name = game_cfg_default_tbl[ix];
         if (config_bytes_equal(rec, key, EEP_SYSTEM_SIZE)) {

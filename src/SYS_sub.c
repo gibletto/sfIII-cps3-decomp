@@ -8,7 +8,7 @@
  * Ranking entry (Check_Ranking, Check_Sort_Ranking, Check_Partners_Rank) and Setup_Play_Type are
  * here, with scene-cut helpers (Button_Cut_Hold, Cut_Cut_Cut and friends) that let a
  * player's button shorten a scene. Disp_Digit8x16/16x24 draw score digits, Disp_Win_Type the round
- * win marks, and Disp_Capcom_Rights the copyright lines chosen by Country.
+ * win marks, and Disp_Copyright the copyright lines chosen by Country.
  * There are two rankings of six (score, then consecutive wins) in 12-byte records; Ck_Range_Out_Y is the
  * vertical range check, and the button tests use 0x7F0.
  */
@@ -403,7 +403,7 @@ s32 Button_Cut_Hold(s16* timer, s16 first, s16 repeat) {
             return 0;
         }
     }
-    side = cut_button_side();
+    side = Setup_Target_PL();
     if (side) {
         trig = ~p2sw_1 & p2sw_0;
     } else {
@@ -443,8 +443,7 @@ s32 Button_Cut_Hold(s16* timer, s16 first, s16 repeat) {
 
 /* Which side's buttons may cut a scene short: the winner in a two-player match,
    otherwise the side that is being played (1P unless only 2P is in). */
-/* provisional name */
-int cut_button_side(void)
+int Setup_Target_PL(void)
 {
     if (Play_Type == PLAY_VS_PLAYER) {
         return Winner_id;
@@ -530,10 +529,10 @@ void commit_name_entry_row_both_players(pos_y)
     s16 pos_y;
 {
     if (E_Number[0][0] == ENTRY_NAME && name_wk[0].dmm) {
-        name_entry_commit_row(0, pos_y);
+        rank_display_set(0, pos_y);
     }
     if (E_Number[1][0] == ENTRY_NAME && name_wk[1].dmm) {
-        name_entry_commit_row(1, pos_y);
+        rank_display_set(1, pos_y);
     }
 }
 
@@ -575,8 +574,7 @@ s32 Count_Tens(s16 x) {
 
 
 
-/* provisional name */
-void Disp_Capcom_Rights(void) {
+void Disp_Copyright(void) {
     void (*fp)(s32 x, s32 y, s32 attr, const s8* str) = (void (*)(s32, s32, s32, const s8*))tilemap_print_string_attr;
     register s16* py = &Text_Page_Y;
     s16* px = &DE_X[0];

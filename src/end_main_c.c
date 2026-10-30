@@ -3,7 +3,7 @@
  *
  * Ending_main runs the ending each frame: it clears the system and starts the character's ending script
  * (end_main_jp[]), switches the screen in, runs the script's scenes (the cut button skips to the end), fades
- * out to the staff roll (staff_roll_main), fades again and lets the winner's name run out before it sets
+ * out to the staff roll (staff_credits), fades again and lets the winner's name run out before it sets
  * ending_all_end. The prize card messages are shown throughout (card_win_check, card_msg_disp). The shared
  * helpers used by the end_N modules follow: common_end_init00/01 (scroll graphics allocation and BG work
  * setup), plane position and family updates, block attribute writes, the BGM fade and fade-complete checks and
@@ -179,7 +179,7 @@ s32 Ending_main(s16 pl_num) {
         break;
     case END_STAFF:
         Forbid_Break = 0;
-        if (staff_roll_main(end_staff_flag)) {
+        if (staff_credits(end_staff_flag)) {
             end_w.r_no_0 += 1;
         }
         break;
@@ -278,7 +278,7 @@ void common_end_init00(s16 pl_num) {
     end_cont_coin = Continue_Coin[WINNER];
     end_w.type = pl_num;
     bg_w.bg_index = end_bg_index_tbl[end_w.type];
-    bg_w.scno = end_scno_tbl[end_w.type];
+    bg_w.scno = end_use_scr[end_w.type];
     n = ((end_bg_gfx_tbl[bg_w.bg_index].size << 4) + 0xFFF) / 0x1000;
     blocks = n;
     scr_cg_c_no = simmram_block_alloc_10(blocks, 1);
@@ -433,10 +433,9 @@ void end_scn_pos_set2(void) {
 
 
 void end_bg_block_attr_add(s16 bg, s32 ofs, s16 w, s32 cell, s16 h) {
-    BGW* bgw;
     u16* adrs;
-    adrs = (bgw = &bg_w.bgw[bg])->bg_address;
-    oh_opening_demo(adrs, ofs, w, cell, h, 0x220, bgw->r_limit);
+    adrs = bg_w.bgw[bg].bg_address;
+    oh_opening_demo(adrs, ofs, w, cell, h, 0x220, bg_w.bgw[bg].r_limit);
 }
 
 

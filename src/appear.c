@@ -3,7 +3,7 @@
  *
  * Runs each fighter's entrance at the start of a match. appear_data_set places the fighter from an
  * APPEAR_DATA entry (position, facing, routine and animation), chosen by fighter, stage and area from
- * appear_type_tbl, or from appear_type_hv_tbl when home_visitor_check says so; appear_player dispatches
+ * app_type_tbl, or from app_type_tbl2 when home_visitor_check says so; appear_player dispatches
  * on routine_no[4] through appear_jmp_tbl to Appear_00000-Appear_17000: walk-ins, jumps and drops,
  * poses and props. The Yun / Yang and Sean match-ups have their own checks (yun_yang_appear_check,
  * yang_yun_appear_check, sean_appear_check). Appear_flag, Appear_free and Appear_end signal the stage
@@ -316,9 +316,9 @@ void Appear_03000(PLW* wk) {
         break;
     case AP03_WAIT:
         if (Appear_hv[wk->wu.id]) {
-            appear_data_set(wk, &appear_data[appear_type_hv_tbl[wk->player_number][bg_w.stage][bg_w.area]]);
+            appear_data_set(wk, &appear_data[app_type_tbl2[wk->player_number][bg_w.stage][bg_w.area]]);
         } else {
-            appear_data_set(wk, &appear_data[appear_type_tbl[wk->player_number][bg_w.stage][bg_w.area]]);
+            appear_data_set(wk, &appear_data[app_type_tbl[wk->player_number][bg_w.stage][bg_w.area]]);
         }
         if (Appear_flag[wk->wu.id]) {
             wk->wu.routine_no[3]++;
@@ -332,9 +332,9 @@ void Appear_03000(PLW* wk) {
         if (wk->wu.cg_type == 9) {
             wk->wu.routine_no[3]++;
             if (Appear_hv[wk->wu.id]) {
-                appear_data_set(wk, &appear_data[appear_type_hv_tbl[wk->player_number][bg_w.stage][bg_w.area]]);
+                appear_data_set(wk, &appear_data[app_type_tbl2[wk->player_number][bg_w.stage][bg_w.area]]);
             } else {
-                appear_data_set(wk, &appear_data[appear_type_tbl[wk->player_number][bg_w.stage][bg_w.area]]);
+                appear_data_set(wk, &appear_data[app_type_tbl[wk->player_number][bg_w.stage][bg_w.area]]);
             }
             set_char_move_init(&wk->wu, 9, wk->wu.char_index);
         }

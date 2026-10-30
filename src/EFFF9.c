@@ -4,8 +4,8 @@
  * effect_F9_init(pl_no) (from end_main_c.c) opens the window for the character's ending.
  * effect_F9_move picks the message by Country and Language (effF9_mes_jp / _en / _es / _pt), loads
  * its graphics and shows it as connected cells on family 4 until its time (keep_mes_no) runs out, then
- * calls Next_Talk_Message. The ending scripts drive it through Rewrite_End_Message (start a scene's
- * message list from txt_no_tbl), Next_Talk_Message (the next message and time pair) and
+ * calls Rewrite. The ending scripts drive it through Rewrite_End_Message (start a scene's
+ * message list from txt_no_tbl), Rewrite (the next message and time pair) and
  * Set_Direct_Message (one given message); each opens a new window, and the old one closes when
  * efff9_suicide is set.
  */
@@ -130,7 +130,7 @@ void effect_F9_move(WORK_Other_CONN* ewk) {
         break;
     case R0_MOVE:
         if (keep_mes_no == 0) {
-            Next_Talk_Message();
+            Rewrite();
             ewk->wu.cg_number++;
             ewk->wu.cg_number &= 0x7FFF;
             sort_push_request3(&ewk->wu);
@@ -232,7 +232,7 @@ s32 Set_Direct_Message(s16 mes) {
     return 0;
 }
 
-s32 Next_Talk_Message(void) {
+s32 Rewrite(void) {
     WORK_Other* ewk;
     s16 ix;
     if ((ix = pull_effect_work(4)) == -1) {

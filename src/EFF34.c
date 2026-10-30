@@ -60,8 +60,7 @@ s32 effect_34_init(void) {
     return 0;
 }
 
-void effect_34_move(WORK_Other* wk) {
-    WORK_Other* ewk = wk;
+void effect_34_move(WORK_Other* ewk) {
     s8 num;
     s8 rnd;
     s16 i;
@@ -90,7 +89,7 @@ void effect_34_move(WORK_Other* wk) {
         switch (ewk->wu.routine_no[1]) {
         case R1_FIRST:
             num = random_32_com();
-            num = num & 7;
+            num &= 7;
             if (num == 0) {
                 num = 4;
             }

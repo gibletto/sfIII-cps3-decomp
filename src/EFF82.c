@@ -24,7 +24,7 @@
 
 
 void effect_82_move(WORK_Other* ewk) {
-    if (bg_w.area || Allow_a_battle_f || Conclusion_Flag != 1 || C_No0 < 2) {
+    if (bg_w.area || Allow_a_battle_f || Conclusion_Flag != 1 || C_No0 < C0_FIGHT) {
         return;
     }
     switch (ewk->wu.routine_no[0]) {

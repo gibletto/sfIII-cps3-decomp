@@ -1504,7 +1504,7 @@ void debug_bg_test_init(void) {
     tilemap_fill_all(0, 32);
     scr_cg_c_no = simmram_block_alloc_10(0x400, 1);
     bg_w.scroll_cg_adr = simmram_slot_to_offset(scr_cg_c_no);
-    bg_w.scno = etc_bg_scno_tbl[4];
+    bg_w.scno = use_scr2[4];
     load_any_color(10);
     gfx = &etc_bg_gfx_tbl[4];
     polygon2d_submit_line(gfx->prep, 0, 0, 3);
@@ -1543,12 +1543,12 @@ void debug_bg_test_init(void) {
         Bg_On_R(1 << j);
         scrn_attr_set(j, 0, 31);
         scrn_reg_w[j].ctrl &= 0xFE7F;
-        bg_w.bgw[j].hos_xy[0].cal = bg_w.bgw[j].wxy[0].cal = bg_w.bgw[j].xy[0].cal = etc_bg_pos_tbl[4][j][0];
-        bg_w.bgw[j].hos_xy[1].cal = bg_w.bgw[j].wxy[1].cal = bg_w.bgw[j].xy[1].cal = etc_bg_pos_tbl[4][j][1];
+        bg_w.bgw[j].hos_xy[0].cal = bg_w.bgw[j].wxy[0].cal = bg_w.bgw[j].xy[0].cal = bg_pos_tbl2[4][j][0];
+        bg_w.bgw[j].hos_xy[1].cal = bg_w.bgw[j].wxy[1].cal = bg_w.bgw[j].xy[1].cal = bg_pos_tbl2[4][j][1];
         bg_w.bgw[j].old_pos_x = bg_w.bgw[j].pos_x_work = bg_w.bgw[j].xy[0].disp.pos;
         bg_w.bgw[j].pos_y_work = bg_w.bgw[j].xy[1].disp.pos;
-        bg_w.bgw[j].speed_x = etc_bg_speed_tbl[4][j][0];
-        bg_w.bgw[j].speed_y = etc_bg_speed_tbl[4][j][1];
+        bg_w.bgw[j].speed_x = msp2[4][j][0];
+        bg_w.bgw[j].speed_y = msp2[4][j][1];
         bg_w.bgw[j].rewrite_flag = 0;
         bg_w.bgw[j].zuubun = etc_bg_zuubun_tbl[4][j];
         bg_w.bgw[j].xy[1].disp.pos = bg_w.bgw[j].wxy[1].disp.pos = bg_w.bgw[j].pos_y_work = 0;
@@ -2245,9 +2245,8 @@ s16 n;
 void debug_hit_box_cursor(void) {
     u16 now;
     u16 sw;
-    u16 *input = &now;
     now = dbg_p2sw_0;
-    sw = ~dbg_p2sw_1 & now;
+    sw = ~dbg_p2sw_1 & dbg_p2sw_0;
     if (now & 0x240) {
         tilemap_rect_fill(dbg_hud_x + 36, (s8)((WORK_Other*)dbg_judge_ewk)->refrected + 16, 8, 1, 2, 0xFFFF);
         if (sw & BUTTON_HP) {
@@ -2957,12 +2956,12 @@ void debug_slot_char_load(void) {
             dbg_pl->wu.my_col_code = 0x4007;
         }
         if (dbg_slot->sel[0] == 0x92) {
-            dbg_pl->wu.hit_ix_table = (HIT_IX*)&ef13_hit_ix_table;
-            dbg_pl->wu.body_adrs = (BODY_BOX*)&ef13_body_box;
-            dbg_pl->wu.attack_adrs = (ATTACK_BOX*)&ef13_att_box;
-            dbg_pl->wu.caught_adrs = (CAUGHT_BOX*)&ef13_cau_box;
-            dbg_pl->wu.hosei_adrs = (HOSEI_BOX*)&ef13_hos_box;
-            dbg_pl->wu.att_ix_table = (ATTACK_ATTR*)&ef13_catt_table;
+            dbg_pl->wu.hit_ix_table = (HIT_IX*)ef13_hit_ix_table;
+            dbg_pl->wu.body_adrs = (BODY_BOX*)ef13_body_box;
+            dbg_pl->wu.attack_adrs = (ATTACK_BOX*)ef13_att_box;
+            dbg_pl->wu.caught_adrs = (CAUGHT_BOX*)ef13_cau_box;
+            dbg_pl->wu.hosei_adrs = (HOSEI_BOX*)ef13_hos_box;
+            dbg_pl->wu.att_ix_table = (ATTACK_ATTR*)ef13_catt_table;
             load_any_color(dbg_obj_color_tbl[dbg_slot->sel[0] - 0x92]);
             dbg_pl->wu.my_col_code = 0x4020;
         }
@@ -3210,7 +3209,7 @@ void debug_pattern_preview_step(WORK* wk)
         dbg_slot->sel[2] = 1;
     }
     wk->cg_olc = wk->olc_ix_table[wk->cg_olc_ix];
-    if (((WORK_Other_JUDGE *)dbg_judge_ewk)->look_up_flag) {
+    if (dbg_judge_ewk->look_up_flag) {
         wk->cgd_type = dbg_look_buf.rec[dbg_slot->sel[2]].type;
         wk->cg_ctr = dbg_look_buf.rec[dbg_slot->sel[2]].u.frames;
         wk->cg_number = dbg_look_buf.rec[dbg_slot->sel[2]].param;
@@ -3414,7 +3413,9 @@ void debug_draw_object_info(void) {
     tilemap_print_hex(11, 14, 2, dbg_pl->wu.position_y, 4, 0);
     if (dbg_slot->sel[0] <= 144) {
         tilemap_print_string(0, 0, 0xFFFF, &dbg_act_kind_str[dbg_slot->row]);
-        tilemap_print_string(0, 0, 0xFFFF, &(*(dbg_slot->row + dbg_act_name_tbl))[dbg_slot->sel[1] - 1]);
+        p = dbg_act_name_tbl[dbg_slot->row];
+        p = &p[dbg_slot->sel[1] - 1];
+        tilemap_print_string(0, 0, 0xFFFF, p);
         tilemap_print_string(0, 0, 0xFFFF, &dbg_char_name_str[dbg_pl->player_number]);
     } else {
         tilemap_print_string(0, 0, 0xFFFF, &dbg_act_kind_str[9]);

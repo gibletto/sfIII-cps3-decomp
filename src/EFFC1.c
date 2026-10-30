@@ -34,7 +34,7 @@ void effect_C1_move(WORK_Other* ewk) {
         ewk->wu.old_rno[1] = ewk->wu.old_rno[0];
         break;
     case R0_WATCH:
-        if (Allow_a_battle_f == 0 && Conclusion_Flag == 1 && C_No0 >= 2) {
+        if (Allow_a_battle_f == 0 && Conclusion_Flag == 1 && C_No0 >= C0_FIGHT) {
             if (Complete_Victory != 0 && Conclusion_Flag) {
                 s32 pattern;
                 ewk->wu.routine_no[0]++;

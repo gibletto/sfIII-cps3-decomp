@@ -3,7 +3,7 @@
  *
  * effect_93 (from sel_pl): moves BG1 on the face-select screen, hiding and re-enabling the cursor.
  * Eff93_SLIDE_UP raises it after a delay; Eff93_SLIDE_DOWN slides it sideways with an
- * accelerating speed, to the left when Last_Arts_PL is 1, else to DE_X[5] + 0x300.
+ * accelerating speed, to the left when Slide_Type is 1, else to DE_X[5] + 0x300.
  * Bg_Family_Set_Ex sets up a BG family for sel_pl and Win.
  */
 
@@ -86,7 +86,7 @@ void Eff93_SLIDE_DOWN(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
     case R1_START:
         ewk->wu.routine_no[1]++;
-        if (Last_Arts_PL == 1) {
+        if (Slide_Type == 1) {
             ewk->wu.dir_step = -0x100;
             ewk->wu.mvxy.a[0].sp = -0xA0000;
             ewk->wu.mvxy.d[0].sp = -0x8000;

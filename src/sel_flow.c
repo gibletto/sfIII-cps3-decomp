@@ -115,9 +115,9 @@ void Select_Flow_2nd(void) {
             Forbid_Break = -1;
             Ignore_Entry[LOSER] = 0;
             if (Select_Flow_Akebono == 0) {
-                bgm_request(32);
+                BGM_Request(32);
             } else {
-                bgm_request(1);
+                BGM_Request(1);
             }
         }
         break;

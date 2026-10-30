@@ -173,16 +173,15 @@ void eff64_04(WORK_Other* ewk) {
 /* provisional name */
 void eff64_08(WORK_Other* ewk) {
     s16 ix;
-    BGW* bgwp = &bg_w.bgw[1];
     switch (ewk->wu.routine_no[2]) {
     case R2_INIT:
-        if (bgwp->xy[0].disp.pos < -64) {
+        if (bg_w.bgw[1].xy[0].disp.pos < -64) {
             eff64_data_set(ewk, 0);
         }
         ewk->wu.routine_no[2] = R2_WAIT;
         break;
     case R2_AGAIN:
-        if (bgwp->xy[0].disp.pos < -64) {
+        if (bg_w.bgw[1].xy[0].disp.pos < -64) {
             eff64_data_set(ewk, 1);
         }
         break;

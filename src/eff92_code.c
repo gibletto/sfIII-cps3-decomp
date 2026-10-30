@@ -70,7 +70,6 @@ void effect_92_move(WORK_Other* ewk) {
 
 
 
-/* provisional name */
 s32 effect_92_init(master_id, cal)
 s16 master_id;
 s16 cal;

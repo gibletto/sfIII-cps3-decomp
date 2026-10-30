@@ -667,7 +667,7 @@ s32 memtest_page(void) {
         break;
     default:
         rc = -1;
-        memtest_no = 0;
+        memtest_no = MEMTEST_INIT;
         break;
     }
     return rc;

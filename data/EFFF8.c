@@ -11,7 +11,7 @@
 
 #pragma section TBL
 
-extern const u16 efff9_no_scene[];
+extern const u16 plXXtxt0[];
 extern const u16 txt_no_00_1[];
 extern const u16 txt_no_00_2[];
 extern const u16 txt_no_00_3[];
@@ -80,8 +80,7 @@ extern const s16 effg0_flash_tbl[][4];
 extern const s16 effg0_name_tbl[][3];
 extern const s16 effg0_name_tbl2[][3];
 
-/* provisional name */
-const u16 efff9_no_scene[2] = {
+const u16 plXXtxt0[2] = {
     0, 0xFFFF,
 };
 

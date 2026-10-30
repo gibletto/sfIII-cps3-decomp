@@ -39,7 +39,7 @@ void move_effect_work(s16 index) {
     while (curr_ix != -1) {
         c_addr = (WORK*)frw[curr_ix];
         next_ix = c_addr->behind;
-        if (c_addr->timing != (s16)exec_tm[index]) {
+        if (c_addr->timing != exec_tm[index]) {
             c_addr->timing = exec_tm[index];
             effmovejptbl[c_addr->id](c_addr);
         }
@@ -147,7 +147,6 @@ s16 iid;
 
 
 /* Takes an effect work from the free queue and links it into list `index`; returns its slot index, -1 when none is free. */
-/* provisional name */
 s32 pull_effect_work(index)
 s16 index;
 {
@@ -322,17 +321,13 @@ void work_init_zero(s32* adrs_int, s32 xx) {
 
 void write_my_shell_ix(WORK* wk, s16 ix) {
     s32 i;
-    register u16 wk2;
-    register WORK *wp;
-    wk2 = 7;
-    if ((i = wk2) >= 1) {
+    if ((i = 7) >= 1) {
         do {
-            *(i + wk->shell_ix) = (s16)wk->shell_ix[(i - 1)];
+            *(i + wk->shell_ix) = wk->shell_ix[i - 1];
             i--;
-        } while (((0 < i)));
+        } while (0 < i);
     }
-    wp = wk;
-    wp->shell_ix[0] = ix;
+    wk->shell_ix[0] = ix;
 }
 
 

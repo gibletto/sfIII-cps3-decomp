@@ -468,7 +468,7 @@ s32 random_32_ex_com(void)
 {
     Random_ix32_ex_com++;
     Random_ix32_ex_com &= 0x1F;
-    return random_tbl_32_ex[(s16)Random_ix32_ex_com];
+    return random_tbl_32_ex[Random_ix32_ex_com];
 }
 
 

@@ -15,11 +15,11 @@ s32 Get_Position(PLW* wk);
 void Se_Let(WORK_Other* ewk, u16 Code);
 void Stage_BGM();
 void Se_Shock(WORK_Other* ewk, u16 se);
-void sound_system_init(void);
+void SE_All_Off(void);
 void Se_Dummy(WORK_Other* ewk, u16 Code);
-void voice_all_off(void);
+void BGM_Stop(void);
 s32 Check_Voice_SE();
-void bgm_request();
+void BGM_Request();
 void Sound_SE();
 
 #endif

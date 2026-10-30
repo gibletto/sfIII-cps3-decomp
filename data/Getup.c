@@ -8,10 +8,10 @@
 
 #pragma section TBL
 
-extern const u8 Active_Area0_Data[][8][32];
-extern const u8 Active_Area1_Data[][8][32];
-extern const u8 Active_Area2_Data[][8][32];
-extern const u8 Active_Area3_Data[][8][32];
+extern const u8 Active_A_Unit_Data[][8][32];
+extern const u8 Active_B_Unit_Data[][8][32];
+extern const u8 Active_C_Unit_Data[][8][32];
+extern const u8 Active_D_Unit_Data[][8][32];
 extern const u8 SA_Active_A_Unit_Data[][4][32];
 extern const u8 SA_Active_B_Unit_Data[][4][32];
 extern const u8 SA_Active_C_Unit_Data[][4][32];
@@ -20,7 +20,7 @@ extern const u8 Passive_A_Unit_Data_04[][32][4][16];
 extern const u8 Passive_B_Unit_Data_04[][32][4][16];
 extern const u8 Passive_C_Unit_Data_04[][32][4][16];
 
-const u8 Active_Area0_Data[13][8][32] = {
+const u8 Active_A_Unit_Data[13][8][32] = {
     {  /* Gill */
         {
             0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 3, 3, 3, 55, 55,
@@ -414,7 +414,7 @@ const u8 Active_Area0_Data[13][8][32] = {
     },
 };
 
-const u8 Active_Area1_Data[13][8][32] = {
+const u8 Active_B_Unit_Data[13][8][32] = {
     {  /* Gill */
         {
             0, 0, 0, 0, 6, 6, 6, 6, 7, 7, 7, 7, 9, 9, 10, 11,
@@ -856,7 +856,7 @@ const u8 Active_Area1_Data[13][8][32] = {
     },
 };
 
-const u8 Active_Area2_Data[13][8][32] = {
+const u8 Active_C_Unit_Data[13][8][32] = {
     {  /* Gill */
         {
             0, 0, 6, 6, 6, 6, 6, 6, 6, 13, 40, 18, 19, 19, 20, 21,
@@ -1295,7 +1295,7 @@ const u8 Active_Area2_Data[13][8][32] = {
     },
 };
 
-const u8 Active_Area3_Data[13][8][32] = {
+const u8 Active_D_Unit_Data[13][8][32] = {
     {  /* Gill */
         {
             0, 0, 0, 0, 13, 40, 40, 52, 6, 6, 6, 6, 6, 20, 20, 20,

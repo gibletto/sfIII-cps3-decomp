@@ -89,7 +89,7 @@ void effect_G6_move(WORK_Other* ewk) {
                 goto block_22;
             }
         }
-        if (!((pcon_timer + ewk->wu.blink_timing) & ewk->wu.now_koc)) {
+        if (!((players_timer + ewk->wu.blink_timing) & ewk->wu.now_koc)) {
             if (ewk->wu.dmcal_m & 0x20) {
                 if (!mwk->hit_stop) {
                     er = ewk->wu.old_pos;

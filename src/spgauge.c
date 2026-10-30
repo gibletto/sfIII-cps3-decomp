@@ -512,24 +512,17 @@ void sa_color_chenge(pl, step)
 s8 pl;
 s8 step;
 {
-    SPG_DAT* p0;
-    SPG_DAT* p1;
-    s16 twice;
-    p0 = &spg_dat[0],
-        p0 = &spg_dat[0],
-        twice = step * 2,
-        p1 = &spg_dat[1];
     if (spg_dat[pl].kind) {
         if (pl == 0) {
-            p0->spgcol_number = twice + 28;
+            spg_dat[0].spgcol_number = step * 2 + 28;
         } else {
-            p1->spgcol_number = twice + 156;
+            spg_dat[1].spgcol_number = step * 2 + 156;
         }
     } else {
         if (pl == 0) {
-            p0->spgcol_number = 30 - twice;
+            spg_dat[0].spgcol_number = 30 - step * 2;
         } else {
-            p1->spgcol_number = 158 - twice;
+            spg_dat[1].spgcol_number = 158 - step * 2;
         }
     }
 }

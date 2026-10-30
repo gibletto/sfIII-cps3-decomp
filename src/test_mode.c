@@ -147,7 +147,7 @@ void test_mode_wait(void)
         } else {
             set_screen_mode(3);
         }
-        voice_all_off();
+        BGM_Stop();
         bg_vbl_trans_flag = 0;
         Demo_Flag = 1;
         Scrn_Pos_Init();

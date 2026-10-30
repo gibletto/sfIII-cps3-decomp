@@ -1,7 +1,7 @@
 /*
  * WIN_TBL.C  damage tables
  *
- * Damage_Power_Data, the damage table every player's Damage_Data_Ptr starts with, and Pow_Control_Data, the damage
+ * Power_Data, the damage table every player's Damage_Data_Ptr starts with, and Pow_Control_Data, the damage
  * rates pow_pow.c reads; between them two tables nothing reads.
  */
 
@@ -10,13 +10,13 @@
 
 #pragma section TBL
 
-extern const DAMAGE_DATA Damage_Power_Data[];
+extern const DAMAGE_DATA Power_Data[];
 extern const u8 pow_byte_tbl[];
 extern const s8 Pow_Rate_Data[][8];
 extern const s8 Pow_Control_Data[][3];
 
 /* the damage table Damage_Data_Ptr starts with */
-const DAMAGE_DATA Damage_Power_Data[256] = {
+const DAMAGE_DATA Power_Data[256] = {
     { 5, 0, 0 }, { 5, 1, 0 }, { 5, 2, 0 }, { 10, 0, 0 },
     { 10, 1, 0 }, { 10, 2, 0 }, { 15, 0, 0 }, { 15, 1, 0 },
     { 15, 2, 0 }, { 20, 0, 0 }, { 20, 1, 0 }, { 20, 2, 0 },

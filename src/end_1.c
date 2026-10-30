@@ -47,7 +47,7 @@ void end_01000(u16 pl_num) {
         end_w.timer = timer_1_tbl[end_w.r_no_2];
         common_end_init01();
         end_100_cell_set();
-        bgm_request(20);
+        BGM_Request(20);
         break;
     case END1_SCENES:
         end_w.timer--;
@@ -57,7 +57,7 @@ void end_01000(u16 pl_num) {
                 end_w.r_no_1++;
                 end_w.end_flag = 1;
                 fadeout_to_staff_roll();
-                bgm_request(27);
+                BGM_Request(27);
             } else {
                 end_w.timer = timer_1_tbl[end_w.r_no_2];
             }
@@ -114,7 +114,7 @@ void end_100_0000(void) {
             end_fade_timer = timer_1_tbl[2] - 120;
             break;
         case 5:
-            bgm_request(31);
+            BGM_Request(31);
             break;
         case 6:
             effect_E6_init(57);

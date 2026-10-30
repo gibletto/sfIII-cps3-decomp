@@ -105,7 +105,7 @@ void Init_EM_Course(void);
 s32 Sel_Arts_Sub_Check();
 void Sel_Plate_Order_Step();
 s32 Check_First_PL_Decided(void);
-void sel_pl_disp_char_effect_trio();
+void Setup_Plates();
 void Setup_Yun_Yang_Face();
 void Yun_Yang_Face_Other();
 void Yun_Yang_Select();
@@ -131,7 +131,7 @@ void Sel_PL_Control(void) {
     void (*cont_tbl[4])() = { Sel_PL_Cont_1st, Sel_PL_Cont_2nd, Sel_PL_Cont_3rd, Sel_PL_Cont_4th };
     Setup_Select_Status();
     cont_tbl[S_No]();
-    sel_pl_face_control();
+    Face_Control();
     Player_Select_Control();
     Check_Exit();
 }
@@ -217,7 +217,7 @@ void Sel_PL_Cont_3rd(void) {
         S_No++;
         Forbid_Break = 0;
         if (G_No1 == G1_SELECT || !Demo_Flag) {
-            bgm_request(2);
+            BGM_Request(2);
             if (E_Number[0][0] != ENTRY_NAME && E_Number[1][0] != ENTRY_NAME) {
                 Ranking_00_6th(0);
             }
@@ -563,7 +563,7 @@ u16 sw_0;
     }
     if (sw & 0x7F0) {
         Stop_Cursor[ID] = 1;
-        Last_Arts_PL = PL_id;
+        Slide_Type = PL_id;
         Sel_Arts_Complete[PL_id] = 1;
         *(s8*)&Last_Super_Arts[PL_id] = *(s8*)&Super_Arts[PL_id] = Arts_Y[PL_id];
         Sound_SE(ID + 98);
@@ -610,7 +610,7 @@ s32 Sel_PL_Dummy_4(void) {
 
 
 
-void sel_pl_face_control(void) {
+void Face_Control(void) {
     void (*Face_Tbl[4])() = { Face_1st, Face_2nd, Face_3rd, Face_4th };
     Face_Tbl[Face_No[0]]();
     Move_Face_BG();
@@ -685,7 +685,6 @@ void Move_Face_BG(void) {
 
 
 
-/* provisional name */
 void Player_Select_Control(void) {
     void (*Obj_Tbl[5])() = { PL_Sel_Begin, PL_Sel_2nd, PL_Sel_3rd, PL_Sel_4th, PL_Sel_5th };
     Obj_Tbl[Sel_Sub_No[0]]();
@@ -723,7 +722,7 @@ void PL_Sel_2nd(void) {
             Sel_Sub_No[1] = 0;
             Plate_Step[0] = 0;
             Plate_Step[1] = 0;
-            sel_pl_disp_char_effect_trio(Select_Status[1] - 1);
+            Setup_Plates(Select_Status[1] - 1);
             if (Select_Status[0] == SEL_BOTH) {
                 Move_Super_Arts[Champion] = 1;
                 effect_D7_init(Champion, Super_Arts[Champion], 0, 30, 0);
@@ -748,8 +747,8 @@ void PL_Sel_2nd(void) {
                     Order_Dir[3] = 4;
                 }
                 Sel_Sub_No[0] = 3;
-                sel_pl_disp_char_effect_trio(0);
-                sel_pl_disp_char_effect_trio(1);
+                Setup_Plates(0);
+                Setup_Plates(1);
             } else if (Check_First_PL_Decided()) {
                 Order[0] = 4;
                 Order[Sel_First_PL + 4] = 2;
@@ -762,7 +761,7 @@ void PL_Sel_2nd(void) {
                     Order_Dir[0] = 8;
                     Order_Dir[Sel_First_PL + 4] = 8;
                 }
-                sel_pl_disp_char_effect_trio(Sel_First_PL);
+                Setup_Plates(Sel_First_PL);
                 Sel_Sub_No[1]++;
             }
             break;
@@ -796,7 +795,7 @@ void Sel_Plate_Order_Step(s16 pl) {
                 Order_Dir[2] = 8;
                 Order_Dir[pl + 4] = 4;
             }
-            sel_pl_disp_char_effect_trio(pl);
+            Setup_Plates(pl);
             Plate_Step[pl]++;
         }
         break;
@@ -838,7 +837,7 @@ s32 Check_First_PL_Decided(void) {
 
 
 
-const s16 Setup_Aborigine_table[3][3] = {
+const s16 Arts_Y_Data[3][3] = {
     { 0, 1, 2 }, { 2, 0, 1 }, { 1, 2, 0 },
 };
 
@@ -849,17 +848,17 @@ const s16 Setup_Aborigine_time[3][3] = {
 };
 
 
-void sel_pl_disp_char_effect_trio(PL_id)
+void Setup_Plates(PL_id)
 s8 PL_id;
 {
     Move_Super_Arts[PL_id] = 3;
     Select_Arts[PL_id] = 6;
-    effect_D7_init(PL_id, 0, Setup_Aborigine_table[Super_Arts[PL_id]][0], Setup_Aborigine_time[Super_Arts[PL_id]][0], 0);
-    effect_D7_init(PL_id, 0, Setup_Aborigine_table[Super_Arts[PL_id]][0], Setup_Aborigine_time[Super_Arts[PL_id]][0], 1);
-    effect_D7_init(PL_id, 1, Setup_Aborigine_table[Super_Arts[PL_id]][1], Setup_Aborigine_time[Super_Arts[PL_id]][1], 0);
-    effect_D7_init(PL_id, 1, Setup_Aborigine_table[Super_Arts[PL_id]][1], Setup_Aborigine_time[Super_Arts[PL_id]][1], 1);
-    effect_D7_init(PL_id, 2, Setup_Aborigine_table[Super_Arts[PL_id]][2], Setup_Aborigine_time[Super_Arts[PL_id]][2], 0);
-    effect_D7_init(PL_id, 2, Setup_Aborigine_table[Super_Arts[PL_id]][2], Setup_Aborigine_time[Super_Arts[PL_id]][2], 1);
+    effect_D7_init(PL_id, 0, Arts_Y_Data[Super_Arts[PL_id]][0], Setup_Aborigine_time[Super_Arts[PL_id]][0], 0);
+    effect_D7_init(PL_id, 0, Arts_Y_Data[Super_Arts[PL_id]][0], Setup_Aborigine_time[Super_Arts[PL_id]][0], 1);
+    effect_D7_init(PL_id, 1, Arts_Y_Data[Super_Arts[PL_id]][1], Setup_Aborigine_time[Super_Arts[PL_id]][1], 0);
+    effect_D7_init(PL_id, 1, Arts_Y_Data[Super_Arts[PL_id]][1], Setup_Aborigine_time[Super_Arts[PL_id]][1], 1);
+    effect_D7_init(PL_id, 2, Arts_Y_Data[Super_Arts[PL_id]][2], Setup_Aborigine_time[Super_Arts[PL_id]][2], 0);
+    effect_D7_init(PL_id, 2, Arts_Y_Data[Super_Arts[PL_id]][2], Setup_Aborigine_time[Super_Arts[PL_id]][2], 1);
 }
 
 
@@ -920,7 +919,7 @@ void PL_Sel_3rd(void) {
             Order_Dir[New_Challenger + 1] = 8;
             Order_Dir[New_Challenger + 4] = 4;
         }
-        sel_pl_disp_char_effect_trio(New_Challenger);
+        Setup_Plates(New_Challenger);
         /* fall through */
     case PS3_BOTH:
         if (Sel_Arts_Complete[Champion] < 0) {
@@ -968,7 +967,6 @@ void PL_Sel_4th(void) {
 
 
 
-/* provisional name */
 void PL_Sel_5th(void) {}
 
 
@@ -1149,23 +1147,23 @@ void Setup_Next_EM(void) {
         Stock_Com_Color = -1;
         Stock_Com_Arts = -1;
         Straight_Lose_Count = 0;
-    } else if (Decided_My_char[Player_id] != My_char[Player_id]) {
+    } else if (Used_char[Player_id] != My_char[Player_id]) {
         VS_Index[Player_id] = 0;
         EM_Course[Player_id] = 0;
         Stock_Com_Color = -1;
         Stock_Com_Arts = -1;
         Straight_Lose_Count = 0;
     }
-    Decided_My_char[Player_id] = My_char[Player_id];
+    Used_char[Player_id] = My_char[Player_id];
     if (VS_Index[Player_id] >= 6) {
         EM_id = 0;
         return;
     } else {
-        EM_id = EM_Candidate_Data[Decided_My_char[Player_id]][EM_Course[Player_id]][VS_Index[Player_id]];
+        EM_id = EM_Candidate_Data[Used_char[Player_id]][EM_Course[Player_id]][VS_Index[Player_id]];
     }
     if (Break_Com[Player_id][EM_id] != 0) {
         for (; VS_Index[Player_id] <= 5; VS_Index[Player_id]++) {
-            EM_id = EM_Candidate_Data[Decided_My_char[Player_id]][EM_Course[Player_id]][VS_Index[Player_id]];
+            EM_id = EM_Candidate_Data[Used_char[Player_id]][EM_Course[Player_id]][VS_Index[Player_id]];
             if (Break_Com[Player_id][EM_id] == 0) {
                 return;
             }
@@ -1292,15 +1290,10 @@ void Next_CPU_4th(void) {
 
 
 
-#pragma inline(exit_check_disp)
-static void exit_check_disp(s8* em_id, PLW* pl, s8* arts) {}
-
 void Check_Exit(void) {
-    s16 b0;
     s16 cx;
     s16 cy;
-    exit_check_disp(&EM_id, plw, Super_Arts);
-    switch (b0 = END_OF_B0, Exit_No) {
+    switch (Exit_No) {
     case 0:
         if (plw[0].wu.operator && Sel_Arts_Complete[0] >= 0) {
             break;
@@ -1399,7 +1392,7 @@ void Check_Exit(void) {
             Exit_No++;
             Next_Step = 0;
             Forbid_Break = 0;
-            bgm_request(3);
+            BGM_Request(3);
         }
         break;
     case 6:
@@ -1430,13 +1423,13 @@ void Check_Exit(void) {
             Exit_No = 99;
             SEL_PL_X = 1;
             Forbid_Break = 1;
-        } else if (b0) {
+        } else if (END_OF_B0) {
             Exit_No++;
             Forbid_Break = 0;
         }
         break;
     case 10:
-        if (b0 != 2) {
+        if (END_OF_B0 != 2) {
             break;
         }
         Exit_No++;

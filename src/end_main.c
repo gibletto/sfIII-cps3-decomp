@@ -41,7 +41,7 @@ void load_any_color();
 s32 effect_F5_init();
 s32 Check_Fade_Complete(void);
 s32 Request_Fade(u16 fade_code, s8 fade_mode);
-void Disp_Capcom_Rights(void);
+void Disp_Copyright(void);
 
 extern const s16 op_scr_record_data[];
 extern const OP_TILE op_tile_tbl[5][8];
@@ -141,7 +141,7 @@ void opning_init_00000(void) {
     bg_w.bgw[0].bg_address = (u16*)eff_bg_adrs[0].adrs;
     scrn_map_set_now(0, eff_bg_adrs[0].adrs);
     scrn_map_set(0, eff_bg_adrs[0].adrs);
-    sprite_list_setup(0, 1, (s16*)op_scr_record_data);
+    sprite_list_setup(0, 1, op_scr_record_data);
     op_w.r_no_1 = 0;
     op_end_flag = 0;
     load_char_gfx(0x6D00, 1);
@@ -181,7 +181,7 @@ void opning_init_01000(void) {
         scrn_attr_set(0, 0, 31);
         scrn_reg_w[0].ctrl &= 0xFE7F;
         op_w.free_work = 8;
-        bgm_request(1);
+        BGM_Request(1);
         break;
     case 1:
         op_w.free_work = op_w.free_work - 1;
@@ -373,15 +373,13 @@ void op_03_move(void) {
 
 
 void op_08_move(void) {
-    const OP_SCRN* p;
     switch (op_w.r_no_1) {
     case 0:
         op_w.r_no_1++;
         op_w.free_work = 54;
         op_w.index = op_scrn_tbl[18].time;
-        p = &op_scrn_tbl[18];
         op_w.r_no_2 = 18;
-        scrn_map_set_now(0, eff_bg_adrs[p->bg].adrs);
+        scrn_map_set_now(0, eff_bg_adrs[op_scrn_tbl[18].bg].adrs);
         op_scrn_map_set(18);
         oh_opening_demo((u16*)eff_bg_adrs[4].adrs, 64, 32, 0x1800, 16, 0x240, 13);
         break;
@@ -669,7 +667,7 @@ void op_20_move(void) {
     switch (op_w.r_no_1) {
     case 0:
         op_w.r_no_1++;
-        Disp_Capcom_Rights();
+        Disp_Copyright();
         op_w.free_work = 180;
         op_w.index = op_scrn_tbl[19].time;
         break;
@@ -718,12 +716,12 @@ void op_21_move(void) {
     bg_w.bgw[0].bg_address = (u16*)eff_bg_adrs[0].adrs;
     scrn_map_set_now(0, eff_bg_adrs[0].adrs);
     scrn_map_set(0, eff_bg_adrs[0].adrs);
-    sprite_list_setup(0, 1, (s16*)op_scr_record_data);
+    sprite_list_setup(0, 1, op_scr_record_data);
     effect_E1_init(0, 24, 1);
     effect_E1_init(1, 24, 1);
     effect_E1_init(2, 24, 1);
     effect_F5_init(8);
-    Disp_Capcom_Rights();
+    Disp_Copyright();
     debug_bg_tile_put(0, 0x3000, 30, (u32)&op_bg_scrn_data);
     debug_bg_tile_put(0, 0x3040, 31, (u32)&op_bg_scrn_data);
     Bg_On_R(1);

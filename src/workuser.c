@@ -92,7 +92,7 @@ s16 D_No3;  /* 02012BFC */
 u8 Present_Rank[2];  /* 02012BFE */
 s8 Rank_In[2][2];  /* 02012C00 */
 s8 Request_Disp_Rank[2][2];  /* 02012C04 */
-s8 Rank_Demo_Loop;  /* 02012C08 */
+s8 Demo_Type;  /* 02012C08 */
 s8 Rank_Type;  /* 02012C09 */
 s8 Flash_Sign[2];  /* 02012C0A */
 s8 Flash_Rank_Time;  /* 02012C0C */
@@ -242,7 +242,7 @@ u8 Continue_Coin[2];  /* 02012E29 */
 s8 Ignore_Entry[2];  /* 02012E2B */
 s16 Cursor_Y[2];  /* 02012E2E */
 s16 eff98_plate_z[2][3];  /* 02012E32 */
-s8 Last_Arts_PL;  /* 02012E3E */
+s8 Slide_Type;  /* 02012E3E */
 s8 Order_Dir[6];  /* 02012E3F */
 s8 Order_Timer[6];  /* 02012E45 */
 s8 Moving_Plate[2];  /* 02012E4B */
@@ -262,7 +262,7 @@ u8 Insert_Y_tail[2];  /* 02012E7C */
 s8 Version_Type;  /* 02012E7E */
 /* after Version_Type: nothing refers to it by name or address */
 u8 Version_Type_tail[1];  /* 02012E7F */
-s8 BGM_Fade_Out_Flag;  /* 02012E80 */
+s8 Music_Fade;  /* 02012E80 */
 s16 zoom_request_flag;  /* 02012E82 */
 s16 zoom_req_flag_old;  /* 02012E84 */
 s16 zoom_request_level;  /* 02012E86 */
@@ -319,10 +319,10 @@ u16 BGM_Timer;  /* 02012F90 */
 s8 sa_gauge_flash[2];  /* 02012F92 */
 s8 Receive_Flag[2];  /* 02012F94 */
 s8 Disposal_Again[2];  /* 02012F96 */
-u16 pcon_timer;  /* 02012F98 */
+u16 players_timer;  /* 02012F98 */
 s8 unused_flag_a;  /* 02012F9A */
-volatile s8 BGM_Fade_Level;  /* 02012F9B */
-u8 Decided_My_char[2];  /* 02012F9C */
+volatile s8 BGM_Vol;  /* 02012F9B */
+u8 Used_char[2];  /* 02012F9C */
 s8 Break_Com[2][13];  /* 02012F9E */
 s8 Sel_Exit_Flag;  /* 02012FB8 */
 u16 EM_Course[2];  /* 02012FBA */

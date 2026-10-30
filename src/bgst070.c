@@ -103,7 +103,6 @@ void bg0700_move(void) {
 
 
 
-/* provisional name */
 void bg0701(void) {
     void (*bg0701_jmp[2])() = { bg0701_init00, bg0701_move };
     bg0701_jmp[bgw_ptr->r_no_0]();
@@ -111,7 +110,6 @@ void bg0701(void) {
 
 
 
-/* provisional name */
 void bg0701_init00(void) {
     bgw_ptr->r_no_0++;
     bg0701_cell_set();
@@ -142,7 +140,6 @@ void bg0701_move(void) {
 
 
 
-/* provisional name */
 /* layer 2 runs in the first area only */
 void bg0702(void) {
     void (*bg0702_jmp[2])() = { bg0702_init00, bg0702_move };
@@ -154,7 +151,6 @@ void bg0702(void) {
 
 
 
-/* provisional name */
 void bg0702_init00(void) {
     bgw_ptr->r_no_0++;
     bgw_ptr->old_pos_x = bgw_ptr->xy[0].disp.pos = bgw_ptr->pos_x_work = 0x200;

@@ -155,11 +155,11 @@ void Win_3rd(void) {
             Forbid_Break = -1;
             Ignore_Entry[LOSER] = 0;
             if (Play_Type == PLAY_VS_CPU) {
-                bgm_request(4);
+                BGM_Request(4);
             } else if (Check_Win_BGM()) {
-                bgm_request(4);
+                BGM_Request(4);
             } else {
-                bgm_request(5);
+                BGM_Request(5);
             }
         }
         break;

@@ -3,7 +3,7 @@
 
 #include "structs.h"
 
-s32 Ranking_Main(void);
+s32 Ranking(void);
 void Ranking_00(void);
 void Ranking_01(void);
 void Ranking_01_1st(void);

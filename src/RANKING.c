@@ -1,7 +1,7 @@
 /*
  * RANKING.C  Ranking display screens
  *
- * Draws the score ranking. Ranking_Main runs either Ranking_00 (the attract-mode ranking shown
+ * Draws the score ranking. Ranking runs either Ranking_00 (the attract-mode ranking shown
  * between demos) or Ranking_01 (the ranking shown during a game) step by step and returns 1
  * when finished. The steps clear the text layer, load the ranking background and effects,
  * change the BGM, flash the entries in, count down the display time and wipe out; Ranking_01
@@ -68,7 +68,7 @@ RANK_DATA Present_Data[2];  /* 020138AC */
 RANK_DATA Present_Data_tail[1];  /* after Present_Data; nothing refers to it by name or address */
 
 
-/* the frame each cell of the ranking rows flashes in, by Rank_Demo_Loop, row and cell (Rank_X) */
+/* the frame each cell of the ranking rows flashes in, by Demo_Type, row and cell (Rank_X) */
 const s8 Rank_Flash_Timer_Data[2][6][14] = {
     {
         { 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28 },
@@ -90,7 +90,7 @@ const s8 Rank_Flash_Timer_Data[2][6][14] = {
 
 
 
-s32 Ranking_Main(void) {
+s32 Ranking(void) {
     void (*jmp_tbl[2])() = { Ranking_01, Ranking_00 };
     Ranking_X = 0;
     jmp_tbl[D_No0]();
@@ -126,7 +126,7 @@ void Ranking_01_1st(void) {
     Setup_Rank_Head_Obj();
     Setup_Score_Obj();
     effect_58_init(1, 1, -1);
-    bgm_request(8);
+    BGM_Request(8);
 }
 
 
@@ -147,7 +147,7 @@ void Ranking_01_5th(void) {
             break;
         }
         D_No2++;
-        if ((Demo_Flag == 0) && (Rank_Demo_Loop == 0)) {
+        if ((Demo_Flag == 0) && (Demo_Type == 0)) {
             Text_Page_Y = 0;
             Setup_Demo_PL();
             Setup_Demo_Arts();
@@ -178,7 +178,7 @@ void Ranking_01_5th(void) {
 void Ranking_00_1st(void)
 {
     D_No1++;
-    Rank_Demo_Loop = 0;
+    Demo_Type = 0;
     Flash_Sign[0] = 1;
     Ranking_Sub();
     Setup_Ranking_Obj();
@@ -287,9 +287,9 @@ void Ranking_00_Last(void) {
 
 void Setup_grade(void) {
     Flash_Rank_Time += Flash_Rank_Interval;
-    effect_51_init(Rank - Rank_Type + 1, Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Rank_Demo_Loop][Rank - Rank_Type][Rank_X], Flash_Rank_Time, -2, 1, -1);
+    effect_51_init(Rank - Rank_Type + 1, Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Demo_Type][Rank - Rank_Type][Rank_X], Flash_Rank_Time, -2, 1, -1);
     Flash_Rank_Time += Flash_Rank_Interval;
-    effect_51_init(Rank - Rank_Type + 65, Rank_Pos_X + 16, Rank_Pos_Y, Rank_Flash_Timer_Data[Rank_Demo_Loop][Rank - Rank_Type][Rank_X + 1], Flash_Rank_Time, 1, 0, 1);
+    effect_51_init(Rank - Rank_Type + 65, Rank_Pos_X + 16, Rank_Pos_Y, Rank_Flash_Timer_Data[Demo_Type][Rank - Rank_Type][Rank_X + 1], Flash_Rank_Time, 1, 0, 1);
     Flash_Rank_Time += Flash_Rank_Interval;
     Rank_X += 2;
     Rank_Pos_X += 38;
@@ -308,7 +308,7 @@ void Setup_Name(void) {
 
 
 void Name_Sub(s16 name_ix) {
-    effect_51_init(Ranking_Data[Rank].name[name_ix], Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Rank_Demo_Loop][Rank - Rank_Type][Rank_X + name_ix], Flash_Rank_Time, 3, 0, -1);
+    effect_51_init(Ranking_Data[Rank].name[name_ix], Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Demo_Type][Rank - Rank_Type][Rank_X + name_ix], Flash_Rank_Time, 3, 0, -1);
     Flash_Rank_Time += Flash_Rank_Interval;
     Rank_Pos_X += 16;
 }
@@ -316,11 +316,11 @@ void Name_Sub(s16 name_ix) {
 
 
 void Setup_Face(void) {
-    effect_51_init(Ranking_Data[Rank].player + 47, Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Rank_Demo_Loop][Rank - Rank_Type][Rank_X], Flash_Rank_Time, Ranking_Data[Rank].player_color * 4, 1, -(Ranking_Data[Rank].player / 4) - 5);
+    effect_51_init(Ranking_Data[Rank].player + 47, Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Demo_Type][Rank - Rank_Type][Rank_X], Flash_Rank_Time, Ranking_Data[Rank].player_color * 4, 1, -(Ranking_Data[Rank].player / 4) - 5);
     Flash_Rank_Time += Flash_Rank_Interval;
     if (Rank_Type == 0) {
         if (Ranking_Data[Rank].mark) {
-            effect_51_init(Ranking_Data[Rank].mark, Rank_Pos_X + 30, Rank_Pos_Y, Rank_Flash_Timer_Data[Rank_Demo_Loop][Rank - Rank_Type][Rank_X + 1], Flash_Rank_Time, 3, 0, -1);
+            effect_51_init(Ranking_Data[Rank].mark, Rank_Pos_X + 30, Rank_Pos_Y, Rank_Flash_Timer_Data[Demo_Type][Rank - Rank_Type][Rank_X + 1], Flash_Rank_Time, 3, 0, -1);
         }
     }
     Rank_Pos_X += 40;
@@ -357,7 +357,7 @@ void Setup_Score_Small(void) {
         if (First_Digit < xx) {
             continue;
         }
-        effect_51_init(Digit[xx], Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Rank_Demo_Loop][Rank - Rank_Type][Rank_X + i], Flash_Rank_Time, 1, 1, -1);
+        effect_51_init(Digit[xx], Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Demo_Type][Rank - Rank_Type][Rank_X + i], Flash_Rank_Time, 1, 1, -1);
     }
 }
 
@@ -373,17 +373,17 @@ void Setup_Wins(void) {
     Score_Buff -= Digit[1] * 10;
     Digit[0] = Score_Buff;
     if (Digit[1]) {
-        effect_51_init(Digit[1], Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Rank_Demo_Loop][Rank - Rank_Type][Rank_X], Flash_Rank_Time, 1, 1, -1);
+        effect_51_init(Digit[1], Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Demo_Type][Rank - Rank_Type][Rank_X], Flash_Rank_Time, 1, 1, -1);
     }
     Rank_Pos_X += 16;
     Rank_X += 1;
     Flash_Rank_Time += Flash_Rank_Interval;
-    effect_51_init(Digit[0], Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Rank_Demo_Loop][Rank - Rank_Type][Rank_X], Flash_Rank_Time, 1, 1, -1);
+    effect_51_init(Digit[0], Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Demo_Type][Rank - Rank_Type][Rank_X], Flash_Rank_Time, 1, 1, -1);
     Rank_Pos_X += 24;
     Rank_X += 1;
     Flash_Rank_Time += Flash_Rank_Interval;
     for (i = 0; i < 4; i++) {
-        effect_51_init(i + 61, Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Rank_Demo_Loop][Rank - Rank_Type][Rank_X], Flash_Rank_Time, 0, 0, 2);
+        effect_51_init(i + 61, Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Demo_Type][Rank - Rank_Type][Rank_X], Flash_Rank_Time, 0, 0, 2);
         Rank_Pos_X += Wins_Pos_X_Data[i];
         Rank_X += 1;
         Flash_Rank_Time += Flash_Rank_Interval;

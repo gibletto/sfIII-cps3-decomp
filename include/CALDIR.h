@@ -5,16 +5,16 @@
 
 s32 caldir_pos_256();
 s16 caldir_pos_128(s16 x1, s16 x2, s16 y1, s16 y2);
-s16 caldir_pos_64(s16 x1, s16 x2, s16 y1, s16 y2);
+s16 caldir_pos_064(s16 x1, s16 x2, s16 y1, s16 y2);
 s16 caldir_pos_032();
-s16 caldir_pos_16(s16 x1, s16 x2, s16 y1, s16 y2);
-s16 caldir_pos_8(s16 x1, s16 x2, s16 y1, s16 y2);
+s16 caldir_pos_016(s16 x1, s16 x2, s16 y1, s16 y2);
+s16 caldir_pos_008(s16 x1, s16 x2, s16 y1, s16 y2);
 s32 caldir_wk_256(WORK* wk, WORK* emwk);
 s16 caldir_wk_128(WORK* wk, WORK* emwk);
-s16 caldir_wk_64(WORK* wk, WORK* emwk);
-s16 caldir_wk_32(WORK* wk, WORK* emwk);
-s16 caldir_wk_16(WORK* wk, WORK* emwk);
-s16 caldir_wk_8(WORK* wk, WORK* emwk);
+s16 caldir_wk_064(WORK* wk, WORK* emwk);
+s16 caldir_wk_032(WORK* wk, WORK* emwk);
+s16 caldir_wk_016(WORK* wk, WORK* emwk);
+s16 caldir_wk_008(WORK* wk, WORK* emwk);
 s16 cal_move_quantity(WORK* wk, s16 t);
 void cal_initial_speed_y0(WORK* wk, s16 tm);
 void add_pos_dir_064(WORK* wk, s16 sp);

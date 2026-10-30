@@ -77,7 +77,6 @@ void effect_G1_move(WORK_Other* ewk) {
 
 void effG1_sync(WORK* ewk, PLW* pwk) {
     s16 width;
-    const s16* offsets;
     ewk->position_x = pwk->wu.position_x;
     ewk->position_y = 0;
     ewk->position_z = pwk->wu.position_z;
@@ -114,15 +113,15 @@ void effG1_sync(WORK* ewk, PLW* pwk) {
     ewk->old_pos[1] = ewk->position_y;
     ewk->old_pos[2] = ewk->position_z;
     if (pwk->wu.rl_flag) {
-        ewk->old_rno[0] = ewk->old_pos[0] + (offsets = effG1_x_offsets[0])[0];
-        ewk->old_rno[2] = ewk->old_pos[0] + offsets[1];
-        ewk->old_rno[4] = ewk->old_pos[0] + offsets[2];
-        ewk->old_rno[6] = ewk->old_pos[0] + offsets[3];
+        ewk->old_rno[0] = ewk->old_pos[0] + effG1_x_offsets[0][0];
+        ewk->old_rno[2] = ewk->old_pos[0] + effG1_x_offsets[0][1];
+        ewk->old_rno[4] = ewk->old_pos[0] + effG1_x_offsets[0][2];
+        ewk->old_rno[6] = ewk->old_pos[0] + effG1_x_offsets[0][3];
     } else {
-        ewk->old_rno[0] = ewk->old_pos[0] + (offsets = effG1_x_offsets[1])[0];
-        ewk->old_rno[2] = ewk->old_pos[0] + offsets[1];
-        ewk->old_rno[4] = ewk->old_pos[0] + offsets[2];
-        ewk->old_rno[6] = ewk->old_pos[0] + offsets[3];
+        ewk->old_rno[0] = ewk->old_pos[0] + effG1_x_offsets[1][0];
+        ewk->old_rno[2] = ewk->old_pos[0] + effG1_x_offsets[1][1];
+        ewk->old_rno[4] = ewk->old_pos[0] + effG1_x_offsets[1][2];
+        ewk->old_rno[6] = ewk->old_pos[0] + effG1_x_offsets[1][3];
     }
 }
 

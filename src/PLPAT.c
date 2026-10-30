@@ -124,7 +124,7 @@ void Attack_01000(PLW* wk) {
         break;
     case A01_MOVE:
         char_move(&wk->wu);
-        if ((u8)wk->wu.cg_type == 1) {
+        if (wk->wu.cg_type == 1) {
             add_mvxy_speed(&wk->wu);
             wk->wu.routine_no[3] = A01_AIR;
             wk->wu.cg_type = 0;
@@ -184,7 +184,7 @@ void Attack_03000(PLW* wk) {
             wk->wu.rl_flag = wk->wu.rl_waza;
             setup_lvdir_after_autodir(wk);
             wk->wu.xyz[1].disp.pos = 0;
-            Normal_18000_init_unit(wk, (u8)wk->wu.pat_status);
+            Normal_18000_init_unit(wk, wk->wu.pat_status);
         }
         set_char_move_init(&wk->wu, 4, wk->as->char_ix);
         get_cancel_timer(wk);
@@ -240,7 +240,7 @@ void Attack_05000(PLW* wk) {
         break;
     case A05_MOVE:
         char_move(&wk->wu);
-        if ((u8)wk->wu.cg_type == 1) {
+        if (wk->wu.cg_type == 1) {
             add_mvxy_speed(&wk->wu);
             wk->wu.routine_no[3] = A05_AIR;
             wk->wu.cg_type = 0;
@@ -296,7 +296,7 @@ void Attack_08000(PLW* wk) {
         if (wk->wu.xyz[1].disp.pos <= 0) {
             wk->wu.rl_flag = wk->wu.rl_waza;
             wk->wu.xyz[1].disp.pos = 0;
-            ixx = (((u8)wk->wu.pat_status - 20) / 2 & 3) + 9;
+            ixx = ((wk->wu.pat_status - 20) / 2 & 3) + 9;
             if (ixx > 11) {
                 ixx = 10;
             }
@@ -308,10 +308,10 @@ void Attack_08000(PLW* wk) {
         break;
     case A08_CUE:
         char_move(&wk->wu);
-        if ((u8)wk->wu.cg_type == 1) {
+        if (wk->wu.cg_type == 1) {
             wk->wu.routine_no[3]++;
         }
-        if ((u8)wk->wu.cg_type == 20) {
+        if (wk->wu.cg_type == 20) {
             setup_mvxy_data(&wk->wu, wk->wu.mvxy.index);
             wk->wu.cg_type = 0;
             wk->wu.mvxy.index++;
@@ -319,7 +319,7 @@ void Attack_08000(PLW* wk) {
         break;
     case A08_MOVE:
         jumping_union_process(&wk->wu, 3);
-        if ((wk->wu.routine_no[3] != A08_RUN) && ((u8)wk->wu.cg_type == 20)) {
+        if ((wk->wu.routine_no[3] != A08_RUN) && (wk->wu.cg_type == 20)) {
             add_to_mvxy_data(&wk->wu, wk->wu.mvxy.index);
             wk->wu.cg_type = 0;
             wk->wu.mvxy.index++;
@@ -341,18 +341,18 @@ void Attack_09000(PLW* wk) {
         set_char_move_init(&wk->wu, 5, wk->as->char_ix);
         get_cancel_timer(wk);
         setup_mvxy_data(&wk->wu, wk->as->data_ix);
-        if ((u8)wk->wu.cg_type == 20) {
+        if (wk->wu.cg_type == 20) {
             wk->wu.cg_type = 0;
             wk->wu.rl_flag = wk->wu.rl_waza;
         }
         break;
     case A09_MOVE:
         char_move(&wk->wu);
-        if ((u8)wk->wu.cg_type == 20) {
+        if (wk->wu.cg_type == 20) {
             wk->wu.cg_type = 0;
             wk->wu.rl_flag = wk->wu.rl_waza;
         }
-        if ((u8)wk->wu.cg_type == 1) {
+        if (wk->wu.cg_type == 1) {
             add_mvxy_speed(&wk->wu);
             wk->wu.routine_no[3] = A09_AIR;
             wk->wu.cg_type = 0;

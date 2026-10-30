@@ -184,7 +184,6 @@ s16 id;
 
 
 
-/* provisional name */
 void Score_Sub(void) {
     u16 num;
     u16 tens;

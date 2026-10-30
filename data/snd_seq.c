@@ -52655,7 +52655,7 @@ const u8 snd_seq_0114[47] = {
     END,
 };
 
-/* sound effect; sound code 115: match_state_0_fight (Game_Main) */
+/* sound effect; sound code 115: Loop_Demo (Game_Main) */
 const u8 snd_seq_0115[240] = {
     0x20,  /* sound effect, priority 32 */
     TRK(0x21), TRK(0x5D), TRK(0x9C), TRK(0xAA),

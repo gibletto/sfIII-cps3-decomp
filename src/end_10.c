@@ -51,7 +51,7 @@ void end_10000(u16 pl_num) {
         common_end_init00(pl_num);
         common_end_init01();
         end_1000_cell_set();
-        bgm_request(24);
+        BGM_Request(24);
         end_w.timer = timer_10_tbl[end_w.r_no_2];
         break;
     case END1_SCENES:
@@ -61,7 +61,7 @@ void end_10000(u16 pl_num) {
             if (end_w.r_no_2 == 7) {
                 end_w.r_no_1++;
                 end_w.end_flag = 1;
-                bgm_request(27);
+                BGM_Request(27);
                 fadeout_to_staff_roll();
             } else {
                 end_w.timer = timer_10_tbl[end_w.r_no_2];
@@ -84,15 +84,12 @@ void end_10000(u16 pl_num) {
 
 
 
-static void end_work_disp(END_W* ew) {}
-
 void end_1000_0000(void) {
-    end_work_disp(&end_w);
     switch (bgw_ptr->r_no_1) {
     case 0:
         bgw_ptr->r_no_1++;
         Bg_On_W(1 << bgw_ptr->fam_no);
-        bgw_ptr->xy[0].disp.pos = end_10_pos[end_w.r_no_2][0];
+        bgw_ptr->xy[0].disp.pos = (*(end_w.r_no_2 + end_10_pos))[0];
         bgw_ptr->xy[1].disp.pos = end_10_pos[end_w.r_no_2][1];
         Rewrite_End_Message(1);
         break;

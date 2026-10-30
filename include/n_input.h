@@ -20,7 +20,7 @@ void Name_Scs_Input_init(void);
 void Name_Input_comm(void);
 void Name_Finish(void);
 void Name_Scs_Input_comm(void);
-void name_entry_commit_row(s16 pl_id, s16 pos_y);
+void rank_display_set(s16 pl_id, s16 pos_y);
 s32 Name_Input_sub(void);
 s32 Scs_move_sub(void);
 void current_sc_move2(void);

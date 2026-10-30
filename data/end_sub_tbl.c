@@ -2,7 +2,7 @@
  * END_SUB_TBL.C  prize card and CD messages, staff roll and colour transfer tables
  *
  * no_card_mes, win_card_mes and their blank lines are the prize card messages blinked by
- * END_SUB.C; no_cd_drive_mes and no_cd_rom_mes are the CD error lines and staff_roll_tbl and
+ * END_SUB.C; no_cd_drive_mes and no_cd_rom_mes are the CD error lines and sf3_staff and
  * staff_roll_last the staff roll (wait, x, y, attribute and text of each line, the texts being
  * the str_ strings that follow), read by END_SUB_2.C. player_color_tbl holds the twelve
  * palette transfers of each character, side and colour, any_color_tbl the transfer of each
@@ -21,7 +21,7 @@ extern const s8 win_card_clr_mes[];
 extern const s8 win_card_mes[];
 extern const char no_cd_drive_mes[];
 extern const char no_cd_rom_mes[];
-extern const STAFF_LINE staff_roll_tbl[];
+extern const STAFF_LINE sf3_staff[];
 extern const STAFF_LINE staff_roll_last[];
 extern const u8 str_STREET_FIGHTER_NEW_GENERATION[];
 extern const u8 str_STAFF[];
@@ -132,7 +132,7 @@ const char no_cd_drive_mes[16] = "NO CD-ROM DRIVE";
 
 const char no_cd_rom_mes[12] = "NO CD-ROM";
 
-const STAFF_LINE staff_roll_tbl[94] = {
+const STAFF_LINE sf3_staff[94] = {
     { 32, 48, 0, 2, str_STREET_FIGHTER_NEW_GENERATION },
     { 64, 48, 0, 2, str_STAFF },
     { 40, 32, 0, 2, str_CHARACTER_DESIGN },

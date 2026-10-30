@@ -94,7 +94,7 @@ void set_char_move_init2();
 void win_player(PLW* wk) {
 
     void (*win_jp_tbl[7])(PLW*) = { Win_00000, Win_01000, Win_02000, Win_03000, Win_04000, Win_05000, Win_06000 };
-    win_jp_tbl[win_type_tbl[wk->player_number]](wk);
+    win_jp_tbl[winner_type_tbl[wk->player_number]](wk);
 }
 
 /* Win pose type 0: the standard winning pose. */

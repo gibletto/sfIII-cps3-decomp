@@ -235,14 +235,13 @@ void show_thank_you_for_playing(void) {
 
 
 
-/* provisional name */
 void Name_Scs_Input_init(void) {
     name_ptr->r_no_0++;
     if (end_name_cut == 0) {
         name_ptr->timer = 1200;
     }
     name_ptr->index = 0;
-    name_entry_commit_row(name_ptr->id, Text_Page_Y);
+    rank_display_set(name_ptr->id, Text_Page_Y);
     Scs_char_move();
 }
 
@@ -305,7 +304,6 @@ void Name_Scs_Input_comm(void) {
 
 
 
-/* provisional name */
 void Name_Scs_Input_end(void) {
     s16 i;
     name_ptr->r_no_0++;
@@ -529,8 +527,7 @@ s16 pl_id;
 
 
 
-/* provisional name */
-void name_entry_commit_row(s16 pl_id, s16 pos_y) {
+void rank_display_set(s16 pl_id, s16 pos_y) {
     u16 pos_x;
     if (!Game_setting.Screen_Mode) {
     } else {

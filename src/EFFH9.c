@@ -126,7 +126,7 @@ void effect_H7_move(WORK_Other* ewk) {
                 ewk->wu.routine_no[1]++;
             case R1_PICK:
                 ewk->wu.dir_timer = 0;
-                ewk->wu.move_xy_table = (s16*)effH7_move_tbl[random_16_com()];
+                ewk->wu.move_xy_table = effH7_move_tbl[random_16_com()];
                 ewk->wu.routine_no[1]++;
             default:
                 char_move(&ewk->wu);

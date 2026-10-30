@@ -25,6 +25,7 @@ extern const s8 tama_select[];
 extern const AS_ROW8 dm_reaction_table[];
 extern const s16 dd_convert[][4];
 extern const u8 guard_kind[];
+extern const u8 guard_kind_tail[];
 extern void (*const plpdm_lv_00[])(PLW* wk);
 extern const s8 atsagct[];
 extern const s16 exdm_ix_data[][16][5];
@@ -136,8 +137,13 @@ const s16 dd_convert[111][4] = {
     { 108, 108, 108, 108 }, { 109, 109, 109, 109 }, { 110, 110, 110, 110 },
 };
 
-const u8 guard_kind[14] = {
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0xBF, 0x3C,
+const u8 guard_kind[12] = {
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0,
+};
+
+/* Stored after guard_kind. Nothing in the program refers to it by name or address (provisional name). */
+const u8 guard_kind_tail[2] = {
+    0xBF, 0x3C,
 };
 
 void (*const plpdm_lv_00[30])(PLW* wk) = {

@@ -29,8 +29,8 @@ void Game0_3(void);
 void Game2_1(void);
 void Game2_3(void);
 void Time_Control(void);
-void game_phase_dispatch(void);
-void match_state_0_fight(void);
+void Game(void);
+void Loop_Demo(void);
 void Game2_2(void);
 
 s32 Ck_Coin(void);

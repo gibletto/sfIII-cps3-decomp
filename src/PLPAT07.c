@@ -77,7 +77,7 @@ void Att_PL07_BOUND_JUMP(PLW* wk) {
         break;
     case BOUND_JUMP_CUE:
         char_move(&wk->wu);
-        if ((u8)wk->wu.cg_type == 1) {
+        if (wk->wu.cg_type == 1) {
             setup_mvxy_data(&wk->wu, wk->wu.mvxy.index);
             wk->wu.mvxy.index++;
             wk->wu.routine_no[3] = BOUND_JUMP_AIR;
@@ -86,7 +86,7 @@ void Att_PL07_BOUND_JUMP(PLW* wk) {
         break;
     case BOUND_JUMP_AIR:
         jumping_union_process(&wk->wu, 1);
-        if ((u8)wk->wu.cg_type == 8) {
+        if (wk->wu.cg_type == 8) {
             wk->wu.routine_no[3] = BOUND_JUMP_AIR2;
             wk->wu.cg_type = 0;
         }
@@ -96,7 +96,7 @@ void Att_PL07_BOUND_JUMP(PLW* wk) {
         break;
     case BOUND_JUMP_CUE2:
         char_move(&wk->wu);
-        if ((u8)wk->wu.cg_type == 10) {
+        if (wk->wu.cg_type == 10) {
             reset_mvxy_data(&wk->wu);
             wk->wu.routine_no[3] = BOUND_JUMP_MOVE;
             wk->wu.cg_type = 0;
@@ -145,7 +145,7 @@ void Att_PL07_SA2(PLW* wk) {
         char_move((WORK*)wk);
         cal_mvxy_speed((WORK*)wk);
         add_mvxy_speed((WORK*)wk);
-        switch ((u8)wk->wu.cg_type) {
+        switch (wk->wu.cg_type) {
         case 20:
             setup_mvxy_data((WORK*)wk, wk->wu.mvxy.index);
             wk->wu.cg_type = 0;
@@ -228,7 +228,7 @@ void Att_PL07_AT1(PLW* wk) {
         char_move((WORK*)wk);
         cal_mvxy_speed((WORK*)wk);
         add_mvxy_speed((WORK*)wk);
-        switch ((u8)wk->wu.cg_type) {
+        switch (wk->wu.cg_type) {
         case 20:
             setup_mvxy_data((WORK*)wk, wk->wu.mvxy.index);
             wk->wu.mvxy.index++;
@@ -245,7 +245,7 @@ void Att_PL07_AT1(PLW* wk) {
         break;
     case AT1_CUE:
         char_move((WORK*)wk);
-        if ((u8)wk->wu.cg_type == 1) {
+        if (wk->wu.cg_type == 1) {
             setup_mvxy_data((WORK*)wk, wk->wu.mvxy.index);
             wk->wu.routine_no[3] = AT1_AIR;
             wk->wu.cg_type = 0;

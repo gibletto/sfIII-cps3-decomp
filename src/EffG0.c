@@ -323,7 +323,7 @@ void effG0_akebono_setup(void) {
     ake_scrl_w[0].pos_y = 0;
     ake_scrl_w[0].xy[0].cal = 0x2000000;
     ake_scrl_w[0].xy[1].cal = 0;
-    sprite_list_setup(0, 1, (s16*)bg_scr_record_data);
+    sprite_list_setup(0, 1, bg_scr_record_data);
     akebono_cell_fill();
     Bg_On_R(1);
     scrn_reg_w[0].ctrl &= 0xFE7F;

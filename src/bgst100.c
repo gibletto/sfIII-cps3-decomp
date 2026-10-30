@@ -76,7 +76,6 @@ void BG100(void) {
 
 
 
-/* provisional name */
 void bg1000(void) {
     void (*bg1000_jmp[2])() = { bg1000_init00, bg1000_move };
     bg1000_jmp[bgw_ptr->r_no_0]();
@@ -111,7 +110,6 @@ void bg1000_move(void) {
 
 
 
-/* provisional name */
 void bg1001(void) {
     void (*bg1001_jmp[2])() = { bg1001_init00, bg1001_move };
     bg1001_jmp[bgw_ptr->r_no_0]();

@@ -50,7 +50,6 @@ s16 hpq_in;  /* 0200EB0E */
 
 #pragma inline(get_sky_nm_damage, get_sky_nm2_damage, get_sky_sp_damage, get_kagami_damage, get_kagami2_damage, get_grd_hand_damage, check_head_damage, check_trunk_damage)
 
-/* provisional name */
 void hit_check_main_process(void) {
     aiuchi_flag = 0;
     if (hpq_in > 1) {
@@ -89,8 +88,8 @@ void check_result_extra(void) {
     s16 hs1;
     s16 hs2;
     s16 qua;
-    if (plw[0].wu.routine_no[1] == PLAYER_DAMAGE && plw[0].wu.routine_no[3] == 0) {
-        if (plw[1].wu.routine_no[1] == PLAYER_DAMAGE && plw[1].wu.routine_no[3] == 0) {
+    if (plw[0].wu.routine_no[1] == PLAYER_DAMAGE && plw[0].wu.routine_no[3] == RN3_START) {
+        if (plw[1].wu.routine_no[1] == PLAYER_DAMAGE && plw[1].wu.routine_no[3] == RN3_START) {
             dm1p = (WORK_Other*)plw[0].wu.dmg_adrs;
             dm2p = (WORK_Other*)plw[1].wu.dmg_adrs;
             switch ((dm1p->wu.work_id == 1) + ((dm2p->wu.work_id == 1) * 2)) {
@@ -490,7 +489,6 @@ void set_guard_status(PLW* as, PLW* ds) {
 }
 
 
-/* provisional name */
 void set_paring_status(PLW* as, PLW* ds) {
     u8 (*row)[2];
     u8 (*row_copy)[2];
@@ -804,14 +802,12 @@ guard:
 
 void setup_dm_rl(WORK* as, WORK* ds) {
     s16 dx;
-    XY* pd;
-    XY* pf;
     if (as->work_id != 1 || check_ttk_damage_request(as->att.reaction) != 0) {
         ds->dm_rl = as->rl_flag;
         return;
     }
-    dx = (pd = &ds->xyz[0])->disp.pos - (pf = &as->xyz[0])->disp.pos;
-    switch ((pd[1].disp.pos > 0) + (pf[1].disp.pos > 0) * 2) {
+    dx = ds->xyz[0].disp.pos - as->xyz[0].disp.pos;
+    switch ((ds->xyz[1].disp.pos > 0) + (as->xyz[1].disp.pos > 0) * 2) {
     case 0:
     case 2:
         if (!(as->att.at_free4 & 0xC0)) {
@@ -993,13 +989,13 @@ loop_mi:
                 goto cont_si;
             }
             if (!(mad->att.at_free4 & 0xC0)) {
-                if ((sad->routine_no[1] == PLAYER_DAMAGE) && (sad->routine_no[3] != 0)) {
+                if ((sad->routine_no[1] == PLAYER_DAMAGE) && (sad->routine_no[3] != RN3_START)) {
                     if (sad->routine_no[2] != DAMAGE_STUN) {
                         goto cont_si;
                     }
                 }
             } else {
-                if (!((sad->routine_no[1] == PLAYER_DAMAGE) && (sad->routine_no[3] != 0) && (sad->cg_type != 10))) {
+                if (!((sad->routine_no[1] == PLAYER_DAMAGE) && (sad->routine_no[3] != RN3_START) && (sad->cg_type != 10))) {
                     goto hit;
                 }
                 if (!dm_oiuchi_catch[sad->routine_no[2]]) {

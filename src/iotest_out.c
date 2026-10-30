@@ -93,7 +93,7 @@ s32 iotest_output_page(void) {
         }
         iotest_hold_flag = 0;
         iotest_out1_flag = iotest_out2_flag = 0;
-        iotest_save_flip = (s8)Monitor_Flip;
+        iotest_save_flip = Monitor_Flip;
         iotest_out_no++;
         break;
     case 1:

@@ -52,7 +52,7 @@ void end_04000(u16 pl_num) {
         end_w.timer = timer_4_tbl[end_w.r_no_2];
         load_char_gfx(0x7518, 1);
         end_400_cell_set();
-        bgm_request(22);
+        BGM_Request(22);
         break;
     case END1_SCENES:
         end_w.timer--;
@@ -128,7 +128,7 @@ void end_400_3000(void) {
         bgw_ptr->abs_y = 0;
         bgw_ptr->xy[0].disp.pos = end_4_pos[end_w.r_no_2][0];
         bgw_ptr->xy[1].disp.pos = end_4_pos[end_w.r_no_2][1];
-        bgm_request(23);
+        BGM_Request(23);
         Rewrite_End_Message(4);
         effect_E6_init(30);
         effect_E6_init(32);

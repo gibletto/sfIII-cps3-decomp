@@ -1,7 +1,7 @@
 /*
  * ENTRY_2.C  Player entry, credit, continue and break-in
  *
- * entry_task calls entry_main every frame; entry_main runs the step for the current game phase (E_No0:
+ * entry_task calls Entry_Task every frame; Entry_Task runs the step for the current game phase (E_No0:
  * Entry_00 to Entry_10) and the card message. The steps run Entry_Main_Sub for each player, which
  * follows the player's entry state: joining with a credit (Credit_Sub_1P / _2P, Credit_Continue_1P /
  * _2P, Pay_Start_Credit), the continue countdown (Entry_Continue_Sub), name entry (Name_In_Sub,
@@ -85,14 +85,14 @@ TM_STRING insert_coin_mes[9] = {
 void entry_task(void)
 {
     do {
-        entry_main();
+        Entry_Task();
         task_sleep(1);
     } while (1);
 }
 
 
 
-void entry_main(void) {
+void Entry_Task(void) {
     void (*Main_Jmp_Tbl[11])() = { Entry_00, Entry_01, Entry_02, Entry_03, Entry_04, Entry_03, Entry_06, Entry_07, Entry_08, Entry_03, Entry_10 };
     if (Free_Play) {
         credit_1p = 9;
@@ -1317,11 +1317,11 @@ u16 x;
         F_No0[PL_id] += 1;
         F_Timer[PL_id] = 50;
         if (Two_Coin_Start) {
-            tilemap_print_string_attr(x, Text_Page_Y, 18, (s8*)str_INSERT_COINS);
+            tilemap_print_string_attr(x, Text_Page_Y, 18, str_INSERT_COINS);
             break;
         }
         if (coin_chute1_w.per_credit == 1) {
-            tilemap_print_string_attr(x, Text_Page_Y, 18, (s8*)str_INSERT_COIN);
+            tilemap_print_string_attr(x, Text_Page_Y, 18, str_INSERT_COIN);
         } else {
             tilemap_print_string_attr(x, Text_Page_Y, 18, (s8*)"INSERT   COINS");
             tilemap_print_hex_block(x + 7, Text_Page_Y, 18, coin_chute1_w.per_credit, 1, 1);
@@ -1412,27 +1412,25 @@ s16 PL_id;
 s32 Flash_Please(PL_id)
 s16 PL_id;
 {
-    s16 *timer;
-    s16 *step;
     if (E_No0 == E0_LOSER || E_No0 == E0_GAME_OVER) {
         return 0;
     }
-    switch (step = F_No3, timer = &F_Timer[PL_id], step[PL_id]) {
+    switch (F_No3[PL_id]) {
     case 0:
-        step[PL_id] += 1;
+        F_No3[PL_id] += 1;
         F_No1[PL_id] = 0;
         F_Timer[PL_id] = 1;
         tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[1][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "                 ");
         break;
     case 1:
-        if (--*timer == 0) {
+        if (--F_Timer[PL_id] == 0) {
             F_No3[PL_id] += 1;
             F_Timer[PL_id] = 50;
             tilemap_print_string_attr(ENTRY_SCORE_X_PAIRS[1][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "PLEASE WAIT");
         }
         break;
     default:
-        if (--*timer == 0) {
+        if (--F_Timer[PL_id] == 0) {
             F_No3[PL_id] -= 1;
             F_Timer[PL_id] = 30;
             tilemap_print_string_attr(ENTRY_SCORE_X_PAIRS[1][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "           ");
@@ -1904,7 +1902,7 @@ s16 PL_id;
     E_Number[New_Challenger][2] = 0;
     E_Number[New_Challenger][3] = 0;
     effect_A2_init();
-    bgm_request(6);
+    BGM_Request(6);
     effect_58_init(6, 30, 160);
     if (New_Challenger) {
         tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[2][1][Game_setting.Screen_Mode], Text_Page_Y, 18, "                   ");
@@ -1937,7 +1935,7 @@ s16 PL_id;
     } else {
         E_Timer = 150;
         effect_A2_init();
-        bgm_request(6);
+        BGM_Request(6);
         effect_58_init(6, 30, 160);
     }
     if (New_Challenger) {

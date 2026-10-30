@@ -61,7 +61,6 @@
 #define LW_PAUSE        1       /* wait D_Timer, then show it */
 #define LW_SHOW         2       /* show it for D_Timer, then fade out */
 #define LW_FADE_WAIT    3       /* until the fade is done, then the next screen */
-/* provisional name */
 s32 CAPCOM_Logo(void) {
     void (*jmp_tbl[3])() = { Logo_Capcom, Logo_Warning, Logo_Etc };
     Next_Demo = 0;

@@ -256,7 +256,7 @@ void eff94_03(WORK_Other* ewk) {
 /* the fight is over */
 /* provisional name */
 void eff94_04(WORK_Other* ewk) {
-    if (pcon_rno[0] == PCON_DIE && pcon_rno[1] == 3) {
+    if (pcon_rno[0] == PCON_DIE && pcon_rno[1] == SETTLE_JUDGE) {
         ewk->wu.old_rno[0] = 60;
         ewk->wu.routine_no[1] = R1_HIDE;
         ewk->wu.routine_no[2] = R2_INIT;
@@ -342,7 +342,7 @@ void eff94_07(WORK_Other* ewk) {
 /* the round has been decided */
 /* provisional name */
 s32 eff94_check_end(WORK_Other* ewk) {
-    if (!Allow_a_battle_f && Conclusion_Flag == 1 && C_No0 >= 2) {
+    if (!Allow_a_battle_f && Conclusion_Flag == 1 && C_No0 >= C0_FIGHT) {
         ewk->wu.routine_no[1] = R1_OVER;
         ewk->wu.routine_no[2] = R2_INIT;
         return 1;
@@ -425,7 +425,7 @@ void eff94_10(WORK_Other* ewk) {
         break;
     case R2_MOVE:
         char_move(&ewk->wu);
-        if (!Allow_a_battle_f && Conclusion_Flag == 1 && C_No0 >= 2) {
+        if (!Allow_a_battle_f && Conclusion_Flag == 1 && C_No0 >= C0_FIGHT) {
             ewk->wu.routine_no[1] = R1_RESULT;
             ewk->wu.routine_no[2] = R2_INIT;
         }
@@ -456,7 +456,7 @@ void eff94_12(WORK_Other* ewk) {
         set_char_move_init(&ewk->wu, 0, 29);
         break;
     case R2_MOVE:
-        if (pcon_rno[0] == PCON_DIE && pcon_rno[1] == 3) {
+        if (pcon_rno[0] == PCON_DIE && pcon_rno[1] == SETTLE_JUDGE) {
             ewk->wu.disp_flag = 0;
         }
         char_move(&ewk->wu);

@@ -102,7 +102,6 @@ void effect_E2_move(WORK_Other* ewk) {
 
 
 
-/* provisional name */
 void effE2_sort_push(WORK* ewk, WORK* mwk) {
     if (ewk->rl_flag) {
         ewk->position_x = mwk->xyz[0].disp.pos + ewk->old_pos[0];
@@ -119,7 +118,6 @@ void effE2_sort_push(WORK* ewk, WORK* mwk) {
 
 
 
-/* provisional name */
 void effe2_erase_or_die(WORK* wk) {
     if (wk->cg_wca_ix != 0) {
         wk->routine_no[0] = R0_FADE;

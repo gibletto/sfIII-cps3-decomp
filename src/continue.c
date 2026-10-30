@@ -98,7 +98,7 @@ void Continue_Scene(void) {
             effect_49_init(i, i * 4 + 1);
         }
         sound_request(0x99);
-        bgm_request(9);
+        BGM_Request(9);
         break;
     case CONT_COUNT:
         if (Continue_Count[LOSER] < 0) {
@@ -183,7 +183,7 @@ s16 PL_id;
     Continue_Coin[PL_id] = 0;
     Win_Record[PL_id] = 0;
     VS_Index[PL_id] = -1;
-    Decided_My_char[PL_id] = 0xFF;
+    Used_char[PL_id] = 0xFF;
     Arts_Y[PL_id] = 0;
     Continue_Count[PL_id] = 0;
     Continue_Coin2[PL_id] = 0;

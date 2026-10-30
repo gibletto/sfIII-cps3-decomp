@@ -2,7 +2,7 @@
  * MODE_INIT.C  Mode initialisation and screen mode setup
  *
  * mode_init_task initialises the game for the selected mode; region_setup splits the BIOS
- * region byte into country and version, region_group_params_set picks the per-region
+ * region byte into country and version, Setup_Difficult_V picks the per-region
  * parameters; mode_init_task also sets the screen mode for normal or wide screen.
  */
 
@@ -210,11 +210,10 @@ void mode_init_task(void) {
     s16 wait;
     u8 region;
     s32 color;
-    s16* title_x;
 
     region_setup();
     CC_Type = region_cc_type_tbl[Country - 1];
-    region_group_params_set();
+    Setup_Difficult_V();
     init_render_lists();
     init_color_trans_req();
     init_char_gfx_tables();
@@ -316,8 +315,8 @@ void mode_init_task(void) {
     } else {
         color = 1;
     }
-    tilemap_print_string(*(title_x = &DE_X[3]), 0, BOOT_TITLE_ATTR(color), boot_title_str);
-    tilemap_print_string(*title_x, 0, BOOT_REGION_ATTR(color), &boot_region_str[region]);
+    tilemap_print_string(DE_X[3], 0, BOOT_TITLE_ATTR(color), boot_title_str);
+    tilemap_print_string(DE_X[3], 0, BOOT_REGION_ATTR(color), &boot_region_str[region]);
     task_sleep(6);
     for (wait = 166; --wait > 0; ) {
         if ((p1sw_0 | p2sw_0) & 0x7F0) {
@@ -379,8 +378,7 @@ void region_cc_type_set(void) {
 
 
 
-/* provisional name */
-void region_group_params_set(void) {
-    CC_Value[0] = region_param_tbl[CC_Type][0];
-    CC_Value[1] = region_param_tbl[CC_Type][1];
+void Setup_Difficult_V(void) {
+    CC_Value[0] = Difficult_V_Data[CC_Type][0];
+    CC_Value[1] = Difficult_V_Data[CC_Type][1];
 }

@@ -46,7 +46,7 @@ const s16 efff5_data_tbl[14][6] = {
 
 
 void effect_F5_move(WORK_Other* ewk) {
-    void (*efff5_jp[6])(WORK_Other*) = { efff5_0000, efff5_0001, efff5_0002, efff5_0003, efff5_0004, efff5_0005 };
+    void (*efff5_jp[6])(WORK_Other*) = { efff5_0000, efff5_1000, efff5_2000, efff5_3000, efff5_4000, efff5_5000 };
     efff5_jp[ewk->wu.routine_no[0]](ewk);
 }
 
@@ -79,7 +79,7 @@ void efff5_0000(WORK_Other* ewk) {
 
 
 
-void efff5_0001(WORK_Other* ewk) {
+void efff5_1000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
     case R1_INIT:
         ewk->wu.routine_no[1]++;
@@ -106,7 +106,7 @@ void efff5_0001(WORK_Other* ewk) {
 
 
 
-void efff5_0002(WORK_Other* ewk) {
+void efff5_2000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
     case R1_INIT:
         ewk->wu.routine_no[1]++;
@@ -127,7 +127,7 @@ void efff5_0002(WORK_Other* ewk) {
 
 
 
-void efff5_0003(WORK_Other* ewk) {
+void efff5_3000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
     case R1_INIT:
         ewk->wu.routine_no[1]++;
@@ -149,7 +149,7 @@ void efff5_0003(WORK_Other* ewk) {
 
 
 
-void efff5_0004(WORK_Other* ewk) {
+void efff5_4000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
     case R1_INIT:
         ewk->wu.routine_no[1]++;
@@ -170,7 +170,7 @@ void efff5_0004(WORK_Other* ewk) {
 
 
 
-void efff5_0005(WORK_Other* ewk) {
+void efff5_5000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
     case R1_INIT:
         ewk->wu.routine_no[1]++;

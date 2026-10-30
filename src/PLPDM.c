@@ -1076,10 +1076,9 @@ void setup_smoke_type(PLW* wk) {
             goto set;
         }
         ix = 2;
-        if (total < 80) {
-            goto set;
+        if (total >= 80) {
+            ix = 3;
         }
-        ix = 3;
 set:
         effect_G6_init((WORK*)wk, ix);
     }

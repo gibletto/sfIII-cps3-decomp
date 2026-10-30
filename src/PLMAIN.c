@@ -134,9 +134,9 @@ void player_mv_1000(PLW* wk) {
         wk->wu.disp_flag = 1;
         Appear_hv[wk->wu.id] = home_visitor_check(wk);
         if (Appear_hv[wk->wu.id]) {
-            ap_work = appear_type_hv_tbl[wk->player_number][bg_w.stage][bg_w.area];
+            ap_work = app_type_tbl2[wk->player_number][bg_w.stage][bg_w.area];
         } else {
-            ap_work = appear_type_tbl[wk->player_number][bg_w.stage][bg_w.area];
+            ap_work = app_type_tbl[wk->player_number][bg_w.stage][bg_w.area];
         }
         dtbl = &appear_data[ap_work];
         appear_data_set(wk, dtbl);

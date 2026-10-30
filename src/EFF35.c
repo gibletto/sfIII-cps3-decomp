@@ -59,7 +59,7 @@ s32 effect_35_init(WORK_Other* oya, s16 type) {
     ewk->master_id = oya->wu.id;
     ewk->wu.my_family = 2;
     ewk->wu.my_col_code = 0x204E;
-    data = eff35_spawn_tbl + (s32)type * 6;
+    data = eff35_spawn_tbl + type * 6;
     ewk->wu.position_x = *data & 0x3FF;
     ewk->wu.xyz[0].disp.pos = *data++;
     ewk->wu.position_y = *data & 0x3FF;

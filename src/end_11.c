@@ -58,7 +58,7 @@ void end_11000(u16 pl_num) {
         bg_w.bgw[0].suzi_adrs = (u16*)simmram_slot_addr(bg_w.bgw[0].suzi_c_no);
         scrn_linescroll_set_now(0, bg_w.bgw[0].suzi_adrs);
         memset(bg_w.bgw[0].suzi_adrs, 0, 0x1000);
-        bgm_request(21);
+        BGM_Request(21);
         break;
     case END1_SCENES:
         end_w.timer--;
@@ -67,7 +67,7 @@ void end_11000(u16 pl_num) {
             if (end_w.r_no_2 == 9) {
                 end_w.r_no_1++;
                 end_w.end_flag = 1;
-                bgm_request(27);
+                BGM_Request(27);
                 fadeout_to_staff_roll();
             } else {
                 end_w.timer = end_11_timer_tbl[end_w.r_no_2];

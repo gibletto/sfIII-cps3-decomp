@@ -3,8 +3,8 @@
  *
  * appear_data is the list of entrance types: each row holds the start position (with a
  * separate x for the wide screen mode), facing, the Appear_ routine number, the Appear_flag
- * value and the starting animation. appear_type_tbl gives the entrance type by fighter, stage
- * and area, and appear_type_hv_tbl the same when home_visitor_check picks the home/visitor
+ * value and the starting animation. app_type_tbl gives the entrance type by fighter, stage
+ * and area, and app_type_tbl2 the same when home_visitor_check picks the home/visitor
  * entrances. Read by APPEAR.C, the fighter entrance sequences, and PLMAIN.C, the player move
  * routine for a fight.
  */
@@ -15,8 +15,8 @@
 #pragma section TBL
 
 extern const APPEAR_DATA appear_data[];
-extern const s16 appear_type_tbl[][13][3];
-extern const s16 appear_type_hv_tbl[][13][3];
+extern const s16 app_type_tbl[][13][3];
+extern const s16 app_type_tbl2[][13][3];
 
 const APPEAR_DATA appear_data[20] = {
     { -96, 0, -128, 0, 1, 0, 0 }, { -96, 0, -128, 0, 1, 1, 0 },
@@ -31,7 +31,7 @@ const APPEAR_DATA appear_data[20] = {
     { -96, 0, -128, 0, 1, 16, 0 }, { -96, 0, -128, 0, 1, 17, 0 },
 };
 
-const s16 appear_type_tbl[13][13][3] = {
+const s16 app_type_tbl[13][13][3] = {
     {  /* Gill */
         { 19, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 },
         { 2, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 },
@@ -112,7 +112,7 @@ const s16 appear_type_tbl[13][13][3] = {
     },
 };
 
-const s16 appear_type_hv_tbl[13][13][3] = {
+const s16 app_type_tbl2[13][13][3] = {
     {  /* Gill */
         { 19, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 },
         { 2, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 },

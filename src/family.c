@@ -16,7 +16,6 @@
 SCRLPOS fm_pos[8];  /* 0206A084 */
 
 
-/* provisional name */
 void Family_Init(void)
 {
     s32 i;
