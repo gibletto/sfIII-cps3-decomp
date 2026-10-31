@@ -779,7 +779,6 @@ void zoom_y_width_check(void) {
     if (Game_setting.Screen_Mode) {
         return;
     }
-    /* previous bg_f_y, kept in the unnamed word at bg_w+0x34 */
     bg_w.old_bg_f_y = bg_w.bg_f_y;
     bg_w.frame_flag = zoom_frame_judge();
     f = bg_w.bg_f_y;

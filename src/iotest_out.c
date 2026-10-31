@@ -22,13 +22,13 @@
 #include "sys_test_2.h"
 #include "cps3.h"
 
-s16 iotest_out1_flag;  /* 0206A1E4 */
-s16 iotest_out2_flag;  /* 0206A1E6 */
-s32 iotest_hold_flag;  /* 0206A1E8 */
-s16 iotest_save_flip;  /* 0206A1EC */
+s16 iotest_out1_flag;  /* 0205E2C8 */
+s16 iotest_out2_flag;  /* 0205E2CA */
+s32 iotest_hold_flag;  /* 0205E2CC */
+s16 iotest_save_flip;  /* 0205E2D0 */
 
 
-s16 iotest_out_no = 0;  /* 02007C94 */
+s16 iotest_out_no = 0;  /* 0200713C */
 
 
 

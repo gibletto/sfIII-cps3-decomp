@@ -28,7 +28,7 @@
 
 
 
-WORK_Other * oya_p;  
+WORK_Other * oya_p;
 
 extern const s16 effb9_round_char_tbl[];
 

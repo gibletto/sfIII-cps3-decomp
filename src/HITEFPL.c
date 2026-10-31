@@ -17,8 +17,6 @@
 #include "HITEFPL.h"
 #include "HITCHECK.h"
 
-void plef_at_vs_player_damage_union();
-
 
 
 void effect_at_vs_player_dm(ix2, ix)

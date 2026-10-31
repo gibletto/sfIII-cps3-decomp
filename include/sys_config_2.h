@@ -11,7 +11,7 @@ void sysconfig_language(void);
 void sysconfig_win_point(void);
 void sysconfig_win_point_human(void);
 void sysconfig_voice_type_toggle(void);
-void test_menu_print_script_at(const void* script, s16 x, s16 y);
+void test_menu_print_script_at(const void* script, s16 px, s16 y);
 void config_menu_init(void);
 void config_menu_dispatch(void);
 void config_top_page(void);

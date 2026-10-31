@@ -1,12 +1,12 @@
 /*
  * EFF02.C  Effect 02 (hit marks)
  *
- * Effect 02 is the hit mark shown when an attack connects or is guarded. Its entry in the
- * hmdt table chooses the mark (guard and chip variants), colour, direction, position
- * offset, screen quake and hit sound. effect_02_init is called
- * from the hit-check modules (HITCHECK, HITEFEF, HITPLEF, PLPCA). The guard / chip / fsin
- * variant comes from dm_vital bits (0x1F, 0x20; dm_vital is the attack's at_free4), marks move by
- * dir_old with add_pos_dir_016 at an eff02_speed_tbl speed, and there is no direction table.
+ * Effect 02 is the hit mark shown when an attack connects or is guarded. Its entry in the hmdt
+ * table chooses the mark (guard and chip variants), colour, direction, position offset, screen
+ * quake and hit sound. effect_02_init is called from the hit-check modules (HITCHECK, HITEFEF,
+ * HITPLEF, PLPCA). The guard / chip / fsin variant comes from dm_vital bits (0x1F, 0x20; dm_vital
+ * is the attack's at_free4), marks move by dir_old with add_pos_dir_016 at an eff02_speed_tbl
+ * speed, and there is no direction table.
  */
 
 #include "structs.h"

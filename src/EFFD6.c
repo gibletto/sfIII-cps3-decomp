@@ -38,13 +38,6 @@
 /* routine_no[1], EFFD6_ZOOM_SLIDE */
 #define R1_ZOOM         1       /* (default) shrink and slide across */
 
-void EFFD6_WAIT(WORK_Other* ewk);
-void EFFD6_RISE_IN(WORK_Other* ewk);
-void EFFD6_SLIDE_IN(WORK_Other* ewk);
-void EFFD6_SLIDE_OUT(WORK_Other* ewk);
-void EFFD6_ZOOM_SLIDE(WORK_Other* ewk);
-void EFFD6_RESET(WORK_Other* ewk);
-
 const s16 Pos_Data_D6[6] = { 288, 200, 200, 176, 192, 192 };
 
 void (*const EFFD6_Jmp_Tbl[6])() = {

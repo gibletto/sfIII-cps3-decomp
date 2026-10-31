@@ -1,9 +1,10 @@
 /*
  * EFFA5.C  Effect A5: select timer
  *
- * effect_A5_entry creates the select-screen timer. It counts Select_Timer down in
- * BCD every 40 frames and sets Time_Over 30 frames after zero. Time_Stop holds the
- * countdown; Exit_No retires the timer and sets Time_Stop to -1.
+ * Effect A5 (effect_A5_entry, started by sel_pl.c) is the select-screen timer:
+ * it counts Select_Timer down in BCD every 40 frames, holds while Time_Stop is set,
+ * and sets Time_Over 30 frames after the timer reaches zero. Exit_No retires the timer and sets
+ * Time_Stop to -1.
  */
 
 #include "structs.h"
@@ -36,7 +37,7 @@
 
 
 
-/* Retire the timer when Exit_No is set. */
+/* retire the timer when Exit_No is set */
 void effect_A5_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_WAIT:

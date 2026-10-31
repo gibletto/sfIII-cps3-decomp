@@ -3,7 +3,7 @@
 
 #include "structs.h"
 
-s32 effect_A0_init(s16 pl);
+s32 effect_A0_init(s16 family);
 void effect_A0_move(WORK_Other* ewk);
 
 #endif

@@ -140,7 +140,7 @@ s32 execute_super_arts(PLW* wk) {
     if (wk->cancel_timer == 0) {
         wk->permited_koa |= 1;
     }
-    if ((wk->sa->gauge_type != SA_GAUGE_REBIRTH) && pcon_dp_flag) {
+    if (wk->sa->gauge_type != SA_GAUGE_REBIRTH && pcon_dp_flag) {
         return 0;
     }
     if (wk->wu.xyz[1].disp.pos <= 0) {

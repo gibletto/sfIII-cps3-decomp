@@ -1,10 +1,10 @@
 /*
  * EFF53.C  Effect 53: stage bird
  *
- * The bgst140 background creates effect 53. It waits 120 frames, walks
- * on screen, then sits until complete_victory_check: it then starts a zoomed take-off from
- * background layer 1 (my_mr grows while it climbs), flies across, and is dropped once it is
- * 0x120 past the layer. eff53_disp follows xyz and pushes the sprite for the flying states.
+ * The bgst140 background creates effect 53. It waits 120 frames, walks on screen, then sits until
+ * complete_victory_check: it then starts a zoomed take-off from background layer 1 (my_mr grows
+ * while it climbs), flies across, and is dropped once it is 0x120 past the layer. eff53_disp
+ * follows xyz and pushes the sprite for the flying states.
  */
 
 #include "structs.h"

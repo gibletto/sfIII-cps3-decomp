@@ -1153,10 +1153,10 @@ void Passive05_0073(PLW* wk) {
         Adjust_Attack(wk, 0xB, 0x10);
         break;
     case 3:
-        Normal_Attack(wk, 0xA, 0x102);
+        Normal_Attack(wk, 10, 0x102);
         break;
     case 4:
-        Normal_Attack(wk, 0xA, 0x100);
+        Normal_Attack(wk, 10, 0x100);
         break;
     default:
         End_Pattern(wk);

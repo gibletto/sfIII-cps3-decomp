@@ -44,7 +44,7 @@ void effect_11_move(WORK_Other* ewk) {
     const EFF11_TILE* tile;
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
-        ewk->wu.routine_no[0] += 1;
+        ewk->wu.routine_no[0]++;
         ewk->wu.cg_ix = 0;
         ewk->wu.char_index = 0;
         ewk->wu.now_koc = eff11_anime_tbl[ewk->wu.char_index].count;

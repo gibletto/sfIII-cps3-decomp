@@ -27,7 +27,7 @@
 #define COLOR_GRID      1       /* colortest_draw_palette_grid */
 #define COLOR_SHOW      2       /* the grid is up */
 
-s16 colortest_no = 0;  /* 02007CA0 */
+s16 colortest_no = 0;  /* 02007148 */
 
 
 void tilemap_put_block(s32 x, s32 y, s32 attr, u16 code);

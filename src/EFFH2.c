@@ -25,7 +25,6 @@
 
 
 
-/* my_col_code 0x2039, char index type + 0x16 */
 void effect_H2_move(WORK_Other* ewk) {
     WORK* mwk = (WORK*)ewk->my_master;
     switch (ewk->wu.routine_no[0]) {
@@ -49,9 +48,9 @@ void effect_H2_move(WORK_Other* ewk) {
         if (mwk->disp_flag == 1) {
             ewk->wu.disp_flag = 1;
         }
-        ewk->wu.dir_timer = ewk->wu.dir_timer + 1 & ewk->wu.dir_old;
+        ewk->wu.dir_timer = (ewk->wu.dir_timer + 1) & ewk->wu.dir_old;
         if (ewk->wu.dir_timer == 0) {
-            ewk->wu.dir_step = ewk->wu.dir_step + 1 & ewk->wu.direction;
+            ewk->wu.dir_step = (ewk->wu.dir_step + 1) & ewk->wu.direction;
         }
         ewk->wu.position_x = mwk->position_x + panel_guide[ewk->wu.dir_step][0];
         ewk->wu.position_y = mwk->position_y + panel_guide[ewk->wu.dir_step][1] + 17;

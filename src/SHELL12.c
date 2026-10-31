@@ -71,7 +71,7 @@ void Shell12_0003(PLW* wk) {
         SHELL_Term(wk, 0, 2, 1, -1, -1);
         break;
     case 1:
-        Jump_Attack_Term(wk, 0x8058, 0x8030, 9, (0x100), 0, 0x8050, -1, (0x100));
+        Jump_Attack_Term(wk, 0x8058, 0x8030, 9, 0x100, 0, 0x8050, -1, 0x100);
         break;
     case 2:
         Normal_Attack(wk, 0xB, 0x20);
@@ -163,10 +163,10 @@ void Shell12_0008(PLW* wk) {
         SHELL_Term(wk, 0, 2, 1, -1, -1);
         break;
     case 1:
-        Jump_Attack_Term(wk, 0x8058, 0x8030, 0xB, 0x20, 0, 0x8050, -1, (0x100));
+        Jump_Attack_Term(wk, 0x8058, 0x8030, 0xB, 0x20, 0, 0x8050, -1, 0x100);
         break;
     case 2:
-        Normal_Attack(wk, 8, (0x102));
+        Normal_Attack(wk, 8, 0x102);
         break;
     default:
         End_Pattern(wk);

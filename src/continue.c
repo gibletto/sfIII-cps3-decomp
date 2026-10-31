@@ -24,7 +24,6 @@
 #include "bg_sub_3.h"
 #include "bg_sub_5.h"
 #include "SYS_sub.h"
-#include "end_main.h"
 #include "end_sub.h"
 #include "end_sub_2.h"
 #include "color3rd.h"
@@ -71,11 +70,11 @@
 s32 effect_49_init();
 
 
-s16 Cont_No;  /* 0201700C */
-s16 Cont_Sub_No;  /* 0201700E */
-s16 Cont_Sub2_No;  /* 02017010 */
-s16 Cont_Sub3_No;  /* 02017012 */
-s16 Cont_Timer;  /* 02017014 */
+s16 Cont_No;  /* 020138E4 */
+s16 Cont_Sub_No;  /* 020138E6 */
+s16 Cont_Sub2_No;  /* 020138E8 */
+s16 Cont_Sub3_No;  /* 020138EA */
+s16 Cont_Timer;  /* 020138EC */
 
 
 
@@ -122,6 +121,9 @@ void Continue_Scene(void) {
 
 
 
+/* The frames to wait before the continue scene ends, or 0 while it may not: 0 while either player is
+   in name entry; 60 when the other player is out (ENTRY_NONE); 1 when both are out or waiting for name
+   entry (ENTRY_NAME_WAIT); 0 otherwise. */
 s32 Check_Exit_Continue(void) {
     s16* p;
     s8 id;

@@ -60,8 +60,8 @@
 #include "end_sub.h"
 #include "cps3.h"
 
-SELPL card_pl_w[2];  /* 02028268 */
-s16 card_msg_cnt;  /* 02028280 */
+SELPL card_pl_w[2];  /* 0201D714 */
+s16 card_msg_cnt;  /* 0201D72C */
 
 
 #pragma inline(card_pl_work_clear)

@@ -65,7 +65,7 @@ s32 effect_58_init();
 #include "win_2.h"
 #include "continue.h"
 #include "pow_pow.h"
-#include "end_main.h"
+#include "end_main_c.h"
 #include "Entry.h"
 #include "entry_2.h"
 
@@ -143,8 +143,6 @@ s32 effect_32_init(void);
 s32 PL_Sel_Mode_2(void);
 s16 gauge_rank_value(s16 v);
 void Restore_Loser_Score(void);
-void Additional_Bonus(s16 PL_id);
-void Disp_Winner(void);
 s16 Next_VS_Index(void);
 s32 Bonus_Cut_All(void);
 void Bonus_Count_Effect(s16 n);
@@ -414,7 +412,7 @@ void Game_Manage_5th(void) {
                 load_any_color_fade(bg_color3_tbl[bg_w.bg_index - 1], 16, 16, 16);
             }
             pcon_rno[0] = PCON_INIT;
-            pcon_rno[1] = 0;
+            pcon_rno[1] = APP_SETUP;
             pcon_rno[2] = 0;
             pcon_rno[3] = 0;
             appear_type = APPEAR_JUDGE;
@@ -908,8 +906,8 @@ s32 Bonus_Cut_All(void) {
         C_Timer = 1;
         return 0;
     }
-    C_No1 = 4;
-    C_No2 = 0;
+    C_No1 = CM8_WAIT4;
+    C_No2 = CM8_S_WAIT11;
     C_Timer = 20;
     ToneDown(5);
     if (Perfect_Flag) {
@@ -1045,7 +1043,7 @@ void Game_Manage_10th(void) {
             Check_Naming(0);
             Check_Naming(1);
             pcon_rno[0] = PCON_INIT;
-            pcon_rno[1] = 0;
+            pcon_rno[1] = APP_SETUP;
             pcon_rno[2] = 0;
             pcon_rno[3] = 0;
             appear_type = APPEAR_ENTRY;

@@ -22,25 +22,25 @@
 #include "Game.h"
 #include "vbl_hook.h"
 
-TCB * current_task;  /* 02007EEC */
-s32 task_sys_w1;  /* 02007EF0 */
-s32 task_sys_w2;  /* 02007EF4 */
-s32 task_sys_w3;  /* 02007EF8 */
-s32 task_free_count;  /* 02007EFC */
-u32 system_timer;  /* 02007F00 */
-u32 task_tick_mask;  /* 02007F04 */
-s8 system_ctrl_flag;  /* 02007F08 */
-s8 task_tick_mode;  /* 02007F09 */
-s8 vsync_flag;  /* 02007F0A */
-u32 frame_pass_count;  /* 02007F0C */
-s8 task_ran_flag;  /* 02007F10 */
-u32 task_sched_context[3];  /* 02007F14 */
-SETTINGS game_config_work;  /* 02007F20 */
-EXC_REGS exception_regs;  /* 02007F30 */
-u32 exception_code;  /* 02007F8C */
+TCB * current_task;  /* 020073C4 */
+s32 task_sys_w1;  /* 020073C8 */
+s32 task_sys_w2;  /* 020073CC */
+s32 task_sys_w3;  /* 020073D0 */
+s32 task_free_count;  /* 020073D4 */
+u32 system_timer;  /* 020073D8 */
+u32 task_tick_mask;  /* 020073DC */
+s8 system_ctrl_flag;  /* 020073E0 */
+s8 task_tick_mode;  /* 020073E1 */
+s8 vsync_flag;  /* 020073E2 */
+u32 frame_pass_count;  /* 020073E4 */
+s8 task_ran_flag;  /* 020073E8 */
+u32 task_sched_context[3];  /* 020073EC */
+SETTINGS game_config_work;  /* 020073F8 */
+EXC_REGS exception_regs;  /* 02007408 */
+u32 exception_code;  /* 02007464 */
 u8 boot_stack[4100];  /* the stack r15 starts on: vector 1 points at its end (task_stack); provisional name */
-u8 task_stack[18][1024];  /* 02008F94 */
-TCB task_tbl[8];  /* 0200D794 */
+u8 task_stack[18][1024];  /* 0200846C */
+TCB task_tbl[8];  /* 0200CC6C */
 static u8 task_spare[32];  /* nothing in the program refers to it */
 
 /* The vertical blank interrupt calls this once per frame when bit 1 of the

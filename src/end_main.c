@@ -36,7 +36,7 @@ void scrn_map_set(u16 n, u32 p);
 void scrn_map_set_now(u16 n, u32 p);
 void Scrn_Move_Set(s32 n, s16 x, s16 y);
 void debug_bg_tile_put(s16 bg, s32 ofs, s32 page, s32 src);
-void oh_opening_demo();
+#include "bg000.h"
 void load_any_color();
 s32 effect_F5_init();
 s32 Check_Fade_Complete(void);
@@ -51,28 +51,7 @@ extern const u16 op_bg_scrn_data;
 extern s8 effE1_end_flag;
 extern s8 op_fade_flag;
 
-void opning_init_00000(void);
-void opning_init_01000(void);
-void op_02_move(void);
-void op_03_move(void);
-void op_04_move(void);
-void op_08_move(void);
-void op_09_move(void);
-void op_10_move(void);
-void op_11_move(void);
-void op_fade_46(void);
-void op_fade_45(void);
-void op_12_move(void);
-void op_13_move(void);
-void op_14_move(void);
-void op_15_move(void);
-void op_16_move(void);
-void op_17_move(void);
-void op_20_move(void);
-void op_21_move(void);
-void op_scrn_map_set();
-void op_scrn_pos_set();
-void opening_family_set(void);
+#include "end_main.h"
 
 
 

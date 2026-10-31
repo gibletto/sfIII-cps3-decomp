@@ -107,7 +107,7 @@ void fall_data_set(WORK_Other* ewk) {
 }
 
 
-/* Create the falling object for its parent. */
+/* the falling object for its parent */
 s32 effect_D1_init(WORK_Other* oya, s32 _p1) {
     WORK_Other* ewk;
     s16 ix;

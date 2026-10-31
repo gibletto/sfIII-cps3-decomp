@@ -71,18 +71,18 @@ extern const char str_SIMM5[];
 extern const char str_SIMM6[];
 extern const char str_SIMM7[];
 
-u32 scsi_sense_key;  /* 0206A1F0 */
-u32 scsi_sense_asc;  /* 0206A1F4 */
-s8 scsi_sense_buf[22];  /* 0206A1F8 */
-SCSI_INQUIRY scsi_inquiry_data;  /* 0206A20E */
-SCSI_CAPACITY scsi_capacity;  /* 0206A234 */
-s8 scsi_toc_buf[40];  /* 0206A23C */
-s8 cd_sector_buf[2048];  /* 0206A264 */
-s32 scsi_error;  /* 0206AA64 */
-s16 scsi_cdb_len;  /* 0206AA68 */
+u32 scsi_sense_key;  /* 0205E2D4 */
+u32 scsi_sense_asc;  /* 0205E2D8 */
+s8 scsi_sense_buf[22];  /* 0205E2DC */
+SCSI_INQUIRY scsi_inquiry_data;  /* 0205E2F2 */
+SCSI_CAPACITY scsi_capacity;  /* 0205E318 */
+s8 scsi_toc_buf[40];  /* 0205E320 */
+s8 cd_sector_buf[2048];  /* 0205E348 */
+s32 scsi_error;  /* 0205EB48 */
+s16 scsi_cdb_len;  /* 0205EB4C */
 
 
-/* 02007CB0 */
+/* 02007158 */
 const s8* simm_name_tbl[8] = {
     str_ONBOARD,
     str_SIMM1,
@@ -93,11 +93,11 @@ const s8* simm_name_tbl[8] = {
     str_SIMM6,
     str_SIMM7,
 };
-u8 no_cd_flag = 0;  /* 02007CD0 */
-s16 memtest_error = 0;  /* 02007CD2 */
-s16 memtest_wait = 0;  /* 02007CD4 */
-s16 memtest_cursor = 0;  /* 02007CD6 */
-s16 memtest_no = 0;  /* 02007CD8 */
+u8 no_cd_flag = 0;  /* 02007178 */
+s16 memtest_error = 0;  /* 0200717A */
+s16 memtest_wait = 0;  /* 0200717C */
+s16 memtest_cursor = 0;  /* 0200717E */
+s16 memtest_no = 0;  /* 02007180 */
 
 
 /* provisional name */
@@ -468,9 +468,9 @@ s32 cd_check_disc_id(void) {
         if (cd_sector_buf[1] == 'C' && cd_sector_buf[2] == 'D' && cd_sector_buf[3] == '0' &&
             cd_sector_buf[4] == '0' && cd_sector_buf[5] == '1') {
             if (cd_sector_buf[0x28] == CD_VOLUME_ID[0] && cd_sector_buf[0x29] == CD_VOLUME_ID[1] &&
-                cd_sector_buf[0x2a] == CD_VOLUME_ID[2] && cd_sector_buf[0x2b] == CD_VOLUME_ID[3] &&
-                cd_sector_buf[0x2c] == CD_VOLUME_ID[4] && cd_sector_buf[0x2d] == CD_VOLUME_ID[5] &&
-                cd_sector_buf[0x2e] == CD_VOLUME_ID[6] && cd_sector_buf[0x2f] == CD_VOLUME_ID[7] &&
+                cd_sector_buf[0x2A] == CD_VOLUME_ID[2] && cd_sector_buf[0x2B] == CD_VOLUME_ID[3] &&
+                cd_sector_buf[0x2C] == CD_VOLUME_ID[4] && cd_sector_buf[0x2D] == CD_VOLUME_ID[5] &&
+                cd_sector_buf[0x2E] == CD_VOLUME_ID[6] && cd_sector_buf[0x2F] == CD_VOLUME_ID[7] &&
                 cd_sector_buf[0x30] == CD_VOLUME_ID[8] && cd_sector_buf[0x31] == CD_VOLUME_ID[9] &&
                 cd_sector_buf[0x32] == CD_VOLUME_ID[10]) {
                 return 0;

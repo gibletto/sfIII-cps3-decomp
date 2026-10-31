@@ -58,11 +58,11 @@
 #include "end_sub_8.h"
 #include "cps3.h"
 
-u8 col_trans_req_tbl[256];  /* 02028294 */
-s16 col_trans_req_cnt0;  /* 02028394 */
-s16 col_trans_req_cnt1;  /* 02028396 */
-s16 col_trans_req_cnt2;  /* 02028398 */
-s32 col_trans_result;  /* 0202839C */
+u8 col_trans_req_tbl[256];  /* 0201D738 */
+s16 col_trans_req_cnt0;  /* 0201D838 */
+s16 col_trans_req_cnt1;  /* 0201D83A */
+s16 col_trans_req_cnt2;  /* 0201D83C */
+s32 col_trans_result;  /* 0201D840 */
 
 
 void init_color_trans_req(void)
@@ -122,7 +122,6 @@ u8 b;
 /* provisional name */
 void color_trans_dummy(void)
 {
-  return;
 }
 
 /* provisional name */
@@ -138,9 +137,9 @@ void color_dma_error_disp(void)
 
 /* provisional name */
 void load_player_color(a, b, c)
-    s16 a;
-    s16 b;
-    s16 c;
+s16 a;
+s16 b;
+s16 c;
 {
     const XFER* p = player_color_tbl[a][b][c];
     s8 i;

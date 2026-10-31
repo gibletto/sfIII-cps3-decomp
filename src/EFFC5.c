@@ -115,7 +115,7 @@ void effect_C5_move(WORK_Other* ewk) {
 
 
 
-/* The car for player pl. */
+/* the car for player pl */
 /* provisional name */
 s32 effC5_init_sub(s16 pl) {
     WORK_Other* ewk;
@@ -172,7 +172,7 @@ s32 effC5_init_sub(s16 pl) {
 
 
 
-/* Create the car on the player's side. */
+/* the player's car */
 s32 effect_C5_init(PLW* oya) {
     s16 pl = oya->wu.id ? 1 : 0;
     return effC5_init_sub(pl);

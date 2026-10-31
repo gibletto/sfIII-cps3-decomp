@@ -32,10 +32,10 @@
 
 void load_any_color();
 s32 effect_18_init();
-s32 effect_25_init();
-s32 effect_29_init();
-s32 effect_60_init();
-s32 effect_87_init();
+#include "EFF25.h"
+#include "EFF29.h"
+#include "EFF60.h"
+#include "eff87.h"
 void bg170_layer0(void);
 void bg170_layer1(void);
 void bg170_layer2(void);

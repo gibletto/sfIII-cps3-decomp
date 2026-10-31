@@ -47,23 +47,23 @@
 #define POLY_KIND_LINE      1
 #define POLY_KIND_QUAD      2
 
-s32 poly_dma_state;  /* 0207603C */
-s16 poly_reserve0;  /* 02076040 */
-s16 poly_reserve1;  /* 02076042 */
-POLY_LINE poly_line_buf[2][POLY_LINE_MAX];  /* 02076044 */
-u32 poly_line_cnt[2];  /* 0207803C */
-u32 poly_line_rd[2];  /* 02078044 */
-POLYCMD poly_quad_buf[2][POLY_QUAD_MAX];  /* 0207804C */
-u32 poly_quad_cnt[2];  /* 0207844C */
-u32 poly_quad_rd[2];  /* 02078454 */
-u32 poly_order_pos[2];  /* 0207845C */
-u16 poly_order_kind[2][POLY_ORDER_MAX];  /* 02078464 */
-s32 poly_wr_bank;  /* 02078A38 */
-s32 poly_rd_bank;  /* 02078A3C */
+s32 poly_dma_state;  /* 0206A120 */
+s16 poly_reserve0;  /* 0206A124 */
+s16 poly_reserve1;  /* 0206A126 */
+POLY_LINE poly_line_buf[2][POLY_LINE_MAX];  /* 0206A128 */
+u32 poly_line_cnt[2];  /* 0206C120 */
+u32 poly_line_rd[2];  /* 0206C128 */
+POLYCMD poly_quad_buf[2][POLY_QUAD_MAX];  /* 0206C130 */
+u32 poly_quad_cnt[2];  /* 0206C530 */
+u32 poly_quad_rd[2];  /* 0206C538 */
+u32 poly_order_pos[2];  /* 0206C540 */
+u16 poly_order_kind[2][POLY_ORDER_MAX];  /* 0206C548 */
+s32 poly_wr_bank;  /* 0206CB1C */
+s32 poly_rd_bank;  /* 0206CB20 */
 
 
-u32 poly_buf_offset = 0;  /* 02007EE0 */
-s32 poly_cram_bank = 0;  /* 02007EE4 */
+u32 poly_buf_offset = 0;  /* 02007390 */
+s32 poly_cram_bank = 0;  /* 02007394 */
 
 
 /* provisional name */
@@ -127,10 +127,10 @@ void poly_bank_flip(void) {
 
 /* provisional name */
 s32 polygon2d_submit_line(addr, y, x, kind)
-    u32 addr;
-    u32 y;
-    u32 x;
-    u8 kind;
+u32 addr;
+u32 y;
+u32 x;
+u8 kind;
 {
     register POLY_LINE* line;
     if (poly_line_cnt[poly_wr_bank] >= POLY_LINE_MAX) {

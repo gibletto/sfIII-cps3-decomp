@@ -1,14 +1,13 @@
 /*
  * EFFC9.C  Effect C9: the judge girls
  *
- * Effect C9 is one of the judges who appear for a judgement decision. effect_C9_init (called
- * from plcntset_2.c) chooses the judge's character set for the stage, round and slot from
- * ag_sel_table, with colour and character table from ag_cc_table / ag_char_table.
- * effect_C9_move places her at app_pos_hosei relative to the screen centre with a shadow from
- * judge_gals_kage_tbl,
- * then when Event_Judge_Gals is raised plays her judging patterns and spawns the effect 37 flag
- * for the player she votes for (EJG_index). setup_EJG_index fills EJG_index: all votes go to the
- * winner when the round scores differ by more than 10000, otherwise from sel_ejg_ix_table.
+ * Effect C9 is one of the judges who appear for a judgement decision. effect_C9_init (called from
+ * plcntset_2.c) chooses the judge's character set for the stage, round and slot from ag_sel_table,
+ * with colour and character table from ag_cc_table / ag_char_table. effect_C9_move places her at
+ * app_pos_hosei relative to the screen centre with a shadow from judge_gals_kage_tbl, then when
+ * Event_Judge_Gals is raised plays her judging patterns and spawns the effect 37 flag for the
+ * player she votes for (EJG_index). setup_EJG_index fills EJG_index: all votes go to the winner
+ * when the round scores differ by more than 10000, otherwise from sel_ejg_ix_table.
  */
 
 #include "structs.h"
@@ -99,30 +98,30 @@ void effect_C9_move(WORK_Other* ewk) {
                 switch (ewk->wu.routine_no[1]) {
                 case R1_WAIT:
                     if (Event_Judge_Gals) {
-                        ewk->wu.routine_no[1] += 1;
+                        ewk->wu.routine_no[1]++;
                         set_char_move_init(&ewk->wu, 0, 1);
                     }
                     break;
                 case R1_JUDGE:
                     if (ewk->wu.cg_type == 0xFF) {
-                        ewk->wu.routine_no[1] += 1;
+                        ewk->wu.routine_no[1]++;
                         set_char_move_init(&ewk->wu, 0, 2);
                         effect_37_init(&ewk->wu, ewk->wu.charset_id, EJG_index[ewk->wu.type]);
                     }
                     break;
                 case R1_VOTE:
                     if (ewk->wu.cg_type == 0xFF) {
-                        ewk->wu.routine_no[1] += 1;
-                        Event_Judge_Gals -= 1;
+                        ewk->wu.routine_no[1]++;
+                        Event_Judge_Gals--;
                     }
                     break;
                 case R1_DONE:
                     if (Event_Judge_Gals < 0) {
-                        ewk->wu.routine_no[1] += 1;
+                        ewk->wu.routine_no[1]++;
                     }
                 case R1_NEXT:
                     if (bg_w.stage == 8 && Round_num == 0) {
-                        ewk->wu.routine_no[1] += 1;
+                        ewk->wu.routine_no[1]++;
                         ewk->wu.routine_no[2] = R2_HOLD;
                     } else {
                         ewk->wu.routine_no[1] += 9;
@@ -189,7 +188,7 @@ s32 effect_C9_init(PLW* wk, u8 data) {
 
 
 
-/* Compare the round scores in Score[x][2]; a gap above 10000 gives all votes to the winner. */
+/* compares the round scores (Score[x][2]); a gap above 10000 gives all votes to the winner */
 void setup_EJG_index(void) {
     s16 i;
     u32 gra;

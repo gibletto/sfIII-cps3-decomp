@@ -1,8 +1,7 @@
 /*
  * EFFH1.C  Effect H1: four ending objects that fly in when the scroll arrives
  *
- * effect_H1_init
- * (ending 9) makes four objects from effh1_data_tbl; each waits until bg 0 has scrolled
+ * effect_H1_init (ending 9) makes four objects from effh1_data_tbl; each waits until bg 0 has scrolled
  * below x 0x1E0, flies with the speeds in effh1_speed_tbl until it passes y 0x100, then
  * goes back to its start for the second pass.
  */

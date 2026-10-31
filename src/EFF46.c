@@ -1,5 +1,5 @@
 /*
- * EFF46.C  Effect 46: appearance object that flies off
+ * EFF46.C  Effect 46: a small object beside the winner
  *
  * Effect 46 is a small object beside a winner (effect_46_init takes the owner's colour,
  * pose side and position): it picks one of eight patterns at random, runs its animation (twice

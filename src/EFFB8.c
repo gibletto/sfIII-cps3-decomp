@@ -304,9 +304,9 @@ s32 effB8_mes_change_init(s16 pl, s16 mes_no) {
 
 /* provisional name */
 void effB8_conn_set(ewk, pl, mes_no)
-    WORK_Other_CONN* ewk;
-    s8 pl;
-    u16 mes_no;
+WORK_Other_CONN* ewk;
+s8 pl;
+u16 mes_no;
 {
     const CONN* conn_data;
     const u16* chr_data;
@@ -337,9 +337,9 @@ void effB8_conn_set(ewk, pl, mes_no)
 
 /* provisional name */
 void effB8_conn_purge(ewk, pl, mes_no)
-    WORK_Other_CONN* ewk;
-    s8 pl;
-    u16 mes_no;
+WORK_Other_CONN* ewk;
+s8 pl;
+u16 mes_no;
 {
     const u16* chr_data;
     u16 chr;

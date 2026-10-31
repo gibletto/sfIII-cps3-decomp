@@ -53,7 +53,7 @@ extern const s16 scr_obj_data25_2[];
 extern const s16 scr_obj_data25_3[];
 extern const s16 scr_obj_data25_4[];
 
-/* 02007C74 */
+/* 02006B20 */
 const s16* scr_obj_data25[9] = {
     scr_obj_data25_0,
     scr_obj_data25_1,
@@ -65,7 +65,7 @@ const s16* scr_obj_data25[9] = {
     scr_obj_data25_4,
     scr_obj_data25_4,
 };
-/* 02007C98 */
+/* 02006B44 */
 void (*eff25_jp_tbl[8])(WORK_Other* ewk) = {
     eff25_00,
     eff25_00,

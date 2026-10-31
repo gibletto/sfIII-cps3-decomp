@@ -52,13 +52,13 @@ extern const u32 fade_adrs_tbl_7[];
 extern const u32 fade_adrs_tbl_8[];
 extern const u32 fade_adrs_tbl_9[];
 
-s8 fade_layer_num;  /* 02028718 */
-s16 fade_cont_rno;  /* 0202871A */
-s8 fade_end_timer;  /* 0202871C */
-FADE_LAYER fade_layer[7];  /* 02028720 */
+s8 fade_layer_num;  /* 0201DB90 */
+s16 fade_cont_rno;  /* 0201DB92 */
+s8 fade_end_timer;  /* 0201DB94 */
+FADE_LAYER fade_layer[7];  /* 0201DB98 */
 
 
-/* 020069D8 */
+/* 02006800 */
 const u32* fade_adrs_tbl[29] = {
     fade_adrs_tbl_0,
     fade_adrs_tbl_1,

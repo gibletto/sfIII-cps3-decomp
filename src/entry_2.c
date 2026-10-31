@@ -305,7 +305,7 @@ void Entry_03_1st(void) {
 void Entry_03_2nd(void) {
     switch (E_No2) {
     case 0:
-        if (--E_Timer != 0) {
+        if (--E_Timer) {
             break;
         }
         E_No2 += 1;
@@ -443,13 +443,13 @@ void Entry_06_2nd(void) {
     }
     switch (E_No2) {
     case 0:
-        E_No2 += 1;
+        E_No2++;
         sc_vram_to_ram();
         Switch_Screen_Init(0, 0);
         break;
     case 1:
         if (Switch_Screen() != 0) {
-            E_No2 = E_No2 + 1;
+            E_No2++;
             Cover_Timer = 23;
             Switch_Screen_Init(0, 0);
         }
@@ -474,10 +474,8 @@ void Entry_06_2nd(void) {
             }
             E_07_Flag[0] = 0;
             E_07_Flag[1] = 0;
-            if (E_Number[LOSER][0] == ENTRY_LOSER) {
-                if (Continue_Flag != 0) {
-                    E_Number[LOSER][0] = ENTRY_CONTINUE;
-                }
+            if (E_Number[LOSER][0] == ENTRY_LOSER && Continue_Flag != 0) {
+                E_Number[LOSER][0] = ENTRY_CONTINUE;
             }
         }
         break;
@@ -524,7 +522,7 @@ void Entry_07_2nd(void) {
         if (--E_Timer) {
             break;
         }
-        E_No2 = E_No2 + 1;
+        E_No2++;
         sc_vram_to_ram();
         Switch_Screen_Init(0, 1);
         break;
@@ -1035,16 +1033,16 @@ s32 Credit_Sub_1P(void) {
     switch (status) {
     case 0:
         if (coin_chute1_w.count) {
-            Flash_More_Coins(0, ENTRY_MSG_X_ROWS[4][Game_setting.Screen_Mode], (s8)(coin_chute1_w.per_credit - coin_chute1_w.count));
+            Flash_More_Coins(0, Entry_Msg_X_Data[4][Game_setting.Screen_Mode], (s8)(coin_chute1_w.per_credit - coin_chute1_w.count));
         } else {
-            Flash_Insert_Coin(0, ENTRY_MSG_X_ROWS[0][Game_setting.Screen_Mode]);
+            Flash_Insert_Coin(0, Entry_Msg_X_Data[0][Game_setting.Screen_Mode]);
         }
         break;
     case 99:
         if (credit_1p) {
-            Flash_More_Coins(0, ENTRY_MSG_X_ROWS[4][Game_setting.Screen_Mode], 1);
+            Flash_More_Coins(0, Entry_Msg_X_Data[4][Game_setting.Screen_Mode], 1);
         } else {
-            Flash_Insert_Coin(0, ENTRY_MSG_X_ROWS[0][Game_setting.Screen_Mode]);
+            Flash_Insert_Coin(0, Entry_Msg_X_Data[0][Game_setting.Screen_Mode]);
         }
         break;
     default:
@@ -1052,7 +1050,7 @@ s32 Credit_Sub_1P(void) {
             if (Request_Break[0]) {
                 Flash_Please(0);
             } else {
-                Flash_Start(0, ENTRY_MSG_X_ROWS[2][Game_setting.Screen_Mode]);
+                Flash_Start(0, Entry_Msg_X_Data[2][Game_setting.Screen_Mode]);
             }
         }
         break;
@@ -1079,19 +1077,19 @@ s32 Credit_Sub_2P(void) {
     case 0:
         if (Get_2P_Coin_Count()) {
             if (Chute_Mode < 2) {
-                Flash_More_Coins(1, ENTRY_MSG_X_ROWS[5][Game_setting.Screen_Mode], (s8)(coin_chute1_w.per_credit - coin_chute1_w.count));
+                Flash_More_Coins(1, Entry_Msg_X_Data[5][Game_setting.Screen_Mode], (s8)(coin_chute1_w.per_credit - coin_chute1_w.count));
             } else {
-                Flash_More_Coins(1, ENTRY_MSG_X_ROWS[5][Game_setting.Screen_Mode], (s8)(coin_chute2_w.per_credit - coin_chute2_w.count));
+                Flash_More_Coins(1, Entry_Msg_X_Data[5][Game_setting.Screen_Mode], (s8)(coin_chute2_w.per_credit - coin_chute2_w.count));
             }
         } else {
-            Flash_Insert_Coin(1, ENTRY_MSG_X_ROWS[1][Game_setting.Screen_Mode]);
+            Flash_Insert_Coin(1, Entry_Msg_X_Data[1][Game_setting.Screen_Mode]);
         }
         break;
     case 99:
         if (credits != 0) {
-            Flash_More_Coins(1, ENTRY_MSG_X_ROWS[5][Game_setting.Screen_Mode], 1);
+            Flash_More_Coins(1, Entry_Msg_X_Data[5][Game_setting.Screen_Mode], 1);
         } else {
-            Flash_Insert_Coin(1, ENTRY_MSG_X_ROWS[1][Game_setting.Screen_Mode]);
+            Flash_Insert_Coin(1, Entry_Msg_X_Data[1][Game_setting.Screen_Mode]);
         }
         break;
     default:
@@ -1099,7 +1097,7 @@ s32 Credit_Sub_2P(void) {
             if (Request_Break[1]) {
                 Flash_Please(1);
             } else {
-                Flash_Start(1, ENTRY_MSG_X_ROWS[3][Game_setting.Screen_Mode]);
+                Flash_Start(1, Entry_Msg_X_Data[3][Game_setting.Screen_Mode]);
             }
         }
         break;
@@ -1245,7 +1243,7 @@ s16 PL_id;
             E_Number[PL_id][2]++;
             Personal_Timer[PL_id] = 60;
             if (Game_setting.Event == 0) {
-                tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[4][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, (s8*)"GAME OVER ");
+                tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[4][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "GAME OVER ");
             }
         }
         break;
@@ -1256,7 +1254,7 @@ s16 PL_id;
                 Personal_Timer[PL_id] = 20;
             }
             if (Game_setting.Event == 0) {
-                tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[4][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, (s8*)"GAME OVER ");
+                tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[4][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "GAME OVER ");
             }
         }
         if (--Personal_Timer[PL_id]) {
@@ -1265,7 +1263,7 @@ s16 PL_id;
         E_Number[PL_id][2]++;
         Personal_Timer[PL_id] = 30;
         if (Game_setting.Event == 0) {
-            tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[4][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, (s8*)"GAME OVER ");
+            tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[4][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "GAME OVER ");
         }
         break;
     default:
@@ -1286,7 +1284,7 @@ s16 PL_id;
     case 0:
         E_Number[PL_id][2]++;
         tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[2][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "                  ");
-        tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[4][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, (s8*)"GAME OVER ");
+        tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[4][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "GAME OVER ");
         break;
     default:
         break;
@@ -1323,7 +1321,7 @@ u16 x;
         if (coin_chute1_w.per_credit == 1) {
             tilemap_print_string_attr(x, Text_Page_Y, 18, str_INSERT_COIN);
         } else {
-            tilemap_print_string_attr(x, Text_Page_Y, 18, (s8*)"INSERT   COINS");
+            tilemap_print_string_attr(x, Text_Page_Y, 18, "INSERT   COINS");
             tilemap_print_hex_block(x + 7, Text_Page_Y, 18, coin_chute1_w.per_credit, 1, 1);
         }
         break;
@@ -1334,7 +1332,7 @@ u16 x;
         F_No0[PL_id] -= 1;
         F_Timer[PL_id] = 50;
         if (coin_chute1_w.per_credit == 1 && Two_Coin_Start == 0) {
-            tilemap_print_string_attr(x, Text_Page_Y, 18, (s8*)"  JOIN IN  ");
+            tilemap_print_string_attr(x, Text_Page_Y, 18, "  JOIN IN  ");
         } else {
             tilemap_print_string_attr(x, Text_Page_Y, 18, "    JOIN IN   ");
         }
@@ -1496,9 +1494,9 @@ s16 coins;
 {
     if (Check_Coin_In(PL_id) != 0) {
         if (coins == 1) {
-            tilemap_print_string_attr(x, Text_Page_Y, 18, (s8*)"INSERT   MORE COIN ");
+            tilemap_print_string_attr(x, Text_Page_Y, 18, "INSERT   MORE COIN ");
         } else {
-            tilemap_print_string_attr(x, Text_Page_Y, 18, (s8*)"INSERT   MORE COINS");
+            tilemap_print_string_attr(x, Text_Page_Y, 18, "INSERT   MORE COINS");
         }
         tilemap_print_hex_block(x + 7, Text_Page_Y, 18, (s8)coins, 1, 1);
         F_Timer[PL_id] = 50;
@@ -1904,7 +1902,7 @@ s16 PL_id;
     Continue_Score_Sub(PL_id);
     Break_Into = 1;
     Stop_Combo = 1;
-    E_No1 = E_No1 + 1;
+    E_No1++;
     E_No2 = 0;
     E_Number[New_Challenger][0] = ENTRY_NONE;
     E_Number[New_Challenger][1] = 0;
@@ -1944,7 +1942,7 @@ s16 PL_id;
     if (E_07_Flag[0] != 0 && E_07_Flag[1] != 0) {
         return;
     }
-    E_No1 = E_No1 + 1;
+    E_No1++;
     E_No2 = 0;
     Break_Into = 1;
 }
@@ -2031,10 +2029,8 @@ s16 PL_id;
 
 
 void coin_in_sound_request(void) {
-    if (coin_chute1_w.dropped | coin_chute2_w.dropped) {
-        if (Demo_Flag == 1) {
-            sound_request(E_No0 == E0_TITLE ? 115 : 106);
-        }
+    if ((coin_chute1_w.dropped | coin_chute2_w.dropped) && Demo_Flag == 1) {
+        sound_request(E_No0 == E0_TITLE ? 115 : 106);
     }
 }
 

@@ -1,11 +1,10 @@
 /*
  * EFF63.C  Effect 63: breakable stage object
  *
- * effect_63_init makes one object at
- * (0x330, 52) of type 7. effect_63_move starts it by eff_hit_flag[type] (pattern 31, 33, or
- * broken at once with pattern 30), takes a hit (pattern 32), waits for its pattern to end, takes
- * hits until eff_hit_flag[7] is 2 (pattern 34), sets off effect 27 (type 6) at the pattern's
- * signal 2 and stays broken after signal 1.
+ * effect_63_init makes one object at (0x330, 52) of type 7. effect_63_move starts it by
+ * eff_hit_flag[type] (pattern 31, 33, or broken at once with pattern 30), takes a hit (pattern 32),
+ * waits for its pattern to end, takes hits until eff_hit_flag[7] is 2 (pattern 34), sets off effect
+ * 27 (type 6) at the pattern's signal 2 and stays broken after signal 1.
  */
 
 #include "structs.h"
@@ -34,7 +33,7 @@
 
 
 
-/* Update the breakable stage object. */
+/* update the breakable stage object */
 void effect_63_move(WORK_Other* ewk) {
     if (compel_dead_check(ewk) != 0) {
         ewk->wu.routine_no[0] = R0_KILL;

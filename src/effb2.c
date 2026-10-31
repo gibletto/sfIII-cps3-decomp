@@ -42,8 +42,8 @@
 
 
 
-s16 rf_b2_flag;  
-s16 b2_curr_no;  
+s16 rf_b2_flag;
+s16 b2_curr_no;
 
 
 
@@ -144,7 +144,7 @@ s32 b3_Break_Into_check(WORK_Other* ewk) {
 
 
 
-/* Family 2; round type comes from Game_setting.Battle_Number. */
+/* family 2, rounds from Game_setting.Battle_Number */
 s32 effect_B2_init(void) {
     WORK_Other* ewk;
     s16 ix;

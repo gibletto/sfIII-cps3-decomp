@@ -70,9 +70,9 @@ void effD7_setup_up(WORK_Other* ewk);
 void effD7_move_x(WORK_Other* ewk);
 s32 effD7_move_y(WORK_Other* ewk);
 s32 effD7_select_end(WORK_Other* ewk);
-s32 effect_98_init();
-s32 effect_E4_init();
-s32 Ck_Range_Out_S();
+#include "EFF98.h"
+#include "EFFE4.h"
+#include "SYS_sub.h"
 
 void effect_D7_move(WORK_Other* ewk) {
     s16 y;

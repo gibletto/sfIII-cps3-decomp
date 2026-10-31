@@ -57,35 +57,36 @@ extern const u16 rot_lvr_tbl_l[4];    /* provisional name (06409758): 1, 4, 2, 8
 
 
 
-/* 02004FB4 */
+/* 02004F20 */
+/* the check routines, indexed by a step's CK_* code (cmd_data.h) */
 void (*chk_move_jp[CMD_END])() = {
-    check_init,
-    check_0,
-    check_1,
-    check_2,
-    check_3,
-    check_4,
-    check_5,
-    check_6,
-    check_7,
-    check_7,
-    check_9,
-    check_10,
-    check_11,
-    check_12,
-    check_13,
-    check_14,
-    check_15,
-    check_16,
-    check_16,
-    check_18,
-    check_19,
-    check_20,
-    check_21,
-    check_22,
-    check_23,
-    check_24,
-    check_25,
+    check_init, /* CK_INIT */
+    check_0,    /* CK_LEVER */
+    check_1,    /* CK_CHARGE */
+    check_2,    /* CK_HOLD */
+    check_3,    /* CK_SHOT_HOLD */
+    check_4,    /* CK_RENDA */
+    check_5,    /* CK_PRESS */
+    check_6,    /* CK_TURN */
+    check_7,    /* CK_SHOT_P */
+    check_7,    /* CK_SHOT_K */
+    check_9,    /* CK_LEVER_CHANGE */
+    check_10,   /* CK_PARRY */
+    check_11,   /* CK_BACK_DOWN */
+    check_12,   /* CK_PARRY_CHANGE */
+    check_13,   /* CK_UKEMI */
+    check_14,   /* CK_RENDA3 */
+    check_15,   /* CK_LEVER_COUNT */
+    check_16,   /* CK_PRESS_P */
+    check_16,   /* CK_PRESS_K */
+    check_18,   /* CK_LEVER_REPEAT */
+    check_19,   /* CK_LEVER_SET */
+    check_20,   /* CK_NONE */
+    check_21,   /* CK_LEVER_PRESS */
+    check_22,   /* CK_ROTATE */
+    check_23,   /* CK_PARRY_STRICT */
+    check_24,   /* CK_LEVER_NEW */
+    check_25,   /* CK_LEVER_HELD */
 };
 
 
@@ -100,7 +101,7 @@ void waza_check(PLW* pl) {
 
 
 
-void cmd_data_set(PLW* _p0, s16 i) {
+void cmd_data_set(PLW* pl, s16 i) {
     u8* ptr3;
     u16* ptr4;
     (&wcp[cmd_id].reset[0])[i] = *cmd_tbl_ptr++;
@@ -129,7 +130,7 @@ void cmd_init(PLW* pl) {
     cmd_id = pl->wu.id;
     pl->cp = &wcp[cmd_id];
     pl->wu.routine_no[7]++;
-    ptr = (s32*)&waza_work[cmd_id][0];
+    ptr = (s32*)waza_work[cmd_id];
     for (i = 0; i < CMD_SLOTS; i++) {
         for (j = 0; j < 6; j = j + 1) {
             *ptr++ = 0;
@@ -167,7 +168,7 @@ void cmd_move(void) {
         }
     }
     for (i = 0; i < CMD_SLOTS; i++) {
-        if ((wcp[cmd_id].waza_flag[i] != -1) && (wcp[cmd_id].waza_flag[i] != 0)) {
+        if (wcp[cmd_id].waza_flag[i] != -1 && wcp[cmd_id].waza_flag[i] != 0) {
             command_ok_move(i);
         }
     }
@@ -1328,6 +1329,7 @@ void sw_pick_up(void) {
     wcp[cmd_id].sw_chg = chk_pl->sw_chg;
     wcp[cmd_id].sw_now = chk_pl->sw_now;
     wcp[cmd_id].sw_off = chk_pl->shot_down;
+    /* lever_dir 1: forward, 2: back, from the raw left (4) and right (8) bits */
     if ((i = wcp[cmd_id].sw_lvbt & LEVER_LR)) {
         if (cmd_pl->wu.rl_flag) {
             if (i & LEVER_RIGHT) {

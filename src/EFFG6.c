@@ -42,7 +42,7 @@ void effect_G6_move(WORK_Other* ewk) {
     XY* mp;
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
-        ewk->wu.routine_no[0] += 1;
+        ewk->wu.routine_no[0]++;
         ewk->wu.dmcal_m = effg6_data[ewk->wu.type][G6_FLAGS];
         ewk->wu.dir_timer = effg6_data[ewk->wu.type][G6_LIFE];
         ewk->wu.next_x = effg6_data[ewk->wu.type][G6_X];
@@ -60,7 +60,7 @@ void effect_G6_move(WORK_Other* ewk) {
         ewk->wu.now_koc &= 0xFF;
     case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
-            ewk->wu.routine_no[0] += 1;
+            ewk->wu.routine_no[0]++;
             break;
         }
         if ((ewk->wu.dmcal_m & 1) && (ewk->wu.old_pos[1] != mwk->xyz[1].disp.pos)) {
@@ -77,7 +77,7 @@ void effect_G6_move(WORK_Other* ewk) {
             mr = mwk->routine_no;
             if ((er[0] != mr[0]) || (er[1] != mr[1]) || (er[2] != mr[2])) {
             block_22:
-                ewk->wu.routine_no[0] += 1;
+                ewk->wu.routine_no[0]++;
                 break;
             }
         }

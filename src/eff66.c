@@ -36,7 +36,7 @@
 
 
 
-/* 02006D78 */
+/* 02006C04 */
 void (*eff66_jp_tbl[4])(WORK_Other*) = {
     eff66_00,
     eff66_01,
@@ -147,7 +147,6 @@ void eff66_03(WORK_Other* ewk) {
 
 
 
-/* char_add by stage and area */
 s32 effect_66_init(s16 type) {
     WORK_Other* ewk;
     s16 ix;

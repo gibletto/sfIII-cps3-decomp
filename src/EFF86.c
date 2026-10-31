@@ -1,9 +1,8 @@
 /*
- * EFF86.C  Effect 86: companion stage object
+ * EFF86.C  Effect 86: effect 85's partner object
  *
- * effect_86_init places one object (eff86_char_table pattern 13) at (549, 92) for
- * its master. eff86_0000 animates it while the master's routine_no[1] is outside
- * 2-4 and resets it at 4.
+ * effect_86_init places one object (eff86_char_table pattern 13) at (549, 92) for its master;
+ * eff86_0000 animates it while the master's routine_no[1] is outside 2-4 and resets it at 4.
  */
 
 #include "structs.h"

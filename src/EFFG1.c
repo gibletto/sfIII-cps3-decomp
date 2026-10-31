@@ -23,8 +23,7 @@ s32 push_effect_work(WORK* wkhd);
 void effect_work_kill();
 
 extern const s16 effG1_x_offsets[2][4];
-void effG1_sync(WORK* ewk, PLW* pwk);
-s32 effect_G2_init();
+#include "EFFG2.h"
 
 void effect_G1_move(WORK_Other* ewk) {
     PLW* pwk = (PLW*)ewk->my_master;

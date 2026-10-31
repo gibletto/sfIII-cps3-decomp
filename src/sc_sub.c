@@ -27,11 +27,11 @@
 
 
 
-s16 win_mark_rno[2];  /* 02028704 */
-s16 win_mark_timer[2];  /* 02028708 */
-s16 win_mark_phase[2];  /* 0202870C */
-s16 win_mark_num[2];  /* 02028710 */
-s16 win_mark_pos[2];  /* 02028714 */
+s16 win_mark_rno[2];  /* 0201DB7C */
+s16 win_mark_timer[2];  /* 0201DB80 */
+s16 win_mark_phase[2];  /* 0201DB84 */
+s16 win_mark_num[2];  /* 0201DB88 */
+s16 win_mark_pos[2];  /* 0201DB8C */
 
 
 /* provisional name */

@@ -30,7 +30,7 @@ void check_7(void);
 void check_9(void);
 void check_init(void);
 void check_next(void);
-void cmd_data_set(PLW* , s16 i);
+void cmd_data_set(PLW* pl, s16 i);
 void cmd_init(PLW* pl);
 void cmd_move(void);
 void command_ok(void);

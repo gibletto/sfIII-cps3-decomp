@@ -60,7 +60,6 @@ s32 bg170_appear_check();
 #include "EFF48.h"
 #include "EFFC1.h"
 #include "efff6.h"
-#include "end_main.h"
 #include "sys_config.h"
 #include "sys_config_2.h"
 #include "sys_config_3.h"
@@ -260,11 +259,9 @@ void Appear_01000(PLW* wk) {
         break;
     case AP01_NEXT:
         char_move(&wk->wu);
-        if (wk->wu.cg_type == 9) {
-            if (Appear_flag[wk->wu.id] == 0) {
-                wk->wu.routine_no[3]++;
-                set_char_move_init(&wk->wu, 9, wk->wu.char_index + 8);
-            }
+        if (wk->wu.cg_type == 9 && Appear_flag[wk->wu.id] == 0) {
+            wk->wu.routine_no[3]++;
+            set_char_move_init(&wk->wu, 9, wk->wu.char_index + 8);
         }
         break;
     case AP01_NEXT2:
@@ -692,7 +689,7 @@ void Appear_07000(PLW* wk) {
         if (Appear_flag[wk->wu.id] != 0) {
             break;
         }
-        wk->wu.routine_no[3] += 1;
+        wk->wu.routine_no[3]++;
     case AP07_CUE:
         char_move(&wk->wu);
         if (wk->wu.cg_type == 9) {
@@ -705,7 +702,7 @@ void Appear_07000(PLW* wk) {
         switch (wk->wu.cg_type) {
         case 1:
             wk->wu.mvxy.a[1].sp = 0x30000;
-            wk->wu.mvxy.d[1].sp = 0xffffa000;
+            wk->wu.mvxy.d[1].sp = 0xFFFFA000;
             wk->wu.cg_type = 0;
             char_move_z(&wk->wu);
             break;
@@ -996,7 +993,7 @@ void Appear_14000(PLW* wk) {
     s16 id_w;
     switch (wk->wu.routine_no[3]) {
     case RN3_START:
-        wk->wu.routine_no[3] += 1;
+        wk->wu.routine_no[3] ++;
         wk->wu.disp_flag = 1;
         id_w = wk->wu.id ^ 1;
         if (sean_appear_check(wk, id_w)) {
@@ -1005,7 +1002,7 @@ void Appear_14000(PLW* wk) {
         }
         wk->wu.routine_no[2] = NORMAL_STAND;
         wk->wu.routine_no[3] = RN3_START;
-        Appear_end++;
+        Appear_end ++;
         break;
     case AP14_END:
         switch (Appear_free) {
@@ -1017,14 +1014,14 @@ void Appear_14000(PLW* wk) {
             set_char_move_init2(&wk->wu, 0, 0, work + 1, 0);
             wk->wu.routine_no[2] = NORMAL_STAND;
             wk->wu.routine_no[3] = AP14_END;
-            Appear_end += 1;
+            Appear_end ++;
             break;
         case 2:
             char_move(&wk->wu);
             if (wk->wu.cg_type == 0xFF) {
                 wk->wu.routine_no[2] = NORMAL_STAND;
                 wk->wu.routine_no[3] = RN3_START;
-                Appear_end += 1;
+                Appear_end ++;
             }
         }
     }

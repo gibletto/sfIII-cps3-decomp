@@ -22,17 +22,13 @@
 #include "EFF63.h"
 
 /* declarations the headers do not give */
-void zoom_ud_check(void);
-void bg_x_move_check(void);
-void bg_y_move_check(void);
-void bg_base_y_move_check(void);
 void load_any_color();
 /* provisional names */
 extern const u16 bg100_scrn_data[][16][32];
 extern s16 bg100_cnt;
 extern s16 bg100_timer;
 s32 effect_18_init();
-s32 effect_87_init();
+#include "eff87.h"
 void bg1000(void);
 void bg1001(void);
 void bg1000_init00(void);

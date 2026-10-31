@@ -32,7 +32,7 @@
 
 extern const s16 eff04_stone_tbl[56];   /* provisional name: rows of 7, ten read from a row */
 extern const s16 eff04_wait_tbl[32];   /* provisional name */
-s32 effect_15_init();
+#include "EFF15.h"
 
 
 

@@ -23,18 +23,18 @@ extern const u16 stngauge_postbl_1_2[];
 extern const u16 stngauge_puttbl_0[];
 extern const u16 stngauge_puttbl_1[];
 
-s16 stn_number;  /* 0202407C */
-s16 stn_work;  /* 0202407E */
-s16 stn_offset;  /* 02024080 */
-STN_DAT sdat[2];  /* 02024084 */
+s16 stn_number;  /* 0201DC78 */
+s16 stn_work;  /* 0201DC7A */
+s16 stn_offset;  /* 0201DC7C */
+STN_DAT sdat[2];  /* 0201DC80 */
 
 
-/* 020078E8 */
+/* 02006874 */
 const u16* stngauge_puttbl[2] = {
     stngauge_puttbl_0,
     stngauge_puttbl_1,
 };
-/* 020078F0: one pair of gauge positions per Game_setting.Screen_Mode */
+/* 0200687C: one pair of gauge positions per Game_setting.Screen_Mode */
 const u16* stngauge_postbl[4] = {
     stngauge_postbl_0,
     stngauge_postbl_1,

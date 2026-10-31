@@ -87,25 +87,20 @@ extern const s8 EM_Cursor_Data[][2];   /* provisional name: the face grid cell o
 #pragma inline(Setup_BG)
 s32 effect_38_init(s16 PL_id, s16 Wait);
 s32 effect_39_init(s16 PL_id, s16 Wait);
-s32 effect_43_init();
-s32 effect_52_init();
-s32 effect_D8_entry();
-s32 effect_E0_init();
+#include "EFF43.h"
+#include "Eff52.h"
+#include "EffD8.h"
+#include "EffE0.h"
 s32 effect_D7_init2();
 s32 effect_D7_init(s16 pl_id, s16 plate_id, s16 pos_id, s16 time, s16 type);
 s32 effect_E4_init(s16 PL_id, s16 Arts, s16 Type);
 s32 effect_B0_init(void);
-s32 effect_59_init();
-void Next_CPU_1st(void);
-void Next_CPU_2nd(void);
-void Next_CPU_3rd(void);
-void Next_CPU_4th(void);
+#include "Eff59.h"
 void Setup_Next_EM(void);
 void Init_EM_Course(void);
 s32 Sel_Arts_Sub_Check();
 void Sel_Plate_Order_Step();
 s32 Check_First_PL_Decided(void);
-void Setup_Plates();
 void Setup_Yun_Yang_Face();
 void Yun_Yang_Face_Other();
 void Yun_Yang_Select();
@@ -719,7 +714,7 @@ void PL_Sel_2nd(void) {
                 Order_Dir[3] = 4;
             }
             Sel_Sub_No[0]++;
-            Sel_Sub_No[1] = 0;
+            Sel_Sub_No[1] = PS3_START;
             Plate_Step[0] = 0;
             Plate_Step[1] = 0;
             Setup_Plates(Select_Status[1] - 1);
@@ -1295,7 +1290,7 @@ void Check_Exit(void) {
     s16 cy;
     switch (Exit_No) {
     case 0:
-        if (plw[0].wu.operator && Sel_Arts_Complete[0] >= 0) {
+        if (plw[0].wu.operator != 0 && Sel_Arts_Complete[0] >= 0) {
             break;
         }
         if (plw[1].wu.operator != 0 && Sel_Arts_Complete[1] >= 0) {
@@ -1312,7 +1307,7 @@ void Check_Exit(void) {
         break;
     case 1:
         Sel_Exit_Flag = 0;
-        if (plw[0].wu.operator && plw[1].wu.operator != 0) {
+        if (plw[0].wu.operator != 0 && plw[1].wu.operator != 0) {
             Exit_Timer = 1;
             Exit_No++;
             Battle_Country = My_char[New_Challenger];
@@ -1360,7 +1355,7 @@ void Check_Exit(void) {
         Exit_No++;
         Next_Step = 0;
         effect_59_init(5);
-        if (plw[0].wu.operator && plw[1].wu.operator != 0) {
+        if (plw[0].wu.operator != 0 && plw[1].wu.operator != 0) {
             break;
         }
         if (plw[0].wu.operator) {}

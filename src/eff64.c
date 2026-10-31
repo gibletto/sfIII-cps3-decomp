@@ -39,7 +39,7 @@
 
 
 
-/* 02006D54 */
+/* 02006BE0 */
 void (*eff64_jp_tbl[9])(WORK_Other*) = {
     eff64_00,
     eff64_00,
@@ -205,7 +205,6 @@ void eff64_08(WORK_Other* ewk) {
 
 
 /* provisional name */
-/* char_add by stage and area */
 void eff64_data_set(WORK_Other* ewk, s16 keep) {
     const s16* data;
     ewk->wu.routine_no[2]++;

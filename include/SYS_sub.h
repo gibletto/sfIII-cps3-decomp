@@ -23,7 +23,7 @@ s32 Button_Cut_Hold(s16* timer, s16 first, s16 repeat);
 void Disp_Digit8x16(u32 value, s16 x, s16 y);
 void Disp_Win_Type(void);
 void Disp_Copyright(void);
-s32 Cut_Cut_Sub(s16 xx);
+s32 Cut_Cut_Sub(s16 cut);
 void Setup_Play_Type(void);
 void scrn_pos_clear(void);
 void challenger_banner_clear(void);

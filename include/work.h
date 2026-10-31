@@ -945,7 +945,6 @@ extern s16 vital_dot_pos;
 extern s16 vital_red_ofs;
 extern s16 vital_yel_ofs;
 extern u16 gauge_stop_flag[2];
-extern u16 gauge_stop_flag[2];
 extern VITAL_BAR vit_bar[2];
 extern ROUND_TIMER round_timer;
 extern COUNT_WORK count_work;

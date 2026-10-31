@@ -6,6 +6,5 @@
 
 s32 effect_G3_init(WORK* wk, u8 data);
 void effect_G3_move(WORK_Other* ewk);
-void effect_G2_move(void);
 
 #endif

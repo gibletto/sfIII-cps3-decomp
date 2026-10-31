@@ -14,7 +14,7 @@
 #include "sys_config_3.h"
 #include "cps3.h"
 
-SPRITE_LIST sprite_list_w[4];  /* 02078A40 */
+SPRITE_LIST sprite_list_w[4];  /* 0206CB24 */
 
 
 /* provisional name: unreferenced; clears every sprite list (0) or list n-1 */

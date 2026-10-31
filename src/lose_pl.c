@@ -33,7 +33,6 @@
 #include "EFF48.h"
 #include "EFFC1.h"
 #include "efff6.h"
-#include "end_main.h"
 #include "sys_config.h"
 #include "sys_config_2.h"
 #include "sys_config_3.h"
@@ -44,8 +43,8 @@
 /* wk->wu.routine_no[3] in a win or lose pose */
 #define POSE_RUN        1       /* the pose runs until its script sets RN3_DONE */
 
-s16 lose_rno[3];  /* 02023A7C */
-s16 lose_free[2];  /* 02023A82 */
+s16 lose_rno[3];  /* 0201D6CC */
+s16 lose_free[2];  /* 0201D6D2 */
 
 
 void lose_player(PLW* wk) {

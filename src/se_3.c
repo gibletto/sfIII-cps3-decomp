@@ -52,7 +52,7 @@ void bgm_fade_in_stage(s16 x) {
 }
 
 void Sound_SE(Code)
-    s16 Code;
+s16 Code;
 {
     if (Demo_Sound != 0 || Demo_Flag != 0) {
         sound_request(Code);

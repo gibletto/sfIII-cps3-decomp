@@ -728,10 +728,10 @@ s32 Check_F_Cross_Chop(PLW* wk, WORK* em, s16 VS_Technique) {
     if (em->kind_of_waza != 4) {
         return 0;
     }
-    if (em->pat_status != 0x16) {
-        if (em->pat_status != 0x14) {
-            if (em->pat_status != 0x1A) {
-                if (em->pat_status != 0x1C) {
+    if (em->pat_status != 22) {
+        if (em->pat_status != 20) {
+            if (em->pat_status != 26) {
+                if (em->pat_status != 28) {
                     return 0;
                 }
             }

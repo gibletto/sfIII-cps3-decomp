@@ -96,7 +96,6 @@ void effect_48_move(WORK_Other* ewk) {
         push_effect_work(&ewk->wu);
         break;
     }
-    return;
 }
 
 s32 effect_48_init(s16 type) {

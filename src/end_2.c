@@ -74,7 +74,7 @@ void end_02000(u16 pl_num) {
         if (end_w.timer < 0) {
             end_w.r_no_2 = end_w.r_no_2 + 1;
             if (end_w.r_no_2 == 4) {
-                end_w.r_no_1 = end_w.r_no_1 + 1;
+                end_w.r_no_1++;
                 end_w.end_flag = 1;
                 fadeout_to_staff_roll();
             } else {

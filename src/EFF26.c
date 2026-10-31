@@ -58,7 +58,7 @@
 
 
 
-/* 02006C74 */
+/* 02006B64 */
 void (*eff26_jp_tbl[6])(WORK_Other*) = {
     eff26_00,
     eff26_01,
@@ -67,7 +67,7 @@ void (*eff26_jp_tbl[6])(WORK_Other*) = {
     eff26_04,
     eff26_05,
 };
-/* Object records for the two part types. */
+/* object records for the two part types */
 const s16* scr_obj_data26[2] = {
     scr_obj_data26_0,
     scr_obj_data26_1,
@@ -346,7 +346,6 @@ void eff26_05(WORK_Other* ewk) {
 
 
 
-/* char_add by stage and area */
 s32 effect_26_init(WORK_Other* oya, s16 type26) {
     WORK_Other* ewk;
     s16 ix;

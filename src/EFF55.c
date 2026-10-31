@@ -1,10 +1,10 @@
 /*
  * EFF55.C  Effect 55: a bird that lands, flies off and comes back
  *
- * effect_55_init places a bird at (672, 114); effect_55_move runs
- * the routine of its state (eff55_0000/1000/2000). eff55_1000 takes off and flies off to the
- * right (eff55_1000_0000/1000), waits, sometimes crosses back from right to left (2000/3000),
- * then glides in from the left to its perch (4000/5000); eff55_2000 lands it again.
+ * effect_55_init places a bird at (672, 114); effect_55_move runs the routine of its state
+ * (eff55_0000/1000/2000). eff55_1000 takes off and flies off to the right (eff55_1000_0000/1000),
+ * waits, sometimes crosses back from right to left (2000/3000), then glides in from the left to its
+ * perch (4000/5000); eff55_2000 lands it again.
  */
 
 #include "structs.h"

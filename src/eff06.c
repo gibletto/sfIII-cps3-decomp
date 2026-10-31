@@ -58,7 +58,7 @@ void effect_06_move(WORK_Other* ewk) {
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         break;
     case R0_MOVE:
-        if (compel_dead_check(ewk) != 0) {
+        if (compel_dead_check(ewk)) {
             ewk->wu.routine_no[0]++;
             break;
         }

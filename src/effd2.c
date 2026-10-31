@@ -1,9 +1,8 @@
 /*
- * EFFD2.C  Effect D2: four panels belonging to a master
+ * EFFD2.C  Effect D2: four panels of the ending scene changes (effect B0)
  *
- * effect_D2_init creates types 0 and 1, effect_D2_init2 types 2 and 3, with patterns
- * 18 + type. Each plays its pattern once and hides. All leave when the master
- * reaches routine 3.
+ * effect_D2_init creates types 0 and 1, effect_D2_init2 types 2 and 3, with patterns 18 + type.
+ * Each plays its pattern once and hides. All leave when the master reaches routine 3.
  */
 
 #include "structs.h"

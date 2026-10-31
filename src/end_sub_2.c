@@ -57,8 +57,8 @@
 #include "end_sub_2.h"
 #include "cps3.h"
 
-s16 cd_ready_flag;  /* 02028284 */
-s16 cd_spin_timer;  /* 02028286 */
+s16 cd_ready_flag;  /* 0201D730 */
+s16 cd_spin_timer;  /* 0201D732 */
 s16 roll_rate2;  /* 0201D734 */
 s16 roll_stop;  /* 0201D736 */
 

@@ -2,6 +2,8 @@
  * EFFB7.C  Effect B7: rank-in number
  *
  * Effect B7 shows a rank-in number (pattern old_rno[0] + 1) for name entry until it is killed.
+ * effect_B7_init creates the two rank-in number works for a player's name entry, side by
+ * side, showing name_wk[pl].rank_in (called from n_input.c).
  */
 
 #include "structs.h"
@@ -48,7 +50,6 @@ void effect_B7_move(WORK_Other* ewk) {
 }
 
 
-/* my_col_code 67 */
 s32 effect_B7_init(s8 pl) {
     WORK_Other* ewk;
     s16 ix;

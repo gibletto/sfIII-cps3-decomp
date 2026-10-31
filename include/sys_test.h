@@ -3,7 +3,7 @@
 
 #include "structs.h"
 
-void Bg_On_W(u16 s_prm);
+void Bg_On_W(u16 mask);
 u32 simmram_large_page_addr(void);
 u32 simmram_small_page_addr(void);
 void Scrn_Pos_Init(void);
@@ -24,7 +24,7 @@ void Scrn_Y_Set_R();
 void coin_work_init(void);
 void coin_lock_release(s8 chute);
 void coin_lock_set();
-void coin_lock_check(s8 chute, s8 coil);
+void coin_lock_check(s8 n, s8 coil);
 s32 credit_use(s8 n);
 void switch_read(s8 mode);
 void ext_switch_read(void);

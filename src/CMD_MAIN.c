@@ -1924,7 +1924,7 @@ void debug_playback_mode_cycle(u16 sw) {
     if ((sw & 0x200) != 0) {
         if (Debug_Rec_Count != 0) {
             dbg_rec_exist = 1;
-            dbg_save_mode = dbg_save_mode + 1;
+            dbg_save_mode++;
             if (2 < dbg_save_mode) {
                 dbg_save_mode = 0;
             }
@@ -2443,7 +2443,7 @@ void debug_screen_zoom_by_pad(void) {
         dbg_zoom_x--;
         dbg_zoom_y--;
         if (dbg_zoom_x > 0) {
-            Frame_Down(0xc0, 0xe0, 1, 1);
+            Frame_Down(0xC0, 0xE0, 1, 1);
         } else {
             dbg_zoom_x = 0;
             dbg_zoom_y = 0;
@@ -2453,7 +2453,7 @@ void debug_screen_zoom_by_pad(void) {
         dbg_zoom_x++;
         dbg_zoom_y++;
         if (dbg_zoom_x < 38) {
-            Frame_Up(0xc0, 0xe0, 1, 1);
+            Frame_Up(0xC0, 0xE0, 1, 1);
         } else {
             dbg_zoom_x = 38;
             dbg_zoom_y = 38;
@@ -2519,7 +2519,7 @@ void debug_cmd_panel_run(void) {
     WORK* wk;
     u16 trg = ~dbg_p1sw_1 & dbg_p1sw_0;
     u16 sel = ~dbg_p2sw_1 & dbg_p2sw_0 & BUTTON_SHOTS;
-    sel = sel * 16 + (0x3f0 & trg) / 16;
+    sel = sel * 16 + (0x3F0 & trg) / 16;
     if (dbg_cmd_panel != 0) {
         wk = &dbg_pl->wu;
         switch (sel) {
@@ -2602,13 +2602,13 @@ void debug_cg_number_browse(void) {
     debug_flip_cycle(~dbg_p1sw_1 & dbg_p1sw_0);
     if (dbg_p1sw_0 & BUTTON_START) {
         if (debug_lever_repeat_fast(dbg_p1sw_0, dbg_p1sw_1, 1, 0)) {
-            dbg_pl->wu.cg_number -= 1;
+            dbg_pl->wu.cg_number--;
             if (dbg_pl->wu.cg_number > 0x7827) {
                 dbg_pl->wu.cg_number = 0x7827;
             }
         }
         if (debug_lever_repeat_fast(dbg_p1sw_0, dbg_p1sw_1, 2, 1)) {
-            dbg_pl->wu.cg_number += 1;
+            dbg_pl->wu.cg_number++;
             if (dbg_pl->wu.cg_number > 0x7827) {
                 dbg_pl->wu.cg_number = 0;
             }
@@ -2807,10 +2807,10 @@ void debug_catch_judgment_input(void) {
 /* provisional name */
 /* provisional name */
 s32 debug_lever_repeat(sw, old, mask, ix)
-    u16 sw;
-    u16 old;
-    u16 mask;
-    s16 ix;
+u16 sw;
+u16 old;
+u16 mask;
+s16 ix;
 {
     if (sw & mask) {
         if (Debug_Menu_No == 4) {
@@ -3692,9 +3692,8 @@ void debug_draw_cm_data(void)
 /* provisional name */
 void debug_draw_delta_and_side(void)
 {
-  debug_draw_position_delta();
-  debug_draw_edit_side();
-  return;
+    debug_draw_position_delta();
+    debug_draw_edit_side();
 }
 
 
@@ -3895,7 +3894,7 @@ void debug_bg_stage_load(void)
 
 /* provisional name */
 s32 debug_cg_group_index(code)
-    s16 code;
+s16 code;
 {
     u16 i;
     for (i = 0; i < 89; i++) {

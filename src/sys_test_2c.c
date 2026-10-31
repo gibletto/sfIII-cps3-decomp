@@ -29,7 +29,7 @@
 
 
 
-s16 config_menu_no = 0;  /* 02007CAC */
+s16 config_menu_no = 0;  /* 02007154 */
 
 
 /* provisional name */

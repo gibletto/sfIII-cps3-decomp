@@ -64,7 +64,6 @@ void effect_60_move(WORK_Other* ewk) {
 }
 
 
-/* char_add by stage and area */
 s32 effect_60_init(s16 type) {
     WORK_Other* ewk;
     s16 ix;

@@ -114,6 +114,7 @@ void Fade_Cont(void)
 
 
 
+/* Run the fade for a frame; 1 once it has finished. */
 s32 Check_Fade_Complete_SP(void) {
     fade_cont_main();
     return Fade_Flag ^ 1;
@@ -121,6 +122,8 @@ s32 Check_Fade_Complete_SP(void) {
 
 
 
+/* Run the fade; once it has finished, count down Fade_Gap_Timer (3 from Request_Fade) and return 1
+   when it runs out. */
 s32 Check_Fade_Complete(void) {
     if (Fade_Flag) {
         fade_cont_main();
@@ -174,6 +177,7 @@ u8 wipe_mode;
 
 
 
+/* One step of the wipe that covers the screen, drawn in Wipe_Mode; 1 when the wipe is complete. */
 s32 Switch_Screen(void) {
     switch (((s8)Wipe_Mode)) {
     case 0:
@@ -215,6 +219,7 @@ s32 Switch_Screen(void) {
 
 
 
+/* One step of the wipe that uncovers the screen again; 1 when the wipe is complete. */
 s32 Switch_Screen_Revival(void) {
     switch (((s8)Wipe_Mode)) {
     case 0:
@@ -526,7 +531,7 @@ void Disp_Win_Type(void) {
 
 /* provisional name */
 void commit_name_entry_row_both_players(pos_y)
-    s16 pos_y;
+s16 pos_y;
 {
     if (E_Number[0][0] == ENTRY_NAME && name_wk[0].dmm) {
         rank_display_set(0, pos_y);
@@ -601,6 +606,7 @@ void Disp_Copyright(void) {
 
 
 
+/* 1 while a player (not the CPU) holds a button. */
 s32 Cut_Cut_Cut(void) {
     s32 m = 0x7F0;
     PLW* pl = plw;

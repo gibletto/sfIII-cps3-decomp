@@ -78,8 +78,8 @@
 #include "fighter.h"
 #include "RANKING.h"
 
-FIFO32 task_req_queue;  /* 0200D9B4 */
-u8 task_req_buff[716];  /* 0200D9C8 */
+FIFO32 task_req_queue;  /* 0200CE8C */
+u8 task_req_buff[716];  /* 0200CEA0 */
 
 #pragma noregsave(boot_task)
 

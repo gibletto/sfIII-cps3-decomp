@@ -61,7 +61,7 @@ extern const s16 scr_obj_data27_4[][19];
 extern const s16 scr_obj_data27_5[][19];
 extern const s16 scr_obj_data27_6[][19];
 
-/* Seven object types. */
+/* seven object types */
 const s16* scr_obj_data27[7] = {
     scr_obj_data27_0[0],
     scr_obj_data27_1[0],
@@ -71,7 +71,7 @@ const s16* scr_obj_data27[7] = {
     scr_obj_data27_5[0],
     scr_obj_data27_6[0],
 };
-/* 02006C98 */
+/* 02006BA0 */
 void (*eff27_jp_tbl[11])(WORK_Other*) = {
     eff27_00,
     eff27_00,

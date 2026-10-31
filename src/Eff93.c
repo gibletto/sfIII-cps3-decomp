@@ -42,9 +42,6 @@
 #define R1_START        0       /* pick the direction and speed */
 #define R1_SLIDE        1       /* (default) slide BG1 sideways */
 
-
-
-/* 0617A08C */
 const Eff93_Jmp_Tbl_t Eff93_Jmp_Tbl[2] = {
     Eff93_SLIDE_UP,
     Eff93_SLIDE_DOWN,

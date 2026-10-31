@@ -1,11 +1,10 @@
 /*
  * EFFG8.C  Effect G8 (168): the ending's flying birds
  *
- * effect_G8_init makes sixteen birds in four groups of four from
- * effg8_data_tbl (x, y, priority, pattern, height timer) with the group's speeds from
- * effg8_speed_tbl. effect_G8_move flies them across; every 60 frames the group speeds up
- * (dir_step), and a bird leaving the screen re-enters at a position from effg8_pos_tbl.
- * All of them go when the ending scene (end_w.r_no_2) passes 7.
+ * effect_G8_init makes sixteen birds in four groups of four from effg8_data_tbl (x, y, priority,
+ * pattern, height timer) with the group's speeds from effg8_speed_tbl. effect_G8_move flies them
+ * across; every 60 frames the group speeds up (dir_step), and a bird leaving the screen re-enters
+ * at a position from effg8_pos_tbl. All of them go when the ending scene (end_w.r_no_2) passes 7.
  */
 
 #include "structs.h"

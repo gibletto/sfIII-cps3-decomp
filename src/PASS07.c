@@ -1451,7 +1451,7 @@ void Passive07_0085(PLW* wk) {
 void Passive07_0086(PLW* wk) {
     switch (CP_Index[wk->wu.id][0]) {
     case 0:
-        Approach_Walk(wk, 0xC7, 2);
+        Approach_Walk(wk, 199, 2);
         break;
     default:
         End_Pattern(wk);

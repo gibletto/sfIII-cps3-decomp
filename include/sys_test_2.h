@@ -13,7 +13,7 @@ s32 screentest_page(void);
 void colortest_draw_palette_grid(void);
 void iotest_draw_sw_grid(void);
 void iotest_output_toggle(void);
-void soundtest_print_lr_balance(s32 x, s32 y, s32 l, s32 r);
+void soundtest_print_lr_balance(s32 x, s32 y, s32 now, s32 old);
 void soundtest_print_level_bar(s32 x, s32 y, s32 level);
 void soundtest_print_pan_bar(s32 x, s32 y, s32 pan);
 void screentest_draw_crosshatch(void);

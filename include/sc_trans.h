@@ -31,7 +31,7 @@ s32 ToneDown(s8 tone);
 void scfont_lnput(s16 x, s16 y, u16 w, u16 h, s16 attr, s16 code);
 void scfont_lnput_rev(s16 x, s16 y, u16 w, u16 h, s16 attr, s16 code);
 s32 tilemap_put_cell(u16 x, u16 y, u16 attr, u16 code);
-void winner_name_put(s8 chr);
+void winner_name_put(s8 ch);
 void player_face_char_set();
 void player_face(void);
 void naming_set(s8 pl, s16 place, u16 chr);

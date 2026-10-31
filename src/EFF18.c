@@ -177,7 +177,6 @@ void eff18_01(WORK* wk) {
 
 
 
-/* char_add by stage and area */
 s32 effect_18_init(s16 disp_index, s16 cursor_id, s16 sync_bg, s16 master_player) {
     s16 i;
     s16 ix;

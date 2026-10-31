@@ -23,7 +23,6 @@
 #include "bg_sub_3.h"
 #include "bg_sub_5.h"
 #include "SYS_sub.h"
-#include "end_main.h"
 #include "end_sub.h"
 #include "end_sub_2.h"
 #include "color3rd.h"

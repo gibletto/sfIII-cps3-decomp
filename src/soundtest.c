@@ -26,9 +26,9 @@
 #define SOUND_TITLE     0       /* soundtest_draw_title */
 #define SOUND_SELECT    1       /* soundtest_code_select: choose and play codes */
 
-s16 soundtest_rep_timer = 30;  /* 02007C98 */
-s16 soundtest_code = 0;  /* 02007C9A */
-s16 soundtest_no = 0;  /* 02007C9C */
+s16 soundtest_rep_timer = 30;  /* 02007140 */
+s16 soundtest_code = 0;  /* 02007142 */
+s16 soundtest_no = 0;  /* 02007144 */
 
 
 

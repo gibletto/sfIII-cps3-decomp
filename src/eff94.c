@@ -1,11 +1,11 @@
 /*
  * EFF94.C  Effect 94: the bystander next to a player
  *
- * effect_94_entry makes one for each player whose player_number is 7
- * (none when either player is 8). With old_rno[3] set it follows its player: eff94_00-07
- * (jp_a) wait, turn round, walk to and from the player, react to the player's attack and
- * leave at the end of the fight; eff94_select picks the next state. Without it the object
- * stands at its stage position and runs eff94_10-13 (jp_b) by the round result.
+ * effect_94_entry makes one for each player whose player_number is 7 (none when either player is
+ * 8). With old_rno[3] set it follows its player: eff94_00-07 (jp_a) wait, turn round, walk to and
+ * from the player, react to the player's attack and leave at the end of the fight; eff94_select
+ * picks the next state. Without it the object stands at its stage position and runs eff94_10-13
+ * (jp_b) by the round result.
  */
 
 #include "structs.h"
@@ -441,7 +441,9 @@ void eff94_11(WORK_Other* ewk) {
         ewk->wu.routine_no[1] = R1_LOSE;
         ewk->wu.routine_no[2] = R2_INIT;
     } else if (plw[ewk->master_id].wu.char_index == 39) {
-        ewk->wu.routine_no[1] = 5;
+        /* R1_WIN as in eff94_04, but eff94_jp_b has no entry 5: the call lands on eff94_jp_a[1],
+           eff94_01 */
+        ewk->wu.routine_no[1] = R1_WIN;
         ewk->wu.routine_no[2] = R2_INIT;
     }
 }

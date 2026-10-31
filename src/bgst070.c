@@ -24,15 +24,13 @@
 #include "fighter.h"
 
 /* declarations the headers do not give */
-void zoom_ud_check(void);
-void bg_x_move_check(void);
-void bg_y_move_check(void);
-void bg_base_y_move_check(void);
 void load_any_color();
 void effect_94_entry(s16 sw);
 void blit_8x16_tile();
-s32 effect_66_init();
-s32 effect_68_init();
+
+#include "eff66.h"
+#include "EFF68.h"
+
 /* provisional name */
 extern const u16 bg070_cell_data[][16][32];
 void bg0700(void);

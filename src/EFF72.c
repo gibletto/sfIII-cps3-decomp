@@ -1,5 +1,5 @@
 /*
- * EFF72.C  Effect 72: occasional stage animation parts
+ * EFF72.C  Effect 72: a stage object that reacts to super arts
  *
  * effect_72_init (no arguments, from the stage code) places one brz_char_table object at
  * (0x19B, 80) and its effect 73 partner; effect_72_move runs two phases through a table while the game
@@ -92,7 +92,7 @@ void eff72_01(WORK_Other* ewk) {
 
 
 
-/* Create a brz_char_table object and its effect 73 partner. */
+/* no arguments: a brz_char_table object that sets up its effect 73 partner */
 s32 effect_72_init(void) {
     WORK_Other* ewk;
     s16 ix;

@@ -27,7 +27,7 @@
 #include "eff14.h"
 
 s32 effect_18_init();
-s32 effect_34_init();
+#include "EFF34.h"
 void setup_seraph_cells(void);
 void bg0301(void);
 void bg0302(void);

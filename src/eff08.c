@@ -1,8 +1,8 @@
 /*
- * EFF08.C  Effect 08: companion stage object
+ * EFF08.C  Effect 08: animated object under effect 07
  *
- * effect_07_init starts this object with the effect 07 work as master. It animates
- * while the master shows pattern 2 and restarts when the master does.
+ * Effect 08 is an object that effect_07_init starts with the effect 07 object as its
+ * master: it animates while the master shows pattern 2 and restarts when the master does.
  */
 
 #include "structs.h"
@@ -36,7 +36,7 @@ extern const u32 eff08_char_table[];   /* provisional name */
 
 
 
-/* Follows its master. */
+/* follows its master */
 void effect_08_move(WORK_Other* ewk) {
     WORK_Other* oya;
     oya = (WORK_Other*)ewk->my_master;
@@ -68,7 +68,7 @@ void effect_08_move(WORK_Other* ewk) {
 
 
 
-/* Create one object for the master. */
+/* one object for the master */
 s32 effect_08_init(WORK_Other* oya) {
     WORK_Other* ewk;
     s16 ix;

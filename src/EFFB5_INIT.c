@@ -24,7 +24,6 @@
 
 
 
-/* my_col_code 67 */
 s32 effect_B5_init(s16 PL_id) {
     WORK_Other* ewk;
     s16 ix;
@@ -54,7 +53,7 @@ s32 effect_B5_init(s16 PL_id) {
         ewk->wu.xyz[0].disp.low = 0;
         ewk->wu.char_index = 6;
         ewk->wu.char_table[0] = etc_char_table;
-        x = x + 24;
+        x += 24;
     }
     return 0;
 }

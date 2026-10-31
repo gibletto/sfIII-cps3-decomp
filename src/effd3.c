@@ -49,7 +49,7 @@ void effect_D3_move(WORK_Other* ewk) {
     s16 i;
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
-        ewk->wu.routine_no[0] += 1;
+        ewk->wu.routine_no[0]++;
         ewk->wu.old_rno[1] = 0;
         ewk->wu.dir_timer = ake_timer_tbl[0];
         ewk->wu.old_rno[0] = 64;
@@ -66,11 +66,11 @@ void effect_D3_move(WORK_Other* ewk) {
         Bg_Off_R(0x80);
         break;
     case R0_FLASH:
-        ewk->wu.dir_timer -= 1;
+        ewk->wu.dir_timer--;
         if (ewk->wu.dir_timer < 0) {
-            ewk->wu.old_rno[1] += 1;
+            ewk->wu.old_rno[1]++;
             if (ewk->wu.old_rno[1] < ewk->wu.old_rno[0]) {
-                ewk->wu.old_rno[2] += 1;
+                ewk->wu.old_rno[2]++;
                 ewk->wu.old_rno[2] &= 3;
                 ewk->wu.dir_timer = ake_timer_tbl[ewk->wu.old_rno[1]];
                 for (i = 0; i < bg_w.scno; i++) {
@@ -79,7 +79,7 @@ void effect_D3_move(WORK_Other* ewk) {
                 Bg_On_W(8);
                 akebono_flag = 1;
             } else {
-                ewk->wu.routine_no[0] += 1;
+                ewk->wu.routine_no[0]++;
                 ewk->wu.old_rno[0] = 8;
                 ewk->wu.old_rno[1] = 0;
                 for (i = 0; i < bg_w.scno; i++) {

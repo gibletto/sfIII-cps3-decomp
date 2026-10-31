@@ -2,11 +2,10 @@
  * EFFF1.C  Effect F1: another-BG switch control
  *
  * Effect F1 is started from character move data (CHARMOVE.c) to switch a player's another-BG.
- * effect_F1_move loads its type, duration and end conditions from effF1_data_tbl,
- * sets another_bg[] for the player and clears it
- * again when a condition is met: the timer runs out, the player's or opponent's state or move
- * changes, the super art ends, dramatic-battle mode is on, or the player's shell is gone.
- * effect_F1_init creates the effect for the player wk.
+ * effect_F1_move loads its type, duration and end conditions from effF1_data_tbl, sets another_bg[]
+ * for the player and clears it again when a condition is met: the timer runs out, the player's or
+ * opponent's state or move changes, the super art ends, dramatic-battle mode is on, or the player's
+ * shell is gone. effect_F1_init creates the effect for the player wk.
  */
 
 #include "structs.h"
@@ -112,7 +111,7 @@ void effF1_data_set(WORK_Other* ewk, PLW* mwk) {
     ewk->wu.total_att_set = ((WORK*)mwk->wu.target_adrs)->kind_of_waza;
 }
 
-/* Create the effect for the player. */
+/* creates the effect */
 u32 effect_F1_init(wk, type)
 WORK* wk;
 u8 type;

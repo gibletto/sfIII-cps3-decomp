@@ -21,7 +21,6 @@
 #include "aboutspr.h"
 #include "EFFECT.h"
 #include "effect_2.h"
-#include "end_main.h"
 #include "effh5.h"
 
 /* routine_no[1], effH5_0000: still frame */
@@ -237,7 +236,6 @@ void effH5_init_common(WORK_Other* ewk) {
 
 
 
-/* sets char_table[0] (effH3_char_table) */
 s32 effect_H5_init(u8 type) {
     WORK_Other* ewk;
     s16 ix;

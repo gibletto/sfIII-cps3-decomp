@@ -13,9 +13,9 @@
 #include "extern.h"
 #include "SLOWF.h"
 
-s16 EXE_flag;  /* 0200EECC */
-s16 SLOW_flag;  /* 0200EECE */
-s16 SLOW_timer;  /* 0200EED0 */
+s16 EXE_flag;  /* 0200EB10 */
+s16 SLOW_flag;  /* 0200EB12 */
+s16 SLOW_timer;  /* 0200EB14 */
 
 
 

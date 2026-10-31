@@ -92,7 +92,7 @@ void effect_54_move(WORK_Other* ewk) {
 
 
 
-/* Create one object above the parent's x position. */
+/* one object over the parent's x */
 s32 effect_54_init(WORK_Other* oya) {
     WORK_Other* ewk;
     s16 ix;

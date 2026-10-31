@@ -122,18 +122,17 @@
 #define THROW_INIT      0       /* set up */
 #define THROW_WAIT      1       /* until the throw is over */
 
-s32 Check_Hamari(PLW* wk);
 
 
 
-
+/* The CPU player's lever data for this frame (0 while the fight does not allow input). */
 s32 CPU_Sub(PLW* wk) {
     WORK* em = (WORK*)wk->wu.target_adrs;
     if (Allow_a_battle_f == 0 || pcon_dp_flag == 1) {
         return 0;
     }
     Lever_Buff[wk->wu.id] = 0;
-    if (em->pat_status == 0x26) {
+    if (em->pat_status == 38) {
         Lie_Flag[wk->wu.id] = 1;
     } else {
         Lie_Flag[wk->wu.id] = 0;
@@ -147,6 +146,8 @@ s32 CPU_Sub(PLW* wk) {
 
 
 
+/* Measure the distance and area, then run the CPU state CP_No[id][0] (twice when it sets
+   Disposal_Again). */
 void Main_Program(PLW* wk) {
     void (*Com_Jmp_Tbl[16])(PLW*) = { Com_Initialize, Com_Free, Com_Active, Com_Before_Follow, Com_Follow, Com_Before_Passive, Com_Passive, Com_Guard, Com_VS_Shell, Check_No12_Shell_Guard, Com_Damage, Com_Float, Com_Flip, Com_Caught, Com_Wait_Lie, Com_Catch };
     Ck_Distance(wk);
@@ -204,6 +205,7 @@ void Com_Initialize(PLW* wk) {
 
 
 
+/* Unless hit or thrown, choose the next active pattern (Select_Active): COM_ACTIVE. */
 void Com_Free(PLW* wk) {
     s16 xx;
     Lever_Buff[wk->wu.id] = Lever_LR[wk->wu.id];
@@ -232,6 +234,8 @@ void Com_Free(PLW* wk) {
 
 
 
+/* Wait Timer_00 frames, reacting to a hit, a throw, a guard or a parry chance, then choose a
+   follow-up pattern (Decide_Follow_Menu): COM_FOLLOW. */
 void Com_Before_Follow(PLW* wk) {
     Lever_Buff[wk->wu.id] = Lever_LR[wk->wu.id];
     if (Check_Damage(wk)) {
@@ -449,6 +453,7 @@ s32 Ck_Exit_Guard(PLW* wk, WORK* em) {
 
 
 
+/* The character's active patterns (Computer00.., the active files), unless hit, thrown or parrying. */
 void Com_Active(PLW* wk) {
     void (*Char_Jmp_Tbl[13])(PLW*) = { Computer00, Computer01, Computer02, Computer03, Computer04, Computer05, Computer02, Computer07, Computer08, Computer09, Computer03, Computer11, Computer12 };
     if (Check_Damage(wk)) {
@@ -466,6 +471,7 @@ void Com_Active(PLW* wk) {
 
 
 
+/* The follow-up patterns (Decide_Follow_Menu chose one): every character uses Follow02. */
 void Com_Follow(PLW* wk) {
     void (*Follow_Jmp_Tbl[13])(PLW*) = { Follow02, Follow02, Follow02, Follow02, Follow02, Follow02, Follow02, Follow02, Follow02, Follow02, Follow02, Follow02, Follow02 };
     if (Check_Damage(wk)) {
@@ -483,6 +489,7 @@ void Com_Follow(PLW* wk) {
 
 
 
+/* The character's passive patterns (Passive00.., the PASS files), unless hit, thrown or parrying. */
 void Com_Passive(PLW* wk) {
     void (*Passive_Jmp_Tbl[13])(PLW*) = { Passive00, Passive01, Passive02, Passive03, Passive04, Passive05, Passive02, Passive07, Passive08, Passive09, Passive03, Passive11, Passive12 };
     if (Check_Damage(wk)) {
@@ -500,6 +507,8 @@ void Com_Passive(PLW* wk) {
 
 
 
+/* The character's patterns against a projectile (the SHELL files; some characters share one),
+   unless hit, thrown or parrying. */
 void Com_VS_Shell(PLW* wk) {
     void (*VS_Shell_Jmp_Tbl[13])(PLW*) = { Shell11, Shell01, Shell11, Shell03, Shell04, Shell11, Shell11, Shell11, Shell11, Shell11, Shell03, Shell11, Shell12 };
     if (Check_Damage(wk)) {
@@ -593,7 +602,7 @@ void Damage_2nd(PLW* wk) {
     Check_Guard_Type(wk, em);
     if (wk->wu.routine_no[2] == DAMAGE_STUN) {
         CP_No[wk->wu.id][1] = DMG_FAINT;
-        CP_No[wk->wu.id][2] = 0;
+        CP_No[wk->wu.id][2] = D8_WAIT;
         return;
     }
     if (Receive_Flag[wk->wu.id] != 0 && plw[wk->wu.id].uot_cd_ok_flag != 0) {
@@ -606,18 +615,18 @@ void Damage_2nd(PLW* wk) {
 
 
 
-void Damage_3rd(PLW* _p0) {}
+void Damage_3rd(PLW* wk) {}
 
 
 
-void Damage_4th(PLW* _p0) {}
+void Damage_4th(PLW* wk) {}
 
 
 
 void Damage_5th(PLW* wk) {
     if (wk->wu.routine_no[3] == RN3_START) {
-        CP_No[wk->wu.id][1] = 0;
-        CP_No[wk->wu.id][2] = 0;
+        CP_No[wk->wu.id][1] = DMG_DECIDE;
+        CP_No[wk->wu.id][2] = D1_DECIDE;
         return;
     }
     switch (CP_No[wk->wu.id][2]) {
@@ -650,13 +659,13 @@ void Damage_6th(PLW* wk) {
     u8 Lv;
     u8 Rnd;
     if (wk->wu.routine_no[3] == RN3_START) {
-        CP_No[wk->wu.id][1] = 0;
-        CP_No[wk->wu.id][2] = 0;
+        CP_No[wk->wu.id][1] = DMG_DECIDE;
+        CP_No[wk->wu.id][2] = D1_DECIDE;
         return;
     }
     if (wk->wu.routine_no[2] == DAMAGE_STUN) {
         CP_No[wk->wu.id][1] = DMG_FAINT;
-        CP_No[wk->wu.id][2] = 0;
+        CP_No[wk->wu.id][2] = D8_WAIT;
         return;
     }
     Lever_Buff[wk->wu.id] = LEVER_DOWN;
@@ -779,8 +788,8 @@ s32 Check_Damage(PLW* wk) {
     if (wk->wu.routine_no[1] == PLAYER_DAMAGE && CP_No[wk->wu.id][0] != COM_GUARD && CP_No[wk->wu.id][0] != COM_SHELL_GUARD &&
         Guard_Flag[wk->wu.id] == 0) {
         CP_No[wk->wu.id][0] = COM_DAMAGE;
-        CP_No[wk->wu.id][1] = 0;
-        CP_No[wk->wu.id][2] = 0;
+        CP_No[wk->wu.id][1] = DMG_DECIDE;
+        CP_No[wk->wu.id][2] = D1_DECIDE;
         CP_No[wk->wu.id][3] = 0;
         Receive_Flag[wk->wu.id] = 0;
         Lever_Buff[wk->wu.id] = LEVER_DOWN;
@@ -1012,7 +1021,7 @@ s32 Com_Rapid_Sub(PLW* wk, s16 Shot, s16* dir_step) {
 s32 Check_Caught(PLW* wk) {
     if (wk->wu.routine_no[1] == PLAYER_CAUGHT) {
         CP_No[wk->wu.id][0] = COM_CAUGHT;
-        CP_No[wk->wu.id][1] = 0;
+        CP_No[wk->wu.id][1] = THROW_INIT;
         CP_No[wk->wu.id][2] = 0;
         CP_No[wk->wu.id][3] = 0;
         Clear_Com_Flag(wk);
@@ -1048,7 +1057,7 @@ void Com_Catch(PLW* wk) {
 
 void Be_Catch(PLW* wk) {
     CP_No[wk->wu.id][0] = COM_CATCH;
-    CP_No[wk->wu.id][1] = 0;
+    CP_No[wk->wu.id][1] = THROW_INIT;
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
     Clear_Com_Flag(wk);

@@ -33,10 +33,6 @@
 #define R0_DEMO         1       /* the entrance demo */
 #define R0_MOVE         2       /* follow the fight */
 
-void zoom_ud_check(void);
-void bg_x_move_check(void);
-void bg_y_move_check(void);
-void bg_base_y_move_check(void);
 void bg0200(void);
 void bg0201_ctrl(void);
 void bg0200_init00(void);

@@ -30,10 +30,6 @@
 #include "fighter.h"
 
 /* declarations the headers do not give */
-void zoom_ud_check(void);
-void bg_x_move_check(void);
-void bg_y_move_check(void);
-void bg_base_y_move_check(void);
 void load_any_color();
 void Bg_Family_Set_3(void);
 s32 effect_18_init();

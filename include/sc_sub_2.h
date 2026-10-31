@@ -10,7 +10,7 @@ void stngauge_cont_main();
 void stngauge_control(s32 player);
 void stngauge_work_clear(void);
 void stun_gauge_waku_write(s8 pl);
-void stun_mark_write(s8 pl, s8 ix);
+void stun_mark_write(s8 pl, s8 kind);
 void stun_put();
 
 #endif

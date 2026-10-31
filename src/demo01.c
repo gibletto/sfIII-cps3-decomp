@@ -38,7 +38,7 @@
 #include "eeprom.h"
 #include "sc_trans.h"
 #include "bg000.h"
-#include "lose_pl.h"
+#include "end_main.h"
 #include "PLS02.h"
 #include "SLOWF.h"
 #include "textsound.h"

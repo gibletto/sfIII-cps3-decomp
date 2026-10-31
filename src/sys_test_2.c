@@ -26,7 +26,7 @@
 #define IOIN_INIT       0       /* draw the page */
 #define IOIN_SHOW       1       /* iotest_draw_sw_grid: show the switches */
 
-s16 iotest_in_no = 0;  /* 02007C90 */
+s16 iotest_in_no = 0;  /* 02007138 */
 
 
 

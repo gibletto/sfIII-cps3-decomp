@@ -1,9 +1,9 @@
 /*
  * EFFA9.C  Effect A9: select-screen plate marker
  *
- * effect_A9_init ties the marker to a player and slot (master_id, master_player).
- * effect_A9_move builds its cells with effB8_conn_set for the player's character
- * and follows Plate_X / Plate_Y until sel_plate_state reads 52.
+ * Effect A9 is the select-screen plate marker: effect_A9_init ties it to a player and slot
+ * (master_id, master_player); effect_A9_move builds its cells with effB8_conn_set for the
+ * player's character and follows Plate_X / Plate_Y until sel_plate_state reads 52.
  */
 
 #include "structs.h"

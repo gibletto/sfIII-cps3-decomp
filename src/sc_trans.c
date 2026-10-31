@@ -505,10 +505,10 @@ s16 n;
 
 
 void tilemap_clear_rect(x0, y0, x1, y1)
-    u32 x0;
-    u32 y0;
-    u32 x1;
-    u32 y1;
+u32 x0;
+u32 y0;
+u32 x1;
+u32 y1;
 {
     u16 *line;
     u16 row;

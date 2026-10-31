@@ -60,18 +60,18 @@
 
 
 
-s16 Name_00[2];  /* 020280B8 */
-NAME_WK name_wk[2];  /* 020280BC */
-NAME_WK * name_ptr;  /* 02028128 */
-SC_NAME_WK sc_name_wk[2][4];  /* 0202812C */
-SC_NAME_WK * nsc_ptr;  /* 0202817C */
-RANK_NAME_W rank_name_w[2];  /* 02028180 */
-s16 Name_Input_f;  /* 02028188 */
+s16 Name_00[2];  /* 0201D5D8 */
+NAME_WK name_wk[2];  /* 0201D5DC */
+NAME_WK * name_ptr;  /* 0201D648 */
+SC_NAME_WK sc_name_wk[2][4];  /* 0201D64C */
+SC_NAME_WK * nsc_ptr;  /* 0201D69C */
+RANK_NAME_W rank_name_w[2];  /* 0201D6A0 */
+s16 Name_Input_f;  /* 0201D6A8 */
 s16 naming_cnt;  /* one counter for both players */
-s16 n_disp_flag;  /* 0202818E */
+s16 n_disp_flag;  /* 0201D6AC */
 
 
-/* 02006820 */
+/* 02006694 */
 /* The name entry states of the plain name entry; the game only runs Name_Jmp_scs. */
 void (*Name_Jmp_Tbl[8])() = {
     Name_Input_init,
@@ -83,7 +83,7 @@ void (*Name_Jmp_Tbl[8])() = {
     Name_Input_end,
     Name_Finish,
 };
-/* 02006840 */
+/* 020066B4 */
 void (*Name_Jmp_scs[8])() = {
     Name_Scs_Input_init,
     Name_Scs_Input_comm,

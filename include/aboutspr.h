@@ -30,7 +30,7 @@ void make_char_cells_n(WORK* wk, CHAR_CELL* cell, CHAR_SPRITE* spr, u16 count, s
 void make_char_cells_x(WORK* wk, CHAR_CELL* cell, CHAR_SPRITE* spr, u16 count, s16 x, s16 y);
 void make_char_cells_y(WORK* wk, CHAR_CELL* cell, CHAR_SPRITE* spr, u16 count, s16 x, s16 y);
 void make_char_cells_xy(WORK* wk, CHAR_CELL* cell, CHAR_SPRITE* spr, u16 count, s16 x, s16 y);
-s32 trans_char_cells(WORK* wk);
+s32 trans_char_cells(WORK* work);
 u32 get_cg_slot_no();
 s32 sort_push_request4(WORK* wk);
 s32 sort_push_request(WORK* wk);

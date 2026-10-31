@@ -23,8 +23,8 @@
 #define CRAM_SLOTS_PER_BANK 256         /* 4 KB slots, numbered from 1 */
 #define CRAM_SLOT_SHIFT     12
 
-s16 cram_bank_old;  /* 02079C94 */
-s16 cram_bank_now;  /* 02079C96 */
+s16 cram_bank_old;  /* 0206CDF4 */
+s16 cram_bank_now;  /* 0206CDF6 */
 
 
 /* provisional name */

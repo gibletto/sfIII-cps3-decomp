@@ -61,7 +61,6 @@ void effect_62_move(WORK_Other* ewk) {
         push_effect_work(&ewk->wu);
         break;
     }
-    return;
 }
 
 void eff62_normal(WORK_Other* ewk) {

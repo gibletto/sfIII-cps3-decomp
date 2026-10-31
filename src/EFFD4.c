@@ -51,7 +51,7 @@ void effect_D4_move(WORK_Other* ewk) {
             ewk->wu.routine_no[0]++;
             break;
         }
-        ewk->wu.dir_timer -= 1;
+        ewk->wu.dir_timer--;
         if (ewk->wu.dir_timer <= 0) {
             ewk->wu.routine_no[0]++;
             break;

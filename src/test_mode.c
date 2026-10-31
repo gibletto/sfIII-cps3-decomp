@@ -98,13 +98,13 @@
 #define MENU_REWRITE    9       /* rewrite_page, or leave in Country 2 */
 #define MENU_EXIT       10      /* leave the test mode */
 
-s16 test_rno;  /* 0200DC94 */
-s16 test_menu_no;  /* 0200DC96 */
-s16 test_cursor;  /* 0200DC98 */
-s16 test_cursor_on;  /* 0200DC9A */
-s16 test_cursor_off;  /* 0200DC9C */
-s16 test_font_type;  /* 0200DC9E */
-s16 test_cursor_max;  /* 0200DCA0 */
+s16 test_rno;  /* 0200D16C */
+s16 test_menu_no;  /* 0200D16E */
+s16 test_cursor;  /* 0200D170 */
+s16 test_cursor_on;  /* 0200D172 */
+s16 test_cursor_off;  /* 0200D174 */
+s16 test_font_type;  /* 0200D176 */
+s16 test_cursor_max;  /* 0200D178 */
 
 void tilemap_put_block(u16 x, u16 y, u16 attr, u16 code);
 
@@ -251,7 +251,7 @@ void test_menu_run(void) {
         }
         break;
     case MENU_EXIT:
-        test_rno += 1;
+        test_rno++;
         break;
     }
     if (done != 0) {

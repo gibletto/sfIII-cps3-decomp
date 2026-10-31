@@ -13,7 +13,7 @@
 #include "fifo.h"
 #include "sys_test.h"
 #include "cps3.h"
-SCRLPOS fm_pos[8];  /* 0206A084 */
+SCRLPOS fm_pos[8];  /* 0205E168 */
 
 
 void Family_Init(void)

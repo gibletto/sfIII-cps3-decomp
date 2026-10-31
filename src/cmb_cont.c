@@ -34,23 +34,23 @@
 #define COMBO_SCORE_HIT 1       /* times the combo hits so far */
 
 
-s16 old_cmb_flag[2];  /* 02028838 */
-s8 cmb_stock[2];  /* 0202883C */
-s8 first_attack;  /* 0202883E */
-s8 rever_attack[2];  /* 0202883F */
-s8 paring_attack[2];  /* 02028841 */
-s8 bonus_pts[2];  /* 02028843 */
-s16 hit_num;  /* 02028846 */
-u8 sa_kind;  /* 02028848 */
-u8 end_flag[2];  /* 02028849 */
-s16 calc_hit[2][10];  /* 0202884C */
-s16 score_calc[2][11];  /* 02028874 */
-s8 cmb_all_stock;  /* 020288A4 */
-s8 sarts_finish_flag[2];  /* 020288A5 */
-s8 last_hit_time;  /* 020288A7 */
-u8 cst_read[2];  /* 020288AA */
-u8 cst_write[2];  /* 020288AC */
-CMST_WIN cmst_buff[2][4];  /* 020288B0 */
+s16 old_cmb_flag[2];  /* 0201DCB0 */
+s8 cmb_stock[2];  /* 0201DCB4 */
+s8 first_attack;  /* 0201DCB6 */
+s8 rever_attack[2];  /* 0201DCB7 */
+s8 paring_attack[2];  /* 0201DCB9 */
+s8 bonus_pts[2];  /* 0201DCBB */
+s16 hit_num;  /* 0201DCBE */
+u8 sa_kind;  /* 0201DCC0 */
+u8 end_flag[2];  /* 0201DCC1 */
+s16 calc_hit[2][10];  /* 0201DCC4 */
+s16 score_calc[2][11];  /* 0201DCEC */
+s8 cmb_all_stock;  /* 0201DD18 */
+s8 sarts_finish_flag[2];  /* 0201DD19 */
+s8 last_hit_time;  /* 0201DD1B */
+u8 cst_read[2];  /* 0201DD1C */
+u8 cst_write[2];  /* 0201DD1E */
+CMST_WIN cmst_buff[2][4];  /* 0201DD20 */
 
 
 /* reads a row of the points table and drops the value */
@@ -240,7 +240,7 @@ s8 PL;
         if (plw[PL].wu.routine_no[2] >= 0x10) {
             rever_attack[PL] = 1;
             if (PL == 0) {
-                PLS = (1);
+                PLS = 1;
             } else {
                 PLS = 0;
             }
@@ -293,7 +293,7 @@ s8 PL;
     s32* sa_ptr = (s32*)plw[PL].cb->kind_of[4][0];
     s8 lpx;
     for (lpx = 0; lpx < 16; lpx++) {
-        if (!(*sa_ptr++ == 0)) {
+        if (*sa_ptr++ != 0) {
             if (arts_finish_check(PL)) {
                 if (lpx <= 7) {
                     bonus_pts[PL] += 2;
@@ -311,7 +311,6 @@ s8 PL;
         }
     }
     combo_window_push(PL, 0);
-    return;
 }
 
 
@@ -332,10 +331,8 @@ s8 PL;
 {
     if (Conclusion_Flag) {
         if (Conclusion_Type == CONCLUSION_KO) {
-            if (Loser_id == PL) {
-                if ((plw[PL].cb->new_dm & 0x3F) >= 32) {
-                    return 1;
-                }
+            if (Loser_id == PL && (plw[PL].cb->new_dm & 0x3F) >= 32) {
+                return 1;
             }
         }
     }

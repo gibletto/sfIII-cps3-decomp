@@ -1,9 +1,9 @@
 /*
  * EFF36.C  Effect 36: zooming pictures
  *
- * effect_36_init(typenum) makes eff36_data_num[typenum] objects from the
- * rows of eff36_data_adrs[typenum] (x, y, pattern, old_rno[0]); each object zooms in by its
- * type and stays until op_obj_disp is cleared (eff36_op_check), then removes itself.
+ * effect_36_init(typenum) makes eff36_data_num[typenum] objects from the rows of
+ * eff36_data_adrs[typenum] (x, y, pattern, old_rno[0]); each object zooms in by its type and stays
+ * until op_obj_disp is cleared (eff36_op_check), then removes itself.
  */
 
 #include "structs.h"
@@ -160,7 +160,7 @@ s32 eff36_op_check(WORK_Other* ewk) {
 
 
 
-/* Create the zooming pictures for the selected type. */
+/* the zooming pictures of the selected type */
 s32 effect_36_init(s16 typenum) {
     WORK_Other* ewk;
     s16 ix;

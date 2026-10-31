@@ -116,7 +116,7 @@ void Ranking_01(void) {
 
 
 void Ranking_01_1st(void) {
-    D_No1 = D_No1 + 1;
+    D_No1++;
     Suicide = 0;
     tilemap_fill_all(0, 32);
     Present_Rank[0] = 99;
@@ -247,7 +247,7 @@ void Ranking_00_2nd(void) {
 
 void Ranking_00_3rd(void) {
     if (Flash_Sign[0] == 1) {
-        D_No1 = D_No1 + 1;
+        D_No1++;
         D_Timer = 1;
     }
 }

@@ -78,11 +78,8 @@ void effect_G3_move(WORK_Other* ewk) {
         sort_push_request(&ewk->wu);
         break;
     case R0_KILL:
-        goto release;
     case 3:
-        goto release;
     default:
-release:;
         all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
         break;

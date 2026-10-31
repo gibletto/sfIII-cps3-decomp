@@ -16,7 +16,7 @@
 extern s16 effA0_timer[3];
 extern s16 effA0_count[3];
 extern s16 effA0_remaining[3];
-s32 effect_99_init();
+#include "EFF99.h"
 void effA0_count_move();
 void effA0_set_x();
 void effA0_set_y();

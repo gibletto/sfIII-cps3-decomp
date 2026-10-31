@@ -37,14 +37,14 @@
 extern volatile s16 flip_crt_ofs_x;
 extern volatile s16 flip_crt_ofs_y;
 
-SCRLPOS scrn_pos[5];  /* 0206A104 */
-SCROLL_CTRL scrn_reg_w[4];  /* 0206A154 */
-SPRPTR scrn_map_ptr[4];  /* 0206A17C */
-u16 scrn_line_prm[4][2];  /* 0206A1BC */
-SCRN_MODE scrn_mode_prm[4];  /* 0206A1CC */
-u16 Screen_Switch;  /* 0206A1DC */
-u16 Screen_Switch_Buffer;  /* 0206A1DE */
-u8 Screen_Switch_Req;  /* 0206A1E0 */
+SCRLPOS scrn_pos[5];  /* 0205E1E8 */
+SCROLL_CTRL scrn_reg_w[4];  /* 0205E238 */
+SPRPTR scrn_map_ptr[4];  /* 0205E260 */
+u16 scrn_line_prm[4][2];  /* 0205E2A0 */
+SCRN_MODE scrn_mode_prm[4];  /* 0205E2B0 */
+u16 Screen_Switch;  /* 0205E2C0 */
+u16 Screen_Switch_Buffer;  /* 0205E2C2 */
+u8 Screen_Switch_Req;  /* 0205E2C4 */
 
 
 /* provisional name: unreferenced; toggles a scroll layer's flip bits and applies them */
@@ -273,8 +273,8 @@ void Scrn_Move_Set_R(s32 n, s16 x, s16 y) {
 
 /* provisional name: unreferenced */
 void Scrn_X_Set_R(ix, x)
-    s32 ix;
-    s16 x;
+s32 ix;
+s16 x;
 {
     scrn_pos[ix].set_x.disp.pos = x;
     scrn_pos[ix].cur_x.disp.pos = x;
@@ -282,8 +282,8 @@ void Scrn_X_Set_R(ix, x)
 
 /* provisional name */
 void Scrn_Y_Set_R(ix, y)
-    s32 ix;
-    s16 y;
+s32 ix;
+s16 y;
 {
     scrn_pos[ix].set_y.disp.pos = y;
     scrn_pos[ix].cur_y.disp.pos = y;

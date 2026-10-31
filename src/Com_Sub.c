@@ -62,7 +62,7 @@ extern const FOLLOW_MENU_1ST Follow_Menu_1st_Unit_Data_2[];
 extern const FOLLOW_MENU_2ND Follow_Menu_2nd_Unit_Data_0[];
 extern const FOLLOW_MENU_2ND Follow_Menu_2nd_Unit_Data_2[];
 
-/* 02000664 */
+/* 02000CD4 */
 const FOLLOW_MENU_1ST* Follow_Menu_1st_Unit_Data[13] = {
     Follow_Menu_1st_Unit_Data_0,
     Follow_Menu_1st_Unit_Data_0,
@@ -78,7 +78,7 @@ const FOLLOW_MENU_1ST* Follow_Menu_1st_Unit_Data[13] = {
     Follow_Menu_1st_Unit_Data_0,
     Follow_Menu_1st_Unit_Data_0,
 };
-/* 02000698 */
+/* 02000D08 */
 const FOLLOW_MENU_2ND* Follow_Menu_2nd_Unit_Data[13] = {
     Follow_Menu_2nd_Unit_Data_0,
     Follow_Menu_2nd_Unit_Data_0,
@@ -97,8 +97,8 @@ const FOLLOW_MENU_2ND* Follow_Menu_2nd_Unit_Data[13] = {
 
 
 
-s8 Lv;  /* 0200DCF4 */
-s8 Rnd;  /* 0200DCF5 */
+s8 Lv;  /* 020138F0 */
+s8 Rnd;  /* 020138F1 */
 
 
 
@@ -192,7 +192,7 @@ s16 Power_Level;
     switch (CP_Index[wk->wu.id][1]) {
     case 0:
         Lever_Buff[wk->wu.id] = Lever_LR[wk->wu.id];
-        if ((wk->wu.now_koc == 8) && (wk->wu.char_index == 0xD)) {
+        if ((wk->wu.now_koc == 8) && (wk->wu.char_index == 13)) {
             xx = wk->wu.cg_ix / wk->wu.cgd_type;
             if (xx >= Power_Level) {
                 CP_Index[wk->wu.id][1] = 0x63;
@@ -647,7 +647,7 @@ s16 Time;
 static s32 Check_Squat(wk)
 PLW* wk;
 {
-    if (((WORK*)wk->wu.target_adrs)->pat_status == 0x20) {
+    if (((WORK*)wk->wu.target_adrs)->pat_status == 32) {
         return 0;
     }
     return 2;
@@ -1257,7 +1257,7 @@ s16 Option;
 {
     WORK* em;
     em = (WORK*)wk->wu.target_adrs;
-    if (em->routine_no[1] == PLAYER_DAMAGE && em->pat_status == 0x18) {
+    if (em->routine_no[1] == PLAYER_DAMAGE && em->pat_status == 24) {
         return 0;
     }
     if (Lie_Flag[wk->wu.id] == 0) {
@@ -1922,7 +1922,7 @@ s32 Check_VS_Air_Attack(PLW* wk, s16 Range_JX, s16 Range_JY, s16 J_Lever_Data) {
         return 0;
     }
     em = (WORK*)wk->wu.target_adrs;
-    if ((em->pat_status != 0xE) && (em->pat_status != 0x14) && (em->pat_status != 0x1A) && (em->xyz[1].disp.pos <= 0)) {
+    if ((em->pat_status != 14) && (em->pat_status != 20) && (em->pat_status != 26) && (em->xyz[1].disp.pos <= 0)) {
         return 0;
     }
     if (Check_Term_Sub(wk, PL_Distance[wk->wu.id], Range_JX) == 0) {
@@ -3811,7 +3811,7 @@ s16 PL_id;
     if (plw[wk->wu.id].sa->ok) {
         return Rnd | 8;
     }
-    if ((plw[PL_id].wu.vital_new <= 0x30) || (plw[PL_id ^ 1].wu.vital_new <= 0x30)) {
+    if ((plw[PL_id].wu.vital_new <= 48) || (plw[PL_id ^ 1].wu.vital_new <= 48)) {
         return Rnd | 8;
     }
     return Rnd;
@@ -3974,7 +3974,7 @@ s32 Check_Flip_Term(PLW* wk) {
 
 s32 Flip_Term_Correct(PLW* wk) {
     s16 xx = 0;
-    if (plw[wk->wu.id].wu.vital_new <= 0x30) {
+    if (plw[wk->wu.id].wu.vital_new <= 48) {
         xx++;
     }
     if ((PL_Wins[wk->wu.id]) < (PL_Wins[wk->wu.id ^ 1])) {
@@ -4028,7 +4028,7 @@ void Next_Be_Flip(PLW* wk) {
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
     Timer_00[wk->wu.id] = 9;
-    if ((em->pat_status == 0x21) || (em->pat_status == 0x20)) {
+    if ((em->pat_status == 33) || (em->pat_status == 32)) {
         Lever_Buff[wk->wu.id] = LEVER_DOWN;
     } else {
         Lever_Buff[wk->wu.id] = Setup_Guard_Lever(wk, 0);
@@ -4321,7 +4321,7 @@ s16* xx;
         break;
     case PL_YUN:
     case PL_YANG:
-        if (Check_Special_Technique(wk, em, 0, 0, 0x2b, -1, -1) != 0) {
+        if (Check_Special_Technique(wk, em, 0, 0, 0x2B, -1, -1) != 0) {
             return *xx = 2;
         }
         break;
@@ -4574,7 +4574,7 @@ s32 ETC_Term_0001(PLW* wk, WORK* em) {
 
 
 s32 ETC_Term_0002(PLW* wk, WORK* em) {
-    if (plw[wk->wu.id].wu.vital_new <= 0x30) {
+    if (plw[wk->wu.id].wu.vital_new <= 48) {
         return 1;
     }
     return 0;
@@ -4583,7 +4583,7 @@ s32 ETC_Term_0002(PLW* wk, WORK* em) {
 
 
 s32 ETC_Term_0003(PLW* wk, WORK* em) {
-    if ((em->pat_status != 0x20) && (em->pat_status != 0x21) && (em->pat_status != 2)) {
+    if ((em->pat_status != 32) && (em->pat_status != 33) && (em->pat_status != 2)) {
         return 1;
     }
     return 0;
@@ -4595,7 +4595,7 @@ s32 ETC_Term_0004(PLW* wk, WORK* em) {
     if (em->vital_new >= 49) {
         return 0;
     }
-    if (plw[wk->wu.id].wu.vital_new < 0x78) {
+    if (plw[wk->wu.id].wu.vital_new < 120) {
         return 0;
     }
     return 1;

@@ -1,9 +1,9 @@
 /*
  * EFF24.C  Effect 24: part of the breakable stage object
  *
- * effect_24_init makes one work for its
- * master (effect 23) at (0x2D8, 48). effect_24_move shows pattern 23 until eff_hit_flag[8] is
- * set, then pattern 24 (straight away if the flag is already set when it starts).
+ * effect_24_init makes one work for its master (effect 23) at (0x2D8, 48). effect_24_move shows
+ * pattern 23 until eff_hit_flag[8] is set, then pattern 24 (straight away if the flag is already
+ * set when it starts).
  */
 
 #include "structs.h"
@@ -26,7 +26,7 @@
 
 
 
-/* Animate the part of the breakable object. */
+/* animate the part of the breakable object */
 void effect_24_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
@@ -65,7 +65,7 @@ void effect_24_move(WORK_Other* ewk) {
 
 
 
-/* Create one part for the master. */
+/* one work, for its master */
 s32 effect_24_init(WORK_Other* oya) {
     WORK_Other* ewk;
     s16 ix;

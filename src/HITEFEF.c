@@ -14,8 +14,6 @@
 #include "EFF02.h"
 #include "HITEFEF.h"
 
-void cal_hit_mark_pos();
-
 
 
 void effect_at_vs_effect_dm(ix2, ix)

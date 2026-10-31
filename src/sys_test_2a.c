@@ -26,7 +26,7 @@
 #define SCREEN_DRAW     0       /* screentest_draw_crosshatch */
 #define SCREEN_SHOW     1       /* the crosshatch is up */
 
-s16 screentest_no = 0;  /* 02007CA4 */
+s16 screentest_no = 0;  /* 0200714C */
 
 
 /* provisional name */

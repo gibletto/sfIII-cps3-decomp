@@ -35,7 +35,6 @@ extern const s32 eff35_accel1_tbl[16];
 extern const s32 eff35_accel2_tbl[16];
 extern const u32 eff35_char_table1[];
 extern const u32 eff35_char_table2[];
-void eff35_setup(WORK_Other* ewk);
 s32 abs();
 
 s32 effect_35_init(WORK_Other* oya, s16 type) {

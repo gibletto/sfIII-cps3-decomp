@@ -212,7 +212,6 @@ extern const s8 FBI_msg[4];
    score rows (6-7) and the win record and loser rows (8-10). */
 extern const u16 Entry_Screen_X_Pairs[11][2][2];
 #define Entry_Msg_X_Data ((const u16(*)[2])Entry_Screen_X_Pairs)
-#define ENTRY_MSG_X_ROWS ((const u16(*)[2])Entry_Screen_X_Pairs)
 #define ENTRY_MSG_X_PAIRS Entry_Screen_X_Pairs
 #define ENTRY_SCORE_X_PAIRS (Entry_Screen_X_Pairs + 6)
 #define ENTRY_LOSER_X_PAIRS (Entry_Screen_X_Pairs + 8)

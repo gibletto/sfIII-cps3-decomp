@@ -34,7 +34,6 @@
 
 
 
-/* voice master_id * 0x200 + 0x139 */
 void effect_C4_move(WORK_Other* ewk) {
     const s32* spd;
     switch (ewk->wu.routine_no[0]) {

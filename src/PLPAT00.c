@@ -121,8 +121,8 @@ void Att_RESURRECTION(PLW* wk) {
 
 
 s32 get_life_add_point(num, ori_add)
-    u8 num;
-    s32 ori_add;
+u8 num;
+s32 ori_add;
 {
     s16 add_pts = ori_add;
     u16 ix = num - 20;

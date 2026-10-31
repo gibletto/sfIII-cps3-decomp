@@ -31,11 +31,6 @@
 #define R0_MOVE         2       /* follow the fight */
 
 /* declarations the headers do not give */
-void zoom_ud_check(void);
-void bg_x_move_check(void);
-void bg_y_move_check(void);
-void bg_base_x_move_check(void);
-void bg_base_y_move_check(void);
 void setup_mark_cells();
 void effect_94_entry();
 /* provisional names */

@@ -27,14 +27,10 @@
 #define R0_MOVE         2       /* follow the fight */
 
 /* declarations the headers do not give */
-void zoom_ud_check(void);
-void bg_x_move_check(void);
-void bg_y_move_check(void);
-void bg_base_x_move_check(void);
-void bg_base_y_move_check(void);
 void load_any_color();
-void effect_94_entry();
-s32 effect_69_init();
+
+#include "eff94.h"
+#include "EFF69.h"
 
 void bg010_layer0(void);
 void bg010_layer0_init(void);

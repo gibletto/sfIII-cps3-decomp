@@ -1,8 +1,7 @@
 /*
  * EFF29.C  Effect 29: two stage objects that walk their own routes
  *
- * effect_29_init
- * creates two objects from eff29_pos_tbl; type 0 walks left and right on the x axis
+ * effect_29_init creates two objects from eff29_pos_tbl; type 0 walks left and right on the x axis
  * (eff29_type0), type 1 runs a ten-step route on both axes (eff29_type1).
  */
 

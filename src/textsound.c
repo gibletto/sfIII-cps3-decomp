@@ -23,7 +23,6 @@ u16 num_font_code;  /* 0206CDC4 */
 u32 palette_base;  /* 0206CDC8 */
 
 
-struct PLW_tag;
 void tilemap_chunk_copy_16b(s16 *dst, char *src, s32 chunks)
 {
     register s32 j;

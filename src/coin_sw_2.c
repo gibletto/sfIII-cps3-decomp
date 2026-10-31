@@ -34,12 +34,12 @@
 
 
 
-s16 card_out_req;  /* 0206AAC4 */
-u16 card_out_busy;  /* 0206AAC6 */
+s16 card_out_req;  /* 0205EBA8 */
+u16 card_out_busy;  /* 0205EBAA */
 u8 card_out_busy_tail[128];  /* after card_out_busy; nothing refers to it by name or address */
 
 
-s32 card_empty_flag = 0;  /* 02007D3C */
+s32 card_empty_flag = 0;  /* 020071E4 */
 
 
 /* provisional name */

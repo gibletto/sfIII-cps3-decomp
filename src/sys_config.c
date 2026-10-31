@@ -25,9 +25,9 @@
 #include "sys_config_3.h"
 #include "sys_config.h"
 #include "cps3.h"
-u8 eeprom_w[128];  /* 0206ABE0 */
-s16 eeprom_retry;  /* 0206AC60 */
-SETTINGS Game_setting;  /* 0206AC62 */
+u8 eeprom_w[128];  /* 0205ECC4 */
+s16 eeprom_retry;  /* 0205ED44 */
+SETTINGS Game_setting;  /* 0205ED46 */
 
 
 /* provisional name */

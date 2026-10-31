@@ -169,7 +169,7 @@ const s16* kizetsu_timer_table_4[4] = {
 const s16* kizetsu_timer_table_5[4] = {
     super_arts_nage_00, super_arts_nage_01, super_arts_nage_02, super_arts_nage_02,
 };
-/* 02007A64 */
+/* 02000B94 */
 const s16** kizetsu_timer_table[8] = {
     kizetsu_timer_table_0,
     kizetsu_timer_table_1,

@@ -632,8 +632,7 @@ s32 nekorobi_check(char pl) {
     return result;
 }
 
-s32 footwork_check(char pl)
-{
+s32 footwork_check(char pl) {
     s16 result;
     result = 0;
     if (plw[pl].wu.routine_no[1] == PLAYER_NORMAL) {
@@ -644,6 +643,7 @@ s32 footwork_check(char pl)
     return result;
 }
 
+/* provisional name */
 void reset_char_disp_work(WORK* wk) {
     s16 i;
     for (i = 0; i < 4; i++) {
@@ -678,11 +678,11 @@ void debug_player_change(void) {
     const s8* data;
     if ((sw = exsw_1) & 0x4000) {
         sw = sw & 0xFF;
-        if ((data = plid_data, data[sw & 0xF])) {
+        if ((data = plid_data)[sw & 0xF]) {
             My_char[0] = sw & 0xF;
         }
 
-        if (*(data = (const s8*)((u32)data + (sw & 0xF0) / 16))) {
+        if (*(const s8*)((u32)data + (sw & 0xF0) / 16)) {
             My_char[1] = (sw & 0xF0) / 16;
         }
     }
@@ -781,8 +781,7 @@ void clear_kizetsu_point(PLW* wk) {
     wk->py->store = 0;
 }
 
-void set_super_arts_status(s16 pl)
-{
+void set_super_arts_status(s16 pl) {
     const SA_DATA *data;
 
     data = super_arts_data[My_char[pl]] + Super_Arts[pl];

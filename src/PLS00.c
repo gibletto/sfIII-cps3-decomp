@@ -46,8 +46,8 @@ void process_normal(PLW* wk) {
 
 void TO_nm_01000(WORK* wk) {
     wk->routine_no[1] = PLAYER_NORMAL;
-    wk->routine_no[2] = 1;
-    wk->routine_no[3] = 0;
+    wk->routine_no[2] = NORMAL_STAND;
+    wk->routine_no[3] = RN3_START;
     wk->cg_type = 0;
     nm_01000((PLW*)wk);
 }
@@ -57,7 +57,7 @@ void TO_nm_01000(WORK* wk) {
 void TO_nm_36000(WORK* wk) {
     wk->routine_no[1] = PLAYER_NORMAL;
     wk->routine_no[2] = 36;
-    wk->routine_no[3] = 0;
+    wk->routine_no[3] = RN3_START;
     wk->cg_type = 0;
     nm_01000((PLW*)wk);
 }
@@ -67,7 +67,7 @@ void TO_nm_36000(WORK* wk) {
 void TO_nm_09000(WORK* wk) {
     wk->routine_no[1] = PLAYER_NORMAL;
     wk->routine_no[2] = 9;
-    wk->routine_no[3] = 0;
+    wk->routine_no[3] = RN3_START;
     wk->cg_type = 0;
     nm_09000((PLW*)wk);
 }
@@ -77,7 +77,7 @@ void TO_nm_09000(WORK* wk) {
 void TO_nm_37000(WORK* wk) {
     wk->routine_no[1] = PLAYER_NORMAL;
     wk->routine_no[2] = 37;
-    wk->routine_no[3] = 0;
+    wk->routine_no[3] = RN3_START;
     wk->cg_type = 0;
     nm_09000((PLW*)wk);
 }

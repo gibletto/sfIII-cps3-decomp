@@ -20,7 +20,7 @@
 #include "aboutspr.h"
 #include "EFFECT.h"
 #include "effect_2.h"
-#include "end_main.h"
+#include "end_main_c.h"
 #include "effh5.h"
 #include "effh6_code.h"
 #include "EFFH3.h"
@@ -32,7 +32,6 @@
 
 
 
-/* char index 7 */
 void effect_H3_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
@@ -52,7 +51,6 @@ void effect_H3_move(WORK_Other* ewk) {
 
 
 
-/* char gfx 0xAC48, char table effH3_char_table */
 s32 effect_H3_init(void) {
     WORK_Other* ewk;
     s16 ix;

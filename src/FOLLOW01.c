@@ -31,7 +31,7 @@ void Follow01_0000(PLW* wk) {
         Normal_Attack(wk, 8, 0x20);
         break;
     case 2:
-        Normal_Attack(wk, 8, (0x100));
+        Normal_Attack(wk, 8, 0x100);
         break;
     default:
         End_Pattern(wk);
@@ -68,7 +68,7 @@ void Follow01_0002(PLW* wk) {
         Normal_Attack(wk, 8, 0x20);
         break;
     case 2:
-        Normal_Attack(wk, 8, (0x100));
+        Normal_Attack(wk, 8, 0x100);
         break;
     default:
         End_Pattern(wk);

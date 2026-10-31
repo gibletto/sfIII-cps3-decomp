@@ -87,7 +87,7 @@ void eff91_cell_data_set(WORK_Other* ewk)
             w--;
             *cell++ = *ewk->wu.move_xy_table++ | (((*cell++ = *ewk->wu.move_xy_table++) & 0x100) >> 8);
         }
-        row = row + 128;
+        row += 128;
     }
 }
 

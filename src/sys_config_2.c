@@ -67,35 +67,35 @@ extern const TM_STRING sound_mode_str_tbl_3[];
 extern const TM_STRING sound_mode_str_tbl_4[];
 extern const TM_STRING sound_mode_str_tbl_5[];
 
-s8 cfg_top_cursor;  /* 0206AC74 */
-s8 cfg_coin;  /* 0206AC75 */
-s8 cfg_continue;  /* 0206AC76 */
-s8 cfg_chute;  /* 0206AC77 */
-s8 cfg_sound_mode;  /* 0206AC78 */
-s8 cfg_demo_sound;  /* 0206AC79 */
-s8 cfg_flip_old;  /* 0206AC7A */
-s8 cfg_free_play;  /* 0206AC7B */
-s8 cfg_coin_special;  /* 0206AC7C */
-s8 cfg_cont_forced;  /* 0206AC7D */
-s8 cfg_changed;  /* 0206AC7E */
-s8 cfg_voice;  /* 0206AC7F */
-s8 cfg_dispenser;  /* 0206AC80 */
-s8 cfg_win_point;  /* 0206AC81 */
-s8 cfg_win_point_vs;  /* 0206AC82 */
-s8 cfg_extra;  /* 0206AC83 */
+s8 cfg_top_cursor;  /* 0205ED58 */
+s8 cfg_coin;  /* 0205ED59 */
+s8 cfg_continue;  /* 0205ED5A */
+s8 cfg_chute;  /* 0205ED5B */
+s8 cfg_sound_mode;  /* 0205ED5C */
+s8 cfg_demo_sound;  /* 0205ED5D */
+s8 cfg_flip_old;  /* 0205ED5E */
+s8 cfg_free_play;  /* 0205ED5F */
+s8 cfg_coin_special;  /* 0205ED60 */
+s8 cfg_cont_forced;  /* 0205ED61 */
+s8 cfg_changed;  /* 0205ED62 */
+s8 cfg_voice;  /* 0205ED63 */
+s8 cfg_dispenser;  /* 0205ED64 */
+s8 cfg_win_point;  /* 0205ED65 */
+s8 cfg_win_point_vs;  /* 0205ED66 */
+s8 cfg_extra;  /* 0205ED67 */
 u8 cfg_extra_tail[1];  /* after cfg_extra; nothing refers to it by name or address */
-s8 cfg_cursor;  /* 0206AC85 */
-s8 cfg_cursor_old;  /* 0206AC86 */
-s8 cfg_coin_step;  /* 0206AC87 */
-s8 cfg_coin_sel;  /* 0206AC88 */
-s8 cfg_reserve;  /* 0206AC89 */
-s32 cfg_item_max;  /* 0206AC8C */
+s8 cfg_cursor;  /* 0205ED69 */
+s8 cfg_cursor_old;  /* 0205ED6A */
+s8 cfg_coin_step;  /* 0205ED6B */
+s8 cfg_coin_sel;  /* 0205ED6C */
+s8 cfg_reserve;  /* 0205ED6D */
+s32 cfg_item_max;  /* 0205ED70 */
 
 void tilemap_put_block(u16 x, u16 y, u16 attr, u16 code);
 
 
 
-s8 event_off_flag = 1;  /* 02007D50 */
+s8 event_off_flag = 1;  /* 020071F8 */
 
 
 
@@ -286,8 +286,8 @@ void (*sysconfig_item_card_tbl2[10])(void) = {
 
 s8 config_menu_run(void)
 {
-  config_menu_tbl[Config_No_0]();
-  return cfg_reserve;
+    config_menu_tbl[Config_No_0]();
+    return cfg_reserve;
 }
 
 
@@ -842,10 +842,8 @@ void sysconfig_chute_mode(void) {
 
 
 void sysconfig_continue(void) {
-    if (cfg_coin != 17) {
-        if (event_off_flag != 0 && config_modify_step()) {
-            cfg_continue ^= 1;
-        }
+    if (cfg_coin != 17 && event_off_flag != 0 && config_modify_step()) {
+        cfg_continue ^= 1;
     }
     if (Area_Type) {
         tilemap_print_string(0, 0, 0xFFFF, sysconfig_modify_guide);

@@ -231,13 +231,13 @@ react:
         as->wu.char_index = as->wu.cmcf.pat;
         break;
     }
-    as->wu.routine_no[3] = 0;
+    as->wu.routine_no[3] = RN3_START;
     as->tsukami_num = ds->player_number;
     as->tsukami_f = 1;
     ds->tsukamare_f = 1;
     ds->wu.routine_no[1] = PLAYER_CAUGHT;
     ds->wu.routine_no[2] = as->wu.att.ng_type;
-    ds->wu.routine_no[3] = 0;
+    ds->wu.routine_no[3] = RN3_START;
     if (as->wu.att.ng_type == 2) {
         ds->wu.xyz[1].disp.pos = as->wu.xyz[1].disp.pos;
     }
@@ -420,7 +420,7 @@ jump_two:
     }
 set_damage:
     ds->wu.routine_no[1] = PLAYER_DAMAGE;
-    ds->wu.routine_no[3] = 0;
+    ds->wu.routine_no[3] = RN3_START;
     effect_02_init(&as->wu, ds->dm_point, 1, ds->wu.dm_rl);
     dm_status_copy(&as->wu, &ds->wu);
     if (ds->wu.xyz[1].disp.pos > 0 || ds->wu.vital_new < ds->wu.dm_vital) {
@@ -472,7 +472,7 @@ void set_guard_status(PLW* as, PLW* ds) {
         ds->wu.routine_no[2] = ds->wu.old_rno[2];
     } else {
         ds->wu.routine_no[1] = PLAYER_DAMAGE;
-        ds->wu.routine_no[3] = 0;
+        ds->wu.routine_no[3] = RN3_START;
         effect_02_init(&as->wu, ds->dm_point, 2, ds->wu.dm_rl);
         dm_status_copy(&as->wu, &ds->wu);
         if (ds->wu.xyz[1].disp.pos > 0) {
@@ -499,7 +499,7 @@ void set_paring_status(PLW* as, PLW* ds) {
         ds->wu.routine_no[2] = ds->wu.old_rno[2];
     } else {
         ds->wu.routine_no[1] = PLAYER_NORMAL;
-        ds->wu.routine_no[3] = 0;
+        ds->wu.routine_no[3] = RN3_START;
         waza_compel_all_init2(ds);
         dm_status_copy(&as->wu, &ds->wu);
         ds->wu.dm_vital = 0;
@@ -667,14 +667,14 @@ char gddir;
         if (!(ds->spmv_ng_flag & 0x400)) {
             if (ds->cp->waza_flag[5] != 0) {
                 as->wu.hf.hit.player = 0x80;
-                ds->wu.routine_no[2] = 0x22;
+                ds->wu.routine_no[2] = 34;
                 return 0;
             }
         }
         if (!(ds->spmv_ng_flag & 0x800)) {
             if (ds->cp->waza_flag[6] != 0) {
                 as->wu.hf.hit.player = 0x80;
-                ds->wu.routine_no[2] = 0x23;
+                ds->wu.routine_no[2] = 35;
                 return 0;
             }
         }
@@ -1134,7 +1134,7 @@ void attack_hit_check(void) {
             if (pcon_dp_flag) {
                 continue;
             }
-            if (sad->pat_status == 0x26) {
+            if (sad->pat_status == 38) {
                 continue;
             }
             if ((dh = (s16*)sad->h_hos)[0] == 0) {

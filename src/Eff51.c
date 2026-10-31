@@ -6,9 +6,9 @@
  * effect_51_move waits for its delay, appears at double size and shrinks to normal size, then
  * waits for the other flashing objects (Flash_Sign) and runs Flash_Violent sequences before
  * it is removed.
- * Flash_Violent runs a timed colour-flash sequence on a work and returns 1 when finished; effects
- * 49, 50 and B5 use it too. effect_51_init is called from RANKING.c; EffG0.c makes effect 51 objects with its
- * own effG0_flash_init.
+ * Flash_Violent (EFF49.C) runs a timed colour-flash sequence on a work and returns 1 when finished.
+ * effect_51_init is called from RANKING.c; EffG0.c makes effect 51 objects with its own
+ * effG0_flash_init.
  */
 
 #include "structs.h"
@@ -34,7 +34,7 @@
 #define R0_STAY         99      /* stay without flashing */
 
 /* routine_no[1]: colour flash */
-#define R1_IDLE         0       /* colour flash: wait for the start */
+#define R1_IDLE         0       /* wait for the start */
 
 
 

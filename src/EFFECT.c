@@ -21,13 +21,13 @@
 #include "effect_2.h"
 #include "EFFECT.h"
 
-u32 frw[128][512];  /* 02028990 */
+u32 frw[128][512];  /* 0201DE04 */
 u8 frw_tail[4];  /* after frw; nothing refers to it by name or address */
-s16 frwque[128];  /* 02068994 */
-s16 frwctr;  /* 02068A94 */
-s16 head_ix[8];  /* 02068A96 */
-s16 tail_ix[8];  /* 02068AA6 */
-s16 exec_tm[8];  /* 02068AB6 */
+s16 frwque[128];  /* 0205DE08 */
+s16 frwctr;  /* 0205DF08 */
+s16 head_ix[8];  /* 0205DF0A */
+s16 tail_ix[8];  /* 0205DF1A */
+s16 exec_tm[8];  /* 0205DF2A */
 
 
 void move_effect_work(s16 index) {
@@ -86,8 +86,8 @@ void effect_work_quick_clear(void) {
 
 /* provisional name */
 void effect_work_list_release(lix, iid)
-    s16 lix;
-    s16 iid;
+s16 lix;
+s16 iid;
 {
     WORK* c_addr;
     s16 curr_ix;

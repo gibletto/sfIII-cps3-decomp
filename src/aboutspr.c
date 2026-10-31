@@ -275,7 +275,7 @@ done:
 
 /* provisional name */
 u32 get_cg_slot_no(id)
-    u16 id;
+u16 id;
 {
     return cg_data_list[id].set->slot;
 }
@@ -290,8 +290,8 @@ u16 id;
 
 /* provisional name */
 s32 load_char_gfx(id, mode)
-    u16 id;
-    s8 mode;
+u16 id;
+s8 mode;
 {
     CharGfxSet* set = cg_data_list[id].set;
     s32 handle;
@@ -331,7 +331,7 @@ s32 load_char_gfx(id, mode)
 
 /* provisional name */
 s32 purge_char_gfx(id)
-    u16 id;
+u16 id;
 {
     CharGfxSet* set = cg_data_list[id].set;
     s16 no = set->slot & 0x7FFF;
@@ -346,7 +346,7 @@ s32 purge_char_gfx(id)
 
 /* provisional name */
 s32 check_cg_data(id)
-    u16 id;
+u16 id;
 {
     s8 flag = 0;
     if ((u32)cg_data_list[id].set > CHAR_GFX_ROM_BEGIN && (u32)cg_data_list[id].set < 0x67FFFFF) {
@@ -574,8 +574,8 @@ s32 char_cell_flip_none(WORK* wk) {
 
 /* provisional name */
 s32 char_cell_push_block(wk, handle)
-    WORK* wk;
-    s16 handle;
+WORK* wk;
+s16 handle;
 {
     if (wk->spr.gfx_blk10[2]) {
         simmram_block_free_10(wk->spr.gfx_blk10[2]);
@@ -1339,9 +1339,9 @@ void char_sprite_zoom_cells(WORK* wk) {
 
 /* provisional name */
 s32 zoom_cell_position(m, x, y)
-    s16 *m;
-    u16 x;
-    u16 y;
+s16 *m;
+u16 x;
+u16 y;
 {
     XY16 pos;
 
@@ -1363,9 +1363,9 @@ s32 zoom_cell_position(m, x, y)
 
 /* provisional name */
 s32 get_cell_zoom(lo, hi, rows)
-    register u16 lo;
-    u16 hi;
-    register u16 rows;
+register u16 lo;
+u16 hi;
+register u16 rows;
 {
     s16 lo_row;
     s16 hi_row;

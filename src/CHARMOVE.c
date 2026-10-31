@@ -176,7 +176,7 @@ void char_move_wca_init(WORK* wk) {
 
 
 
-s32 comm_wca(WORK* wk, CHAR_CMD* _p1) {
+s32 comm_wca(WORK* wk, CHAR_CMD* ctc) {
     char_move_wca_init(wk);
     return 1;
 }
@@ -311,7 +311,7 @@ void char_move_cmj7(WORK* wk) {
 
 
 /* provisional name */
-s32 char_move_cmoa(WORK* wk, CHAR_CMD* _p1) {
+s32 char_move_cmoa(WORK* wk, CHAR_CMD* ctc) {
     set_char_move_init2(wk, wk->cmoa.koc, wk->cmoa.ix, wk->cmoa.pat, 0);
 }
 
@@ -389,14 +389,13 @@ next:
     goto next;
 }
 
-u32 comm_dummy(void)
-{
+u32 comm_dummy(void) {
     return 1;
 }
 
 
 
-s32 comm_roa(WORK* wk, CHAR_CMD* _p1) {
+s32 comm_roa(WORK* wk, CHAR_CMD* ctc) {
     if (wk->cmoa.pat == 0) {
         wk->cmoa.koc = wk->now_koc;
         wk->cmoa.ix = wk->char_index;
@@ -406,15 +405,13 @@ s32 comm_roa(WORK* wk, CHAR_CMD* _p1) {
     return 0;
 }
 
-u32 comm_end(WORK* wk, CHAR_CMD* ctc)
-{
+u32 comm_end(WORK* wk, CHAR_CMD* ctc) {
 
     wk->cg_ix = (ctc->pat - 2) * wk->cgd_type;
     return 1;
 }
 
-u32 comm_jmp(WORK* wk, CHAR_CMD* ctc)
-{
+u32 comm_jmp(WORK* wk, CHAR_CMD* ctc) {
 
     setup_comm_back(wk);
     set_char_move_init2(wk, ctc->koc, ctc->ix, ctc->pat, 0);
@@ -441,7 +438,7 @@ s32 comm_jsr(WORK* wk, CHAR_CMD* ctc) {
 
 
 
-s32 comm_ret(WORK* wk, CHAR_CMD* _p1) {
+s32 comm_ret(WORK* wk, CHAR_CMD* ctc) {
     set_char_move_init2(wk, wk->cmsw.koc, wk->cmsw.ix, wk->cmsw.pat, 0);
     return 0;
 }
@@ -619,7 +616,7 @@ s32 comm_rja4(WORK* wk, CHAR_CMD* ctc) {
 
 
 
-s32 comm_uja4(WORK* wk, CHAR_CMD* _p1) {
+s32 comm_uja4(WORK* wk, CHAR_CMD* ctc) {
     setup_comm_back(wk);
     set_char_move_init2(wk, wk->cmj4.koc, wk->cmj4.ix, wk->cmj4.pat, 0);
     return 0;
@@ -636,7 +633,7 @@ s32 comm_rja5(WORK* wk, CHAR_CMD* ctc) {
 
 
 
-s32 comm_uja5(WORK* wk, CHAR_CMD* _p1) {
+s32 comm_uja5(WORK* wk, CHAR_CMD* ctc) {
     setup_comm_back(wk);
     set_char_move_init2(wk, wk->cmj5.koc, wk->cmj5.ix, wk->cmj5.pat, 0);
     return 0;
@@ -687,7 +684,7 @@ s32 comm_rmja(WORK* wk, CHAR_CMD* ctc) {
 
 
 
-s32 comm_umja(WORK* wk, CHAR_CMD* _p1) {
+s32 comm_umja(WORK* wk, CHAR_CMD* ctc) {
     setup_comm_back(wk);
     set_char_move_init2(wk, wk->cmms.koc, wk->cmms.ix, wk->cmms.pat, 0);
     return 0;
@@ -936,7 +933,7 @@ s32 comm_hjmp(WORK* wk, CHAR_CMD* ctc) {
 
 
 
-s32 comm_hclr(WORK* wk, CHAR_CMD* _p1) {
+s32 comm_hclr(WORK* wk, CHAR_CMD* ctc) {
     wk->hf.hit_flag = 0;
     return 1;
 }
@@ -957,13 +954,12 @@ s32 comm_ixbw(WORK* wk, CHAR_CMD* ctc) {
 
 
 
-s32 comm_quax(WORK* _p0, CHAR_CMD* ctc) {
+s32 comm_quax(WORK* wk, CHAR_CMD* ctc) {
     bg_w.quake_x_index = ctc->koc;
     return 1;
 }
 
-s32 comm_quay(WORK* wk, CHAR_CMD* ctc)
-{
+s32 comm_quay(WORK* wk, CHAR_CMD* ctc) {
 
     bg_w.quake_y_index = ctc->koc;
     return 1;
@@ -1192,7 +1188,7 @@ s32 comm_schy(WORK* wk, CHAR_CMD* ctc) {
 
 
 
-s32 comm_back(WORK* wk, CHAR_CMD* _p1) {
+s32 comm_back(WORK* wk, CHAR_CMD* ctc) {
     set_char_move_init2(wk, wk->cmbk.koc, wk->cmbk.ix, wk->cmbk.pat, 0);
     return 0;
 }
@@ -1593,7 +1589,7 @@ s32 comm_rv_y(WORK* wk, CHAR_CMD* ctc) {
 
 
 
-s32 comm_ccfl(PLW* wk, CHAR_CMD* _p1) {
+s32 comm_ccfl(PLW* wk, CHAR_CMD* ctc) {
     wk->caution_flag = 0;
     return 1;
 }
@@ -1658,8 +1654,7 @@ u32 comm_exbgs(WORK* wk, CHAR_CMD* ctc) {
     return 1;
 }
 
-u32 comm_exbgc(WORK* wk)
-{
+u32 comm_exbgc(WORK* wk) {
 
     another_bg[wk->id] = 0;
     return 1;

@@ -31,15 +31,11 @@
 #define SYNC_MOVE       1       /* follow the camera (bg_x_move_check, bg_y_move_check) */
 
 /* declarations the headers do not give */
-void zoom_ud_check(void);
-void bg_x_move_check(void);
-void bg_y_move_check(void);
-void bg_base_x_move_check(void);
-void bg_base_y_move_check(void);
-void Bg_Family_Set_2(void);
 void load_any_color();
 void debug_bg_tile_put();
-s32 effect_C3_init();
+
+#include "EFFC3.h"
+
 /* provisional name */
 extern const u16 bg150_scrn_data[][16][32];
 

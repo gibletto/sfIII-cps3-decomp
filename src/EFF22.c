@@ -1,11 +1,10 @@
 /*
- * EFF22.C  Effect 22
+ * EFF22.C  Effect 22: part of the breakable stage object
  *
- * effect_22_init makes one work for its master at
- * (0x2C8, 56). It waits on pattern 0 until eff_hit_flag[8] is set, plays pattern 1, then walks
- * pattern by pattern with add_pos_dir_032 (the pattern's direction byte) until the pattern says
- * 99, plays pattern 2 and settles at (0x2DC, 54). If eff_hit_flag[8] is already set when it
- * starts, it goes straight to pattern 2.
+ * effect_22_init makes one work for its master (effect 23) at (0x2C8, 56). It waits on pattern 0
+ * until eff_hit_flag[8] is set, plays pattern 1, then walks pattern by pattern with add_pos_dir_032
+ * (the pattern's direction byte) until the pattern says 99, plays pattern 2 and settles at (0x2DC,
+ * 54). If eff_hit_flag[8] is already set when it starts, it goes straight to pattern 2.
  */
 
 #include "structs.h"
@@ -30,7 +29,7 @@
 
 
 
-/* Animate the part and move it to its resting position. */
+/* animate the part and move it to its resting position */
 void effect_22_move(WORK_Other* ewk) {
     if (compel_dead_check(ewk) != 0) {
         ewk->wu.routine_no[0] = R0_KILL;
@@ -94,7 +93,7 @@ void effect_22_move(WORK_Other* ewk) {
 
 
 
-/* Create one part for the master. */
+/* one work, for its master */
 s32 effect_22_init(WORK_Other* oya) {
     WORK_Other* ewk;
     s16 ix;

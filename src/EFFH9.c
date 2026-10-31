@@ -49,7 +49,7 @@
 
 
 
-/* 02007428 */
+/* 020070F4 */
 const s16* effH7_move_tbl[16] = {
     effH7_move_data_0,
     effH7_move_data_0,
