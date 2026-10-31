@@ -685,7 +685,7 @@ INPUT obj\spr_pool_2.obj
 INPUT obj\simmram.obj
 INPUT obj\simmram_slot.obj
 INPUT obj\simmram_10.obj
-INPUT obj\poly_que.obj
+INPUT obj\dma_que.obj
 INPUT obj\spr_list.obj
 INPUT obj\textsound.obj
 INPUT obj\textsound_2.obj

@@ -22,7 +22,7 @@ CFLAGS = -cpu=sh2 -division=cpu -endian=big -pic=0 -extra=m=8,a=8 -nortnext -inc
 OPT = -optimize=1 -speed
 
 # modules compiled with other options (units.txt in the development tree)
-OPT0_PSYS = coin_chute coin_sw coin_sw_2 colortest cram_bank eeprom family fifo iotest_out meta_col_bcd poly_que simmram_slot \
+OPT0_PSYS = coin_chute coin_sw coin_sw_2 colortest cram_bank dma_que eeprom family fifo iotest_out meta_col_bcd simmram_slot \
 	soundtest spr_list spr_pool spr_pool_2 sys_config sys_config_2 sys_config_3 sys_test sys_test_2 sys_test_2a sys_test_2b sys_test_2c \
 	sys_test_3 sys_test_4 sys_test_5 textsound
 $(OPT0_PSYS:%=obj/%.obj): OPT = -optimize=0 -nospeed -section=program=PSYS

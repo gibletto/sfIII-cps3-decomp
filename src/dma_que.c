@@ -1,5 +1,5 @@
 /*
- * POLY_QUE.C  Character DMA and colour DMA queue
+ * DMA_QUE.C  Character DMA and colour DMA queue
  *
  * The video hardware has two DMA units. The character DMA reads a list of requests from CHARACTER RAM and
  * copies (or decompresses) graphics from the ROM into CHARACTER RAM. The colour DMA copies a block of colours

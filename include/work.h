@@ -1222,7 +1222,7 @@ extern s16 simm10_used[];
 #define RN3_START       0       /* the first step of a move routine: set up its animation */
 #define RN3_DONE        9       /* a win or lose pose's script has ended */
 
-#define CHR_DMA_MAX   0x155   /* character DMA requests queued per bank (poly_que.c) */
+#define CHR_DMA_MAX   0x155   /* character DMA requests queued per bank (dma_que.c) */
 #define COL_DMA_MAX   32
 #define DMA_ORDER_MAX  0x175
 extern s32 dma_state;
