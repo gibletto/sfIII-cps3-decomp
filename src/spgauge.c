@@ -412,6 +412,7 @@ s8 Stpl_Num;
         case SPG_TIME_SHOW:
             sa_moji_trans(Stpl_Num, 1, 1);
             spg_dat[Stpl_Num].time_rno++;
+            /* fall through */
         case SPG_TIME_DRAIN:
             if (spg_dat[Stpl_Num].current_spg > 0 && plw[Stpl_Num].sa->ok == -1) {
                 spg_dat[Stpl_Num].timer2--;
@@ -725,6 +726,7 @@ void spgauge_work_clear(s8 Stpl_Num) {
     sa_color_chenge(Stpl_Num, 1);
 }
 
+/* provisional name */
 void satime_stock_clear(void) {
     if (spg_dat[0].time == 1 && plw[0].sa->ok == -1) {
         sa_stock_chr_trans(0, 0);

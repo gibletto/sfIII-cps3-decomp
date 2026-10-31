@@ -388,14 +388,12 @@ void setup_shell_hit_stop(WORK* wk, s16 tm, s16 fl) {
 
 
 /* Clear the player's caution (guard-warning) flag. */
-void clear_caution_flag(PLW* wk)
-{
+void clear_caution_flag(PLW* wk) {
     wk->caution_flag = 0;
 }
 
 /* Set the player's caution (guard-warning) flag. */
-void set_caution_flag(PLW* wk)
-{
+void set_caution_flag(PLW* wk) {
     wk->caution_flag = 1;
 }
 
@@ -409,8 +407,7 @@ void reset_extra_bg_flag(WORK* wk) {
     another_bg[wk->id] = 0;
 }
 
-void flip_my_rl_flag(WORK* wk)
-{
+void flip_my_rl_flag(WORK* wk) {
     wk->rl_flag = ((u8)wk->rl_flag + 1U) & 1;
 }
 

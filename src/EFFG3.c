@@ -43,6 +43,7 @@ void effect_G3_move(WORK_Other* ewk) {
         ewk->wu.position_y = pwk->wu.position_y - 8;
         ewk->wu.position_z = pwk->wu.position_z - 4;
         set_char_move_init(&ewk->wu, 0, 0);
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.dead_f) {
             ewk->wu.routine_no[0]++;

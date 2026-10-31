@@ -8,6 +8,7 @@
 #include "structs.h"
 #include "sound_voice.h"
 
+/* provisional name */
 u32 sound_envelope_rate(u16 level, u8 index, const u16* table) {
     u32 rate;
     u32 offset;
@@ -22,5 +23,6 @@ u32 sound_envelope_rate(u16 level, u8 index, const u16* table) {
     return 1;
 }
 
+/* provisional name */
 void voice_process_null(SNDVOICE* voice, u8 voice_index) {
 }

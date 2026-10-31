@@ -75,6 +75,7 @@ void end_07000(u16 pl_num) {
             end_700_move();
             end_701_move();
         }
+        /* fall through */
     case END1_DONE:
         end_scn_pos_set2();
         end_bg_pos_hosei2();

@@ -21,6 +21,7 @@ extern const TONE_ENTRY tone_down_tbl[];
 extern const u16 bcount_mark_chr[];
 extern const NAME_PLATE nwdata_tbl[];
 
+/* provisional name */
 const s8 sc_celllist_scr_tbl[18] = {
     0, 3, 3, 3, 13, 12, 3, 3, 3, 3, 3, 3, 3, 3, 4, 3,
     3, -56,
@@ -30,6 +31,7 @@ const u16 sc_player_name_chr_tbl[13] = {
     0x408, 0x40E, 0x414, 0x41A, 0x420, 0x426, 0x42C, 0x432, 0x438, 0x43E, 0x444, 0x44A, 0x450,
 };
 
+/* provisional name */
 const TONE_ENTRY tone_down_tbl[8] = {
     { 0x80, 0x600, 0 }, { 4, 0x1B0, 0xBA }, { 4, 0x1C0, 0xCA }, { 0x30, 0x12A0, 0x130 },
     { 0x20, 0x13A0, 0x1E0 }, { 0xC0, 0x1000, 0x140 }, { 0x10, 0x12D0, 0x160 }, { 0x10, 0x12E0, 0x170 },

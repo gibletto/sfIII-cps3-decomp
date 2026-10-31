@@ -175,6 +175,7 @@ const s16 dudley_movexy_table[71][6] = {
     {    640,      0,     0,    1152,   -112,     0 },  /* 70 */
 };
 
+/* provisional name */
 const PARABORA_DATA dudley_parabora_data[27] = {
     /*      x spd  x acc  x mode   y spd  y acc  y mode */
     { { {      0,      0,     1,       0,      0,     0 },  /* buttobi 0: weight 0 */

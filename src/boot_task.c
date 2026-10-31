@@ -85,7 +85,6 @@ u8 task_req_buff[716];  /* 0200CEA0 */
 
 
 
-
 /* First task of the system.  Set up the task request queue and start
    mode_init_task in task slot 0, retrying until a slot is free.  From then on
    serve the queue: whenever task slot 6 is free and a request is waiting, start

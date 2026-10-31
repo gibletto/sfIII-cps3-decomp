@@ -84,7 +84,6 @@
 
 
 
-
 extern const u8 game_cfg_default_tbl_row0[];
 extern const u8 game_cfg_default_tbl_row1[];
 extern const u8 game_cfg_default_tbl_row2[];

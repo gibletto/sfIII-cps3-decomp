@@ -93,6 +93,7 @@ void effect_D8_move(WORK_Other* ewk) {
     sort_push_request4(&ewk->wu);
 }
 
+/* provisional name */
 s32 effect_D8_entry(s16 PL_id, s16 vital) {
     s16 ix;
     WORK_Other* ewk;
@@ -124,6 +125,7 @@ s32 effect_D8_entry(s16 PL_id, s16 vital) {
     return 0;
 }
 
+/* provisional name */
 void effD8_char_set(WORK_Other* ewk) {
     ewk->wu.char_index = ID_of_Face[ewk->master_id][Cursor_Y[ewk->master_id]][Cursor_X[ewk->master_id]];
 }
@@ -133,6 +135,7 @@ void effect_D8_init(WORK_Other* ewk) {
     ewk->wu.xyz[1].disp.pos = Face_Pos_Data[ewk->wu.char_index][SEL_POS_Y] + 65;
 }
 
+/* provisional name */
 void effD8_colour_step(WORK_Other* ewk, s16 num, s16 time) {
     if (--ewk->wu.vitality == 0) {
         if (++ewk->wu.vital_old >= num) {

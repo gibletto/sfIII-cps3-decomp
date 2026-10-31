@@ -143,6 +143,7 @@ void effF0_line_scroll(WORK_Other* ewk) {
     }
 }
 
+/* provisional name */
 void effF0_scroll_reset(WORK_Other* ewk) {
     s16 i;
     seraph_flag = 0;
@@ -160,6 +161,7 @@ void effF0_scroll_reset(WORK_Other* ewk) {
     Bg_Off_W(0x80);
 }
 
+/* provisional name */
 void effF0_scroll_set(WORK_Other* ewk) {
     s32 x;
     s16 pos_y;

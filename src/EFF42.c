@@ -106,6 +106,7 @@ void effect_42_move(WORK_Other* ewk) {
             ewk->wu.routine_no[1]++;
             ewk->wu.my_mr_flag = 1;
             ewk->wu.mvxy.a[0].sp = -0x80000;
+            /* fall through */
         case R1_CLOSE:
             if (zoom_x_step_check(ewk)) {
                 ewk->wu.routine_no[1]++;

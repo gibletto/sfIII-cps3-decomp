@@ -68,6 +68,7 @@ void effect_G8_move(WORK_Other* ewk) {
         if (ewk->wu.old_rno[5] > 0) {
             add_y_sub(ewk);
         }
+        /* fall through */
     case 2:
         if (range_x_check(&ewk->wu) == 0) {
             return;

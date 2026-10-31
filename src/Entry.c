@@ -93,8 +93,10 @@ void Game_Task(void) {
                         break;
                     }
                 }
+                /* fall through */
             case 4:
                 tp->status = 3;
+                /* fall through */
             default:
                 task_ran_flag = 1;
                 task_dispatch(tp);

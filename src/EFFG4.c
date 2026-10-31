@@ -38,6 +38,7 @@ void effect_G4_move(WORK_Other* ewk) {
         ewk->wu.position_y = ewk->wu.xyz[1].disp.pos + gill_eff_data[ewk->wu.type].hy;
         ewk->wu.position_z = ewk->wu.xyz[2].disp.pos + gill_eff_data[ewk->wu.type].hz;
         set_char_move_init(&ewk->wu, 0, gill_eff_data[ewk->wu.type].chix);
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;

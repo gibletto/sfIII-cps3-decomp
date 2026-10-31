@@ -222,8 +222,7 @@ s32 polygon2d_queue_quad(u32 a, u32 b, u32 c, u16 lo, u16 hi, s16 pri) {
 }
 
 /* provisional name */
-void sprite_poly_queue_drain_try(void)
-{
+void sprite_poly_queue_drain_try(void) {
     if ((VIDEO_DMA_STATUS & VIDEO_DMA_BUSY) == 0 && poly_dma_state == POLY_IDLE) {
         if (poly_line_cnt[poly_rd_bank] > 0) {
             sprite_polygon_flush_queue(POLY_KIND_LINE);
@@ -239,8 +238,7 @@ void sprite_poly_queue_drain_try(void)
    send the waiting polygon queue: the line queue if it holds entries, otherwise
    the quad queue.  A request in state 3 is simply dropped. */
 /* provisional name */
-void sprite_poly_queue_drain_wait(void)
-{
+void sprite_poly_queue_drain_wait(void) {
     while (VIDEO_DMA_STATUS & VIDEO_DMA_BUSY) {
     }
     switch (poly_dma_state) {
@@ -255,6 +253,7 @@ void sprite_poly_queue_drain_wait(void)
         break;
     case POLY_SENDING_DIRECT:
         poly_dma_state = POLY_IDLE;
+        /* fall through */
     case POLY_IDLE:
     default:
         break;
@@ -310,6 +309,7 @@ void sprite_polygon_flush_queue(s32 kind) {
         POLY_QUAD_C_HI = cmd.quad->c_hi | POLY_QUAD_GO;
         poly_quad_cnt[poly_rd_bank]--;
         poly_quad_rd[poly_rd_bank]++;
+        /* fall through */
     default:
         break;
     }

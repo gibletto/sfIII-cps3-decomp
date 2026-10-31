@@ -210,7 +210,7 @@ void Demo01(void) {
 
 void Setup_Demo_PL(void) {
     My_char[0] = Demo_PL_Play_Data[Demo_PL_Index[0]];
-    My_char[1] = (Demo_PL_Play_Data + Demo_PL_Index[0])[1];
+    My_char[1] = Demo_PL_Play_Data[Demo_PL_Index[0] + 1];
 }
 
 
@@ -227,7 +227,7 @@ void Setup_Demo_Arts(void) {
 void Setup_Demo_Stage(void) {
     bg_w.area = 0;
     bg_w.stage = Demo_Stage_Play_Data[Demo_Stage_Index];
-    Demo_Stage_Index += 1;
+    Demo_Stage_Index++;
     if ((Demo_PL_Index[0] += 2) > 9) {
         Demo_PL_Index[0] = 0;
         Demo_Stage_Index = 0;

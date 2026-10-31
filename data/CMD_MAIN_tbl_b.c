@@ -17,6 +17,7 @@ extern const s8 str_5_EVENT_OFF[];
 extern const s8 str_6_EXIT[];
 extern const s8 gcfg_help_select2_en[];
 
+/* provisional name */
 const s8 gcfg_line_title_en[44] = "7-2. G A M E   C O N F I G U R A T I O N\n\0\x08\x08";
 
 const s8 str_1_GAME_DIFFICULTY_EASY_HARD[44] = "1. GAME DIFFICULTY   EASY[********]HARD\n\0\x03\x03\x04";
@@ -31,4 +32,5 @@ const s8 str_5_EVENT_OFF[28] = "5. EVENT             OFF\n\0\x27\x28";
 
 const s8 str_6_EXIT[12] = "6. EXIT\n\0\x01\x01\x01";
 
+/* provisional name */
 const s8 gcfg_help_select2_en[32] = "SELECT OPTION  = 1P UP or DOWN\0\x01";

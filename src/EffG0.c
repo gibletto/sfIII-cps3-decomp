@@ -68,6 +68,7 @@ void effG0_akebono_move(WORK_Other* ewk) {
         ewk->wu.dir_timer = 8;
         ewk->wu.dir_step = 0;
         ewk->wu.routine_no[0]++;
+        /* fall through */
     case R0_SCROLL:
         if (!ewk->wu.dir_timer) {
             akebono_scrn_move(ewk->wu.dir_step);
@@ -108,7 +109,6 @@ void effG0_obj_move(WORK_Other* ewk) {
 
 
 
-
 /* provisional name */
 void effG0_names_move(WORK_Other* ewk) {
     const s16* p;
@@ -138,7 +138,6 @@ void effG0_names_move(WORK_Other* ewk) {
     }
     push_effect_work(&ewk->wu);
 }
-
 
 
 

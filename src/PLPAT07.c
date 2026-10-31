@@ -324,6 +324,7 @@ void Att_PL07_SA3(PLW* wk) {
         wk->wu.routine_no[3]++;
         wk->wu.rl_flag = wk->wu.rl_waza;
         set_char_move_init(&wk->wu, 5, wk->as->char_ix);
+        /* fall through */
     case SA3_AIR:
         jumping_union_process(&wk->wu, 2);
         if (wk->wu.routine_no[3] != SA3_LAND) {

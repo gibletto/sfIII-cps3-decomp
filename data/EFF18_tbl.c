@@ -31,6 +31,7 @@ const s16 scr_obj_num18[6][4] = {
 
 /* one row per object: { dead_f, my_family, colour code, x, y, priority, dir_old, dir_step, hit_stop,
    sync_suzi, routine_no[1], old_rno[0] } */
+/* provisional name */
 const s16 scr_obj_data18_0[1][12] = {
     { 1, 2, 0x2063, -224, 64, 74, 18, 19, 1, 0, 0, 1 },
 };

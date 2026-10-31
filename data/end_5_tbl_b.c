@@ -15,6 +15,7 @@ extern const PANEL end_500_bg1_cell_tbl[];
 extern const s16 timer_5_tbl[];
 extern const s16 end_5_pos[][2];
 
+/* provisional name */
 const PANEL end_500_bg1_cell_tbl[8] = {
     { 0x80, 11 }, { 0xC0, 12 }, { 0x1000, 15 }, { 0x1040, 16 }, { 0x2000, 1 }, { 0x2040, 2 }, { 0x3000, 7 }, { 0x3040, 8 },
 };

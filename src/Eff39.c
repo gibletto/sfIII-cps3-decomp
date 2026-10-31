@@ -74,6 +74,7 @@ void effect_39_move(WORK_Other* ewk) {
     sort_push_request4(&ewk->wu);
 }
 
+/* provisional name */
 s32 eff39_arts_flag(WORK_Other* ewk) {
     if (Sel_Arts_Complete[ewk->master_id] != -1) {
         return Sel_Arts_Complete[ewk->master_id] & 0x8000;

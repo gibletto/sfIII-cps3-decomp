@@ -191,6 +191,7 @@ const s16 ken_movexy_table[74][6] = {
     {      0,      0,     0,       0,    -96,     0 },  /* 73 */
 };
 
+/* provisional name */
 const PARABORA_DATA ken_parabora_data[22] = {
     /*      x spd  x acc  x mode   y spd  y acc  y mode */
     { { {      0,      0,     1,       0,      0,     0 },  /* buttobi 0: weight 0 */

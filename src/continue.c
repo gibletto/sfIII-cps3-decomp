@@ -237,6 +237,7 @@ void Clear_Win_Type(void) {
 
 /* Nonzero when a coin dropped in the player's chute this frame; in chute modes 0 and 1 a coin in either chute
    counts. */
+/* provisional name */
 s32 Check_Coin_In(pl)
 s16 pl;
 {

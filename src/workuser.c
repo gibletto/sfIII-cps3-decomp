@@ -176,7 +176,7 @@ s16 Select_Arts[2];  /* 02012D12 */
 s16 Sel_First_PL;  /* 02012D16 */
 s16 Sel_Second_PL;  /* 02012D18 */
 s16 Order[6];  /* 02012D1A */
-s16 sel_plate_state[2][3];  /* 02012D26 */
+s16 sel_plate_state[2][3];  /* 02012D26, provisional name */
 s8 Select_Status[2];  /* 02012D32 */
 s8 Select_Demo_Index;  /* 02012D34 */
 u8 Country;  /* 02012D35 */
@@ -206,7 +206,7 @@ s16 M_No2;  /* 02012DB6 */
 s16 M_No3;  /* 02012DB8 */
 s8 Demo_Time_Stop;  /* 02012DBA */
 u8 Demo_Time_Stop_tail[1];  /* 02012DBB */
-s8 win_slide_flag;  /* 02012DBC */
+s8 win_slide_flag;  /* 02012DBC, provisional name */
 s16 VS_Tech[2];  /* 02012DBE */
 s8 Exec_Wipe;  /* 02012DC2 */
 s16 Guard_Type[2];  /* 02012DC4 */
@@ -241,7 +241,7 @@ s8 Rolling_Flag[2];  /* 02012E27 */
 u8 Continue_Coin[2];  /* 02012E29 */
 s8 Ignore_Entry[2];  /* 02012E2B */
 s16 Cursor_Y[2];  /* 02012E2E */
-s16 eff98_plate_z[2][3];  /* 02012E32 */
+s16 eff98_plate_z[2][3];  /* 02012E32, provisional name */
 s8 Slide_Type;  /* 02012E3E */
 s8 Order_Dir[6];  /* 02012E3F */
 s8 Order_Timer[6];  /* 02012E45 */
@@ -251,7 +251,7 @@ s8 Moving_Plate_Counter[2];  /* 02012E4F */
 s8 OK_Priority[2];  /* 02012E51 */
 s8 Player_Color[2];  /* 02012E53 */
 s8 PP_Priority[2][3];  /* 02012E55 */
-s8 eff98_arts_req[2][3];  /* 02012E5B */
+s8 eff98_arts_req[2][3];  /* 02012E5B, provisional name */
 s8 ID_of_Face[2][2][5];  /* 02012E61 */
 s8 vs_object_count;  /* 02012E75 */
 u8 Stock_My_char[2];  /* 02012E76 */
@@ -325,13 +325,13 @@ volatile s8 BGM_Vol;  /* 02012F9B */
 u8 Used_char[2];  /* 02012F9C */
 s8 Break_Com[2][13];  /* 02012F9E */
 s8 Sel_Exit_Flag;  /* 02012FB8 */
-u16 EM_Course[2];  /* 02012FBA */
+u16 EM_Course[2];  /* 02012FBA, provisional name */
 u16 Lever_Store[2][3];  /* 02012FBE */
 s16 Return_CP_No[2];  /* 02012FCA */
 s16 Return_CP_Index[2];  /* 02012FCE */
 s16 Return_Pattern_Index[2];  /* 02012FD2 */
 s8 aiuchi_flag;  /* 02012FD6 */
-u8 Straight_Lose_Count;  /* 02012FD7 */
+u8 Straight_Lose_Count;  /* 02012FD7, provisional name */
 u8 paring_counter[2];  /* 02012FD8 */
 u8 paring_bonus_r[2];  /* 02012FDA */
 u8 paring_ctr_vs[2][2];  /* 02012FDC */
@@ -361,7 +361,7 @@ u8 Weak_PL;  /* 0201370E */
 s16 Last_Pattern_Index[2];  /* 02013710 */
 u8 Bullet_No[2];  /* 02013714 */
 u8 Bullet_Counter[2];  /* 02013716 */
-u8 Straight_Win_Count;  /* 02013718 */
+u8 Straight_Win_Count;  /* 02013718, provisional name */
 s16 Random_ix16_ex_com;  /* 0201371A */
 s16 Random_ix32_ex_com;  /* 0201371C */
 /* after Random_ix32_ex_com: nothing refers to it by name or address */

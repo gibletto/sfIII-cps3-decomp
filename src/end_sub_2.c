@@ -139,14 +139,14 @@ void cd_error_fatal_hang(s32 kind) {
 
 
 s32 check_shortcut(void) {
-    u16 v;
+    u16 sw;
     if (!end_no_cut) {
         if (WINNER) {
-            v = p2sw_0;
+            sw = p2sw_0;
         } else {
-            v = p1sw_0;
+            sw = p1sw_0;
         }
-        if (v & 0x7F0) {
+        if (sw & 0x7F0) {
             return 1;
         }
     }
@@ -171,7 +171,6 @@ const s8* b;
     yu += bg_w.bgw[5].position_y;
     effect_H6_init(0, su, xu, yu, a, -1);
 }
-
 
 
 

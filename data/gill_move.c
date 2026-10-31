@@ -173,6 +173,7 @@ const s16 gill_movexy_table[51][6] = {
     {   -384,      0,     0,    1792,   -128,     0 },  /* 50 */
 };
 
+/* provisional name */
 const PARABORA_DATA gill_parabora_data[13] = {
     /*      x spd  x acc  x mode   y spd  y acc  y mode */
     { { {      0,      0,     1,       0,      0,     0 },  /* buttobi 0: weight 0 */

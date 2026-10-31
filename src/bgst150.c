@@ -30,6 +30,11 @@
 #define SYNC_INIT       0       /* set up the layer */
 #define SYNC_MOVE       1       /* follow the camera (bg_x_move_check, bg_y_move_check) */
 
+/* bgw r_no_1 in bg150_layer1_init */
+#define LAND_INIT       0       /* set up; in area 1 put up the landing screen, else the next r_no_0 */
+#define LAND_WAIT       1       /* until bg_land_flag, then the stage map and the quake */
+#define LAND_QUAKE      2       /* until the quake ends, then the next r_no_0 */
+
 /* declarations the headers do not give */
 void load_any_color();
 void debug_bg_tile_put();
@@ -111,7 +116,7 @@ void bg150_layer1(void) {
 /* provisional name */
 void bg150_layer1_init(void) {
     switch (bgw_ptr->r_no_1) {
-    case 0:
+    case LAND_INIT:
         bgw_ptr->r_no_1++;
         bg_land_flag = 0;
         bgw_ptr->old_pos_x = bgw_ptr->xy[0].disp.pos = bgw_ptr->pos_x_work = 0x200;
@@ -133,7 +138,7 @@ void bg150_layer1_init(void) {
         debug_bg_tile_put(0, 0x30A0, 13, (u32)bg150_scrn_data);
         scrn_map_set_now(1, eff_bg_adrs[0].adrs);
         break;
-    case 1:
+    case LAND_WAIT:
         if (bg_land_flag) {
             bgw_ptr->r_no_1++;
             scrn_map_set_now(1, (u32)bg_w.bgw[1].bg_address);
@@ -141,7 +146,7 @@ void bg150_layer1_init(void) {
             Sound_SE(119);
         }
         break;
-    case 2:
+    case LAND_QUAKE:
         if (bg_w.quake_y_index == 0) {
             bgw_ptr->r_no_0++;
         }

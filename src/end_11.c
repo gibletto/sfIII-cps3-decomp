@@ -80,6 +80,7 @@ void end_11000(u16 pl_num) {
             end_1101_move();
             end_1102_move();
         }
+        /* fall through */
     case END1_DONE:
         end_scn_pos_set2();
         end_bg_pos_hosei2();
@@ -231,6 +232,7 @@ void end_1100_3000(void) {
             bgw_ptr->r_no_1++;
             end_no_cut = 0;
         }
+        /* fall through */
     case 2:
         ls_rate1 = 0x108;
         line = (s16*)bg_w.bgw[0].suzi_adrs + 0x400;
@@ -261,6 +263,7 @@ void end_1100_5000(void) {
         }
         bgw_ptr->r_no_1++;
         Rewrite_End_Message(0);
+        /* fall through */
     case 2:
         if (Request_Fade(51, 0) == 0) {
             break;
@@ -307,6 +310,7 @@ void end_1100_6000(void) {
         }
         bgw_ptr->r_no_1++;
         end_no_cut = 1;
+        /* fall through */
     case 3:
         if (end_fade_complete()) {
             bgw_ptr->r_no_1++;
@@ -317,10 +321,6 @@ void end_1100_6000(void) {
         break;
     }
 }
-
-
-
-
 
 
 

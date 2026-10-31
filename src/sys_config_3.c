@@ -128,8 +128,7 @@ void sprite_template_chain_init(void) {
 }
 
 /* provisional name */
-void dma_src_ack_seq(void)
-{
+void dma_src_ack_seq(void) {
     s32 unused;
     *(volatile u16 *)DMA_CTRL_REG = 8;
     *(volatile u16 *)DMA_CTRL_REG = 9;
@@ -144,8 +143,7 @@ void dma_src_ack_seq(void)
 /* Called from the vertical blank interrupt: wait until the sprite DMA has
    finished, then clear the DMA control register. */
 /* provisional name */
-void sprite_dma_end_wait(void)
-{
+void sprite_dma_end_wait(void) {
     while (*(volatile u16 *)DMA_STATUS_REG & 1) {
     }
     *(volatile u16 *)DMA_CTRL_REG = 0;

@@ -251,12 +251,15 @@ const s8 iotest_on_str[4] = "1\0\0\x0D";
 
 const s8 iotest_off_str[4] = "0\0\0\x0B";
 
+/* provisional name */
 const s8 iotest_input_title_str[28] = "1 . I N P U T   T E S T\n";
 
+/* provisional name */
 const s8 iotest_service_label_str[12] = "SERVICE\n";
 
 const s8 str_TEST[8] = "TEST\n";
 
+/* provisional name */
 const s8 iotest_1p_2p_header_str[24] = "1P                  2P\n";
 
 const s8 str_COIN[8] = "COIN\n\0\0\x12";
@@ -267,6 +270,7 @@ const s8 str_LEVER[8] = "LEVER\n\0\x12";
 
 const s8 str_SHOT[8] = "SHOT\n\0\0\x10";
 
+/* provisional name */
 const s8 iotest_input_exit_str[24] = "EXIT = 1P START & SHOT1";
 
 const TM_STRING iotest_output_scr[5] = {
@@ -281,16 +285,22 @@ const TM_STRING iotest_dispenser_str[1] = {
     { 10, 12, 2, iotest_card_dispenser_str },
 };
 
+/* provisional name */
 const s8 iotest_output_title_str[28] = "2 . O U T P U T   T E S T\n\0\x0B";
 
+/* provisional name */
 const s8 iotest_coin_lock_1p_str[32] = "COIN LOCK 1P      (1P SHOT1)\n";
 
+/* provisional name */
 const s8 iotest_coin_lock_2p_str[32] = "COIN LOCK 2P      (2P SHOT1)\n\0\0\x16";
 
+/* provisional name */
 const s8 iotest_elec_counter_str[32] = "ELECTRIC COUNTER  (1P SHOT2)\n\0\0\x14";
 
+/* provisional name */
 const s8 iotest_output_exit_str[24] = "EXIT = 1P START & SHOT1";
 
+/* provisional name */
 const s8 iotest_card_dispenser_str[32] = "CARD DISPENSER    (2P SHOT2)";
 
 const TM_STRING soundtest_menu_scr[9] = {
@@ -349,60 +359,88 @@ const s8 delta_up_str[4] = "+--";
 
 const s8 delta_down_str[4] = "--+";
 
+/* provisional name */
 const s8 soundtest_title_str[44] = "3 . S O U N D   &   V O I C E   T E S T\n\0\x1E\0\x1D";
 
+/* provisional name */
 const s8 soundtest_code_label_str[16] = "SOUND CODE No\n\0\x15";
 
+/* provisional name */
 const s8 soundtest_help_up_str[20] = "CODE +01 = 1P UP\n\0\0\x0B";
 
+/* provisional name */
 const s8 soundtest_help_down_str[20] = "CODE -01 = 1P DOWN\n";
 
+/* provisional name */
 const s8 soundtest_help_right_str[24] = "CODE +10 = 1P RIGHT\n";
 
+/* provisional name */
 const s8 soundtest_help_left_str[20] = "CODE -10 = 1P LEFT\n";
 
+/* provisional name */
 const s8 soundtest_help_request_str[24] = "REQUEST  = 1P SHOT1\n\0\x19\0\x18";
 
+/* provisional name */
 const s8 soundtest_help_stop_str[24] = "STOP     = 1P SHOT2\n\0\x0D\0\x0C";
 
+/* provisional name */
 const s8 soundtest_exit_str[24] = "EXIT = 1P START & SHOT1";
 
+/* provisional name */
 const s8 soundtest_version_label_str[32] = "VERSION:            REQUEST:\n\0\0\x24";
 
+/* provisional name */
 const s8 soundtest_status_label_str[12] = "STATUS:\n\0\x24\0\x23";
 
+/* provisional name */
 const s8 soundtest_channel_header_str[48] = "CH NOTE             PITCH   L---R      VOLUME\n\0\x0B";
 
+/* provisional name */
 const s8 soundtest_ch0_str[4] = "0:\n";
 
+/* provisional name */
 const s8 soundtest_ch1_str[4] = "1:\n";
 
+/* provisional name */
 const s8 soundtest_ch2_str[4] = "2:\n";
 
+/* provisional name */
 const s8 soundtest_ch3_str[4] = "3:\n";
 
+/* provisional name */
 const s8 soundtest_ch4_str[4] = "4:\n";
 
+/* provisional name */
 const s8 soundtest_ch5_str[4] = "5:\n";
 
+/* provisional name */
 const s8 soundtest_ch6_str[4] = "6:\n";
 
+/* provisional name */
 const s8 soundtest_ch7_str[4] = "7:\n";
 
+/* provisional name */
 const s8 soundtest_ch8_str[4] = "8:\n";
 
+/* provisional name */
 const s8 soundtest_ch9_str[4] = "9:\n";
 
+/* provisional name */
 const s8 soundtest_ch10_str[4] = "A:\n";
 
+/* provisional name */
 const s8 soundtest_ch11_str[4] = "B:\n";
 
+/* provisional name */
 const s8 soundtest_ch12_str[4] = "C:\n";
 
+/* provisional name */
 const s8 soundtest_ch13_str[4] = "D:\n";
 
+/* provisional name */
 const s8 soundtest_ch14_str[4] = "E:\n";
 
+/* provisional name */
 const s8 soundtest_ch15_str[4] = "F:\n";
 
 const TM_STRING colortest_scr[7] = {
@@ -435,8 +473,10 @@ const u16 colortest_palette[134] = {
     0, 0x10, 0x200, 0x4000, 0x4210, 0,
 };
 
+/* provisional name */
 const s8 colortest_title_str[24] = "4 . C O L O R   B A R\n";
 
+/* provisional name */
 const s8 colortest_hex_header_str[36] = "0 1 2 3 4 5 6 7 8 9 A B C D E F\n";
 
 const s8 str_RED[8] = "RED\n";
@@ -447,6 +487,7 @@ const s8 str_BLUE[8] = "BLUE\n";
 
 const s8 str_WHITE[8] = "WHITE\n";
 
+/* provisional name */
 const s8 colortest_exit_str[24] = "EXIT = 1P START & SHOT1";
 
 const TM_STRING crosshatch_scr[2] = {
@@ -454,8 +495,10 @@ const TM_STRING crosshatch_scr[2] = {
     { 12, 27, 2, crosshatch_exit_str },
 };
 
+/* provisional name */
 const s8 crosshatch_title_str[36] = "5 . D O T   C R O S S   H A T C H\n";
 
+/* provisional name */
 const s8 crosshatch_exit_str[24] = "EXIT = 1P START & SHOT1";
 
 const TM_STRING gamedata_scr[4] = {
@@ -473,16 +516,22 @@ const TM_STRING gamedata_card_str[1] = {
     { 11, 11, 2, gamedata_card_counter_str },
 };
 
+/* provisional name */
 const s8 gamedata_title_str[24] = "6 . G A M E   D A T A\n\0\x03";
 
+/* provisional name */
 const s8 gamedata_coin_counter_str[20] = "COIN     COUNTER\n";
 
+/* provisional name */
 const s8 gamedata_service_counter_str[20] = "SERVICE  COUNTER\n\0\0\x06";
 
+/* provisional name */
 const s8 gamedata_exit_str[24] = "EXIT = 1P START & SHOT1";
 
+/* provisional name */
 const s8 gamedata_freeplay_counter_str[20] = "FREEPLAY COUNTER\0\x06\0\x06";
 
+/* provisional name */
 const s8 gamedata_card_counter_str[20] = "CARD     COUNTER\0\x06\0\x06";
 
 const TM_STRING memtest_menu_scr[6] = {
@@ -553,50 +602,72 @@ const s8 memtest_ok_str[12] = "OK         ";
 
 const s8 memtest_skip_str[12] = "SKIP       ";
 
+/* provisional name */
 const s8 memtest_menu_title_str[32] = "8 . M E M O R Y   C H E C K\n\0\x15\0\x15";
 
+/* provisional name */
 const s8 memtest_menu_memory_str[24] = "     1. MEMORY CHECK\n\0\0\x0A";
 
+/* provisional name */
 const s8 memtest_menu_simm_str[20] = "     2. SIMM CHECK\n";
 
+/* provisional name */
 const s8 memtest_menu_exit_str[16] = "     3. EXIT\n\0\0\x18";
 
+/* provisional name */
 const s8 memtest_select_help_str[24] = "SELECT = 1P UP or DOWN\n";
 
+/* provisional name */
 const s8 memtest_start_help_str[20] = "START  = 1P SHOT1\0\0\x18";
 
+/* provisional name */
 const s8 memtest_ram_title_str[36] = "8 - 1 . M E M O R Y   C H E C K\n\0\x0A\0\x09";
 
+/* provisional name */
 const s8 memtest_work_ram_str[12] = "WORK RAM\n\0\0\x03";
 
+/* provisional name */
 const s8 memtest_sprite_ram_str[12] = "SPRITE RAM\n";
 
+/* provisional name */
 const s8 memtest_color_ram_str[12] = "COLOR RAM\n\0\x1B";
 
+/* provisional name */
 const s8 memtest_character_ram_str[16] = "CHARACTER RAM\n\0\x1B";
 
+/* provisional name */
 const s8 memtest_ss_ram_str[8] = "SS RAM\n";
 
+/* provisional name */
 const s8 memtest_eeprom_str[12] = "EEP ROM\n\0\x1B\0\x1B";
 
 const s8 str_FRAM[8] = "FRAM\n\0\0\x1A";
 
+/* provisional name */
 const s8 memtest_cdrom_str[8] = "CD-ROM\n";
 
+/* provisional name */
 const s8 memtest_flash_simm1_str[16] = "FLASH SIMM1\n\0\x0F\0\x0E";
 
+/* provisional name */
 const s8 memtest_simm2_str[16] = "      SIMM2\n\0\x07\0\x06";
 
+/* provisional name */
 const s8 memtest_simm3_str[16] = "      SIMM3\n";
 
+/* provisional name */
 const s8 memtest_simm4_str[16] = "      SIMM4\n\0\x1E\0\x1E";
 
+/* provisional name */
 const s8 memtest_simm5_str[16] = "      SIMM5\n\0\x1E\0\x1E";
 
+/* provisional name */
 const s8 memtest_simm6_str[16] = "      SIMM6\n\0\x1E\0\x1E";
 
+/* provisional name */
 const s8 memtest_simm7_str[12] = "      SIMM7";
 
+/* provisional name */
 const s8 memtest_simm_title_and_names[32] = "8 - 2 . S I M M   C H E C K\n\0\x0A\0\x09";
 
 const char str_ONBOARD[12] = "ONBOARD    ";
@@ -640,28 +711,38 @@ const TM_STRING rewrite_not_ready_str[1] = {
     { 16, 12, 0xE, rewrite_cd_not_ready_str },
 };
 
+/* provisional name */
 const s8 rewrite_title_str[32] = "9 . G A M E   R E W R I T E\n\0\x24\0\x24";
 
+/* provisional name */
 const s8 rewrite_all_str[16] = "REWRITE ALL\n\0\x1F\0\x1E";
 
+/* provisional name */
 const s8 rewrite_character_str[20] = "REWRITE CHARACTER\n\0\x14";
 
 const s8 str_EXIT[8] = "EXIT\n\0\0\x10";
 
+/* provisional name */
 const s8 rewrite_note1_str[36] = "NOTE: Rewriting game will erase\n";
 
+/* provisional name */
 const s8 rewrite_note2_str[40] = "     the prior memory and will take\n\0\x24\0\x23";
 
+/* provisional name */
 const s8 rewrite_note3_str[40] = "     15~20 min. to load the new one.\0\x10\0\x0F";
 
+/* provisional name */
 const s8 rewrite_select_help_str[24] = "SELECT = 1P UP or DOWN\n";
 
+/* provisional name */
 const s8 rewrite_start_help_str[28] = "START  = 1P START & SHOT1\0\0\x28";
 
+/* provisional name */
 const s8 rewrite_exit_help_str[28] = "START  = 1P SHOT1        \n\0\x20";
 
 const s8 str_blank_16[28] = "                        \0\x13\0\x12";
 
+/* provisional name */
 const s8 rewrite_cd_not_ready_str[20] = "CD-ROM NOT READY\0\x09\0\x08";
 
 const u16 sys_palette[256] = {
@@ -699,6 +780,7 @@ const u16 sys_palette[256] = {
     0x4631, 0x2D6B, 0x2529, 0, 0, 0, 0, 0,
 };
 
+/* provisional name */
 const u8 coin_counter_bit_tbl[4] = {
     0xEF, 0x10, 0, 0,
 };

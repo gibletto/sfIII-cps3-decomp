@@ -20,6 +20,7 @@ extern const u16 effB8_conn_0_1[], effB8_conn_0_3[], effB8_conn_0_5[], effB8_con
                  effB8_conn_0_11[];
 
 /* effB8_conn_tbl[0], effB8_conn_tbl[6]: Gill's cells connected to the win messages */
+/* provisional name */
 const EFFB8_MESSAGE effB8_conn_0[6] = {
     { effB8_conn_0_0, effB8_conn_0_1 },  /* 0 */
     { effB8_conn_0_2, effB8_conn_0_3 },  /* 1 */
@@ -29,6 +30,7 @@ const EFFB8_MESSAGE effB8_conn_0[6] = {
     { effB8_conn_0_10, effB8_conn_0_11 },  /* 5 */
 };
 
+/* provisional name */
 const CONN effB8_conn_0_0[6] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6884 },
@@ -39,6 +41,7 @@ const CONN effB8_conn_0_0[6] = {
     {   80,    0,   0, 0x68C6 },
 };
 
+/* provisional name */
 const CONN effB8_conn_0_2[9] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x689B },
@@ -52,6 +55,7 @@ const CONN effB8_conn_0_2[9] = {
     {  128,    0,   0, 0x68A8 },
 };
 
+/* provisional name */
 const CONN effB8_conn_0_4[7] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x689A },
@@ -63,6 +67,7 @@ const CONN effB8_conn_0_4[7] = {
     {   96,    0,   0, 0x688C },
 };
 
+/* provisional name */
 const CONN effB8_conn_0_6[10] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6884 },
@@ -77,6 +82,7 @@ const CONN effB8_conn_0_6[10] = {
     {  208,    0,   0, 0x6A73 },
 };
 
+/* provisional name */
 const CONN effB8_conn_0_8[11] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6884 },
@@ -92,6 +98,7 @@ const CONN effB8_conn_0_8[11] = {
     {  240,    0,   0, 0x68CE },
 };
 
+/* provisional name */
 const CONN effB8_conn_0_10[10] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6884 },
@@ -106,36 +113,42 @@ const CONN effB8_conn_0_10[10] = {
     {  208,    0,   0, 0x6828 },
 };
 
+/* provisional name */
 const u16 effB8_conn_0_1[3] = {
     1,  /* characters */
     0x6880,
     6,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_0_3[3] = {
     1,  /* characters */
     0x6880,
     9,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_0_5[3] = {
     1,  /* characters */
     0x6880,
     7,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_0_7[7] = {
     5,  /* characters */
     0x6800, 0x6880, 0x6900, 0x6A00, 0x6A80,
     10,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_0_9[5] = {
     3,  /* characters */
     0x6800, 0x6880, 0x6900,
     11,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_0_11[7] = {
     5,  /* characters */
     0x6800, 0x6880, 0x6900, 0x6980, 0x6A80,
@@ -148,6 +161,7 @@ extern const u16 effB8_conn_1_1[], effB8_conn_1_3[], effB8_conn_1_5[], effB8_con
                  effB8_conn_1_11[];
 
 /* effB8_conn_tbl[1]: Alex's cells connected to the win messages */
+/* provisional name */
 const EFFB8_MESSAGE effB8_conn_1[6] = {
     { effB8_conn_1_0, effB8_conn_1_1 },  /* 0 */
     { effB8_conn_1_2, effB8_conn_1_3 },  /* 1 */
@@ -157,6 +171,7 @@ const EFFB8_MESSAGE effB8_conn_1[6] = {
     { effB8_conn_1_10, effB8_conn_1_11 },  /* 5 */
 };
 
+/* provisional name */
 const CONN effB8_conn_1_0[6] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6899 },
@@ -167,6 +182,7 @@ const CONN effB8_conn_1_0[6] = {
     {   80,    0,   0, 0x68A0 },
 };
 
+/* provisional name */
 const CONN effB8_conn_1_2[8] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x68C9 },
@@ -179,6 +195,7 @@ const CONN effB8_conn_1_2[8] = {
     {  112,    0,   0, 0x68B7 },
 };
 
+/* provisional name */
 const CONN effB8_conn_1_4[11] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x688C },
@@ -194,6 +211,7 @@ const CONN effB8_conn_1_4[11] = {
     {  240,    0,   0, 0x6893 },
 };
 
+/* provisional name */
 const CONN effB8_conn_1_6[16] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6A3E },
@@ -214,6 +232,7 @@ const CONN effB8_conn_1_6[16] = {
     {   16,  -16,   0, 0x6828 },
 };
 
+/* provisional name */
 const CONN effB8_conn_1_8[18] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6AC7 },
@@ -236,6 +255,7 @@ const CONN effB8_conn_1_8[18] = {
     {   16,  -16,   0, 0x680C },
 };
 
+/* provisional name */
 const CONN effB8_conn_1_10[15] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6A93 },
@@ -255,36 +275,42 @@ const CONN effB8_conn_1_10[15] = {
     {   16,  -16,   0, 0x6815 },
 };
 
+/* provisional name */
 const u16 effB8_conn_1_1[3] = {
     1,  /* characters */
     0x6880,
     6,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_1_3[3] = {
     1,  /* characters */
     0x6880,
     8,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_1_5[3] = {
     1,  /* characters */
     0x6880,
     11,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_1_7[8] = {
     6,  /* characters */
     0x6800, 0x6880, 0x6900, 0x6980, 0x6A00, 0x6A80,
     16,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_1_9[6] = {
     4,  /* characters */
     0x6800, 0x6900, 0x6A00, 0x6A80,
     18,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_1_11[7] = {
     4,  /* characters */
     0x6800, 0x6900, 0x6980, 0x6A80,
@@ -298,6 +324,7 @@ extern const u16 effB8_conn_2_1[], effB8_conn_2_3[], effB8_conn_2_5[], effB8_con
                  effB8_conn_2_11[];
 
 /* effB8_conn_tbl[2]: Ryu's cells connected to the win messages */
+/* provisional name */
 const EFFB8_MESSAGE effB8_conn_2[6] = {
     { effB8_conn_2_0, effB8_conn_2_1 },  /* 0 */
     { effB8_conn_2_2, effB8_conn_2_3 },  /* 1 */
@@ -307,6 +334,7 @@ const EFFB8_MESSAGE effB8_conn_2[6] = {
     { effB8_conn_2_10, effB8_conn_2_11 },  /* 5 */
 };
 
+/* provisional name */
 const CONN effB8_conn_2_0[13] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x697B },
@@ -324,6 +352,7 @@ const CONN effB8_conn_2_0[13] = {
     {    0,  -16,   0, 0x6789 },
 };
 
+/* provisional name */
 const CONN effB8_conn_2_2[11] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x69CD },
@@ -339,6 +368,7 @@ const CONN effB8_conn_2_2[11] = {
     {    0,  -16,   0, 0x6789 },
 };
 
+/* provisional name */
 const CONN effB8_conn_2_4[12] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6AD5 },
@@ -355,6 +385,7 @@ const CONN effB8_conn_2_4[12] = {
     {    0,  -16,   0, 0x6789 },
 };
 
+/* provisional name */
 const CONN effB8_conn_2_6[18] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6900 },
@@ -377,6 +408,7 @@ const CONN effB8_conn_2_6[18] = {
     {   16,  -16,   0, 0x6909 },
 };
 
+/* provisional name */
 const CONN effB8_conn_2_8[11] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x690A },
@@ -392,6 +424,7 @@ const CONN effB8_conn_2_8[11] = {
     {  240,    0,   0, 0x690E },
 };
 
+/* provisional name */
 const CONN effB8_conn_2_10[17] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6801 },
@@ -413,36 +446,42 @@ const CONN effB8_conn_2_10[17] = {
     {   16,  -16,   0, 0x680C },
 };
 
+/* provisional name */
 const u16 effB8_conn_2_1[5] = {
     3,  /* characters */
     0x6780, 0x6900, 0x6A00,
     13,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_2_3[6] = {
     4,  /* characters */
     0x6780, 0x6900, 0x6980, 0x6A80,
     11,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_2_5[5] = {
     3,  /* characters */
     0x6780, 0x6900, 0x6A80,
     12,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_2_7[4] = {
     2,  /* characters */
     0x6800, 0x6900,
     18,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_2_9[5] = {
     3,  /* characters */
     0x6800, 0x6880, 0x6900,
     11,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_2_11[5] = {
     3,  /* characters */
     0x6800, 0x6880, 0x6900,
@@ -455,6 +494,7 @@ extern const u16 effB8_conn_3_1[], effB8_conn_3_3[], effB8_conn_3_5[], effB8_con
                  effB8_conn_3_11[];
 
 /* effB8_conn_tbl[3]: Yun's cells connected to the win messages */
+/* provisional name */
 const EFFB8_MESSAGE effB8_conn_3[6] = {
     { effB8_conn_3_0, effB8_conn_3_1 },  /* 0 */
     { effB8_conn_3_2, effB8_conn_3_3 },  /* 1 */
@@ -464,6 +504,7 @@ const EFFB8_MESSAGE effB8_conn_3[6] = {
     { effB8_conn_3_10, effB8_conn_3_11 },  /* 5 */
 };
 
+/* provisional name */
 const CONN effB8_conn_3_0[4] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6910 },
@@ -472,6 +513,7 @@ const CONN effB8_conn_3_0[4] = {
     {   48,    0,   0, 0x6A80 },
 };
 
+/* provisional name */
 const CONN effB8_conn_3_2[4] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6AEC },
@@ -480,6 +522,7 @@ const CONN effB8_conn_3_2[4] = {
     {   48,    0,   0, 0x6882 },
 };
 
+/* provisional name */
 const CONN effB8_conn_3_4[4] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6ACA },
@@ -488,6 +531,7 @@ const CONN effB8_conn_3_4[4] = {
     {   48,    0,   0, 0x694D },
 };
 
+/* provisional name */
 const CONN effB8_conn_3_6[13] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6ACE },
@@ -505,6 +549,7 @@ const CONN effB8_conn_3_6[13] = {
     {  208,    0,   0, 0x6839 },
 };
 
+/* provisional name */
 const CONN effB8_conn_3_8[12] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x69BD },
@@ -521,41 +566,48 @@ const CONN effB8_conn_3_8[12] = {
     {  192,    0,   0, 0x6827 },
 };
 
+/* provisional name */
 const CONN effB8_conn_3_10[1] = {
     /*  nx    ny  col  chr */
     {   16,    0,   0, 0x6957 },
 };
 
+/* provisional name */
 const u16 effB8_conn_3_1[4] = {
     2,  /* characters */
     0x6900, 0x6A80,
     4,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_3_3[4] = {
     2,  /* characters */
     0x6880, 0x6A80,
     4,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_3_5[4] = {
     2,  /* characters */
     0x6900, 0x6A80,
     4,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_3_7[5] = {
     3,  /* characters */
     0x6800, 0x6A00, 0x6A80,
     13,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_3_9[5] = {
     3,  /* characters */
     0x6800, 0x6900, 0x6980,
     12,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_3_11[4] = {
     1,  /* characters */
     0x6900,
@@ -569,6 +621,7 @@ extern const u16 effB8_conn_4_1[], effB8_conn_4_3[], effB8_conn_4_5[], effB8_con
                  effB8_conn_4_11[];
 
 /* effB8_conn_tbl[4]: Dudley's cells connected to the win messages */
+/* provisional name */
 const EFFB8_MESSAGE effB8_conn_4[6] = {
     { effB8_conn_4_0, effB8_conn_4_1 },  /* 0 */
     { effB8_conn_4_2, effB8_conn_4_3 },  /* 1 */
@@ -578,6 +631,7 @@ const EFFB8_MESSAGE effB8_conn_4[6] = {
     { effB8_conn_4_10, effB8_conn_4_11 },  /* 5 */
 };
 
+/* provisional name */
 const CONN effB8_conn_4_0[8] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x68AA },
@@ -590,6 +644,7 @@ const CONN effB8_conn_4_0[8] = {
     {  112,    0,   0, 0x68B7 },
 };
 
+/* provisional name */
 const CONN effB8_conn_4_2[9] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x68AA },
@@ -603,6 +658,7 @@ const CONN effB8_conn_4_2[9] = {
     {  128,    0,   0, 0x68B7 },
 };
 
+/* provisional name */
 const CONN effB8_conn_4_4[8] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6887 },
@@ -615,6 +671,7 @@ const CONN effB8_conn_4_4[8] = {
     {  112,    0,   0, 0x68B7 },
 };
 
+/* provisional name */
 const CONN effB8_conn_4_6[18] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6899 },
@@ -637,6 +694,7 @@ const CONN effB8_conn_4_6[18] = {
     {   16,  -16,   0, 0x6828 },
 };
 
+/* provisional name */
 const CONN effB8_conn_4_8[18] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6801 },
@@ -659,6 +717,7 @@ const CONN effB8_conn_4_8[18] = {
     {   16,  -16,   0, 0x6801 },
 };
 
+/* provisional name */
 const CONN effB8_conn_4_10[18] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x68C2 },
@@ -681,36 +740,42 @@ const CONN effB8_conn_4_10[18] = {
     {   16,  -16,   0, 0x6ACF },
 };
 
+/* provisional name */
 const u16 effB8_conn_4_1[3] = {
     1,  /* characters */
     0x6880,
     8,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_4_3[3] = {
     1,  /* characters */
     0x6880,
     9,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_4_5[3] = {
     1,  /* characters */
     0x6880,
     8,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_4_7[8] = {
     6,  /* characters */
     0x6800, 0x6880, 0x6900, 0x6980, 0x6A00, 0x6A80,
     18,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_4_9[4] = {
     2,  /* characters */
     0x6800, 0x6A80,
     18,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_4_11[9] = {
     6,  /* characters */
     0x6800, 0x6880, 0x6900, 0x6980, 0x6A00, 0x6A80,
@@ -724,6 +789,7 @@ extern const u16 effB8_conn_5_1[], effB8_conn_5_3[], effB8_conn_5_5[], effB8_con
                  effB8_conn_5_11[];
 
 /* effB8_conn_tbl[5]: Necro's cells connected to the win messages */
+/* provisional name */
 const EFFB8_MESSAGE effB8_conn_5[6] = {
     { effB8_conn_5_0, effB8_conn_5_1 },  /* 0 */
     { effB8_conn_5_2, effB8_conn_5_3 },  /* 1 */
@@ -733,6 +799,7 @@ const EFFB8_MESSAGE effB8_conn_5[6] = {
     { effB8_conn_5_10, effB8_conn_5_11 },  /* 5 */
 };
 
+/* provisional name */
 const CONN effB8_conn_5_0[8] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6AF0 },
@@ -745,6 +812,7 @@ const CONN effB8_conn_5_0[8] = {
     {  112,    0,   0, 0x68A0 },
 };
 
+/* provisional name */
 const CONN effB8_conn_5_2[8] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x688C },
@@ -757,6 +825,7 @@ const CONN effB8_conn_5_2[8] = {
     {  112,    0,   0, 0x68AD },
 };
 
+/* provisional name */
 const CONN effB8_conn_5_4[12] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x688C },
@@ -773,6 +842,7 @@ const CONN effB8_conn_5_4[12] = {
     {  192,    0,   0, 0x6801 },
 };
 
+/* provisional name */
 const CONN effB8_conn_5_6[10] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x69BC },
@@ -787,6 +857,7 @@ const CONN effB8_conn_5_6[10] = {
     {  208,    0,   0, 0x6AD1 },
 };
 
+/* provisional name */
 const CONN effB8_conn_5_8[13] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6A3E },
@@ -804,6 +875,7 @@ const CONN effB8_conn_5_8[13] = {
     {  224,    0,   0, 0x68BE },
 };
 
+/* provisional name */
 const CONN effB8_conn_5_10[16] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6902 },
@@ -824,36 +896,42 @@ const CONN effB8_conn_5_10[16] = {
     {    0,  -16,   0, 0x6828 },
 };
 
+/* provisional name */
 const u16 effB8_conn_5_1[4] = {
     2,  /* characters */
     0x6880, 0x6A80,
     8,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_5_3[3] = {
     1,  /* characters */
     0x6880,
     8,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_5_5[5] = {
     3,  /* characters */
     0x6800, 0x6880, 0x6900,
     12,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_5_7[5] = {
     3,  /* characters */
     0x6800, 0x6980, 0x6A80,
     10,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_5_9[7] = {
     5,  /* characters */
     0x6800, 0x6880, 0x6900, 0x6980, 0x6A00,
     13,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_5_11[8] = {
     5,  /* characters */
     0x6800, 0x6900, 0x6980, 0x6A00, 0x6A80,
@@ -867,6 +945,7 @@ extern const u16 effB8_conn_7_1[], effB8_conn_7_3[], effB8_conn_7_5[], effB8_con
                  effB8_conn_7_11[];
 
 /* effB8_conn_tbl[7]: Ibuki's cells connected to the win messages */
+/* provisional name */
 const EFFB8_MESSAGE effB8_conn_7[6] = {
     { effB8_conn_7_0, effB8_conn_7_1 },  /* 0 */
     { effB8_conn_7_2, effB8_conn_7_3 },  /* 1 */
@@ -876,6 +955,7 @@ const EFFB8_MESSAGE effB8_conn_7[6] = {
     { effB8_conn_7_10, effB8_conn_7_11 },  /* 5 */
 };
 
+/* provisional name */
 const CONN effB8_conn_7_0[3] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6A92 },
@@ -883,6 +963,7 @@ const CONN effB8_conn_7_0[3] = {
     {   32,    0,   0, 0x6AF1 },
 };
 
+/* provisional name */
 const CONN effB8_conn_7_2[4] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6AF2 },
@@ -891,6 +972,7 @@ const CONN effB8_conn_7_2[4] = {
     {   48,    0,   0, 0x680B },
 };
 
+/* provisional name */
 const CONN effB8_conn_7_4[7] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6A7F },
@@ -902,6 +984,7 @@ const CONN effB8_conn_7_4[7] = {
     {   96,    0,   0, 0x6AFA },
 };
 
+/* provisional name */
 const CONN effB8_conn_7_6[11] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6A80 },
@@ -917,6 +1000,7 @@ const CONN effB8_conn_7_6[11] = {
     {  208,    0,   0, 0x6A96 },
 };
 
+/* provisional name */
 const CONN effB8_conn_7_8[15] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6924 },
@@ -936,6 +1020,7 @@ const CONN effB8_conn_7_8[15] = {
     {    0,  -16,   0, 0x680C },
 };
 
+/* provisional name */
 const CONN effB8_conn_7_10[11] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x680C },
@@ -951,36 +1036,42 @@ const CONN effB8_conn_7_10[11] = {
     {  208,    0,   0, 0x6828 },
 };
 
+/* provisional name */
 const u16 effB8_conn_7_1[4] = {
     2,  /* characters */
     0x6980, 0x6A80,
     3,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_7_3[5] = {
     3,  /* characters */
     0x6800, 0x6900, 0x6A80,
     4,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_7_5[5] = {
     3,  /* characters */
     0x6800, 0x6A00, 0x6A80,
     7,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_7_7[6] = {
     4,  /* characters */
     0x6800, 0x6900, 0x6A00, 0x6A80,
     11,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_7_9[6] = {
     4,  /* characters */
     0x6800, 0x6900, 0x6980, 0x6A80,
     15,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_7_11[6] = {
     3,  /* characters */
     0x6800, 0x6A00, 0x6A80,
@@ -994,6 +1085,7 @@ extern const u16 effB8_conn_8_1[], effB8_conn_8_3[], effB8_conn_8_5[], effB8_con
                  effB8_conn_8_11[];
 
 /* effB8_conn_tbl[8]: Elena's cells connected to the win messages */
+/* provisional name */
 const EFFB8_MESSAGE effB8_conn_8[6] = {
     { effB8_conn_8_0, effB8_conn_8_1 },  /* 0 */
     { effB8_conn_8_2, effB8_conn_8_3 },  /* 1 */
@@ -1003,6 +1095,7 @@ const EFFB8_MESSAGE effB8_conn_8[6] = {
     { effB8_conn_8_10, effB8_conn_8_11 },  /* 5 */
 };
 
+/* provisional name */
 const CONN effB8_conn_8_0[8] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6893 },
@@ -1015,6 +1108,7 @@ const CONN effB8_conn_8_0[8] = {
     {  112,    0,   0, 0x6887 },
 };
 
+/* provisional name */
 const CONN effB8_conn_8_2[7] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6881 },
@@ -1026,6 +1120,7 @@ const CONN effB8_conn_8_2[7] = {
     {   96,    0,   0, 0x68AD },
 };
 
+/* provisional name */
 const CONN effB8_conn_8_4[5] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x689A },
@@ -1035,6 +1130,7 @@ const CONN effB8_conn_8_4[5] = {
     {   64,    0,   0, 0x68BA },
 };
 
+/* provisional name */
 const CONN effB8_conn_8_6[11] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6912 },
@@ -1050,11 +1146,13 @@ const CONN effB8_conn_8_6[11] = {
     {  224,    0,   0, 0x6AD1 },
 };
 
+/* provisional name */
 const CONN effB8_conn_8_8[1] = {
     /*  nx    ny  col  chr */
     {   16,    0,   0, 0x6957 },
 };
 
+/* provisional name */
 const CONN effB8_conn_8_10[12] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x69BD },
@@ -1071,36 +1169,42 @@ const CONN effB8_conn_8_10[12] = {
     {  208,    0,   0, 0x6828 },
 };
 
+/* provisional name */
 const u16 effB8_conn_8_1[3] = {
     1,  /* characters */
     0x6880,
     8,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_8_3[3] = {
     1,  /* characters */
     0x6880,
     7,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_8_5[3] = {
     1,  /* characters */
     0x6880,
     5,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_8_7[6] = {
     4,  /* characters */
     0x6800, 0x6880, 0x6900, 0x6A80,
     11,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_8_9[3] = {
     1,  /* characters */
     0x6900,
     1,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_8_11[6] = {
     4,  /* characters */
     0x6800, 0x6900, 0x6980, 0x6A80,
@@ -1113,6 +1217,7 @@ extern const u16 effB8_conn_9_1[], effB8_conn_9_3[], effB8_conn_9_5[], effB8_con
                  effB8_conn_9_11[];
 
 /* effB8_conn_tbl[9]: Oro's cells connected to the win messages */
+/* provisional name */
 const EFFB8_MESSAGE effB8_conn_9[6] = {
     { effB8_conn_9_0, effB8_conn_9_1 },  /* 0 */
     { effB8_conn_9_2, effB8_conn_9_3 },  /* 1 */
@@ -1122,6 +1227,7 @@ const EFFB8_MESSAGE effB8_conn_9[6] = {
     { effB8_conn_9_10, effB8_conn_9_11 },  /* 5 */
 };
 
+/* provisional name */
 const CONN effB8_conn_9_0[5] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6886 },
@@ -1131,6 +1237,7 @@ const CONN effB8_conn_9_0[5] = {
     {   64,    0,   0, 0x6886 },
 };
 
+/* provisional name */
 const CONN effB8_conn_9_2[6] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6A23 },
@@ -1141,6 +1248,7 @@ const CONN effB8_conn_9_2[6] = {
     {  192,    0,   0, 0x6806 },
 };
 
+/* provisional name */
 const CONN effB8_conn_9_4[3] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6A65 },
@@ -1148,6 +1256,7 @@ const CONN effB8_conn_9_4[3] = {
     {   32,    0,   0, 0x6A02 },
 };
 
+/* provisional name */
 const CONN effB8_conn_9_6[13] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x691A },
@@ -1165,6 +1274,7 @@ const CONN effB8_conn_9_6[13] = {
     {   16,  -16,   0, 0x6828 },
 };
 
+/* provisional name */
 const CONN effB8_conn_9_8[14] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6AE1 },
@@ -1183,6 +1293,7 @@ const CONN effB8_conn_9_8[14] = {
     {  224,    0,   0, 0x680C },
 };
 
+/* provisional name */
 const CONN effB8_conn_9_10[12] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6A6D },
@@ -1199,36 +1310,42 @@ const CONN effB8_conn_9_10[12] = {
     {    0,  -16,   0, 0x6839 },
 };
 
+/* provisional name */
 const u16 effB8_conn_9_1[3] = {
     1,  /* characters */
     0x6880,
     5,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_9_3[4] = {
     2,  /* characters */
     0x6800, 0x6A00,
     6,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_9_5[3] = {
     1,  /* characters */
     0x6A00,
     3,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_9_7[7] = {
     5,  /* characters */
     0x6800, 0x6900, 0x6980, 0x6A00, 0x6A80,
     13,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_9_9[6] = {
     4,  /* characters */
     0x6800, 0x6900, 0x6980, 0x6A80,
     14,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_9_11[7] = {
     5,  /* characters */
     0x6800, 0x6900, 0x6980, 0x6A00, 0x6A80,
@@ -1241,6 +1358,7 @@ extern const u16 effB8_conn_10_1[], effB8_conn_10_3[], effB8_conn_10_5[], effB8_
                  effB8_conn_10_11[];
 
 /* effB8_conn_tbl[10]: Yang's cells connected to the win messages */
+/* provisional name */
 const EFFB8_MESSAGE effB8_conn_10[6] = {
     { effB8_conn_10_0, effB8_conn_10_1 },  /* 0 */
     { effB8_conn_10_2, effB8_conn_10_3 },  /* 1 */
@@ -1250,6 +1368,7 @@ const EFFB8_MESSAGE effB8_conn_10[6] = {
     { effB8_conn_10_10, effB8_conn_10_11 },  /* 5 */
 };
 
+/* provisional name */
 const CONN effB8_conn_10_0[4] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6910 },
@@ -1258,6 +1377,7 @@ const CONN effB8_conn_10_0[4] = {
     {   48,    0,   0, 0x6A80 },
 };
 
+/* provisional name */
 const CONN effB8_conn_10_2[4] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6AEC },
@@ -1266,6 +1386,7 @@ const CONN effB8_conn_10_2[4] = {
     {   48,    0,   0, 0x6882 },
 };
 
+/* provisional name */
 const CONN effB8_conn_10_4[4] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6ACA },
@@ -1274,6 +1395,7 @@ const CONN effB8_conn_10_4[4] = {
     {   48,    0,   0, 0x694D },
 };
 
+/* provisional name */
 const CONN effB8_conn_10_6[13] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6ACE },
@@ -1291,6 +1413,7 @@ const CONN effB8_conn_10_6[13] = {
     {  208,    0,   0, 0x6839 },
 };
 
+/* provisional name */
 const CONN effB8_conn_10_8[12] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x69BD },
@@ -1307,41 +1430,48 @@ const CONN effB8_conn_10_8[12] = {
     {  192,    0,   0, 0x6827 },
 };
 
+/* provisional name */
 const CONN effB8_conn_10_10[1] = {
     /*  nx    ny  col  chr */
     {   16,    0,   0, 0x6957 },
 };
 
+/* provisional name */
 const u16 effB8_conn_10_1[4] = {
     2,  /* characters */
     0x6900, 0x6A80,
     4,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_10_3[4] = {
     2,  /* characters */
     0x6880, 0x6A80,
     4,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_10_5[4] = {
     2,  /* characters */
     0x6900, 0x6A80,
     4,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_10_7[5] = {
     3,  /* characters */
     0x6800, 0x6A00, 0x6A80,
     13,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_10_9[5] = {
     3,  /* characters */
     0x6800, 0x6900, 0x6980,
     12,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_10_11[4] = {
     1,  /* characters */
     0x6900,
@@ -1355,6 +1485,7 @@ extern const u16 effB8_conn_11_1[], effB8_conn_11_3[], effB8_conn_11_5[], effB8_
                  effB8_conn_11_11[];
 
 /* effB8_conn_tbl[11]: Ken's cells connected to the win messages */
+/* provisional name */
 const EFFB8_MESSAGE effB8_conn_11[6] = {
     { effB8_conn_11_0, effB8_conn_11_1 },  /* 0 */
     { effB8_conn_11_2, effB8_conn_11_3 },  /* 1 */
@@ -1364,6 +1495,7 @@ const EFFB8_MESSAGE effB8_conn_11[6] = {
     { effB8_conn_11_10, effB8_conn_11_11 },  /* 5 */
 };
 
+/* provisional name */
 const CONN effB8_conn_11_0[4] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x69CD },
@@ -1372,6 +1504,7 @@ const CONN effB8_conn_11_0[4] = {
     {   48,    0,   0, 0x690B },
 };
 
+/* provisional name */
 const CONN effB8_conn_11_2[3] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x69C4 },
@@ -1379,6 +1512,7 @@ const CONN effB8_conn_11_2[3] = {
     {   32,    0,   0, 0x6909 },
 };
 
+/* provisional name */
 const CONN effB8_conn_11_4[3] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6AF6 },
@@ -1386,6 +1520,7 @@ const CONN effB8_conn_11_4[3] = {
     {   32,    0,   0, 0x6909 },
 };
 
+/* provisional name */
 const CONN effB8_conn_11_6[16] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x69CD },
@@ -1406,6 +1541,7 @@ const CONN effB8_conn_11_6[16] = {
     {   16,  -16,   0, 0x690E },
 };
 
+/* provisional name */
 const CONN effB8_conn_11_8[16] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x69CD },
@@ -1426,6 +1562,7 @@ const CONN effB8_conn_11_8[16] = {
     {   16,  -16,   0, 0x6AFC },
 };
 
+/* provisional name */
 const CONN effB8_conn_11_10[15] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6924 },
@@ -1445,36 +1582,42 @@ const CONN effB8_conn_11_10[15] = {
     {  240,    0,   0, 0x6AA9 },
 };
 
+/* provisional name */
 const u16 effB8_conn_11_1[5] = {
     3,  /* characters */
     0x6900, 0x6980, 0x6A80,
     4,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_11_3[4] = {
     2,  /* characters */
     0x6900, 0x6980,
     3,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_11_5[5] = {
     3,  /* characters */
     0x6900, 0x6980, 0x6A80,
     3,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_11_7[7] = {
     5,  /* characters */
     0x6800, 0x6900, 0x6980, 0x6A00, 0x6A80,
     16,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_11_9[6] = {
     4,  /* characters */
     0x6800, 0x6900, 0x6980, 0x6A80,
     16,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_11_11[7] = {
     4,  /* characters */
     0x6800, 0x6880, 0x6900, 0x6A80,
@@ -1488,6 +1631,7 @@ extern const u16 effB8_conn_12_1[], effB8_conn_12_3[], effB8_conn_12_5[], effB8_
                  effB8_conn_12_11[];
 
 /* effB8_conn_tbl[12]: Sean's cells connected to the win messages */
+/* provisional name */
 const EFFB8_MESSAGE effB8_conn_12[6] = {
     { effB8_conn_12_0, effB8_conn_12_1 },  /* 0 */
     { effB8_conn_12_2, effB8_conn_12_3 },  /* 1 */
@@ -1497,6 +1641,7 @@ const EFFB8_MESSAGE effB8_conn_12[6] = {
     { effB8_conn_12_10, effB8_conn_12_11 },  /* 5 */
 };
 
+/* provisional name */
 const CONN effB8_conn_12_0[4] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x69CD },
@@ -1505,6 +1650,7 @@ const CONN effB8_conn_12_0[4] = {
     {   48,    0,   0, 0x690B },
 };
 
+/* provisional name */
 const CONN effB8_conn_12_2[5] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6AF7 },
@@ -1514,6 +1660,7 @@ const CONN effB8_conn_12_2[5] = {
     {   64,    0,   0, 0x69DD },
 };
 
+/* provisional name */
 const CONN effB8_conn_12_4[5] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x697B },
@@ -1523,6 +1670,7 @@ const CONN effB8_conn_12_4[5] = {
     {   64,    0,   0, 0x6909 },
 };
 
+/* provisional name */
 const CONN effB8_conn_12_6[8] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x6888 },
@@ -1535,6 +1683,7 @@ const CONN effB8_conn_12_6[8] = {
     {  112,    0,   0, 0x690E },
 };
 
+/* provisional name */
 const CONN effB8_conn_12_8[13] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x693F },
@@ -1552,6 +1701,7 @@ const CONN effB8_conn_12_8[13] = {
     {  192,    0,   0, 0x69DD },
 };
 
+/* provisional name */
 const CONN effB8_conn_12_10[9] = {
     /*  nx    ny  col  chr */
     {    0,    0,   0, 0x68A7 },
@@ -1565,36 +1715,42 @@ const CONN effB8_conn_12_10[9] = {
     {  128,    0,   0, 0x690E },
 };
 
+/* provisional name */
 const u16 effB8_conn_12_1[5] = {
     3,  /* characters */
     0x6900, 0x6980, 0x6A80,
     4,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_12_3[4] = {
     2,  /* characters */
     0x6980, 0x6A80,
     5,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_12_5[4] = {
     2,  /* characters */
     0x6900, 0x6A00,
     5,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_12_7[6] = {
     4,  /* characters */
     0x6800, 0x6880, 0x6900, 0x6980,
     8,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_12_9[5] = {
     3,  /* characters */
     0x6800, 0x6900, 0x6980,
     13,  /* cells */
 };
 
+/* provisional name */
 const u16 effB8_conn_12_11[6] = {
     4,  /* characters */
     0x6800, 0x6880, 0x6900, 0x6980,

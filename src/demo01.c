@@ -60,7 +60,6 @@
 
 
 
-
 /* Uses palettes 130 and 2, then runs the opening sequence. */
 s32 Title(void) {
     switch (D_No1) {

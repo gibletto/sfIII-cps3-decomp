@@ -146,6 +146,7 @@ void Win_01000(PLW* wk) {
     }
 }
 
+/* provisional name */
 void jijii_fly_up(PLW* wk) {
     bg_stop = 1;
     switch (win_rno[1]) {
@@ -236,6 +237,7 @@ void jijii_jump(PLW* wk) {
         }
         wk->wu.mvxy.d[0].sp = 0;
         wk->wu.xyz[1].cal = 0;
+        /* fall through */
     case JJ_RETURN:
         add_x_sub((WORK_Other*)wk);
         char_move(&wk->wu);
@@ -258,6 +260,7 @@ void Win_02000(PLW* wk) {
                 break;
             }
         }
+        /* fall through */
     default:
         Normal_normal_Winner(wk);
         break;
@@ -356,6 +359,7 @@ void Judge_normal_winner(PLW* wk) {
     }
 }
 
+/* provisional name */
 s32 win_special_check(PLW* wk) {
     if (pcon_rno[0] == PCON_DIE && pcon_rno[1] == SETTLE_JUDGE) {
         Judge_normal_winner(wk);
@@ -442,6 +446,7 @@ void Win_06000(PLW* wk) {
     }
 }
 
+/* provisional name */
 void win_stage8_action(PLW* wk) {
     bg_stop = 1;
     switch (wk->wu.routine_no[3]) {

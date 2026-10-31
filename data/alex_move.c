@@ -322,6 +322,7 @@ const s16 alex_movexy_table[80][6] = {
     {   1280,    -32,     0,     384,   -128,     0 },  /* 79 */
 };
 
+/* provisional name */
 const PARABORA_DATA alex_parabora_data[21] = {
     /*      x spd  x acc  x mode   y spd  y acc  y mode */
     { { {      0,      0,     1,       0,      0,     0 },  /* buttobi 0: weight 0 */

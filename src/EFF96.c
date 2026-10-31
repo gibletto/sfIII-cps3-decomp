@@ -32,6 +32,7 @@ void effect_96_move(WORK_Other* ewk) {
         ewk->wu.routine_no[0]++;
         ewk->wu.char_table[0] = ef13_char_table;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.disp_flag = 0;

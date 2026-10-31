@@ -65,8 +65,7 @@ s16 col_trans_req_cnt2;  /* 0201D83C */
 s32 col_trans_result;  /* 0201D840 */
 
 
-void init_color_trans_req(void)
-{
+void init_color_trans_req(void) {
     /* colour transfer request work: 256-byte request table and its three counters */
     col_trans_req_cnt0 = 0;
     col_trans_req_cnt1 = 0;
@@ -98,8 +97,7 @@ u8 b;
 }
 
 /* provisional name */
-void load_any_color_attr(u16 col_no, u8 r, u8 g, u8 b)
-{
+void load_any_color_attr(u16 col_no, u8 r, u8 g, u8 b) {
     const XFER *xfer = &any_color_tbl[(u8)col_no];
 
     polygon2d_submit_quad(xfer->src, xfer->dst, xfer->size, r, g, b);
@@ -120,13 +118,11 @@ u8 b;
 
 
 /* provisional name */
-void color_trans_dummy(void)
-{
+void color_trans_dummy(void) {
 }
 
 /* provisional name */
-void color_dma_error_disp(void)
-{
+void color_dma_error_disp(void) {
     if (col_trans_result != -1) {
         return;
     }

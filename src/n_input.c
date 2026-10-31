@@ -218,8 +218,7 @@ void Name_Input_end(void) {
 }
 
 /* provisional name */
-void Name_Finish(void)
-{
+void Name_Finish(void) {
     Sound_SE(0x62);
     end_no_cut = 0;
     Name_Input_f = 1;
@@ -260,11 +259,11 @@ void Name_Scs_Input_comm(void) {
         work = Name_Input_sub();
         switch (work) {
         case 1:
-            name_ptr->r_no_0 += 1;
+            name_ptr->r_no_0++;
             name_ptr->timer += 420;
             name_ptr->end_flag[name_ptr->index] = 1;
             naming_set(name_ptr->id, name_ptr->index, name_ptr->code[name_ptr->index]);
-            name_ptr->index += 1;
+            name_ptr->index++;
             name_ptr->index &= 3;
             name_ptr->wait_cnt = 10;
             if (name_ptr->index != 3) {
@@ -571,9 +570,6 @@ void rank_display_set(s16 pl_id, s16 pos_y) {
         sc_celllist_put_pos(13, 0, pos_y);
     }
 }
-
-
-
 
 
 

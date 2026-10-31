@@ -49,7 +49,7 @@ u8 Screen_Switch_Req;  /* 0205E2C4 */
 
 /* provisional name: unreferenced; toggles a scroll layer's flip bits and applies them */
 void scrn_flip_set(u16 n, u16 flip) {
-    s32 r;
+    s32 unused;
     switch (flip) {
     case 0:
         scrn_mode_prm[n].set ^= 0x800;
@@ -69,7 +69,7 @@ void scrn_flip_set(u16 n, u16 flip) {
 
 /* provisional name: unreferenced; toggles a scroll layer's flip bits */
 void scrn_flip_toggle(u16 n, u16 flip) {
-    s32 r;
+    s32 unused;
     switch (flip) {
     case 0:
         scrn_mode_prm[n].set ^= 0x800;
@@ -190,7 +190,7 @@ void scrn_line_set(u16 n, s16 v) {
 
 /* provisional name */
 u32 simmram_large_page_addr(void) {
-    u32 addr;
+    u32 unused;
     u16 slot;
     slot = simmram_big_page_alloc_40(1);
     if (slot == 0) {
@@ -203,7 +203,7 @@ u32 simmram_large_page_addr(void) {
 
 /* provisional name */
 u32 simmram_small_page_addr(void) {
-    u32 addr;
+    u32 unused;
     u16 slot;
     slot = simmram_small_page_alloc_40(1);
     if (slot == 0) {
@@ -305,8 +305,7 @@ void Scrn_Move_Set(s32 n, s16 x, s16 y) {
 
 
 /* provisional name: unreferenced */
-void Scrn_X_Set_W(s32 ix, s16 x)
-{
+void Scrn_X_Set_W(s32 ix, s16 x) {
     scrn_pos[ix].set_x.disp.pos = x;
 }
 

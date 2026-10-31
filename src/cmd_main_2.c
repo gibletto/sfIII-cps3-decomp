@@ -100,7 +100,6 @@ void waza_check(PLW* pl) {
 
 
 
-
 void cmd_data_set(PLW* pl, s16 i) {
     u8* ptr3;
     u16* ptr4;
@@ -1209,8 +1208,6 @@ void check_25(void) {
 
 
 
-
-
 void command_ok(void) {
     wcp[cmd_id].waza_flag[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
     if (waza_ptr->w_type != CK_UKEMI) {
@@ -1245,7 +1242,6 @@ dead:
     wk->w_type = 0;
     return 1;
 }
-
 
 
 
@@ -1382,7 +1378,6 @@ void basic_waza_flag_clear(s16 pl_id) {
     waza_compel_init(pl_id, 5, adrs);
     waza_compel_init(pl_id, 6, adrs);
 }
-
 
 
 

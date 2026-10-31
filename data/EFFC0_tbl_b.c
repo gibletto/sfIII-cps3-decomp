@@ -12,6 +12,7 @@
 
 extern const s16 effc2_data_tbl[][4];
 
+/* provisional name */
 const s16 effc2_data_tbl[4][4] = {
     { 784, 32, 20, 9 }, { 720, 64, 77, 10 }, { 240, 32, 20, 11 }, { 304, 64, 77, 12 },
 };

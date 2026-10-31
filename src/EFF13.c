@@ -62,7 +62,6 @@
 #define R2_REBOUND      5       /* bounced off by a hit */
 
 
-
 void effect_13_move(WORK_Other* ewk) {
     TAMA* tama = (TAMA*)ewk->wu.my_effadrs;
     switch (ewk->wu.routine_no[0]) {
@@ -150,7 +149,6 @@ void tama_display(WORK_Other* ewk) {
 }
 
 
-
 s32 screen_range_check(WORK* wk) {
     s16 scpx = get_center_position();
     s16 scpxr = scpx + 256;
@@ -174,7 +172,6 @@ s32 screen_range_check(WORK* wk) {
     }
     return 0;
 }
-
 
 
 void set_tengu_init_pos(WORK_Other* ewk, WORK* twk) {
@@ -203,7 +200,7 @@ void kotp_00000(WORK_Other* ewk, TAMA* twk) {
         add_mvxy_speed(&ewk->wu);
         cal_mvxy_speed(&ewk->wu);
         char_move(&ewk->wu);
-        if ((ewk->wu.xyz[1].disp.pos + ewk->wu.cg_jphos) <= 0) {
+        if (ewk->wu.xyz[1].disp.pos + ewk->wu.cg_jphos <= 0) {
             ewk->wu.mvxy.a[0].sp = 0;
             ewk->wu.mvxy.a[1].sp = 0;
             ewk->wu.mvxy.d[0].sp = 0;
@@ -259,6 +256,7 @@ void kotp_00000(WORK_Other* ewk, TAMA* twk) {
         case R2_DRIFT:
             add_mvxy_speed(&ewk->wu);
             cal_mvxy_speed(&ewk->wu);
+            /* fall through */
         case R2_STAY:
             char_move(&ewk->wu);
             if (ewk->wu.cg_type == 0xFF) {
@@ -489,7 +487,7 @@ void kotp_03000(WORK_Other* ewk, TAMA* twk) {
         add_mvxy_speed(&ewk->wu);
         cal_mvxy_speed(&ewk->wu);
         char_move(&ewk->wu);
-        if ((ewk->wu.xyz[1].disp.pos + ewk->wu.cg_jphos) <= 0) {
+        if (ewk->wu.xyz[1].disp.pos + ewk->wu.cg_jphos <= 0) {
             ewk->wu.mvxy.a[0].sp = 0;
             ewk->wu.mvxy.a[1].sp = 0;
             ewk->wu.mvxy.d[0].sp = 0;
@@ -548,6 +546,7 @@ void kotp_03000(WORK_Other* ewk, TAMA* twk) {
         case R2_DRIFT:
             add_mvxy_speed(&ewk->wu);
             cal_mvxy_speed(&ewk->wu);
+            /* fall through */
         case R2_STAY:
             char_move(&ewk->wu);
             if (ewk->wu.cg_type == 0xFF) {
@@ -559,7 +558,6 @@ void kotp_03000(WORK_Other* ewk, TAMA* twk) {
         break;
     }
 }
-
 
 
 s32 effect_13_init(wk, data)

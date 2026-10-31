@@ -227,8 +227,7 @@ void Sel_PL_Cont_4th(void) {}
 
 
 /* Sets up the BG layers of the select screen. */
-void Initialize_BG(void)
-{
+void Initialize_BG(void) {
     Setup_BG_General();
     Setup_BG_Layer2();
     Setup_BG_Layer3();
@@ -699,7 +698,6 @@ void PL_Sel_Begin(void) {
 
 
 
-/* provisional name */
 void PL_Sel_2nd(void) {
     switch (Select_Status[1]) {
     case SEL_1P:
@@ -862,7 +860,6 @@ s8 PL_id;
 
 
 
-/* provisional name */
 void PL_Sel_3rd(void) {
     switch (Sel_Sub_No[1]) {
     case PS3_START:
@@ -951,7 +948,6 @@ void PL_Sel_3rd(void) {
 
 
 
-/* provisional name */
 void PL_Sel_4th(void) {
     if (Sel_Arts_Complete[0] < 0 && Sel_Arts_Complete[1] < 0) {
         Order[3] = 3;
@@ -1053,7 +1049,6 @@ s32 Y;
 
 
 
-/* provisional name */
 /* Stage 13's layers at the origin, and layer 0's line scroll. */
 void Setup_BG_General(void) {
     s16 i;
@@ -1215,7 +1210,6 @@ void Setup_ID(void) {
 
 
 
-/* provisional name */
 /* The select screen's second entry, for the next fight: the player's choice stands, the opponent is
    set up and the exit runs on to the VS screen. */
 s32 Next_CPU(void) {
@@ -1233,7 +1227,6 @@ const s16 Sel_Shot_Data[6] = {
 };
 
 
-/* provisional name */
 void Next_CPU_1st(void) {
     s16 pl;
     S_No++;
@@ -1267,21 +1260,18 @@ void Next_CPU_1st(void) {
 
 
 
-/* provisional name */
 void Next_CPU_2nd(void) {
     Sel_PL_Cont_2nd();
 }
 
 
 
-/* provisional name */
 void Next_CPU_3rd(void) {
     Sel_PL_Cont_3rd();
 }
 
 
 
-/* provisional name */
 void Next_CPU_4th(void) {
     if (Break_Into) {
         return;

@@ -18,7 +18,7 @@ extern const u32 ag_char_table_3[];
 extern const u32 ag_char_table_4[];
 extern const u32 ag_char_table_5[];
 
-/* 020070D4 */
+/* 020070D4: provisional name */
 s16 effg0_judge_count = 0;
 
 /* 020070D6 */
@@ -26,7 +26,7 @@ u16 effg0_judge_count_tail[1] = {
     0,
 };
 
-/* 020070D8 */
+/* 020070D8: provisional name */
 const u32* effg0_char_tbl[7] = {
     ag_char_table_0, ag_char_table_1, ag_char_table_2, ag_char_table_3,
     ag_char_table_4, ag_char_table_5, ag_char_table_6,

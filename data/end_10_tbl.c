@@ -28,6 +28,7 @@ extern const s32 end_1100_cell5[];
 extern const s32 end_1100_cell6[];
 extern const s32 end_1100_cell7[];
 
+/* provisional name */
 const PANEL end_10_panel_tbl_0[16] = {
     { 0, 62 }, { 0x40, 63 }, { 0x80, 50 }, { 0xC0, 51 },
     { 0x1000, 66 }, { 0x1040, 67 }, { 0x1080, 64 }, { 0x10C0, 65 },
@@ -35,6 +36,7 @@ const PANEL end_10_panel_tbl_0[16] = {
     { 0x3000, 70 }, { 0x3040, 71 }, { 0x3080, 74 }, { 0x30C0, 75 },
 };
 
+/* provisional name */
 const PANEL end_10_panel_tbl_1[16] = {
     { 0, 48 }, { 0x40, 49 }, { 0x80, 48 }, { 0xC0, 49 },
     { 0x1000, 52 }, { 0x1040, 53 }, { 0x1080, 54 }, { 0x10C0, 55 },
@@ -52,38 +54,47 @@ const s16 end_10_pos[7][2] = {
     { 256, 768 }, { 768, 768 }, { 256, 512 }, { 720, 512 }, { 256, 256 }, { 720, 256 }, { 768, 0 },
 };
 
+/* provisional name */
 const s16 end_10_anm_tbl[5] = {
     2, 3, 4, 5, 0,
 };
 
+/* provisional name */
 const s32 end_1100_cell0[4] = {
     12352, 5, 12416, 6,
 };
 
+/* provisional name */
 const s32 end_1100_cell1[4] = {
     12352, 13, 12416, 14,
 };
 
+/* provisional name */
 const s32 end_1100_cell2[4] = {
     12352, 11, 12416, 12,
 };
 
+/* provisional name */
 const s32 end_1100_cell3[4] = {
     12352, 7, 12416, 8,
 };
 
+/* provisional name */
 const s32 end_1100_cell4[4] = {
     12352, 1, 12416, 2,
 };
 
+/* provisional name */
 const s32 end_1100_cell5[4] = {
     12352, 9, 12416, 10,
 };
 
+/* provisional name */
 const s32 end_1100_cell6[4] = {
     12352, 5, 12416, 6,
 };
 
+/* provisional name */
 const s32 end_1100_cell7[4] = {
     12352, 1, 12416, 2,
 };

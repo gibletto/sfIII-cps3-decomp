@@ -76,6 +76,7 @@ void end_03000(u16 pl_num) {
             end_300_move();
             end_301_move();
         }
+        /* fall through */
     case END1_DONE:
         end_scn_pos_set2();
         end_bg_pos_hosei2();
@@ -267,8 +268,6 @@ void end_301_0000(void) {
         break;
     }
 }
-
-
 
 
 

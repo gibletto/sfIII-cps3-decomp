@@ -122,54 +122,79 @@ const TM_STRING config_saving_scr[2] = {
     { 5, 14, 0xE, str_IN_EEPROM },
 };
 
+/* provisional name */
 const s8 str_config_menu_title[40] = "7. C O N F I G U R A T I O N   M E N U\n";
 
+/* provisional name */
 const s8 str_config_1_system[12] = "1. SYSTEM\n";
 
+/* provisional name */
 const s8 str_config_2_game[12] = "2. GAME\n\0\x03\0\x04";
 
+/* provisional name */
 const s8 str_config_3_default[12] = "3. DEFAULT\n";
 
+/* provisional name */
 const s8 str_config_4_save_exit[16] = "4. SAVE & EXIT\0\x12";
 
+/* provisional name */
 const s8 str_guide_select_up_down[28] = "SELECT = 1P UP or DOWN   \n\0\x20";
 
+/* provisional name */
 const s8 str_guide_start_shot1[28] = "START  = 1P SHOT1        \0\0\x2E";
 
+/* provisional name */
 const s8 str_guide_reset_shot1_shot2[28] = "RESET  = 1P SHOT1 & SHOT2\0\0\x06";
 
+/* provisional name */
 const s8 str_sysconfig_title[48] = "7-1. S Y S T E M   C O N F I G U R A T I O N\n\0\0\x1E";
 
+/* provisional name */
 const s8 str_sys_1_coin[12] = "1. COIN\n\0\x23\0\x24";
 
+/* provisional name */
 const s8 str_sys_2_chute_mode[16] = "2. CHUTE MODE\n\0\x2C";
 
+/* provisional name */
 const s8 str_sys_3_continue[16] = "3. CONTINUE\n\0\x33\0\x34";
 
+/* provisional name */
 const s8 str_sys_4_monitor[12] = "4. MONITOR\n";
 
+/* provisional name */
 const s8 str_sys_5_demo_sound[16] = "5. DEMO SOUND\n";
 
+/* provisional name */
 const s8 str_sys_6_sound_mode[16] = "6. SOUND MODE";
 
+/* provisional name */
 const s8 str_sys_7_exit[8] = "7. EXIT";
 
+/* provisional name */
 const s8 str_sys_7_language[16] = "7. LANGUAGE\n";
 
+/* provisional name */
 const s8 str_sys_8_exit[8] = "8. EXIT";
 
+/* provisional name */
 const s8 str_sys_7_c_dispenser[16] = "7. C.DISPENSER\n";
 
+/* provisional name */
 const s8 str_sys_8_win_point[16] = "8. WIN POINT\n";
 
+/* provisional name */
 const s8 str_sys_9_exit[8] = "9. EXIT";
 
+/* provisional name */
 const s8 str_sys_7_voice_type[16] = "7. VOICE TYPE\n";
 
+/* provisional name */
 const s8 str_sys_8_win_point_com[20] = "8. WIN POINT COM\n";
 
+/* provisional name */
 const s8 str_sys_9_win_point_human[20] = "9. WIN POINT HUMAN\n";
 
+/* provisional name */
 const s8 str_sys_10_exit[12] = "10. EXIT";
 
 const s8 str_SELECT_OPTION_1P_UP_or_DOWN[36] = "SELECT OPTION  = 1P UP or DOWN    \n";

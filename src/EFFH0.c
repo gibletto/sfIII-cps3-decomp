@@ -33,6 +33,7 @@ void effect_H0_move(WORK_Other* ewk) {
         ewk->wu.mvxy.a[0].sp <<= 8;
         ewk->wu.mvxy.a[1].sp <<= 8;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;

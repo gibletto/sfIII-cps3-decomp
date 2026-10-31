@@ -46,7 +46,6 @@
 
 
 
-
 void effect_H5_move(WORK_Other* ewk) {
     void (*H5_Jmp_Tbl[5])(WORK_Other*) = { effH5_0000, effH5_0001, effH5_0002, effH5_0003, effH5_0004 };
     H5_Jmp_Tbl[ewk->wu.routine_no[0]](ewk);
@@ -215,6 +214,7 @@ void effH5_0004(WORK_Other* ewk) {
             add_x_sub(ewk);
             add_y_sub(ewk);
         }
+        /* fall through */
     case R1_STAY:
         disp_pos_trans_entry(ewk);
         break;

@@ -41,6 +41,7 @@ void effect_D4_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
         ewk->wu.routine_no[0]++;
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;

@@ -43,8 +43,7 @@ u32 spr_pool_busy = 0;  /* 0200738C */
 
 
 /* provisional name */
-void sprite_pools_init(void)
-{
+void sprite_pools_init(void) {
     s32 i;
     s32 unused;
     spr_pool_busy = 1;
@@ -192,6 +191,7 @@ void sprite_layer_free(s8 layer) {
                 spr_entry_a[i + 0x100].flag = 0;
             }
         }
+        /* fall through */
     case 2:
         if (spr_bank) {
             for (i = 0; i < 63; i++) {
@@ -202,6 +202,7 @@ void sprite_layer_free(s8 layer) {
                 spr_entry_a[i + 0x140].flag = 0;
             }
         }
+        /* fall through */
     case 3:
         if (spr_bank) {
             for (i = 0; i < 63; i++) {
@@ -212,6 +213,7 @@ void sprite_layer_free(s8 layer) {
                 spr_entry_a[i + 0x180].flag = 0;
             }
         }
+        /* fall through */
     case 4:
         if (spr_bank) {
             for (i = 0; i < 63; i++) {

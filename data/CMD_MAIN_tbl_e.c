@@ -17,10 +17,12 @@ extern const s8 str_1P_SHOT1_or_SHOT2_2[];
 extern const s8 gcfg_help_return_en[];
 extern const s8 str_1P_SHOT1_2[];
 
+/* provisional name */
 const s8 gcfg_help_modify_en[36] = "MODIFY SETTING = 1P LEFT or RIGHT \n";
 
 const s8 str_1P_SHOT1_or_SHOT2_2[36] = "               = 1P SHOT1 or SHOT2";
 
+/* provisional name */
 const s8 gcfg_help_return_en[36] = "RETURN TO CONFIGURATION MENU      \n";
 
 const s8 str_1P_SHOT1_2[36] = "               = 1P SHOT1         ";

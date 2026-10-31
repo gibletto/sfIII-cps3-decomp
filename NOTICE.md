@@ -12,7 +12,7 @@ must obtain and use those materials lawfully.
 The repository license (GNU AGPL-3.0, `LICENSE`) applies only to
 contributor-authored reconstruction and tooling to the extent its contributors
 hold the relevant rights. Names and types are taken from the 2nd Impact and
-3rd Strike decompilations (gibletto/sfIII2-cps3-decomp,
-gibletto/sfIII3-cps3-decomp), parts of which were ported from
+3rd Strike decompilations ([gibletto/sfIII2-cps3-decomp](https://github.com/gibletto/sfIII2-cps3-decomp),
+[gibletto/sfIII3-cps3-decomp](https://github.com/gibletto/sfIII3-cps3-decomp)), parts of which were ported from
 [crowded-street/3s-decomp](https://github.com/crowded-street/3s-decomp), which
 is licensed AGPL-3.0.

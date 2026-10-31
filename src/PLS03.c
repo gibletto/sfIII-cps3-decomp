@@ -485,6 +485,7 @@ again:
 
 
 
+/* provisional name */
 s32 check_jump_pat_status(PLW* wk) {
     if (!(wk->cp->sw_lvbt & LEVER_UP)) {
         return 0;
@@ -499,6 +500,7 @@ s32 check_jump_pat_status(PLW* wk) {
 
 
 
+/* provisional name */
 s32 check_paring_attack(PLW* wk) {
     s16 kos;
     if (wk->spmv_ng_flag & 0x1000) {
@@ -519,6 +521,7 @@ s32 check_paring_attack(PLW* wk) {
 
 
 
+/* provisional name */
 s32 check_dm_shot_attack(PLW* wk) {
     s16 kos;
     if (wk->spmv_ng_flag & 0x2000) {
@@ -539,6 +542,7 @@ s32 check_dm_shot_attack(PLW* wk) {
 
 
 
+/* provisional name */
 s32 check_lever_up_attack(PLW* wk) {
     s16 kos;
     wk->permited_koa |= 8;
@@ -909,6 +913,7 @@ s32 check_renda_cancel(PLW* wk) {
 
 
 
+/* provisional name */
 s32 check_sp_waza_flag(PLW* wk) {
     s16 i;
     s16 rnum = 0;

@@ -9,6 +9,7 @@
 #include "work.h"
 #include "sel_pl.h"
 
+/* provisional name */
 s32 PL_Sel_Mode_2(void) {
     if (Game_setting.Screen_Mode == 0) {
         return 0;

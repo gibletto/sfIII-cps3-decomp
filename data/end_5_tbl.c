@@ -13,6 +13,7 @@
 
 extern const PANEL end_500_bg0_cell_tbl[];
 
+/* provisional name */
 const PANEL end_500_bg0_cell_tbl[12] = {
     { 0, 9 }, { 0x40, 10 }, { 0x80, 13 }, { 0xC0, 14 }, { 0x1080, 1 }, { 0x10C0, 2 }, { 0x2000, 3 }, { 0x2040, 4 },
     { 0x3000, 5 }, { 0x3040, 6 }, { 0x3080, 5 }, { 0x30C0, 6 },

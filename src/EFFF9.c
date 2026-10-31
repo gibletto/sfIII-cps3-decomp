@@ -44,7 +44,7 @@ s16 efff9_PL_NO;
 s16 efff9_txt_point;
 s16 efff9_message;
 s16 keep_mes_no;
-s16 efff9_mes_no;
+s16 efff9_mes_no;  /* provisional name */
 
 void effect_F9_move(WORK_Other_CONN* ewk) {
     const u16* chr_data;
@@ -156,8 +156,7 @@ void effect_F9_move(WORK_Other_CONN* ewk) {
     }
 }
 
-s32 effect_F9_init(s16 pl_no)
-{
+s32 effect_F9_init(s16 pl_no) {
     WORK_Other* ewk;
     s16 ix;
 
@@ -217,6 +216,7 @@ s32 Rewrite_End_Message(u16 mes_no) {
     return 0;
 }
 
+/* provisional name */
 s32 Set_Direct_Message(s16 mes) {
     WORK_Other* ewk;
     s16 ix;

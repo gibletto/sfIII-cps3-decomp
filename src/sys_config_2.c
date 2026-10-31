@@ -176,9 +176,6 @@ const TM_STRING* monitor_str_tbl[2] = {
 
 
 
-
-
-
 void (*config_menu_tbl[2])(void) = {
     config_menu_init,
     config_menu_dispatch,
@@ -284,14 +281,15 @@ void (*sysconfig_item_card_tbl2[10])(void) = {
 
 
 
-s8 config_menu_run(void)
-{
+/* provisional name */
+s8 config_menu_run(void) {
     config_menu_tbl[Config_No_0]();
     return cfg_reserve;
 }
 
 
 
+/* provisional name */
 void config_menu_init(void) {
     s32 i;
     const u8** table;
@@ -343,6 +341,7 @@ void config_menu_init(void) {
 
 
 
+/* provisional name */
 void config_menu_dispatch(void) {
     /* per-page handler table in work RAM (02007E04), indexed by Config_No_1 */
     config_page_tbl[Config_No_1]();
@@ -350,15 +349,15 @@ void config_menu_dispatch(void) {
 
 
 
-void config_top_page(void)
-{
+/* provisional name */
+void config_top_page(void) {
     config_top_step_tbl[Config_No_2]();
 }
 
 
 
-void config_top_draw(void)
-{
+/* provisional name */
+void config_top_draw(void) {
     Config_No_2++;
     if (Area_Type) {
         tilemap_fill_all(0, 0x20);
@@ -376,6 +375,7 @@ void config_top_draw(void)
 
 
 
+/* provisional name */
 void config_top_select(void) {
     if (Area_Type) {
         cfg_top_cursor = menu_cursor_vtick(16, 6, 3, cfg_top_cursor, 0);
@@ -400,6 +400,7 @@ void config_top_select(void) {
 
 
 
+/* provisional name */
 void config_top_system(void) {
     u16 trig;
     trig = ~p1sw_1 & p1sw_0;
@@ -415,6 +416,7 @@ void config_top_system(void) {
 
 
 
+/* provisional name */
 void config_top_game(void) {
     u16 trig;
     trig = ~p1sw_1 & p1sw_0;
@@ -430,6 +432,7 @@ void config_top_game(void) {
 
 
 
+/* provisional name */
 void config_top_default(void) {
     register s8 ix;
     const u8** table;
@@ -486,6 +489,7 @@ void config_top_default(void) {
 
 
 
+/* provisional name */
 void config_top_save_exit(void) {
     u16 trig;
     s32 i;
@@ -551,12 +555,14 @@ void config_top_save_exit(void) {
 
 
 
+/* provisional name */
 void sysconfig_page(void) {
     sysconfig_step_tbl[Config_No_2]();
 }
 
 
 
+/* provisional name */
 void sysconfig_draw(void) {
     Config_No_2++;
     cfg_cursor = 0;
@@ -605,6 +611,7 @@ void sysconfig_draw(void) {
 
 
 
+/* provisional name */
 void sysconfig_select(void) {
     if (Area_Type != 0) {
         cfg_cursor = menu_cursor_vtick(1, 5, cfg_item_max, cfg_cursor, 1);
@@ -692,6 +699,7 @@ void sysconfig_select(void) {
 
 
 
+/* provisional name */
 void sysconfig_coin(void) {
     register s8 step;
     switch (cfg_coin_step) {
@@ -705,6 +713,7 @@ void sysconfig_coin(void) {
                 cfg_coin_sel = 3;
             }
         }
+        /* fall through */
     case 1:
     default:
         cfg_coin_special = 0;
@@ -805,6 +814,7 @@ void sysconfig_coin(void) {
 
 
 
+/* provisional name */
 void sysconfig_chute_mode(void) {
     register s8 step;
     step = config_modify_step();
@@ -841,6 +851,7 @@ void sysconfig_chute_mode(void) {
 
 
 
+/* provisional name */
 void sysconfig_continue(void) {
     if (cfg_coin != 17 && event_off_flag != 0 && config_modify_step()) {
         cfg_continue ^= 1;
@@ -854,6 +865,7 @@ void sysconfig_continue(void) {
 
 
 
+/* provisional name */
 void sysconfig_monitor(void) {
     if (config_modify_step()) {
         Monitor_Flip ^= 1;
@@ -867,6 +879,7 @@ void sysconfig_monitor(void) {
 
 
 
+/* provisional name */
 void sysconfig_demo_sound(void) {
     if (config_modify_step()) {
         cfg_demo_sound ^= 1;
@@ -880,6 +893,7 @@ void sysconfig_demo_sound(void) {
 
 
 
+/* provisional name */
 void sysconfig_sound_mode(void) {
     if (config_modify_step()) {
         cfg_sound_mode ^= 1;
@@ -893,6 +907,7 @@ void sysconfig_sound_mode(void) {
 
 
 
+/* provisional name */
 void sysconfig_language(void) {
     register s8 step;
     step = config_modify_step();
@@ -912,6 +927,7 @@ void sysconfig_language(void) {
 
 
 
+/* provisional name */
 void sysconfig_dispenser(void) {
     if (config_modify_step()) {
         cfg_dispenser ^= 1;
@@ -925,6 +941,7 @@ void sysconfig_dispenser(void) {
 
 
 
+/* provisional name */
 void sysconfig_win_point(void) {
     register s8 step;
     step = config_modify_step();
@@ -948,6 +965,7 @@ void sysconfig_win_point(void) {
 
 
 
+/* provisional name */
 void sysconfig_win_point_human(void) {
     register s8 step;
     step = config_modify_step();
@@ -967,6 +985,7 @@ void sysconfig_win_point_human(void) {
 
 
 
+/* provisional name */
 void sysconfig_voice_type_toggle(void) {
     if (config_modify_step()) {
         cfg_extra ^= 1;
@@ -985,6 +1004,7 @@ void sysconfig_voice_type_toggle(void) {
 
 
 
+/* provisional name */
 void sysconfig_exit(void) {
     u16 trig;
     trig = ~p1sw_1 & p1sw_0;
@@ -1000,6 +1020,7 @@ void sysconfig_exit(void) {
 
 
 
+/* provisional name */
 void gameconfig_page(void) {
     u32 p;
     const u8** table;
@@ -1024,6 +1045,7 @@ void gameconfig_page(void) {
             }
             cfg_continue = 0;
         }
+        /* fall through */
     case 0:
         break;
     }
@@ -1031,6 +1053,7 @@ void gameconfig_page(void) {
 
 
 
+/* provisional name */
 void sysconfig_draw_values(void) {
     s16 attr;
     attr = 2;
@@ -1130,6 +1153,7 @@ void sysconfig_draw_values(void) {
 
 
 
+/* provisional name */
 void config_print_setting(const TM_STRING* src, s32 y, s16 attr) {
     TM_STRING e;
     e.x = src->x;
@@ -1141,12 +1165,14 @@ void config_print_setting(const TM_STRING* src, s32 y, s16 attr) {
 
 
 
+/* provisional name */
 void test_menu_print_script_at(const void* script, s16 px, s16 y) {
     tilemap_print_script_seq(0, px, y, script);
 }
 
 
 
+/* provisional name */
 void config_check_changed(void) {
     register s8 i;
     s8* saved;
@@ -1189,6 +1215,7 @@ void config_check_changed(void) {
 
 
 
+/* provisional name */
 s32 config_differs_from_default(void) {
     register s8 ix;
     const u8** table;
@@ -1242,6 +1269,7 @@ s32 config_differs_from_default(void) {
 
 
 
+/* provisional name */
 s8 config_modify_step(void) {
     u16 trig;
     s8 step;
@@ -1265,6 +1293,7 @@ s8 config_modify_step(void) {
 
 
 
+/* provisional name */
 s8 menu_cursor_vtick(s32 x, s32 y, s8 last, s8 row, s8 wrap) {
     u16 trig;
     s32 off;
@@ -1344,6 +1373,7 @@ s8 menu_cursor_vtick(s32 x, s32 y, s8 last, s8 row, s8 wrap) {
 
 
 
+/* provisional name */
 void menu_cursor_redraw(s32 x, s32 y, s32 cur, s32 old) {
     s32 off;
     off = old * 2;
@@ -1362,6 +1392,7 @@ void menu_cursor_redraw(s32 x, s32 y, s32 cur, s32 old) {
 
 
 
+/* provisional name */
 void config_menu_load_settings(void) {
     s32 i;
     const u8** table;

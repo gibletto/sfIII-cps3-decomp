@@ -100,11 +100,6 @@ s16 ake_cg_c_no;
 
 
 
-
-
-
-
-
 /* provisional name */
 s32 bg_cell_offset(s16 x, s16 y) {
     return ((((0x400 - (y & 0x300) - (y & 0xF0)) & 0x3F0) << 4) + ((x & 0x3F0) >> 2)) >> 1;
@@ -120,8 +115,7 @@ void suzi_offset_set(WORK* wk) {
 
 
 
-u32 suzi_offset_set_sub(WORK* wk)
-{
+u32 suzi_offset_set_sub(WORK* wk) {
     s16 work;
     s16 work2;
     s16 pos = wk->xyz[1].disp.pos;
@@ -145,7 +139,7 @@ void suzi_sync_pos_set(WORK_Other* ewk) {
     s16 sub;
     if (ewk->wu.sync_suzi) {
         if (ewk->wu.sync_suzi == 2) {
-            suzi_offset_set_sub((WORK*)ewk);
+            suzi_offset_set_sub(&ewk->wu);
         }
         sub = *ewk->wu.suzi_offset;
         sub -= 0x200;
@@ -290,8 +284,7 @@ void bg_frame_deff_init(void) {
 /* provisional name */
 /* bg_pos_hosei2 with each layer's frame_deff in place of pos_offset */
 /* provisional name */
-void bg_pos_hosei_deff(void)
-{
+void bg_pos_hosei_deff(void) {
     s32 pos;
     s32 pos2;
     s16 i;
@@ -365,8 +358,7 @@ void bg_frame_deff_set(s16 bg_no) {
 
 
 
-void bg_pos_hosei2(void)
-{
+void bg_pos_hosei2(void) {
     s32 pos;
     s32 pos2;
     s16 i;
@@ -397,7 +389,6 @@ void bg_pos_hosei2(void)
         bg_w.bgw[i].abs_y = pos2;
     }
 }
-
 
 
 
@@ -508,7 +499,6 @@ void bg_pos_hosei_deff2(void) {
         bg_w.bgw[i].position_y = pos & 0x3FF;
     }
 }
-
 
 
 
@@ -736,6 +726,7 @@ void zoom_center_set(void) {
 
 
 
+/* provisional name */
 void zoom_x_width_check(void) {
     s32 f;
     if (Game_setting.Screen_Mode) {
@@ -1246,8 +1237,7 @@ void akebono_scrn_move(s16 ix) {
 
 
 /* provisional name */
-void akebono_scr_write(void)
-{
+void akebono_scr_write(void) {
     const PANEL *cell;
     s16 i;
 
@@ -1498,8 +1488,7 @@ void bg_base_x_move_check(void) {
 
 
 /* Turn the players' positions into a camera request and, while the background is chasing, apply it. */
-void bg_chase_move(void)
-{
+void bg_chase_move(void) {
     chase_start_check();
     if (bg_w.chase_flag) {
         chase_xy_move();
@@ -1572,14 +1561,14 @@ s32 chase_xy_move(void) {
     if (bg_w.chase_flag & 0xF) {
         bg_w.bg2_sp_x2 = bg_w.bg2_sp_x = 0;
         if (bg_w.chase_flag & 1) {
-            chase_time_x -= 1;
+            chase_time_x--;
             if (chase_time_x > 0) {
                 bg_mvxy.a[0].sp += bg_mvxy.d[0].sp;
                 bgw_ptr->chase_xy[0].cal += bg_mvxy.a[0].sp;
             }
         }
         if (bg_w.chase_flag & 2) {
-            chase_time_x -= 1;
+            chase_time_x--;
             if (chase_time_x > 0) {
                 bg_mvxy.a[0].sp += bg_mvxy.d[0].sp;
                 bgw_ptr->chase_xy[0].cal += bg_mvxy.a[0].sp;
@@ -1601,14 +1590,14 @@ s32 chase_xy_move(void) {
     }
     if (bg_w.chase_flag & 0xF0) {
         if (bg_w.chase_flag & 0x10) {
-            chase_time_y -= 1;
+            chase_time_y--;
             if (chase_time_y > 0) {
                 bg_mvxy.a[1].sp += bg_mvxy.d[1].sp;
                 bgw_ptr->chase_xy[1].cal += bg_mvxy.a[1].sp;
             }
         }
         if (bg_w.chase_flag & 0x20) {
-            chase_time_y -= 1;
+            chase_time_y--;
             if (chase_time_y > 0) {
                 bg_mvxy.a[1].sp += bg_mvxy.d[1].sp;
                 bgw_ptr->chase_xy[1].cal += bg_mvxy.a[1].sp;
@@ -1845,8 +1834,6 @@ void bg_initialize(void) {
 
 
 
-
-
 void compel_bg_init_position(void) {
     s16 i;
     bg_w.compel_on = 1;
@@ -1992,8 +1979,7 @@ s16 prio;
     u16* p;
     adrs += x;
     adrs += y;
-    i = 0;
-    while (i < h) {
+    for (i = 0; i < h; i++) {
         p = adrs;
         for (j = 0; j < w; j++) {
             cell = *++p;
@@ -2004,7 +1990,6 @@ s16 prio;
             p++;
         }
         adrs += 0x80;
-        i++;
     }
 }
 
@@ -2048,7 +2033,6 @@ s16 capcom_logo_anim(void) {
     }
     return ret;
 }
-
 
 
 

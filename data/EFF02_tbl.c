@@ -138,6 +138,7 @@ const s16 gqdt[11][2] = {
     { 6, 8 }, { 6, 2 }, { 6, 4 },
 };
 
+/* provisional name */
 const s16 eff02_speed_tbl[4] = {
     160, 192, 224, 256,
 };

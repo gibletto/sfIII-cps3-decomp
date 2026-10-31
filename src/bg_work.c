@@ -724,7 +724,7 @@ BG_DEFF_TBL bg_deff_tbl[18][4] = {
     },
 };
 
-s16 stage8_base_y;  /* 0201C258 */
+s16 stage8_base_y;  /* 0201C258, provisional name */
 BGW* bgw_ptr;  /* 0201C25C */
 SUZI_CALC suzi_calc_w[2];  /* 0201C260 */
 u16 suzi_line_buf[2048];  /* 0201C270 */
@@ -733,9 +733,9 @@ s16 bg_stop;  /* 0201D288 */
 s16 base_y_pos;  /* 0201D28A */
 /* after base_y_pos: nothing refers to it by name or address */
 u8 base_y_pos_tail[12];  /* 0201D28C */
-s16 mark_gfx_ofs[128];  /* 0201D298 */
-s16 mark_gfx_cells[128];  /* 0201D398 */
-s16 mark_gfx_colcd[128];  /* 0201D498 */
+s16 mark_gfx_ofs[128];  /* 0201D298, provisional name */
+s16 mark_gfx_cells[128];  /* 0201D398, provisional name */
+s16 mark_gfx_colcd[128];  /* 0201D498, provisional name */
 s16 bg_ofs_work[3];  /* 0201D598 */
 s16 bg_zoom_x_pos;  /* 0201D59E */
 s16 bg_sp_work;  /* 0201D5A0 */

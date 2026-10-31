@@ -112,7 +112,7 @@ const s32* end_11_cell_ptr1_tail[1] = {
 OP_W op_w;  /* 0201D6D8 */
 s16 op_end_flag;  /* 0201D6E2 */
 s16 op_obj_disp;  /* 0201D6E4 */
-s8 effE1_end_flag;  /* 0201D6E6 */
+s8 effE1_end_flag;  /* 0201D6E6, provisional name */
 s8 op_fade_flag;  /* 0201D6E7 */
 END_W end_w;  /* 0201D6E8 */
 s16 ls_rate1;  /* 0201D6F4 */

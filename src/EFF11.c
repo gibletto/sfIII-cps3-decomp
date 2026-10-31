@@ -24,15 +24,12 @@
 #define R0_MOVE         1       /* flip BG 0 between the pages */
 
 
-
-
 extern const EFF11_TILE eff11_tile_tbl[4][16];
 extern const EFF11_FRAME eff11_frame_tbl[8][4];
 extern const EFF11_ANIME eff11_anime_tbl[14];
 extern const u16 bg070_cell_data[155][16][32];
 
 void debug_bg_tile_put(s16 bg, s32 ofs, s32 page, s32 src);
-
 
 
 void effect_11_move(WORK_Other* ewk) {

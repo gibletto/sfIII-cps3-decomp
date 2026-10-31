@@ -73,7 +73,6 @@ extern const s8 end_type_tbl[16];
 
 
 
-
 void Ending_init(void) {
     end_w.r_no_0 = END_INIT;
     end_w.r_no_1 = END1_INIT;
@@ -244,6 +243,7 @@ void end_06000(void) {
 
 
 
+/* provisional name */
 void end_color_load(void) {
     if (end_type_tbl[end_w.type]) {
         load_any_color(0x92);
@@ -413,6 +413,7 @@ void end_bg_pos_hosei2(void) {
 
 
 
+/* provisional name */
 void end_scn_pos_set(u16 bg_no) {
     Scrn_Move_Set_R(bg_w.bgw[bg_no].fam_no, (bg_w.bgw[bg_no].xy[0].disp.pos & 0x3FF) - bg_w.pos_offset,
                     bg_w.bgw[bg_no].xy[1].disp.pos);
@@ -432,6 +433,7 @@ void end_scn_pos_set2(void) {
 }
 
 
+/* provisional name */
 void end_bg_block_attr_add(s16 bg, s32 ofs, s16 w, s32 cell, s16 h) {
     u16* adrs;
     adrs = bg_w.bgw[bg].bg_address;
@@ -466,7 +468,7 @@ void end_X_com01(void) {
 
 void end_fade_bgm(void) {
     if (end_fade_flag != 0) {
-        end_fade_timer -= 1;
+        end_fade_timer--;
         if (end_fade_timer < 0) {
             end_fade_flag = 0;
             bgm_fade_out(0x111);

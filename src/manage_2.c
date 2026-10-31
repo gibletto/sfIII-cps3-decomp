@@ -311,7 +311,7 @@ void Game_Manage_4th(void) {
         if (plw[0].wu.vital_new != plw[1].wu.vital_new) {
             C_No0 = C0_ROUND_WIN;
             Round_Result |= RESULT_TIME;
-            ROW_ELEM(win_type[Winner_id], PL_Wins[Winner_id]) = WIN_MARK_NORMAL;
+            (&win_type[Winner_id][0])[PL_Wins[Winner_id]] = WIN_MARK_NORMAL;
             Check_Perfect(Winner_id);
             PL_Wins[Winner_id]++;
             Update_VS_Data();
@@ -349,8 +349,7 @@ void Setup_Win_Mark(void) {
 
 
 /* Nothing calls it. Silences the music; unless the music is off, it fades back in after 150 frames. */
-void Control_Music_Fade(void)
-{
+void Control_Music_Fade(void) {
     if (PB_Music_Off) {
         goto set;
     }
@@ -832,6 +831,7 @@ void Game_Manage_8th(void) {
             }
             effect_89_init(4, DE_X[0] + 10, 8, 36, 3);
             effect_89_init(4, DE_X[0] + 12, 16, 25, 3);
+            /* fall through */
         default:
             break;
         case CM8_S_WAIT12:
@@ -957,7 +957,7 @@ void Additional_Bonus(s16 PL_id) {
     Total_Bonus = Vital_Bonus + Time_Bonus;
     Score[PL_id][Play_Type] += Total_Bonus + Round_Perfect_Bonus;
     if (Score[PL_id][Play_Type] >= 9999900) {
-        ROW_ELEM(Score[PL_id], Play_Type) = 9999900;
+        (&Score[PL_id][0])[Play_Type] = 9999900;
     }
 }
 
@@ -1008,6 +1008,7 @@ void Game_Manage_9th(void) {
             return;
         }
         C_No1++;
+        /* fall through */
     default:
         if (Switch_Screen()) {
             G_No2 = G2_ROUND_RESET;
@@ -1116,22 +1117,22 @@ s16 id;
 
 
 void Ck_Win_Record(void) {
-    s16 w;
-    s16 l;
+    s16 win_id;
+    s16 lose_id;
     if (Play_Type == PLAY_VS_PLAYER) {
         if (PL_Wins[0] >= Game_setting.Battle_Number + 1 || PL_Wins[1] >= Game_setting.Battle_Number + 1) {
             if (PL_Wins[0] >= Game_setting.Battle_Number + 1) {
-                w = 0;
-                l = 1;
+                win_id = 0;
+                lose_id = 1;
             } else {
-                w = 1;
-                l = 0;
+                win_id = 1;
+                lose_id = 0;
             }
-            if (++Win_Record[w] <= 99) {
-                Disp_Win_Record_Sub(w);
-                Erase_Win_Record(l);
+            if (++Win_Record[win_id] <= 99) {
+                Disp_Win_Record_Sub(win_id);
+                Erase_Win_Record(lose_id);
             } else {
-                Win_Record[w] = 99;
+                Win_Record[win_id] = 99;
             }
         }
     }
@@ -1192,6 +1193,7 @@ void Disp_Win_Record(void) {
 
 
 
+/* provisional name */
 void Erase_Win_Record(PL_id)
 s16 PL_id;
 {
@@ -1245,8 +1247,7 @@ void Update_Level_Control(void) {
 
 
 /* Sets Complete_Victory, which ends the round-end waits of Game_Management at once. */
-void complete_victory_pause(void)
-{
+void complete_victory_pause(void) {
     Complete_Victory = 1;
 }
 
@@ -1329,7 +1330,7 @@ s16 Next_VS_Index(void) {
     if (VS_Index[WINNER] >= 7) {
         return 7;
     }
-    ROW_ELEM(Last_VS_Index, WINNER) = VS_Index[WINNER];
+    (&Last_VS_Index[0])[WINNER] = VS_Index[WINNER];
     for (; Last_VS_Index[WINNER] <= 5; Last_VS_Index[WINNER]++) {
         em = EM_Candidate_Data[Used_char[WINNER]][EM_Course[WINNER]][Last_VS_Index[WINNER]];
         if (Break_Com[WINNER][em] == 0) {
@@ -1456,6 +1457,7 @@ void Setup_BGM_Fade_In(s16 time) {
 
 
 
+/* provisional name */
 void Update_Personal_Time(s16 id) {
     if (Continue_Coin2[id] == 0) {
         SC_Personal_Time[id] = Control_Time;

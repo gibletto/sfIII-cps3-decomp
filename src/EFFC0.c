@@ -44,6 +44,7 @@ void effect_C0_move(WORK_Other* ewk) {
         ewk->wu.my_col_mode = 0x4200;
         ewk->wu.my_col_code = 0x2020;
         set_char_move_init(&ewk->wu, 0, plhos_data[mwk->player_number][PLHOS_CHAR]);
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;

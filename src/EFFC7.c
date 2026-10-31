@@ -28,7 +28,6 @@
 
 
 
-
 #pragma inline(effc7_sort_push)
 
 void effect_C7_move(WORK_Other* ewk) {

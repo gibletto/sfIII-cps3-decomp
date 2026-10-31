@@ -7,28 +7,37 @@ the finished [3rd Strike](https://github.com/gibletto/sfIII3-cps3-decomp) and
 the names of the files here follow Capcom's 3rd Strike file names (New Generation's own modules are named in the same
 style).
 
-C and SH-2 assembler source for the CPS3 program ROM of *Street Fighter III: New Generation* (MAME and FBNeo set
-sfiiina, Asia 970204, NO CD, BIOS set 2; sfiiin, BIOS set 1, has the same program), built with the original Hitachi
-toolchain (SHC 5.0, asmsh, lnk 6.0, rof2bin). New Generation is the first game on the engine that 2nd Impact and 3rd
-Strike continue.
+## What this is
 
-The build is a byte-for-byte copy of the arcade program. `build/prog.bin` has the arcade program's SHA-1,
-3dcfb7a2cea2dee0785ce4a3a90d555c107f5372, and the four program SIMM chips written into `build/sfiiina.zip` are the original ROM's:
+This is the program of the arcade game *Street Fighter III: New Generation* turned back into source code: the MAME
+and FBNeo set sfiiina (Asia 970204, NO CD, BIOS set 2; sfiiin, BIOS set 1, has the same program). It is a
+decompilation: the machine code in the CPS3 program ROM has been rewritten as C and as SH-2 assembler (the SH-2 is
+the arcade board's CPU), so people can read it and change it. New Generation is the first game on the engine that
+2nd Impact and 3rd Strike continue.
+
+It is also a byte-for-byte match. It builds with the original Hitachi toolchain (SHC 5.0, asmsh, lnk 6.0, rof2bin):
+the compiler turns the C into machine code, the assembler does the same for the assembler files, and the linker
+joins the pieces into one program. `build/prog.bin` has the arcade program's SHA-1 (a fingerprint of the whole
+file), 3dcfb7a2cea2dee0785ce4a3a90d555c107f5372, and the four program SIMM chips written into `build/sfiiina.zip` are the original ROM's:
 
     sfiii-simm1.0  crc cfc9e45a  sha1 5d9061f76680642e730373e3ac29b24926dc5c0c
     sfiii-simm1.1  crc 57920546  sha1 c8452e7e101b8888fb806d1c9874c6be49fc7dbd
     sfiii-simm1.2  crc 0d8f2680  sha1 ade7b28acd11023696c4b20136f3d2f34da6b1be
     sfiii-simm1.3  crc ea4ca054  sha1 f91c55c4e4fc428ce15d27be38aeed3a483d028c
 
-5,660 C routines, 55 assembler routines and 18 run-time routines compile and link from
-this source to the arcade's exact bytes, and all the program's tables and work RAM are source too. The build copies
-only the graphics and the parts outside the linked sections from your ROM (see [What the build reads from your
-ROM](#what-the-build-reads-from-your-rom)). The sound driver's routines are built from assembler source; their
-reconstructed C is in `src/nonmatching/` (see [Sound driver](#sound-driver)).
+What is source and what comes from your ROM:
+
+- 5,660 C routines, 55 assembler routines and 18 run-time routines compile and link
+  from this source to the arcade's exact bytes, and all the program's tables and work RAM (the game's variables) are
+  source too.
+- The build copies only the graphics and the parts outside the linked sections from your ROM (see [What the build
+  reads from your ROM](#what-the-build-reads-from-your-rom)).
+- 19 of the sound driver's routines are built from assembler source; their reconstructed C is in `src/nonmatching/` (see
+  [Sound driver](#sound-driver)).
 
 ## Building
 
-Needs Windows (the tools in `bin/` are Win32 programs) and Python 3.
+You need Windows (the tools in `bin/` are Win32 programs), Python 3 and your own ROM set.
 
 1. Put your `sfiiina.zip` (or `sfiiin.zip`) in `rom/`. A split set's shared SIMM files are read from `sfiii.zip`
    when it is there too.
@@ -41,14 +50,16 @@ and writes:
 - `build/sfiiina.zip` (or `sfiiin.zip`, after your set's BIOS) - your ROM set, in MAME's and FBNeo's layout, with the
   four program SIMM chips replaced by the new build
 
-The build prints each program chip's CRC and SHA-1 and checks them, and `build/prog.bin`, against the arcade's
-(`tools/prog.sha1`) and against your set's; if any differs it still writes the files, then stops with BUILD FAILED
-(`make` fails too). The program SIMM holds 06000000-067FFFFF in four chips, one byte lane each. New Generation stores
-its whole program encrypted, code and data alike, apart from a few parts outside the linked sections that are stored
-plain (`tools/rom_pieces.tsv`).
+The build prints each program chip's CRC and SHA-1. It checks them, and `build/prog.bin`, against the arcade's
+(`tools/prog.sha1`) and against your set's. If any differs, it still writes the files, then stops with BUILD FAILED
+(`make` fails too).
 
-When running a new build in MAME, use an empty `-nvram_directory`: MAME keeps the program flash in nvram and loads it
-over the ROM files.
+How the program is stored: the program SIMM holds 06000000-067FFFFF in four chips, one byte lane each (each chip
+holds one byte of every 4-byte word). New Generation stores its whole program encrypted, code and data alike, apart
+from a few parts outside the linked sections that are stored plain (`tools/rom_pieces.tsv`).
+
+To run a new build in MAME, use an empty `-nvram_directory`. MAME keeps the program flash memory in nvram and loads
+it over the ROM files, so an old nvram would run the old program instead of your build.
 
 ## Layout
 
@@ -57,7 +68,7 @@ over the ROM files.
     data/     game tables, the CD volume identifier, and cg_labels.src: the graphics' names (labels only; the
               bytes come from the ROM)
     include/  headers
-    lib/      the compiler's run-time routines, as linked into the program
+    lib/      the compiler's run-time routines (its built-in helpers), as linked into the program
     bin/      Hitachi SHC toolchain: shcmdl, shcgen, shcpep and shcasm are the rebuilt stages (see Compiler; the
               originals are in bin/original)
     sfn.sub   link order and section addresses
@@ -65,9 +76,12 @@ over the ROM files.
     tools/    cps3rom1.py: reads the ROM set, writes the new one; rom_pieces.tsv: what it reads from the ROM;
               gaps.tsv: the alignment-gap bytes; prog.sha1
 
-A data file holds the tables of the 3rd Strike file of that name, or is named after the module that reads its tables
-(`<module>_tbl`) where no 3rd Strike file fits. An assembler module that is part of a C module of the same name (the
-sound driver's) is named `<module>_x1`, `_x2`.
+How files are named:
+
+- A data file holds the tables of the 3rd Strike file of that name. Where no 3rd Strike file fits, it is named after
+  the module that reads its tables (`<module>_tbl`).
+- An assembler module that is part of a C module of the same name (the sound driver's) is named `<module>_x1`,
+  `_x2`.
 
 ## What the build reads from your ROM
 
@@ -87,20 +101,25 @@ Apart from the alignment-gap bytes (`tools/gaps.tsv`, below), nothing from the R
 | outside the linked sections (stored plain) | 067FFFEC-067FFFFF | 20 bytes |
 
 - `data/cg_labels.src` is labels only: the graphics' names the program uses, with space reserved for their bytes.
-- "outside the linked sections": the CD image New Generation was cut from kept whatever an earlier build had left
-  where this program's link writes nothing (an earlier build's tables, bitmaps). No source produces those bytes.
-  For the same reason the alignment gaps inside the sections (the halfword before a 4-aligned literal pool, the
-  bytes between objects) hold leftovers instead of the link's fill; `tools/gaps.tsv` lists them and `pack` writes
-  them.
+- "outside the linked sections": places in the program area where this program's link writes
+  nothing. The CD image New Generation was cut from kept whatever an earlier build had left there (an earlier build's
+  tables, bitmaps). No source produces those bytes. For the same reason, the alignment gaps inside the sections (the halfword before a
+  4-aligned literal pool, the bytes between objects) hold leftovers instead of the link's fill. `tools/gaps.tsv`
+  lists them, and `pack` writes them.
 
 ## Compiler
 
 New Generation was built with the arcade compiler of 2nd Impact and 3rd Strike, [SHC 5.0 Release 26, decompiled and
-rebuilt in C](https://github.com/gibletto/shc-5r26-decomp-sf3), in a slightly different revision. The rebuilt stages
-in `bin/` carry the rules found for those games, and `build.bat` and the `Makefile` set 9 settings at
-the top (and a few more for the modules compiled with other options) for the revision that built New Generation. The
-compiler project's [SF3.md](https://github.com/gibletto/shc-5r26-decomp-sf3/blob/main/SF3.md) lists the rules with the
-routines that show them. Those New Generation adds:
+rebuilt in C](https://github.com/gibletto/shc-5r26-decomp-sf3), in a slightly different revision. (The 3rd Strike
+README explains why the compiler had to be rebuilt to get a byte match.)
+
+- The rebuilt stages in `bin/` carry the rules found for those games.
+- `build.bat` and the `Makefile` set 9 settings at the top (and a few more for the modules compiled
+  with other options) for the revision that built New Generation.
+- The compiler project's [SF3.md](https://github.com/gibletto/shc-5r26-decomp-sf3/blob/main/SF3.md) lists the rules
+  with the routines that show them.
+
+The settings New Generation adds:
 
 - `MDL_IMM_REG=191`: bit 128 (with bit 4): a nonzero constant a register already holds may serve an arithmetic expression of scalar variables, constants and casts, globals included (RANKING)
 - `PEP_SWITCH_END=3`: bits 1 and 2: a nested switch keeps its own break label (bit 1), also where nested switches end one after another (bit 2)
@@ -118,50 +137,67 @@ on that single example. A source form found later could make some of them unnece
 
 ### Options per module
 
-Most modules compile with `-optimize=1 -speed`. The others are listed in groups at the top of the `Makefile` (and
-spelled out in `build.bat`), each group named after its options:
+Not every module was compiled with the same options. Most modules compile with `-optimize=1 -speed`. The others are
+listed in groups at the top of the `Makefile` (and spelled out in `build.bat`), each group named after its options:
 
 - `-optimize=0 -nospeed`, with `GEN_NARROW_CONST=0` (the `OPT0_PSYS` group): the system modules - the test and
   configuration menus, coin, EEPROM, memory and sprite-list code
-- `-noinline` (the `SPEED_NOINLINE` groups): no inline expansion of small routines
+- `-noinline` (the `SPEED_NOINLINE` groups): no inline expansion of small routines (they stay separate calls)
 - `-section=const=CTBL` (the `_CONSTTBL` groups): the module's constant data goes to the table section `CTBL`
 - `SPEED_STABLE_PSYS`: the settings above that apply to the `SPEED_STABLE` group only, two sound modules
 
 ### Sections
 
-The program image runs from 06000000: the vector table (`CVECT`), then three code sections in a row, the game code
-(`P`), the fighters' data (`CCHR`: the `data/` files with `#pragma section CHR`) and the system code (`PSYS`: the
-modules whose group name ends in `_PSYS`, compiled with `-section=program=PSYS`), then the tables (`CTBL`) and the
-image of the initialised work RAM (`D`), which the boot code copies to 02000000. `sfn.sub` gives the link order and
-addresses.
+A section is a block of the program that the linker places at a set address. The program image runs from 06000000:
+
+1. the vector table (`CVECT`)
+2. three code sections in a row: the game code (`P`), the fighters' data (`CCHR`: the `data/` files with
+   `#pragma section CHR`) and the system code (`PSYS`: the modules whose group name ends in `_PSYS`, compiled with
+   `-section=program=PSYS`)
+3. the tables (`CTBL`)
+4. the image of the initialised work RAM (`D`), which the boot code copies to 02000000
+
+`sfn.sub` gives the link order and addresses.
 
 A few tables lie between pieces of code in `P` and `PSYS` (`data/asstbl.c`, `data/sys_font.c` and others: the
-`INCODE` groups). The linker would put C constant data after all the code, so these files are compiled to assembler
-(`-code=asmcode`), `tools/incode.py` marks their constant section as code, and asmsh assembles them; the source stays
-C.
+`INCODE` groups). The linker would put C constant data after all the code. So these files are compiled to assembler
+(`-code=asmcode`), `tools/incode.py` marks their constant section as code, and asmsh assembles them. The source
+stays C.
 
 ### Sound driver
 
-Unlike the 3rd Strike and 2nd Impact decomps, New Generation's sound driver was built with an SHC release much older
-than any that has been found: the oldest available, 5.0 Release 10, already compiles it as Release 26 does, and
-matching it with the rebuilt compiler would need massive modification. So the driver's 19 routines are built from
-assembler source written from the arcade code (`src/textsound_2_x1.src`, `src/textsound_2_x2.src`,
-`src/sound_voice_x1.src`, `src/sound_voice_2.src`), and their reconstructed C is in `src/nonmatching/`
-(`textsound_2.c`, `sound_voice.c`, `sound_voice_2.c`, under `NONMATCHING`), where it compiles to most of the same
-instructions but not to the exact bytes. The driver's other routines (`textsound_2.c`, `sound_status.c`,
-`sound_voice.c`, `sound_voice_3.c`) and its tables and work RAM are C that builds the arcade's bytes.
+Some of the sound driver's routines are built from assembler instead of from their C. Unlike the 3rd Strike and
+2nd Impact decomps, New Generation's sound driver was built with an SHC release much older than any that has been
+found. Even the oldest available, 5.0 Release 10, already compiles it as Release 26 does, and matching it with the
+rebuilt compiler would need massive modification.
 
-The driver was built as position-independent code: it calls through `BSRF` with the callee's offset from the call in
-the literal pool, which the assembler source writes as a label difference (`.DATA.L __slow_mvn-sound_init_026`).
-The assembler prints one expected warning (817, ILLEGAL BOUNDARY VALUE) for `src/sound_voice_x1.src`: that module
+So the driver's 19 routines are built from assembler source written from the arcade code (`src/textsound_2_x1.src`,
+`src/textsound_2_x2.src`, `src/sound_voice_x1.src`, `src/sound_voice_2.src`). Their reconstructed C is in
+`src/nonmatching/` (`textsound_2.c`, `sound_voice.c`, `sound_voice_2.c`, under `NONMATCHING`). It compiles to most
+of the same instructions, but not to the exact bytes. The driver's other routines (`textsound_2.c`,
+`sound_status.c`, `sound_voice.c`, `sound_voice_3.c`) and its tables and work RAM are C that builds the arcade's
+bytes.
+
+The driver was built as position-independent code (code that can run from any address). It calls through `BSRF`,
+with the callee's offset from the call in the literal pool (the constants stored next to the code). The assembler
+source writes that offset as a label difference (`.DATA.L __slow_mvn-sound_init_026`).
+
+The assembler prints one expected warning (817, ILLEGAL BOUNDARY VALUE) for `src/sound_voice_x1.src`. That module
 starts on a 2-byte boundary, right after the C of `sound_voice.c`, as it does in the arcade program.
 
 ## Contributing
-As this is an exact byte-match, contributions should maintain the match while improving or explaining the code, or
-replace a compiler setting with source that produces the same bytes (with a PR to the compiler decomp project too).
-The open tasks are C for the sound driver that builds its bytes (`src/nonmatching/` is the
-starting point), and matching forms that look like workarounds rather than original source (dead reads, `if (0)`
-blocks, odd spellings).
+
+As this is an exact byte-match, every contribution must keep the match. Contributions should either:
+
+- improve or explain the code, or
+- replace a compiler setting with source that produces the same bytes (with a PR to the compiler decomp project
+  too).
+
+The open tasks:
+
+- C for the sound driver that builds its bytes (`src/nonmatching/` is the starting point)
+- matching forms that look like workarounds rather than original source: source that builds the right bytes but is
+  unlikely to be what Capcom wrote (dead reads, `if (0)` blocks, odd spellings)
 
 ## Thanks
 

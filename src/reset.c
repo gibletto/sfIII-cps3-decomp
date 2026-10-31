@@ -26,8 +26,7 @@ extern u8 bios_area_code;
 extern void main_thunk(void);
 
 #pragma inline(INITSCT)
-static void INITSCT(void)
-{
+static void INITSCT(void) {
     int *p, *q;
 
     for (p = B_BGN; p < B_END; p++) {
@@ -38,8 +37,7 @@ static void INITSCT(void)
     }
 }
 
-void reset_entry(void)
-{
+void reset_entry(void) {
     u16 w;
     s16 area;
 

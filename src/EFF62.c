@@ -49,6 +49,7 @@ void effect_62_move(WORK_Other* ewk) {
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         mwk = (WORK*)ewk->my_master;
         ewk->wu.old_rno[0] = mwk->old_rno[0] ^ 1;
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.type) {
             eff62_result(ewk);

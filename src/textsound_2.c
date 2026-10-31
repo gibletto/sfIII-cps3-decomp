@@ -30,10 +30,12 @@ u8 bgm_state;  /* 0206CDEC */
 u8 bgm_state_tail[1];  /* 0206CDED */
 u8 bgm_master_vol_init;  /* 0206CDEE */
 
+/* provisional name */
 s32 sound_driver_version(void) {
     return 0x145;
 }
 
+/* provisional name */
 void sound_sample_bank_set(u16 bank) {
     snd_wave_bias = bank;
 }

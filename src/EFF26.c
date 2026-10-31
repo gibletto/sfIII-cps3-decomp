@@ -127,6 +127,7 @@ void eff26_01(WORK_Other* ewk) {
             ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
+        /* fall through */
     case R1_STAND:
         if (ewk->wu.hit_stop) {
             char_move(&ewk->wu);
@@ -159,6 +160,7 @@ void eff26_02(WORK_Other* ewk) {
             set_char_move_init(&ewk->wu, 0, ewk->wu.old_rno[7]);
             break;
         }
+        /* fall through */
     case R1_STAND:
         if (ewk->wu.hit_stop) {
             char_move(&ewk->wu);
@@ -264,6 +266,7 @@ void eff26_04(WORK_Other* ewk) {
             ewk->wu.routine_no[0] = R0_KILL;
             break;
         }
+        /* fall through */
     case R1_HIT:
         if (eff_hit_check(ewk, ewk->wu.old_rno[4])) {
             ewk->wu.routine_no[1]++;
@@ -274,6 +277,7 @@ void eff26_04(WORK_Other* ewk) {
             }
             set_char_move_init(&ewk->wu, 0, ewk->wu.old_rno[3]);
         }
+        /* fall through */
     case R1_LAST:
         char_move(&ewk->wu);
         if (ewk->wu.cg_type == 1) {
@@ -296,6 +300,7 @@ void eff26_05(WORK_Other* ewk) {
             set_char_move_init(&ewk->wu, 0, ewk->wu.old_rno[1]);
             goto case_3;
         }
+        /* fall through */
     case R1_STAND:
         if (ewk->wu.hit_stop) {
             char_move(&ewk->wu);
@@ -321,6 +326,7 @@ void eff26_05(WORK_Other* ewk) {
             set_char_move_init(&ewk->wu, 0, ewk->wu.old_rno[7]);
             break;
         }
+        /* fall through */
     case R1_TARGET:
         if (eff_hit_check(ewk, ewk->wu.old_rno[4])) {
             ewk->wu.routine_no[1]++;
@@ -389,7 +395,7 @@ s32 effect_26_init(WORK_Other* oya, s16 type26) {
             ewk->wu.old_rno[4] = *data_ptr++;
             ewk->wu.old_rno[5] = *data_ptr++;
             ewk->wu.char_table[0] = char_add[bg_w.stage][bg_w.area];
-            suzi_offset_set((WORK*)ewk);
+            suzi_offset_set(&ewk->wu);
         }
         return 0;
     }

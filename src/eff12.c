@@ -80,6 +80,7 @@ s32 effect_12_init(void) {
     return 0;
 }
 
+/* provisional name */
 void debug_bg_tile_put(s16 bg, s32 ofs, s32 page, s32 src) {
     u16* dst;
     u16* sp;

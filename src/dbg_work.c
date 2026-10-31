@@ -1374,7 +1374,7 @@ TM_STRING dbg_cg_group_str[90] = {
     { 37, 8, 0xA, str_blank_12 },
 };
 
-/* 02001CFC */
+/* 02001CFC: provisional name */
 TM_STRING dbg_preview_group_str[96] = {
     { 4, 5, 2, str_BCP00 }, { 4, 5, 2, str_BCP01 },
     { 4, 5, 2, str_BCP02 }, { 4, 5, 2, str_BCP03 },
@@ -1426,7 +1426,7 @@ TM_STRING dbg_preview_group_str[96] = {
     { 4, 5, 2, str_blank_12 }, { 4, 5, 2, str_blank_12 },
 };
 
-/* 0200217C */
+/* 0200217C: provisional name */
 TM_STRING dbg_edit_group_str[99] = {
     { 1, 25, 2, str_BCP00 }, { 1, 25, 2, str_BCP01 },
     { 1, 25, 2, str_BCP02 }, { 1, 25, 2, str_BCP03 },
@@ -1607,7 +1607,7 @@ TM_STRING dbg_koc_cmoa_str[9] = {
     { 32, 27, 0xA, str_CB },
 };
 
-/* 02002B54 */
+/* 02002B54: provisional name */
 TM_STRING dbg_koc_str[9] = {
     { 32, 2, 2, str_NM }, { 32, 2, 2, str_DM },
     { 32, 2, 2, str_CA }, { 32, 2, 2, str_CU },

@@ -92,6 +92,7 @@ void eff77_0000(WORK_Other* ewk) {
     set_char_move_init(&ewk->wu, 0, 0);
 }
 
+/* provisional name */
 s32 eff94_pl_attack_check(PLW* wk) {
     if (wk->wu.routine_no[1] == PLAYER_DAMAGE && wk->wu.routine_no[2] > 11) {
         return 1;

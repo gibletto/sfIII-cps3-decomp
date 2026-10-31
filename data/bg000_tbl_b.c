@@ -64,6 +64,7 @@ extern const TILEREQ bg_etc_cells_3[];
 extern const TILEREQ bg_etc_cells_4[];
 
 /* nothing in the program refers to it */
+/* provisional name */
 const HUD_CELL end_1300_panel1[8] = {
     { 8192, 0 }, { 8256, 0 }, { 8320, 0 }, { 8384, 0 },
     { 12288, 16 }, { 12352, 17 }, { 12416, 18 }, { 12480, 19 },

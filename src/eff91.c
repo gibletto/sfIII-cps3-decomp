@@ -46,6 +46,7 @@ void effect_91_move(WORK_Other* ewk) {
         ewk->wu.dir_step = ewk->wu.vitality;
         ewk->wu.step_xy_table = &EFF91_Step_Data[ewk->wu.direction];
         ewk->wu.move_xy_table = ewk->wu.step_xy_table;
+        /* fall through */
     case R0_MOVE:
         if (--ewk->wu.dir_timer == 0) {
             eff91_cell_data_set(ewk);
@@ -71,8 +72,7 @@ void effect_91_move(WORK_Other* ewk) {
    whose top-left cell is (vital_new, vital_old).  Bit 8 of the attribute
    carries the code's bank bit. */
 /* provisional name */
-void eff91_cell_data_set(WORK_Other* ewk)
-{
+void eff91_cell_data_set(WORK_Other* ewk) {
     u16* row;
     u16* cell;
     s16 h;

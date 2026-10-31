@@ -79,6 +79,7 @@ void eff64_00(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[2]) {
     case R2_INIT:
         eff64_data_set(ewk, 0);
+        /* fall through */
     case R2_DELAY:
         eff64_wait(ewk);
         break;
@@ -238,7 +239,7 @@ void eff64_data_set(WORK_Other* ewk, s16 keep) {
     ewk->wu.mvxy.d[1].real.h = *data++;
     ewk->wu.mvxy.d[1].real.l = *data;
     ewk->wu.char_table[0] = char_add[bg_w.stage][bg_w.area];
-    suzi_offset_set((WORK*)ewk);
+    suzi_offset_set(&ewk->wu);
     set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
 }
 

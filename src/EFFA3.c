@@ -49,6 +49,7 @@ void effect_A3_move(WORK_Other* ewk) {
         ewk->wu.dir_step = ewk->wu.vitality;
         ewk->wu.step_xy_table = &EFF91_Step_Data[ewk->wu.direction];
         ewk->wu.move_xy_table = ewk->wu.step_xy_table;
+        /* fall through */
     case R0_MOVE:
         if (--ewk->wu.dir_timer == 0) {
             effA3_cell_put(ewk);

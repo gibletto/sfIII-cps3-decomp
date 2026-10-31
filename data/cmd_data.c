@@ -1259,22 +1259,32 @@ const s16 ukemi_time_tbl[17] = {
     7,
 };
 
+/* provisional name */
 const char player_cmd_line_str0[20] = "UP    =    SHOT1 =\n";
 
+/* provisional name */
 const char player_cmd_line_str1[20] = "DOWN  =    SHOT2 =\n";
 
+/* provisional name */
 const char player_cmd_line_str2[20] = "LEFT  =    SHOT3 =\n";
 
+/* provisional name */
 const char player_cmd_line_str3[20] = "RIGHT =    SHOT4 =\n";
 
+/* provisional name */
 const char player_cmd_line_str4[20] = "DIR        SHOT5 =\n";
 
+/* provisional name */
 const char player_cmd_line_str5[12] = "SHOT6 =\n\0\x3F\x54\x54";
 
+/* provisional name */
 const char player_cmd_line_str6[8] = "SHOT6 =";
 
+/* provisional name */
 const char lvr_chk_line_str0[4] = "S \0\x23";
 
+/* provisional name */
 const char lvr_chk_line_str1[4] = "M \0\x21";
 
+/* provisional name */
 const char lvr_chk_line_str2[4] = "L \0\xFF";

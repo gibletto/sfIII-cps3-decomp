@@ -48,6 +48,7 @@ void bg110_sync_move(void);
 #pragma inline(bg1101, bg1102, bg1103, bg110_sync_common)
 
 
+/* provisional name */
 void BG110(void) {
     bgw_ptr = &bg_w.bgw[1];
     bg1102();
@@ -87,6 +88,7 @@ void bg1101_move(void) {
 
 
 
+/* provisional name */
 void bg1102(void) {
     void (*bg1102_jmp[3])() = { bg1102_init00, bg1102_zoom_in, bg1102_move };
     bg1102_jmp[bgw_ptr->r_no_0]();
@@ -94,6 +96,7 @@ void bg1102(void) {
 
 
 
+/* provisional name */
 void bg1102_init00(void) {
     bgw_ptr->r_no_0++;
     bgw_ptr->old_pos_x = bgw_ptr->xy[0].disp.pos = bgw_ptr->pos_x_work = 0x200;

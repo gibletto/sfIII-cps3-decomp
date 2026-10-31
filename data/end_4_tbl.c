@@ -17,11 +17,13 @@ extern const PANEL end_400_panel1[];
 extern const s16 timer_4_tbl[];
 extern const s16 end_4_pos[][2];
 
+/* provisional name */
 const PANEL end_400_panel0[10] = {
     { 0, 82 }, { 0x40, 83 }, { 0x80, 84 }, { 0xC0, 85 }, { 0x1000, 80 }, { 0x1040, 81 }, { 0x1080, 0 }, { 0x10C0, 0 },
     { 0x2000, 78 }, { 0x2040, 79 },
 };
 
+/* provisional name */
 const PANEL end_400_panel1[10] = {
     { 0, 76 }, { 0x40, 77 }, { 0x80, 52 }, { 0xC0, 53 }, { 0x1000, 52 }, { 0x1040, 53 }, { 0x1080, 0 }, { 0x10C0, 0 },
     { 0x2000, 0 }, { 0x2040, 0 },

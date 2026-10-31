@@ -42,6 +42,7 @@ void effect_B5_move(WORK_Other* ewk) {
         ewk->wu.old_rno[1] = 47;
         ewk->wu.disp_flag = 1;
         set_char_move_init2(&ewk->wu, 0, 6, np->code[ewk->wu.old_rno[2]] + 1, 0);
+        /* fall through */
     case R0_INPUT:
     case_1:
         if (np->end_flag[ewk->wu.type]) {
@@ -105,8 +106,7 @@ void effect_B5_move(WORK_Other* ewk) {
     disp_pos_trans_entry(ewk);
 }
 
-void current_name_move(WORK_Other* ewk, NAME_WK* np)
-{
+void current_name_move(WORK_Other* ewk, NAME_WK* np) {
     if (np->index != ewk->wu.old_rno[2]) {
         return;
     }

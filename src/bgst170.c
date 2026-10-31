@@ -30,6 +30,11 @@
 #define R0_DEMO         1       /* the entrance demo */
 #define R0_MOVE         2       /* follow the fight */
 
+/* bgw r_no_1 in bg170_demo */
+#define DEMO_WAIT       0       /* until free runs out */
+#define DEMO_SCROLL     1       /* scroll the Y down to 0 */
+#define DEMO_APPEAR     2       /* until Appear_end is 2, then the next r_no_0 */
+
 void load_any_color();
 s32 effect_18_init();
 #include "EFF25.h"
@@ -206,13 +211,13 @@ void bg170_layer2_move(void) {
 /* The drop-in: free counts down, then the layer slides down to 0, then waits for Appear_end == 2. */
 void bg170_demo(void) {
     switch (bgw_ptr->r_no_1) {
-    case 0:
+    case DEMO_WAIT:
         bgw_ptr->free--;
         if (bgw_ptr->free < 0) {
             bgw_ptr->r_no_1++;
         }
         break;
-    case 1:
+    case DEMO_SCROLL:
         bgw_ptr->xy[1].cal -= 0xA8000;
         bgw_ptr->wxy[1].cal -= 0xA8000;
         if (bgw_ptr->xy[1].disp.pos <= 0) {
@@ -221,7 +226,7 @@ void bg170_demo(void) {
             bgw_ptr->wxy[1].cal = 0;
         }
         break;
-    case 2:
+    case DEMO_APPEAR:
         if (Appear_end != 2) {
             break;
         }

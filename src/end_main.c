@@ -55,6 +55,7 @@ extern s8 op_fade_flag;
 
 
 
+/* provisional name */
 void op_w_clear(void) {
     op_w.r_no_0 = 0;
     op_w.r_no_1 = 0;
@@ -64,6 +65,7 @@ void op_w_clear(void) {
 
 
 
+/* provisional name */
 s16 opening_demo_tick(void) {
     void (*opening_jp[22])() = {
         opning_init_00000, opning_init_01000, op_02_move, op_03_move, op_04_move, op_03_move,

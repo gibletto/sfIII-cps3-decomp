@@ -12,6 +12,7 @@
 
 extern const s16 akebono_scrn_pos_tbl[][2];
 
+/* provisional name */
 const s16 akebono_scrn_pos_tbl[152][2] = {
     { 256, 256 }, { 768, 256 }, { 256, 0 }, { 768, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 },
     { 0, 0 }, { 0, 0 }, { 0, 1 }, { 1, 2 }, { 2, 2 }, { 3, 3 }, { 4, 5 }, { 6, 7 },

@@ -124,7 +124,6 @@
 
 
 
-
 /* The CPU player's lever data for this frame (0 while the fight does not allow input). */
 s32 CPU_Sub(PLW* wk) {
     WORK* em = (WORK*)wk->wu.target_adrs;
@@ -740,6 +739,7 @@ void Damage_7th(PLW* wk) {
             break;
         }
         CP_No[wk->wu.id][2]++;
+        /* fall through */
     default:
         em = (WORK*)wk->wu.target_adrs;
         Check_Guard_Type(wk, em);
@@ -760,7 +760,7 @@ void Damage_8th(PLW* wk) {
     switch (CP_No[wk->wu.id][2]) {
     case D8_WAIT:
         if (wk->wu.routine_no[2] == DAMAGE_STUN) {
-            CP_No[wk->wu.id][2] += 1;
+            CP_No[wk->wu.id][2]++;
             Timer_00[wk->wu.id] = 1;
             Timer_01[wk->wu.id] = Faint_Rapid_Data[Setup_Lv08(0)][(Rnd = random_16_com() & 7)];
         }
@@ -1110,6 +1110,7 @@ s32 Command_Attack_SP(PLW* wk, s8 Pl_Number, s16 Tech_Number, s16 Power_Level) {
             Lever_Buff[wk->wu.id] = Lever_Pool[wk->wu.id];
             CP_Index[wk->wu.id][1]++;
         }
+        /* fall through */
     default:
         Rapid_Sub(wk);
         if (wk->wu.routine_no[1] == PLAYER_NORMAL && plw[wk->wu.id].caution_flag == 0) {

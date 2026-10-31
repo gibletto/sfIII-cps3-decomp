@@ -54,7 +54,7 @@ void effect_47_move(WORK_Other* ewk) {
                 ewk->wu.cg_ctr = eff47_timer_tbl[ewk->wu.cg_ix / 2];
             }
         }
-        if (ewk->wu.type == 2 || range_x_check((WORK*)ewk)) {
+        if (ewk->wu.type == 2 || range_x_check(&ewk->wu)) {
             no = ewk->wu.cg_ix / 2;
             disp_mark_cells((WORK*)ewk, no);
         }

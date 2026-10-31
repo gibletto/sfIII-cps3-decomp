@@ -84,8 +84,8 @@ TM_STRING insert_coin_mes[9] = {
 
 
 /* The entry task: runs Entry_Task once a frame, for ever. */
-void entry_task(void)
-{
+/* provisional name */
+void entry_task(void) {
     do {
         Entry_Task();
         task_sleep(1);
@@ -268,7 +268,7 @@ void Exit_Title_Sub_Entry(void) {
 void Entry_02(void) {
     switch (E_No1) {
     case 0:
-        E_No1 += 1;
+        E_No1++;
         Text_Page_Y = 32;
         break;
     }
@@ -294,7 +294,7 @@ void Entry_03(void) {
 void Entry_03_1st(void) {
     switch (E_No2) {
     case 0:
-        E_No2 += 1;
+        E_No2++;
         Text_Page_Y = 32;
         break;
     }
@@ -310,12 +310,12 @@ void Entry_03_2nd(void) {
         if (--E_Timer) {
             break;
         }
-        E_No2 += 1;
+        E_No2++;
         Switch_Screen_Init(0, 2);
         break;
     case 1:
         if (Switch_Screen() != 0) {
-            E_No2 += 1;
+            E_No2++;
             tilemap_clear_rect(DE_X[3] + 4, Text_Page_Y + 11, DE_X[3] + 43, Text_Page_Y + 14);
             sc_vram_to_ram();
             Switch_Screen_Init(0, 0);
@@ -357,7 +357,7 @@ void Entry_04(void) {
 void Entry_04_1st(void) {
     switch (E_No2) {
     case 0:
-        E_No2 += 1;
+        E_No2++;
         Text_Page_Y = 0;
         break;
     }
@@ -373,12 +373,12 @@ void Entry_04_2nd(void) {
         if (--E_Timer) {
             break;
         }
-        E_No2 += 1;
+        E_No2++;
         Switch_Screen_Init(0, 2);
         break;
     case 1:
         if (Switch_Screen() != 0) {
-            E_No2 += 1;
+            E_No2++;
             tilemap_clear_rect(DE_X[3] + 4, Text_Page_Y + 11, DE_X[3] + 43, Text_Page_Y + 14);
             sc_vram_to_ram();
             Switch_Screen_Init(3, 3);
@@ -426,7 +426,7 @@ void Entry_06(void) {
 void Entry_06_1st(void) {
     switch (E_No2) {
     case 0:
-        E_No2 += 1;
+        E_No2++;
         Text_Page_Y = 0;
         break;
     }
@@ -502,7 +502,7 @@ void Entry_07(void) {
 void Entry_07_1st(void) {
     switch (E_No2) {
     case 0:
-        E_No2 += 1;
+        E_No2++;
         Text_Page_Y = 0;
         break;
     }
@@ -571,12 +571,13 @@ void Entry_08(void) {
 void Entry_08_1st(void) {
     switch (E_No2) {
     case 0:
-        E_No2 += 1;
+        E_No2++;
         tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[2][0][Game_setting.Screen_Mode], Text_Page_Y, 18, "                   ");
         tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[2][1][Game_setting.Screen_Mode], Text_Page_Y, 18, "                   ");
         if (Game_setting.Event) {
             E_No2 = 99;
         }
+        /* fall through */
     case 1:
         Entry_Main_Sub(0, 9);
         Entry_Main_Sub(1, 9);
@@ -595,7 +596,7 @@ void Entry_08_2nd(void) {
     }
     switch (E_No2) {
     case 0:
-        E_No2 += 1;
+        E_No2++;
         if (E_Number[LOSER][0] == ENTRY_GAME_OVER && E_Number[LOSER][1] == 1) {
             Clear_Personal_Data(LOSER);
         }
@@ -649,7 +650,7 @@ void Entry_10(void) {
 void Entry_10_1st(void) {
     switch (E_No2) {
     case 0:
-        E_No2 += 1;
+        E_No2++;
         Text_Page_Y = 0;
         Score[WINNER][SCORE_CPU] += Continue_Coin[WINNER];
         if (Check_Ranking(WINNER) != 0) {
@@ -664,6 +665,7 @@ void Entry_10_1st(void) {
             E_Number[WINNER][0] = ENTRY_GAME_OVER;
             E_Number[WINNER][1] = 0;
         }
+        /* fall through */
     default:
         Entry_Main_Sub(0, 10);
         Entry_Main_Sub(1, 10);
@@ -682,7 +684,7 @@ void Entry_10_2nd(void) {
     }
     switch (E_No2) {
     case 0:
-        E_No2 += 1;
+        E_No2++;
         if ((E_Number[LOSER][0] == ENTRY_GAME_OVER) && (E_Number[LOSER][1] == 1)) {
             Clear_Personal_Data(LOSER);
         }
@@ -757,7 +759,7 @@ s16 Jump_Index;
     case ENTRY_NAME:
         switch (E_Number[PL_id][1]) {
         case 0:
-            E_Number[PL_id][1] += 1;
+            E_Number[PL_id][1]++;
             Personal_Timer[PL_id] = 30;
             tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[4][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "          ");
             break;
@@ -765,7 +767,7 @@ s16 Jump_Index;
             if (--Personal_Timer[PL_id] != 0) {
                 break;
             }
-            E_Number[PL_id][1] += 1;
+            E_Number[PL_id][1]++;
             Naming_Cut[PL_id] = 0;
             Name_00[PL_id] = 0;
             name_wk[PL_id].r_no_0 = 0;
@@ -1309,6 +1311,7 @@ s16 PL_id;
 
 /* Flashes the insert-coin message (with the coins per credit) in a player's message space, alternating with
    the join-in message. */
+/* provisional name */
 s32 Flash_Insert_Coin(PL_id, x)
 s16 PL_id;
 u16 x;
@@ -1319,7 +1322,7 @@ u16 x;
     }
     switch (F_No0[PL_id]) {
     case 0:
-        F_No0[PL_id] += 1;
+        F_No0[PL_id]++;
         F_No1[PL_id] = F_No2[PL_id] = 0;
         F_Timer[PL_id] = 1;
         tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[2][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "                  ");
@@ -1328,7 +1331,7 @@ u16 x;
         if (--F_Timer[PL_id] != 0) {
             break;
         }
-        F_No0[PL_id] += 1;
+        F_No0[PL_id]++;
         F_Timer[PL_id] = 50;
         if (Two_Coin_Start) {
             tilemap_print_string_attr(x, Text_Page_Y, 18, str_INSERT_COINS);
@@ -1345,7 +1348,7 @@ u16 x;
         if (--F_Timer[PL_id] != 0) {
             break;
         }
-        F_No0[PL_id] -= 1;
+        F_No0[PL_id]--;
         F_Timer[PL_id] = 50;
         if (coin_chute1_w.per_credit == 1 && Two_Coin_Start == 0) {
             tilemap_print_string_attr(x, Text_Page_Y, 18, "  JOIN IN  ");
@@ -1366,7 +1369,7 @@ u16 x;
 {
     switch (F_No1[PL_id]) {
     case 0:
-        F_No1[PL_id] += 1;
+        F_No1[PL_id]++;
         F_No0[PL_id] = 0;
         F_No2[PL_id] = 0;
         F_No3[PL_id] = 0;
@@ -1382,7 +1385,7 @@ u16 x;
         if (--F_Timer[PL_id]) {
             break;
         }
-        F_No1[PL_id] += 1;
+        F_No1[PL_id]++;
         F_Timer[PL_id] = 50;
         if (Free_Play) {
             tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[2][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, " FREE PLAY ");
@@ -1399,7 +1402,7 @@ u16 x;
         if (--F_Timer[PL_id]) {
             break;
         }
-        F_No1[PL_id] -= 1;
+        F_No1[PL_id]--;
         F_Timer[PL_id] = 30;
         tilemap_print_string_attr(x, Text_Page_Y, 18, "              ");
         break;
@@ -1434,21 +1437,21 @@ s16 PL_id;
     }
     switch (F_No3[PL_id]) {
     case 0:
-        F_No3[PL_id] += 1;
+        F_No3[PL_id]++;
         F_No1[PL_id] = 0;
         F_Timer[PL_id] = 1;
         tilemap_print_string_attr(ENTRY_MSG_X_PAIRS[1][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "                 ");
         break;
     case 1:
         if (--F_Timer[PL_id] == 0) {
-            F_No3[PL_id] += 1;
+            F_No3[PL_id]++;
             F_Timer[PL_id] = 50;
             tilemap_print_string_attr(ENTRY_SCORE_X_PAIRS[1][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "PLEASE WAIT");
         }
         break;
     default:
         if (--F_Timer[PL_id] == 0) {
-            F_No3[PL_id] -= 1;
+            F_No3[PL_id]--;
             F_Timer[PL_id] = 30;
             tilemap_print_string_attr(ENTRY_SCORE_X_PAIRS[1][PL_id][Game_setting.Screen_Mode], Text_Page_Y, 18, "           ");
         }
@@ -1460,6 +1463,7 @@ s16 PL_id;
 
 
 /* Flashes how many more coins a player needs to insert, in the player's message space. */
+/* provisional name */
 s32 Flash_More_Coins(PL_id, x, coins)
 s16 PL_id;
 s16 x;
@@ -1468,7 +1472,7 @@ s8 coins;
     s32 count;
     switch (F_No2[PL_id]) {
     case 0:
-        F_No2[PL_id] += 1;
+        F_No2[PL_id]++;
         F_No0[PL_id] = F_No1[PL_id] = 0;
         F_Timer[PL_id] = 1;
         tilemap_print_string_attr(x, Text_Page_Y, 18, "                   ");
@@ -1480,7 +1484,7 @@ s8 coins;
         count = coins;
         if (Disp_More_Coins(PL_id, x, coins) == 0) {
             if (--F_Timer[PL_id] == 0) {
-                F_No2[PL_id] += 1;
+                F_No2[PL_id]++;
                 F_Timer[PL_id] = 50;
                 if (count == 1) {
                     tilemap_print_string_attr(x, Text_Page_Y, 18, "INSERT   MORE COIN ");
@@ -1490,13 +1494,13 @@ s8 coins;
                 tilemap_print_hex_block(x + 7, Text_Page_Y, 18, count, 1, 1);
             }
         } else {
-            F_No2[PL_id] += 1;
+            F_No2[PL_id]++;
         }
         break;
     case 2:
         Disp_More_Coins(PL_id, x, coins);
         if (--F_Timer[PL_id] == 0) {
-            F_No2[PL_id] -= 1;
+            F_No2[PL_id]--;
             F_Timer[PL_id] = 30;
             tilemap_print_string_attr(x, Text_Page_Y, 18, "                   ");
         }
@@ -1508,6 +1512,7 @@ s8 coins;
 
 
 /* Redraws the more-coins message at once when a coin drops in the player's chute; returns nonzero when it did. */
+/* provisional name */
 s32 Disp_More_Coins(PL_id, x, coins)
 s16 PL_id;
 u16 x;
@@ -1528,6 +1533,7 @@ s16 coins;
 
 
 
+/* provisional name */
 s32 Get_2P_Coin_Count(void) {
     switch (Chute_Mode) {
     case 0:
@@ -1540,6 +1546,7 @@ s32 Get_2P_Coin_Count(void) {
 
 
 
+/* provisional name */
 s32 credit_display_render(s8 force) {
     COINCHUTE* chute = &coin_chute1_w;
     s32 per;
@@ -1639,6 +1646,7 @@ s32 credit_display_render(s8 force) {
 
 
 
+/* provisional name */
 void Disp_Start_Message(void) {
     s8 credits;
     s8 coins;
@@ -1840,6 +1848,7 @@ s16 PL_id;
 
 /* Pays for a start, nonzero when paid: free play only books it, and with Two_Coin_Start a fresh start (not a
    continue) takes two credits. */
+/* provisional name */
 s32 Pay_Start_Credit(PL_id)
 s16 PL_id;
 {
@@ -2027,7 +2036,7 @@ s16 PL_id;
         return;
     }
     Break_Into = -1;
-    E_No1 += 1;
+    E_No1++;
     E_No2 = 0;
     Champion = New_Challenger;
 }
@@ -2049,7 +2058,7 @@ s16 PL_id;
         return;
     }
     Break_Into = -1;
-    E_No1 += 1;
+    E_No1++;
     E_No2 = 0;
     Champion = New_Challenger;
 }
@@ -2061,7 +2070,7 @@ void Continue_Score_Sub(PL_id)
 s16 PL_id;
 {
     if ((E_Number[PL_id][0] == ENTRY_CONTINUE) || (E_Number[PL_id][0] == ENTRY_LOSER)) {
-        Continue_Coin[PL_id] += 1;
+        Continue_Coin[PL_id]++;
         if (Continue_Coin[PL_id] >= 99) {
             Continue_Coin[PL_id] = 99;
         }
@@ -2070,6 +2079,7 @@ s16 PL_id;
 
 
 
+/* provisional name */
 void coin_in_sound_request(void) {
     if ((coin_chute1_w.dropped | coin_chute2_w.dropped) && Demo_Flag == 1) {
         sound_request(E_No0 == E0_TITLE ? 115 : 106);

@@ -1167,6 +1167,7 @@ s32 comm_schx(WORK* wk, CHAR_CMD* ctc) {
         /* falls through: 2 scales the acceleration as well */
     case 1:
         wk->mvxy.d[0].sp = (wk->mvxy.d[0].sp * ctc->ix) / ctc->pat;
+        /* fall through */
     default:
         break;
     }
@@ -1185,6 +1186,7 @@ s32 comm_schy(WORK* wk, CHAR_CMD* ctc) {
         /* falls through: 2 scales the acceleration as well */
     case 1:
         wk->mvxy.d[1].sp = (wk->mvxy.d[1].sp * ctc->ix) / ctc->pat;
+        /* fall through */
     default:
         break;
     }

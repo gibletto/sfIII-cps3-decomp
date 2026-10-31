@@ -3,6 +3,4 @@
 
 #include "structs.h"
 
-
-
 #endif

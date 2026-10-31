@@ -95,7 +95,6 @@ void vital_cont_main(void) {
 
 
 
-
 s32 vital_control(s8 pl) {
     s8 i;
     if (plw[pl].wu.vital_new > VITAL_FULL) {

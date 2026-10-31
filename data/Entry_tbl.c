@@ -425,6 +425,7 @@ const MoveName sh_op_imm_n_tbl[3] = {
     { 0xFFFF, 0 },
 };
 
+/* provisional name */
 const char sh_str_break[8] = "Break:\0\x0C";
 
 const char sh_str_rm[4] = "Rm\0\x0C";
@@ -433,318 +434,475 @@ const char sh_str_rn[4] = "Rn\0\x1A";
 
 const char sh_str_undef[4] = "???";
 
+/* provisional name */
 const s8 sh_str_monitor_entry[16] = "Monitor Entry\0\x07\x0C";
 
+/* provisional name */
 const s8 sh_str_illegal_inst[28] = "Common Illigal Instruction\0\xC2";
 
+/* provisional name */
 const s8 sh_str_slot_illegal_inst[28] = "Slot Illigal Instruction\0\x06\xD0\xB7";
 
+/* provisional name */
 const s8 sh_str_cpu_addr_error[20] = "CPU Address Error\0\x18\xA8";
 
+/* provisional name */
 const s8 sh_str_dma_addr_error[20] = "DMA Address Error\0\x28\x01";
 
+/* provisional name */
 const s8 sh_str_unknown_exception[20] = "Unknown Exception\0\xA8\x4F";
 
+/* provisional name */
 const s8 sh_str_monitor_title[16] = "M O N I T O R\n\0\x4A";
 
+/* provisional name */
 const s8 sh_str_regs_r0_r2[48] = "R0  = 00000000 R1  = 00000000 R2  = 00000000\n\0\xAD\x47";
 
+/* provisional name */
 const s8 sh_str_regs_r3_r5[48] = "R3  = 00000000 R4  = 00000000 R5  = 00000000\n\0\x34\x01";
 
+/* provisional name */
 const s8 sh_str_regs_r6_r8[48] = "R6  = 00000000 R7  = 00000000 R8  = 00000000\n\0\x4A\x24";
 
+/* provisional name */
 const s8 sh_str_regs_r9_r11[48] = "R9  = 00000000 R10 = 00000000 R11 = 00000000\n\0\x4C\x08";
 
+/* provisional name */
 const s8 sh_str_regs_r12_r14[48] = "R12 = 00000000 R13 = 00000000 R14 = 00000000\n\0\xA8\x51";
 
+/* provisional name */
 const s8 sh_str_regs_sp_pc[32] = "SP  = 00000000 PC  = 00000000\n\0\x0C";
 
+/* provisional name */
 const s8 sh_str_regs_pr_gbr[32] = "PR  = 00000000 GBR = 00000000\0\x10\x10";
 
+/* provisional name */
 const s8 sh_str_dump_header[48] = "Address   +0   +2   +4   +6   +8   +A   +C   +E";
 
+/* provisional name */
 const s8 sh_str_disasm_header[48] = "Address  Code Nemonic                          ";
 
+/* provisional name */
 const char sh_mn_clrt[28] = "CLRT                    \0\x24\x24\xC4";
 
+/* provisional name */
 const char sh_mn_nop[28] = "NOP                     \0\x2C\x30\xB7";
 
+/* provisional name */
 const char sh_mn_rts[28] = "RTS                     \0\x02\x02\xC4";
 
+/* provisional name */
 const char sh_mn_sett[28] = "SETT                    \0\x32\x01\xC7";
 
+/* provisional name */
 const char sh_mn_div0u[28] = "DIV0U                   \0\x08\x08\xAD";
 
+/* provisional name */
 const char sh_mn_sleep[28] = "SLEEP                   \0\xC7\x1E\x01";
 
+/* provisional name */
 const char sh_mn_clrmac[28] = "CLRMAC                  \0\x4E\x16\x16";
 
+/* provisional name */
 const char sh_mn_rte[28] = "RTE                     \0\x7F\xAD\x45";
 
+/* provisional name */
 const char sh_mn_ldsl_rminc_mach[28] = "LDS.L   @Rm+,MACH       \0\x08\xAD\x47";
 
+/* provisional name */
 const char sh_mn_ldcl_rminc_sr[28] = "LDC.L   @Rm+,SR         \0\x18\xB2\x4E";
 
+/* provisional name */
 const char sh_mn_lds_rm_mach[28] = "LDS     Rm,MACH         \0\x16\x16\xC7";
 
+/* provisional name */
 const char sh_mn_ldc_rm_sr[28] = "LDC     Rm,SR           \0\xA8\x4A\x24";
 
+/* provisional name */
 const char sh_mn_ldsl_rminc_macl[28] = "LDS.L   @Rm+,MACL       \0\xB7\x49\x08";
 
+/* provisional name */
 const char sh_mn_ldcl_rminc_gbr[28] = "LDC.L   @Rm+,GBR        \0\xB7\x4E\x10";
 
+/* provisional name */
 const char sh_mn_lds_rm_macl[28] = "LDS     Rm,MACL         \0\x94\x4E\x0B";
 
+/* provisional name */
 const char sh_mn_ldc_rm_gbr[28] = "LDC     Rm,GBR          \0\x16\xC7\x5A";
 
+/* provisional name */
 const char sh_mn_ldsl_rminc_pr[28] = "LDS.L   @Rm+,PR         \0\x49\x0C\x0C";
 
+/* provisional name */
 const char sh_mn_ldcl_rminc_vbr[28] = "LDC.L   @Rm+,VBR        \0\x47\x04\x04";
 
+/* provisional name */
 const char sh_mn_lds_rm_pr[28] = "LDS     Rm,PR           \0\x47\x08\x08";
 
+/* provisional name */
 const char sh_mn_ldc_rm_vbr[28] = "LDC     Rm,VBR          \0\x4C\x08\x18";
 
+/* provisional name */
 const char sh_mn_stc_sr_rn[28] = "STC     SR,Rn           \0\xA8\x45\x16";
 
+/* provisional name */
 const char sh_mn_bsrf_rn[28] = "BSRF    Rn              \0\xC7\0\xA8";
 
+/* provisional name */
 const char sh_mn_sts_mach_rn[28] = "STS     MACH,Rn         \0\x10\x10\xB7";
 
+/* provisional name */
 const char sh_mn_stc_gbr_rn[28] = "STC     GBR,Rn          \0\x02\x02\xB2";
 
+/* provisional name */
 const char sh_mn_sts_macl_rn[28] = "STS     MACL,Rn         \0\0\x01\xD4";
 
+/* provisional name */
 const char sh_mn_stc_vbr_rn[28] = "STC     VBR,Rn          \0\x0F\x10\xA8";
 
+/* provisional name */
 const char sh_mn_braf_rn[28] = "BRAF    Rn              \0\x18\x18\xA8";
 
+/* provisional name */
 const char sh_mn_movt_rn[28] = "MOVT    Rn              \0\x18\x18\xA8";
 
+/* provisional name */
 const char sh_mn_sts_pr_rn[28] = "STS     PR,Rn           \0\x08\x08\xA8";
 
+/* provisional name */
 const char sh_mn_cmp_pl_rn[28] = "CMP/PL  Rn              \0\x10\x10\xA8";
 
+/* provisional name */
 const char sh_mn_cmp_pz_rn[28] = "CMP/PZ  Rn              \0\x18\x18\xA8";
 
+/* provisional name */
 const char sh_mn_dt_rn[28] = "DT      Rn              \0\x18\x18\xA8";
 
+/* provisional name */
 const char sh_mn_tasb_atrn[28] = "TAS.B   @Rn             \0\x08\x08\xA8";
 
+/* provisional name */
 const char sh_mn_rotl_rn[28] = "ROTL    Rn              \0\x0F\x10\xA8";
 
+/* provisional name */
 const char sh_mn_rotr_rn[28] = "ROTR    Rn              \0\xFF\x02\xC2";
 
+/* provisional name */
 const char sh_mn_rotcl_rn[28] = "ROTCL   Rn              \0\x20\x28\xB4";
 
+/* provisional name */
 const char sh_mn_rotcr_rn[28] = "ROTCR   Rn              \0\x10\x10\xB4";
 
+/* provisional name */
 const char sh_mn_shal_rn[28] = "SHAL    Rn              \0\x18\x18\xB2";
 
+/* provisional name */
 const char sh_mn_shar_rn[28] = "SHAR    Rn              \0\x10\x10\xB4";
 
+/* provisional name */
 const char sh_mn_shll_rn[28] = "SHLL    Rn              \0\x18\x18\xB2";
 
+/* provisional name */
 const char sh_mn_shlr_rn[28] = "SHLR    Rn              \0\x18\x18\xB2";
 
+/* provisional name */
 const char sh_mn_shll2_rn[28] = "SHLL2   Rn              \0\xA3\x28\x10";
 
+/* provisional name */
 const char sh_mn_shlr2_rn[28] = "SHLR2   Rn              \0\x10\x10\xC3";
 
+/* provisional name */
 const char sh_mn_shll8_rn[28] = "SHLL8   Rn              \0\x08\x08\xB4";
 
+/* provisional name */
 const char sh_mn_shlr8_rn[28] = "SHLR8   Rn              \0\x18\x28\xB4";
 
+/* provisional name */
 const char sh_mn_shll16_rn[28] = "SHLL16  Rn              \0\xC3\0\xB2";
 
+/* provisional name */
 const char sh_mn_shlr16_rn[28] = "SHLR16  Rn              \0\x08\x10\xC3";
 
+/* provisional name */
 const char sh_mn_jmp_atrn[28] = "JMP     @Rn             \0\x08\x18\xC3";
 
+/* provisional name */
 const char sh_mn_jsr_atrn[28] = "JSR     @Rn             \0\xC3\0\xB2";
 
+/* provisional name */
 const char sh_mn_stcl_sr_decrn[28] = "STC.L   SR,@-Rn         \0\x08\x08\xB4";
 
+/* provisional name */
 const char sh_mn_stcl_gbr_decrn[28] = "STC.L   GBR,@-Rn        \0\x08\x08\xB4";
 
+/* provisional name */
 const char sh_mn_stcl_vbr_decrn[28] = "STC.L   VBR,@-Rn        \0\xA3\x28\x10";
 
+/* provisional name */
 const char sh_mn_stsl_mach_decrn[28] = "STS.L   MACH,@-Rn       \0\xA3\x28\x18";
 
+/* provisional name */
 const char sh_mn_stsl_macl_decrn[28] = "STS.L   MACL,@-Rn       \0\x10\x10\xC3";
 
+/* provisional name */
 const char sh_mn_stsl_pr_decrn[28] = "STS.L   PR,@-Rn         \0\x18\x28\xB4";
 
+/* provisional name */
 const char sh_mn_movb_rm_r0rn[28] = "MOV.B   Rm,@(R0,Rn)     \0\xC4\x02\xAD";
 
+/* provisional name */
 const char sh_mn_movw_rm_r0rn[28] = "MOV.W   Rm,@(R0,Rn)     \0\xAD\x31\x60";
 
+/* provisional name */
 const char sh_mn_movl_rm_r0rn[28] = "MOV.L   Rm,@(R0,Rn)     \0\xD4\0\xFF";
 
+/* provisional name */
 const char sh_mn_mull_rm_rn[28] = "MUL.L   Rm,Rn           \0\x08\xB2\x4A";
 
+/* provisional name */
 const char sh_mn_movb_r0rm_rn[28] = "MOV.B   @(R0,Rm),Rn     \0\x0A\xB2\x4C";
 
+/* provisional name */
 const char sh_mn_movw_r0rm_rn[28] = "MOV.W   @(R0,Rm),Rn     \0\x06\x08\xB2";
 
+/* provisional name */
 const char sh_mn_movl_r0rm_rn[28] = "MOV.L   @(R0,Rm),Rn     \0\x15\x17\xA8";
 
+/* provisional name */
 const char sh_mn_macl_rminc_rninc[28] = "MAC.L   @Rm+,@Rn+       \0\x07\x07\xA8";
 
+/* provisional name */
 const char sh_mn_movb_rm_atrn[28] = "MOV.B   Rm,@Rn          \0\x08\x18\xB2";
 
+/* provisional name */
 const char sh_mn_movw_rm_atrn[28] = "MOV.W   Rm,@Rn          \0\x09\x0E\xAF";
 
+/* provisional name */
 const char sh_mn_movl_rm_atrn[28] = "MOV.L   Rm,@Rn          \0\x4D\x0D\x18";
 
+/* provisional name */
 const char sh_mn_movb_rm_decrn[28] = "MOV.B   Rm,@-Rn         \0\x4A\x10\x19";
 
+/* provisional name */
 const char sh_mn_movw_rm_decrn[28] = "MOV.W   Rm,@-Rn         \0\x49\x08\x08";
 
+/* provisional name */
 const char sh_mn_movl_rm_decrn[28] = "MOV.L   Rm,@-Rn         \0\x51\x0C\x18";
 
+/* provisional name */
 const char sh_mn_div0s_rm_rn[28] = "DIV0S   Rm,Rn           \0\x4E\x03\x03";
 
+/* provisional name */
 const char sh_mn_tst_rm_rn[28] = "TST     Rm,Rn           \0\x4C\x07\x08";
 
+/* provisional name */
 const char sh_mn_and_rm_rn[28] = "AND     Rm,Rn           \0\x51\x03\x03";
 
+/* provisional name */
 const char sh_mn_xor_rm_rn[28] = "XOR     Rm,Rn           \0\x51\x08\x08";
 
+/* provisional name */
 const char sh_mn_or_rm_rn[28] = "OR      Rm,Rn           \0\x0A\x16\xC3";
 
+/* provisional name */
 const char sh_mn_cmp_str_rm_rn[28] = "CMP/STR Rm,Rn           \0\xAD\x4C\x16";
 
+/* provisional name */
 const char sh_mn_xtrct_rm_rn[28] = "XTRCT   Rm,Rn           \0\x81\x40\x06";
 
+/* provisional name */
 const char sh_mn_muluw_rm_rn[28] = "MULU.W  Rm,Rn           \0\x45\x03\x03";
 
+/* provisional name */
 const char sh_mn_mulsw_rm_rn[28] = "MULS.W  Rm,Rn           \0\x40\xB2\x4C";
 
+/* provisional name */
 const char sh_mn_cmp_eq_rm_rn[28] = "CMP/EQ  Rm,Rn           \0\x1E\x02\xC8";
 
+/* provisional name */
 const char sh_mn_cmp_hs_rm_rn[28] = "CMP/HS  Rm,Rn           \0\x08\x0C\xB7";
 
+/* provisional name */
 const char sh_mn_cmp_ge_rm_rn[28] = "CMP/GE  Rm,Rn           \0\x18\xC3";
 
+/* provisional name */
 const char sh_mn_div1_rm_rn[28] = "DIV1    Rm,Rn           \0\x4C\x0C\x18";
 
+/* provisional name */
 const char sh_mn_dmulul_rm_rn[28] = "DMULU.L Rm,Rn           \0\x48\x10\x10";
 
+/* provisional name */
 const char sh_mn_cmp_hi_rm_rn[28] = "CMP/HI  Rm,Rn           \0\x47\x21\x32";
 
+/* provisional name */
 const char sh_mn_sub_rm_rn[28] = "SUB     Rm,Rn           \0\x4C\x08\x0C";
 
+/* provisional name */
 const char sh_mn_subc_rm_rn[28] = "SUBC    Rm,Rn           \0\xB2\x4E\x0D";
 
+/* provisional name */
 const char sh_mn_subv_rm_rn[28] = "SUBV    Rm,Rn           \0\xB2\x49\x06";
 
+/* provisional name */
 const char sh_mn_add_rm_rn[28] = "ADD     Rm,Rn           \0\xB2\x49\x09";
 
+/* provisional name */
 const char sh_mn_dmulsl_rm_rn[28] = "DMULS.L Rm,Rn           \0\xB7\x4E\x0A";
 
+/* provisional name */
 const char sh_mn_addc_rm_rn[28] = "ADDC    Rm,Rn           \0\xB2\x4C\x08";
 
+/* provisional name */
 const char sh_mn_addv_rm_rn[28] = "ADDV    Rm,Rn           \0\xA8\x4E\x03";
 
+/* provisional name */
 const char sh_mn_macw_rminc_rninc[28] = "MAC.W   @Rm+,@Rn+       \0\xAD\x51\x10";
 
+/* provisional name */
 const char sh_mn_movb_atrm_rn[28] = "MOV.B   @Rm,Rn          \0\xB7\x51\x05";
 
+/* provisional name */
 const char sh_mn_movw_atrm_rn[28] = "MOV.W   @Rm,Rn          \0\xAD\x53\x06";
 
+/* provisional name */
 const char sh_mn_movl_atrm_rn[28] = "MOV.L   @Rm,Rn          \0\x18\xAD\x4A";
 
+/* provisional name */
 const char sh_mn_mov_rm_rn[28] = "MOV     Rm,Rn           \0\x45\xB7\x4A";
 
+/* provisional name */
 const char sh_mn_movb_rminc_rn[28] = "MOV.B   @Rm+,Rn         \0\x18\xC8\x3C";
 
+/* provisional name */
 const char sh_mn_movw_rminc_rn[28] = "MOV.W   @Rm+,Rn         \0\xA5\x40\x03";
 
+/* provisional name */
 const char sh_mn_movl_rminc_rn[28] = "MOV.L   @Rm+,Rn         \0\x04\x0D\xBC";
 
+/* provisional name */
 const char sh_mn_not_rm_rn[28] = "NOT     Rm,Rn           \0\xAD\x39\x10";
 
+/* provisional name */
 const char sh_mn_swapb_rm_rn[28] = "SWAP.B  Rm,Rn           \0\xAD\x3B\x08";
 
+/* provisional name */
 const char sh_mn_swapw_rm_rn[28] = "SWAP.W  Rm,Rn           \0\x03\x30\xB7";
 
+/* provisional name */
 const char sh_mn_negc_rm_rn[28] = "NEGC    Rm,Rn           \0\x08\x18\xBC";
 
+/* provisional name */
 const char sh_mn_neg_rm_rn[28] = "NEG     Rm,Rn           \0\x3D\x10\x10";
 
+/* provisional name */
 const char sh_mn_extub_rm_rn[28] = "EXTU.B  Rm,Rn           \0\x3B\x02\x02";
 
+/* provisional name */
 const char sh_mn_extuw_rm_rn[28] = "EXTU.W  Rm,Rn           \0\xC6\x24\x01";
 
+/* provisional name */
 const char sh_mn_extsb_rm_rn[28] = "EXTS.B  Rm,Rn           \0\xA8\x4D\x14";
 
+/* provisional name */
 const char sh_mn_extsw_rm_rn[28] = "EXTS.W  Rm,Rn           \0\x18\x18\xA8";
 
+/* provisional name */
 const char sh_mn_movb_disprm_r0[28] = "MOV.B   @(disp,Rm),R0   \0\xA8\x45\x20";
 
+/* provisional name */
 const char sh_mn_movw_disprm_r0[28] = "MOV.W   @(disp,Rm),R0   \0\xB2\x43\x18";
 
+/* provisional name */
 const char sh_mn_movb_r0_disprn[28] = "MOV.B   R0,@(disp,Rn)   \0\xB7\x4F\x06";
 
+/* provisional name */
 const char sh_mn_movw_r0_disprn[28] = "MOV.W   R0,@(disp,Rn)   \0\xA8\x48\x48";
 
+/* provisional name */
 const char sh_mn_bt_label[28] = "BT      label           \0\x07\x10\xA8";
 
+/* provisional name */
 const char sh_mn_bf_label[28] = "BF      label           \0\x07\x0C\xB2";
 
+/* provisional name */
 const char sh_mn_bt_s_label[28] = "BT/S    label           \0\x06\x06\xD4";
 
+/* provisional name */
 const char sh_mn_bf_s_label[28] = "BF/S    label           \0\x06\x67\x07";
 
+/* provisional name */
 const char sh_mn_movb_r0_dispgbr[28] = "MOV.B   R0,@(disp,GBR)  \0\xBC\x4C\x16";
 
+/* provisional name */
 const char sh_mn_movw_r0_dispgbr[28] = "MOV.W   R0,@(disp,GBR)  \0\xBC\x4F\x16";
 
+/* provisional name */
 const char sh_mn_movl_r0_dispgbr[28] = "MOV.L   R0,@(disp,GBR)  \0\xBC\x4D\x24";
 
+/* provisional name */
 const char sh_mn_movb_dispgbr_r0[28] = "MOV.B   @(disp,GBR),R0  \0\xBC\x4A\x18";
 
+/* provisional name */
 const char sh_mn_movw_dispgbr_r0[28] = "MOV.W   @(disp,GBR),R0  \0\xBC\x4C\x30";
 
+/* provisional name */
 const char sh_mn_movl_dispgbr_r0[28] = "MOV.L   @(disp,GBR),R0  \0\xBC\x4A\x0A";
 
+/* provisional name */
 const char sh_mn_mova_disppc_r0[28] = "MOVA    @(disp,PC),R0   \0\xBC\x4D\x18";
 
+/* provisional name */
 const char sh_mn_cmp_eq_imm_r0[28] = "CMP/EQ  #imm,R0         \0\xBC\x4A\x0C";
 
+/* provisional name */
 const char sh_mn_trapa_imm[28] = "TRAPA   #imm            \0\x01\x43\xC7";
 
+/* provisional name */
 const char sh_mn_tst_imm_r0[28] = "TST     #imm,R0         \0\xBC\x35\x5E";
 
+/* provisional name */
 const char sh_mn_and_imm_r0[28] = "AND     #imm,R0         \0\xC7\x7F\xBC";
 
+/* provisional name */
 const char sh_mn_xor_imm_r0[28] = "XOR     #imm,R0         \0\x5E\x60\xC7";
 
+/* provisional name */
 const char sh_mn_or_imm_r0[28] = "OR      #imm,R0         \0\0\x01\xC4";
 
+/* provisional name */
 const char sh_mn_tstb_imm_r0gbr[28] = "TST.B   #imm,@(R0,GBR)  \0\x18\xC7\x60";
 
+/* provisional name */
 const char sh_mn_andb_imm_r0gbr[28] = "AND.B   #imm,@(R0,GBR)  \0\x4C\x0C\x18";
 
+/* provisional name */
 const char sh_mn_xorb_imm_r0gbr[28] = "XOR.B   #imm,@(R0,GBR)  \0\x7F\xBC\x54";
 
+/* provisional name */
 const char sh_mn_orb_imm_r0gbr[28] = "OR.B    #imm,@(R0,GBR)  \0\x18\xC7\x20";
 
+/* provisional name */
 const char sh_mn_movl_rm_disprn[28] = "MOV.L   Rm,@(disp,Rn)   \0\x53\x0C\x18";
 
+/* provisional name */
 const char sh_mn_movl_disprm_rn[28] = "MOV.L   @(disp,Rm),Rn   \0\x40\xBC\x56";
 
+/* provisional name */
 const char sh_mn_bra_label[28] = "BRA     label           \0\x24\xC7\x20";
 
+/* provisional name */
 const char sh_mn_bsr_label[28] = "BSR     label           \0\x56\x0C\x18";
 
+/* provisional name */
 const char sh_mn_movw_disppc_rn[28] = "MOV.W   @(disp,PC),Rn   \0\0\xBC\x4C";
 
+/* provisional name */
 const char sh_mn_movl_disppc_rn[28] = "MOV.L   @(disp,PC),Rn   \0\x18\xC7\x60";
 
+/* provisional name */
 const char sh_mn_add_imm_rn[28] = "ADD     #imm,Rn         \0\x4F\x0C\x18";
 
+/* provisional name */
 const char sh_mn_mov_imm_rn[28] = "MOV     #imm,Rn         \0\x40\xBC\x4F";
 
 const char str_R0[4] = "R0\0\x20";

@@ -175,8 +175,7 @@ void Ranking_01_5th(void) {
 
 
 
-void Ranking_00_1st(void)
-{
+void Ranking_00_1st(void) {
     D_No1++;
     Demo_Type = 0;
     Flash_Sign[0] = 1;
@@ -188,8 +187,7 @@ void Ranking_00_1st(void)
 
 
 
-void Ranking_Sub(void)
-{
+void Ranking_Sub(void) {
     System_all_clear_Wait();
     bg_etc_write(2);
     bg_pos_hosei2();
@@ -265,8 +263,7 @@ void Ranking_00_4th(void) {
 
 
 
-void Ranking_00_5th(void)
-{
+void Ranking_00_5th(void) {
     if (--D_Timer == 0) {
         D_No1++;
         D_Timer = 180;
@@ -276,6 +273,7 @@ void Ranking_00_5th(void)
 
 
 
+/* provisional name */
 void Ranking_00_Last(void) {
     if (--D_Timer == 0) {
         D_Timer = 1;
@@ -330,6 +328,7 @@ void Setup_Face(void) {
 
 
 
+/* provisional name */
 void Setup_Score_Small(void) {
     s16 i;
     s16 First_Digit;
@@ -376,16 +375,16 @@ void Setup_Wins(void) {
         effect_51_init(Digit[1], Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Demo_Type][Rank - Rank_Type][Rank_X], Flash_Rank_Time, 1, 1, -1);
     }
     Rank_Pos_X += 16;
-    Rank_X += 1;
+    Rank_X++;
     Flash_Rank_Time += Flash_Rank_Interval;
     effect_51_init(Digit[0], Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Demo_Type][Rank - Rank_Type][Rank_X], Flash_Rank_Time, 1, 1, -1);
     Rank_Pos_X += 24;
-    Rank_X += 1;
+    Rank_X++;
     Flash_Rank_Time += Flash_Rank_Interval;
     for (i = 0; i < 4; i++) {
         effect_51_init(i + 61, Rank_Pos_X, Rank_Pos_Y, Rank_Flash_Timer_Data[Demo_Type][Rank - Rank_Type][Rank_X], Flash_Rank_Time, 0, 0, 2);
         Rank_Pos_X += Wins_Pos_X_Data[i];
-        Rank_X += 1;
+        Rank_X++;
         Flash_Rank_Time += Flash_Rank_Interval;
     }
 }
@@ -467,6 +466,7 @@ void Ranking_Init(void) {
 
 
 
+/* provisional name */
 void ranking_insert_present(s16 top, s16 PL_id) {
     s16 i;
     s16 j;

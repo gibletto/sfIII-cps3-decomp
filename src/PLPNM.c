@@ -174,6 +174,7 @@ void Normal_01000(PLW* wk) {
             set_char_move_init((WORK*)wk, 0, 0);
             wk->scr_pos_set_flag = 0;
         }
+        /* fall through */
     case N01_STAND:
         if (pcon_dp_flag) {
             if (wk->wu.now_koc != 9 || wk->wu.char_index != 60) {
@@ -271,6 +272,7 @@ void nm_05_0000(PLW* wk) {
         wk->wu.rl_flag = wk->wu.rl_waza;
         set_char_move_init((WORK*)wk, 0, 4);
         setup_mvxy_data((WORK*)wk, 2);
+        /* fall through */
     case N05_00_MOVE:
         if (wk->wu.cg_type == 1) {
             add_mvxy_speed((WORK*)wk);
@@ -363,6 +365,7 @@ void nm_06_0100(PLW* wk) {
         wk->wu.rl_flag = wk->wu.rl_waza;
         set_char_move_init((WORK*)wk, 0, 5);
         setup_mvxy_data((WORK*)wk, 3);
+        /* fall through */
     case N06_01_MOVE:
         if (wk->wu.cg_type == 1) {
             add_mvxy_speed((WORK*)wk);

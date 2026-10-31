@@ -137,8 +137,7 @@ void test_mode_task(void) {
 
 /* Wait for the test switch; on a press, stop the game and open the test menu. */
 /* provisional name */
-void test_mode_wait(void)
-{
+void test_mode_wait(void) {
     if ((syssw_0 & 2) && test_sw_lock == 0) {
         test_flag = 1;
         coin_lock_set(-1);
@@ -158,7 +157,7 @@ void test_mode_wait(void)
         config_menu_load_settings();
         kill_tasks_by_func(mode_init_task);
         kill_tasks_by_priority(3, 1);
-        test_rno += 1;
+        test_rno++;
     }
 }
 
@@ -166,7 +165,7 @@ void test_mode_wait(void)
 
 /* provisional name */
 void test_menu_init(void) {
-    test_rno += 1;
+    test_rno++;
     test_menu_no = MENU_SELECT;
     se_voice_stop_all();
     bg_vbl_trans_flag = Debug_R_No = Debug_Select_No = Debug_Menu_No = 0;
@@ -290,8 +289,7 @@ void test_menu_select(void) {
 }
 
 /* provisional name */
-void test_mode_exit(void)
-{
+void test_mode_exit(void) {
     tilemap_fill_all(0, 32);
     test_rno = test_menu_no = test_cursor = 0;
     coin_lock_set(-1);

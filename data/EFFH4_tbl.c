@@ -16,6 +16,7 @@ extern const s16 effH4_data_tbl[][4];
 extern const s32 effH4_sp_tbl[][3];
 extern const s16 effH5_data_tbl[][8];
 
+/* provisional name */
 const s16 effH4_data_tbl[4][4] = {
     { 9, 592, 128, 72 }, { 10, 576, 96, 70 }, { 12, 432, 128, 72 }, { 11, 448, 96, 70 },
 };

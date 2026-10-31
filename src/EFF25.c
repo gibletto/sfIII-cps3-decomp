@@ -241,9 +241,6 @@ void eff25_06(WORK_Other* ewk) {
 
 
 
-
-
-
 void eff25_char_set(WORK_Other* ewk) {
     ewk->wu.routine_no[1]++;
     ewk->wu.disp_flag = 1;

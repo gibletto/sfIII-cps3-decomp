@@ -67,10 +67,6 @@ void scrn_map_set_now(u16 n, u32 p);
 void scrn_map_set(u16 n, u32 p);
 
 
-
-/* provisional name */
-
-
 #pragma inline(debug_menu_select_dispatch)
 
 /* provisional name */
@@ -110,8 +106,7 @@ s32 debug_scene_outer_dispatch(void) {
 }
 
 /* provisional name */
-void debug_effect_move_all(void)
-{
+void debug_effect_move_all(void) {
     color_trans_dummy();
     move_effect_work(0);
     move_effect_work(1);
@@ -151,8 +146,7 @@ void debug_menu_work_init(void) {
 }
 
 /* provisional name */
-void debug_menu_gfx_load(void)
-{
+void debug_menu_gfx_load(void) {
     Debug_R_No++;
     tilemap_fill_all(0, 0x20);
     init_char_gfx_tables();
@@ -235,8 +229,7 @@ void debug_menu_select_dispatch(void) {
 }
 
 /* provisional name */
-void debug_menu_select_init(void)
-{
+void debug_menu_select_init(void) {
     Debug_Select_No++;
     tilemap_fill_all(0, 0x20);
     Debug_Menu_No += 4;
@@ -909,7 +902,7 @@ void debug_player_color_next(void) {
     if (exsw_1 & 0x100) {
         sw = ~dbg_p1sw_1 & dbg_p1sw_0;
         if (sw & BUTTON_START) {
-            dbg_col_ix[dbg_pl->wu.id] += 1;
+            dbg_col_ix[dbg_pl->wu.id]++;
             dbg_col_ix[dbg_pl->wu.id] &= 0xF;
             dbg_pl->wu.my_col_code = dbg_col_code_tbl[dbg_col_ix[dbg_pl->wu.id]];
             if (dbg_col_ix[dbg_pl->wu.id] < 13) {
@@ -1413,13 +1406,13 @@ void debug_char_preview_run(void) {
     u16 code;
     debug_position_by_pad();
     if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, LEVER_UP, 0)) {
-        dbg_pl->wu.cg_number -= 1;
+        dbg_pl->wu.cg_number--;
         if (dbg_pl->wu.cg_number > 0x7827) {
             dbg_pl->wu.cg_number = 0x7827;
         }
     }
     if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, LEVER_DOWN, 1)) {
-        dbg_pl->wu.cg_number += 1;
+        dbg_pl->wu.cg_number++;
         if (dbg_pl->wu.cg_number > 0x7827) {
             dbg_pl->wu.cg_number = 0;
         }
@@ -1481,7 +1474,6 @@ void debug_bg_test_dispatch(void) {
     dbg_slot = (DBG_SLOT*)dbg_slot_w[0];
     Test_Tbl[Debug_Tool_No]();
 }
-
 
 
 void debug_bg_test_init(void) {
@@ -1671,8 +1663,7 @@ void debug_edit_slots_reset(void) {
 
 
 /* provisional name */
-s32 debug_slot_all_select(u16 sw)
-{
+s32 debug_slot_all_select(u16 sw) {
     s16 moved;
     s16 row;
     if (!(dbg_p1sw_0 & BUTTON_START)) {
@@ -1869,8 +1860,7 @@ void debug_record_frame_adjust(u16 sw) {
 }
 
 /* provisional name */
-void debug_move_record_menu(void)
-{
+void debug_move_record_menu(void) {
     u16 sw;
     s16 i;
     s16 next;
@@ -1976,15 +1966,13 @@ void debug_bg0_scroll_by_pad(void) {
 /* provisional name */
 void debug_bg_position_reset(void) {
     s16 i;
-    i = 0;
-    while (i < bg_w.scno) {
+    for (i = 0; i < bg_w.scno; i++) {
         bg_w.bgw[i].xy[0].disp.pos = 0x100;
         bg_w.bgw[i].xy[1].disp.pos = 0;
         bg_w.bgw[i].xy[0].disp.low = 0;
         bg_w.bgw[i].xy[1].disp.low = 0;
         bg_w.bgw[i].position_x = 0x100;
         bg_w.bgw[i].position_y = 0;
-        i++;
     }
     Bg_Family_Set();
 }
@@ -2115,7 +2103,7 @@ void debug_hit_box_edit(void) {
         if (!Debug_Box_Edit) {
             if (pad & BUTTON_LP) {
                 if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_UP, 4)) {
-                    box[3] = box[3] + 1;
+                    box[3]++;
                 }
                 if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_DOWN, 5)) {
                     box[3]--;
@@ -2335,8 +2323,7 @@ void debug_hit_box_show_select(void) {
 
 
 /* provisional name */
-void debug_edit_common_input(void)
-{
+void debug_edit_common_input(void) {
     u16 sw;
 
     if (Debug_Menu_No != 3) {
@@ -2675,8 +2662,7 @@ void debug_object_look_input(void) {
 }
 
 /* provisional name */
-void debug_object_edit_input(void)
-{
+void debug_object_edit_input(void) {
     u16 sw;
 
     if (dbg_cmd_panel) {
@@ -2774,7 +2760,7 @@ void debug_hit_judgment_input(void) {
     }
     sw = ~dbg_p2sw_1 & dbg_p2sw_0;
     if (sw & BUTTON_START) {
-        Debug_PL_id = Debug_PL_id ^ 1;
+        Debug_PL_id ^= 1;
     }
 }
 
@@ -3189,8 +3175,7 @@ void debug_pattern_preview_restart(WORK* wk) {
 
 
 /* provisional name */
-void debug_pattern_preview_step(WORK* wk)
-{
+void debug_pattern_preview_step(WORK* wk) {
     if (--dbg_pl->wu.cg_ctr != 0) {
         return;
     }
@@ -3488,8 +3473,7 @@ void debug_draw_edit_side(void) {
 
 
 /* provisional name */
-void debug_draw_hit_edit_info(void)
-{
+void debug_draw_hit_edit_info(void) {
     s16 i;
     s16 num;
     s16* p;
@@ -3606,8 +3590,7 @@ void debug_draw_cm_summary(void) {
 
 
 /* provisional name */
-void debug_draw_cm_data(void)
-{
+void debug_draw_cm_data(void) {
     s16 bcd;
 
     tilemap_print_string(dbg_hud_x, 0, 0xFFFF, &dbg_koc_str[dbg_pl->wu.cmoa.koc]);
@@ -3680,8 +3663,7 @@ void debug_draw_cm_data(void)
 
 
 /* provisional name */
-void debug_draw_delta_and_side(void)
-{
+void debug_draw_delta_and_side(void) {
     debug_draw_position_delta();
     debug_draw_edit_side();
 }
@@ -3803,8 +3785,7 @@ s32 debug_menu_exit_check(void) {
 
 
 /* provisional name */
-void debug_bg_stage_load(void)
-{
+void debug_bg_stage_load(void) {
     s16 i;
     u16 sw;
 
@@ -3896,8 +3877,7 @@ s16 code;
 
 
 /* provisional name */
-void debug_draw_att_data(void)
-{
+void debug_draw_att_data(void) {
     s16 bcd;
 
     if (plw[0].wu.meoshi_hit_flag != 1) {
@@ -3979,6 +3959,7 @@ void debug_draw_cg_data(void) {
         switch (plw[0].wu.cgd_type) {
         case 2:
             tilemap_print_string(0, 0, 0xFFFF, dbg_hud_clr_mid_str);
+            /* fall through */
         case 4:
             tilemap_print_string(0, 0, 0xFFFF, dbg_hud_clr_low_str);
             break;
@@ -3997,6 +3978,7 @@ void debug_draw_cg_data(void) {
         tilemap_print_hex(dbg_hud_x + 40, 18, 10, plw[0].wu.cg_next_ix, 2, 0);
         bcd = debug_hex4_to_bcd(plw[0].wu.cg_status);
         tilemap_print_hex(dbg_hud_x + 37, 19, 10, bcd, 4, 0);
+        /* fall through */
     case 4:
         tilemap_print_string(dbg_hud_x, 0, 0xFFFF, dbg_cg_att_str);
         if (plw[0].wu.cg_att_ix < 0) {
@@ -4057,6 +4039,7 @@ void debug_draw_cg_data(void) {
         tilemap_print_hex(dbg_hud_x + 37, 14, 10, plw[0].wu.cg_effect, 4, 0);
         bcd = debug_hex4_to_bcd(plw[0].wu.cg_effect);
         tilemap_print_hex(dbg_hud_x + 42, 14, 2, bcd, 4, 0);
+        /* fall through */
     case 2:
         tilemap_print_string(dbg_hud_x, 0, 0xFFFF, &dbg_cgd_type_str[plw[0].wu.cgd_type / 2]);
         tilemap_print_hex(dbg_hud_x + 37, 3, 10, plw[0].wu.cg_ctr, 4, 0);
@@ -4148,8 +4131,10 @@ void debug_hud_mode_dispatch(void) {
             switch (plw[0].wu.cgd_type) {
             case 6:
                 tilemap_print_string(dbg_hud_x, 0, 0xFFFF, dbg_hud_clr_low_str);
+                /* fall through */
             case 4:
                 tilemap_print_string(dbg_hud_x, 0, 0xFFFF, dbg_hud_clr_mid_str);
+                /* fall through */
             case 2:
                 tilemap_print_string(dbg_hud_x, 0, 0xFFFF, dbg_hud_clr_str);
                 break;
@@ -4284,6 +4269,3 @@ void debug_move_snapshot_frame(SNAPSHOT* rec, WORK* wk, s16 priority) {
     rec->rl_flag = wk->rl_flag;
     rec->cg_flip = wk->cg_flip;
 }
-
-
-/* provisional name */

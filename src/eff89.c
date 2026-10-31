@@ -40,8 +40,7 @@
 
 
 
-void effect_89_move(WORK_Other* ewk)
-{
+void effect_89_move(WORK_Other* ewk) {
     u16 attr;
 
     switch (ewk->wu.routine_no[0]) {

@@ -93,7 +93,6 @@
 
 
 
-
 void Att_DUMMY(PLW* wk) {}
 
 
@@ -366,6 +365,7 @@ void Att_KUUCHUUNICHIRINSHOU(PLW* wk) {
     case RN3_START:
         wk->wu.routine_no[3]++;
         set_char_move_init(&wk->wu, 5, wk->as->char_ix);
+        /* fall through */
     case KUUCHUUNICHIRI_MOVE:
         jumping_union_process(&wk->wu, 2);
         if (wk->wu.routine_no[3] != KUUCHUUNICHIRI_RUN) {
@@ -579,6 +579,7 @@ void Att_CHOUCHUURENGEKI(PLW* wk) {
         case 21:
             reset_mvxy_data(&wk->wu);
             wk->wu.cg_type = 0;
+            /* fall through */
         default:
             break;
         }

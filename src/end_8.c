@@ -74,6 +74,7 @@ void end_08000(u16 pl_num) {
             end_801_0000();
             end_802_0000();
         }
+        /* fall through */
     case END1_DONE:
         end_scn_pos_set2();
         end_bg_pos_hosei2();

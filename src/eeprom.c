@@ -171,8 +171,8 @@ u16* src;
         if (eeprom_wait_ready()) {
             return 1;
         }
-        dst += 1;
-        src += 1;
+        dst++;
+        src++;
     }
     eep_strobe_0 = EEP_ROM_CLOSE;
     eep_strobe_1 = EEP_ROM_CLOSE;
@@ -196,8 +196,7 @@ s8 eeprom_wait_ready(void) {
 
 /* Shows EEPROM ERROR on a cleared text layer and stops there for good. */
 /* provisional name */
-void eeprom_error_halt(void)
-{
+void eeprom_error_halt(void) {
     tilemap_fill_all(0, 0x20);
     tilemap_print_string_attr(15, 8, 12, eeprom_error_str);    /* "EEPROM  ERROR" */
     while (1) {

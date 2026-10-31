@@ -15,6 +15,7 @@ extern const PANEL end_300_panel[];
 extern const s16 end_3_pos[][2];
 extern const s16 timer_3_tbl[];
 
+/* provisional name */
 const PANEL end_300_panel[8] = {
     { 0, 3 }, { 0x40, 4 }, { 0x80, 5 }, { 0xC0, 6 }, { 0x1000, 7 }, { 0x1040, 8 }, { 0x1080, 10 }, { 0x10C0, 11 },
 };

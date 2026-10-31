@@ -45,10 +45,6 @@
 
 
 
-
-
-
-
 void end_05000(u16 pl_num) {
     switch (end_w.r_no_1) {
     case E5_INIT:
@@ -73,6 +69,7 @@ void end_05000(u16 pl_num) {
             break;
         }
         end_w.r_no_1++;
+        /* fall through */
     case E5_SCENES:
         end_w.timer--;
         if (end_w.timer < 0) {
@@ -90,6 +87,7 @@ void end_05000(u16 pl_num) {
             end_500_move();
             end_501_move();
         }
+        /* fall through */
     case E5_DONE:
         end_scn_pos_set2();
         end_bg_pos_hosei2();
@@ -139,6 +137,7 @@ void end_500_1000(void) {
         bgw_ptr->r_no_1++;
         bgw_ptr->free = end_5_anm_tbl[0][0];
         bgw_ptr->l_limit = 0;
+        /* fall through */
     case 3:
         bgw_ptr->free--;
         if (bgw_ptr->free < 0) {
@@ -216,6 +215,7 @@ void end_500_3000(void) {
         }
         end_no_cut = 1;
         bgw_ptr->r_no_1++;
+        /* fall through */
     case 3:
         if (end_fade_complete()) {
             bgw_ptr->r_no_1++;

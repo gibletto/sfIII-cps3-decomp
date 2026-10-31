@@ -249,6 +249,7 @@ const s16 eff07_char_index_tbl[18] = {
     1, 0,
 };
 
+/* provisional name */
 const s16 eff09_data[4][9] = {
     { 0, 2, 8256, 383, 48, 70, 0, 1, 0 },
     { 0, 2, 8281, 253, 130, 74, 1, 1, 0 },

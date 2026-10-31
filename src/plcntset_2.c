@@ -290,6 +290,7 @@ void settle_type_00000(void) {
     case KO_INIT:
         plw[Winner_id].wu.dir_timer = 60;
         pcon_rno[2]++;
+        /* fall through */
     case KO_DOWN:
         if (nekorobi_check(Loser_id)) {
             pcon_rno[2]++;
@@ -352,6 +353,7 @@ void settle_type_20000(void) {
         plw[0].wkey_flag = plw[1].wkey_flag = 1;
         plw[0].image_setup_flag = plw[1].image_setup_flag = 0;
         pcon_rno[2]++;
+        /* fall through */
     case TO_FOOTWORK:
         if (footwork_check(0)) {
             if (footwork_check(1)) {
@@ -673,6 +675,7 @@ void add_next_position(PLW* wk) {
     wk->wu.position_z = wk->wu.next_z;
 }
 
+/* provisional name */
 void debug_player_change(void) {
     u16 sw;
     const s8* data;

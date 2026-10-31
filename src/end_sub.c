@@ -76,15 +76,13 @@ s16 pl;
 }
 
 /* provisional name */
-u32 card_work_clear(void)
-{
+u32 card_work_clear(void) {
     memset((u8 *)&card_pl_w[0], 0, sizeof(SELPL));
     return (u32)memset((u8 *)&card_pl_w[1], 0, sizeof(SELPL));
 }
 
 /* provisional name */
-void card_win_check(s16 vs_mode)
-{
+void card_win_check(s16 vs_mode) {
     s8 need;
 
     if (!Card_Dispenser) {
@@ -144,6 +142,7 @@ void card_msg_disp(void) {
         }
         card_pl_w[Winner_id].card_state++;
         card_pl_w[Winner_id].blink = 0;
+        /* fall through */
     case 1:
         switch (card_pl_w[Winner_id].blink & 0x1F) {
         case 0:
@@ -171,6 +170,7 @@ void card_msg_disp(void) {
         card_pl_w[Winner_id].msg_state++;
         card_pl_w[Winner_id].msg_timer = -32;
         card_msg_cnt = -1;
+        /* fall through */
     case 1:
         card_msg_cnt++;
         if (--card_pl_w[Winner_id].msg_timer == 0) {

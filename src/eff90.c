@@ -36,7 +36,6 @@
 #define R0_MOVE         1       /* show as switched or with the master */
 
 
-
 void effect_90_move(WORK_Other* ewk) {
     WORK* mwk;
     s16 sw;

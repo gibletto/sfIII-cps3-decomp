@@ -141,6 +141,7 @@ const s16 bg_scr_record_unref_0[28] = {
 };
 
 /* layer 3 of the finish screen (bg_initialize, akebono_scr_write) */
+/* provisional name */
 const s16 ake_scr_record_data[16] = {
     4, 69,  0x7F, 0x7F00, 60,  0xFF, 0x7F00, 60,  0x17F, 0x7F00, 60,  0x1FF, 0x7F00, 60,  -1,
     -1,
@@ -400,11 +401,13 @@ const s32 msp2[5][4][2] = {
     { { 0x10000, 0x10000 }, { 0x10000, 0x10000 }, { 0xE000, 0xE000 }, { 0, 0 } },
 };
 
+/* provisional name */
 const s32 etc_bg_zuubun_tbl[5][4] = {
     { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 },
     { 0, 0, 0, 0 },
 };
 
+/* provisional name */
 const BG_GFX bg_gfx_tbl[22] = {
     { 0x1200000, 24303, 0x1200080, 1 }, { 0x1212160, 29311, 0x12121E0, 1 },
     { 0x122D150, 22927, 0x122D1D0, 2 }, { 0x124C5C0, 25263, 0x124C640, 1 },
@@ -419,6 +422,7 @@ const BG_GFX bg_gfx_tbl[22] = {
     { 0x133BCF8, 17519, 0x133BD78, 1 }, { 0x133BCF8, 17519, 0x133BD78, 1 },
 };
 
+/* provisional name */
 const BG_GFX etc_bg_gfx_tbl[16] = {
     { 0x134A888, 5679, 0x134A908, 1 },
     { 0x133BCF8, 16879, 0x133BD78, 1 },
@@ -438,15 +442,18 @@ const BG_GFX etc_bg_gfx_tbl[16] = {
     { 0x54005E, 6815744, 0x54005E, 0x680000 },
 };
 
+/* provisional name */
 const s16 bg_attr_tbl[23] = {
     512, 512, 0, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512,
     512, 512, 512, 512, 512, 512, 512,
 };
 
+/* provisional name */
 const s16 etc_bg_attr_tbl[5] = {
     512, 512, 512, 512, 512,
 };
 
+/* provisional name */
 const s16 bg_cell_cnt_tbl[22][4] = {
     { 8, 8, 0, 0 }, { 4, 8, 2, 0 }, { 8, 8, 0, 0 }, { 6, 8, 6, 0 },
     { 8, 8, 8, 0 }, { 6, 6, 6, 0 }, { 6, 6, 0, 0 }, { 8, 8, 8, 0 },
@@ -456,11 +463,13 @@ const s16 bg_cell_cnt_tbl[22][4] = {
     { 2, 2, 2, 0 }, { 8, 8, 8, 0 },
 };
 
+/* provisional name */
 const s16 etc_bg_cell_cnt_tbl[5][4] = {
     { 2, 0, 0, 0 }, { 4, 0, 0, 0 }, { 2, 0, 0, 0 }, { 2, 0, 0, 0 },
     { 2, 0, 0, 0 },
 };
 
+/* provisional name */
 const u32 bg_cg_src_tbl[22] = {
     (u32)bg050_cell_data, (u32)bg_scrn_data_01, (u32)bg_scrn_data_02, (u32)bg_scrn_data_03,
     (u32)bg040_scrn_data, (u32)bg_scrn_data_05, (u32)bg_scrn_data_06, (u32)bg070_cell_data,

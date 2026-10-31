@@ -148,7 +148,6 @@ s32 bg170_appear_check();
 
 
 
-
 s16 Appear_end;
 s16 appear_work[2];
 s8 Appear_flag[2];
@@ -614,6 +613,7 @@ void Appear_06000(PLW* wk) {
         effect_C5_init(wk);
         bg_stop = 1;
         wk->wu.disp_flag = 0;
+        /* fall through */
     case AP06_WAIT:
         if (demo_car_flag[wk->wu.id]) {
             wk->wu.routine_no[3]++;

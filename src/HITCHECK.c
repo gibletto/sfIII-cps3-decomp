@@ -410,6 +410,7 @@ jump_two:
                 if (ds->player_number == PL_NECRO) {
                     ds->wu.routine_no[2] = get_grd_hand_damage(ds->wu.routine_no[2]);
                 }
+                /* fall through */
             default:
                 if (check_trunk_damage(ds->wu.routine_no[2])) {
                     ds->wu.routine_no[2] = get_kind_of_trunk_dm(as->wu.dir_atthit, ds->wu.dm_rl);
@@ -580,11 +581,13 @@ void hit_pattern_extdat_check(WORK* as) {
     case 0x81:
         as->cg_ix = ((as->cg_extdat & 0x3F) - 1) * as->cgd_type - as->cgd_type;
         as->cg_next_ix = 0;
+        /* fall through */
     case 0x80:
         char_move_z(as);
         break;
     case 0x41:
         as->cg_ctr = 1;
+        /* fall through */
     case 0x1:
         as->cg_ix = ((as->cg_extdat & 0x3F) - 1) * as->cgd_type - as->cgd_type;
         as->cg_next_ix = 0;
@@ -814,6 +817,7 @@ void setup_dm_rl(WORK* as, WORK* ds) {
             ds->dm_rl = as->rl_flag;
             break;
         }
+        /* fall through */
     default:
         if (dx) {
             if (dx > 0) {
@@ -877,7 +881,6 @@ void add_combo_work(PLW* as, PLW* ds) {
 }
 
 
-
 void cal_combo_waribiki(PLW* as, PLW* ds) {
     const POWER* power;
     const KOATT* koatt;
@@ -919,7 +922,6 @@ void cal_combo_waribiki(PLW* as, PLW* ds) {
 }
 
 
-
 void cal_combo_waribiki2(PLW* ds) {
     s16 num;
     if (ds->cb->total == 0) {
@@ -937,7 +939,6 @@ void cal_combo_waribiki2(PLW* ds) {
         ds->wu.dm_piyo = 1;
     }
 }
-
 
 
 void catch_hit_check(void) {

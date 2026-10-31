@@ -19,15 +19,18 @@ extern const s16 flash_obj_data60_1[];
  * One row per Battle_Country: the row of eff59_name_tbl / eff59_name_x_tbl with its
  * name, and the number of letters.
  */
+/* provisional name */
 const u8 eff59_country_tbl[13][2] = {
     { 0, 0x14 }, { 1, 0xB }, { 2, 8 }, { 3, 0xC }, { 4, 9 }, { 5, 9 }, { 6, 9 }, { 7, 8 },
     { 8, 0xA }, { 9, 9 }, { 3, 0xC }, { 2, 8 }, { 1, 0xB },
 };
 
+/* provisional name */
 const s16 eff59_name_x_tbl[10] = {
     630, 662, 674, 658, 667, 670, 664, 674, 669, 670,
 };
 
+/* provisional name */
 const u8 eff59_name_tbl[10][39] = {
     {
         0xF, 8, 0x12, 8, 0x1B, 8, 4, 8, 0xC, 8, 0xB, 6, 0xF, 7, 0x16, 8,

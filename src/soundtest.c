@@ -63,9 +63,9 @@ void soundtest_code_select(void) {
     } else if (trig & LEVER_LEFT) {
         soundtest_code -= 16;
     } else if (trig & LEVER_UP) {
-        soundtest_code += 1;
+        soundtest_code++;
     } else if (trig & LEVER_DOWN) {
-        soundtest_code -= 1;
+        soundtest_code--;
     }
     trig = ~p1sw_1 & p1sw_0;
     if (trig & BUTTON_LP) {

@@ -54,8 +54,7 @@
 
 /* Clears the text layer and runs System_all_clear, then waits a frame. */
 /* provisional name */
-void Scr_all_clear_Wait(void)
-{
+void Scr_all_clear_Wait(void) {
     tilemap_fill_all(0, 0x20);
     System_all_clear();
     task_sleep(1);
@@ -63,16 +62,14 @@ void Scr_all_clear_Wait(void)
 
 /* Runs System_all_clear, then waits a frame. */
 /* provisional name */
-void System_all_clear_Wait(void)
-{
+void System_all_clear_Wait(void) {
     System_all_clear();
     task_sleep(1);
 }
 
 /* Clears text page 0 and runs System_all_clear_Ex, then waits a frame. */
 /* provisional name */
-void System_all_clear_Ex_Wait(void)
-{
+void System_all_clear_Ex_Wait(void) {
     scfont_page0_fill(0, 0x20);
     System_all_clear_Ex();
     task_sleep(1);
@@ -81,8 +78,7 @@ void System_all_clear_Ex_Wait(void)
 /* Clears the render lists, character graphics tables, scroll layer state and all effect work, then reloads the
    common character graphics and cells. */
 /* provisional name */
-void System_all_clear(void)
-{
+void System_all_clear(void) {
     init_render_lists();
     init_char_gfx_tables();
     clear_scroll_layer_state_and_mask();
@@ -113,8 +109,7 @@ void System_all_clear_Ex(void) {
 
 /* Runs the palette fade for a frame (fade_cont_main). */
 /* provisional name */
-void Fade_Cont(void)
-{
+void Fade_Cont(void) {
     fade_cont_main();
 }
 
@@ -451,13 +446,9 @@ s32 Button_Cut_Hold(s16* timer, s16 first, s16 repeat) {
 
 
 
-
-
-
 /* Which side's buttons may cut a scene short: the winner in a two-player match,
    otherwise the side that is being played (1P unless only 2P is in). */
-int Setup_Target_PL(void)
-{
+int Setup_Target_PL(void) {
     if (Play_Type == PLAY_VS_PLAYER) {
         return Winner_id;
     }

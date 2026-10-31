@@ -12,6 +12,7 @@
 
 extern const s16 effb0_scr_record_data[];
 
+/* provisional name */
 const s16 effb0_scr_record_data[14] = {
     /* [0] */
     4, 88,  0x7F, 0x7F00, 60,  0xFF, 0x7F00, 60,  0x17F, 0x7F00, 60,  -1,

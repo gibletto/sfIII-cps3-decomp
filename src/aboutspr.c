@@ -38,8 +38,6 @@ extern const s16 zoom_up_tbl[64];       /* provisional name */
 
 
 /* provisional name */
-
-
 void init_char_gfx_tables(void) {
     s16 i;
     cg_data_list = (CharGfxEntry*)cg_data_tbl;
@@ -1076,9 +1074,6 @@ void push_char_sprite(WORK* wk, SPRITE_ENTRY* spr, s16 y_ofs) {
 
 
 /* provisional name */
-
-
-/* provisional name */
 s32 disp_seraph_cells(WORK* wk) {
     SPRITE_ENTRY* spr;
     u16 ix;
@@ -1137,8 +1132,6 @@ s32 sort_push_request8(WORK* wk) {
     sprite_entry_push_prio(spr, wk->position_z);
     return 2;
 }
-
-
 
 
 void shadow_drawing(WORK* wk, s16 y_ofs) {

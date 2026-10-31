@@ -36,6 +36,7 @@ void effect_F1_move(WORK_Other* ewk) {
         effF1_data_set(ewk, mwk);
         another_bg[ewk->master_id] = ewk->wu.type;
         ewk->wu.routine_no[0]++;
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             goto end;

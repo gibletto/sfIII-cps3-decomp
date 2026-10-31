@@ -31,6 +31,15 @@
 #define R0_DEMO         1       /* the entrance demo */
 #define R0_MOVE         2       /* follow the fight */
 
+/* bgw r_no_1 in demo90_base */
+#define DEMO_WAIT       0       /* until Appear_free */
+#define DEMO_SCROLL     1       /* scroll the Y down to 0 */
+#define DEMO_APPEAR     2       /* until Appear_end is 2, then the next r_no_0 */
+
+/* bg_w.bgw[1].r_no_1 in jijii_win_bg; jijii_win_bg2 follows it */
+#define JW_RISE         0       /* at win_sp_flag 2, scroll the layer up, then set the flag to 3 */
+#define JW_DONE         1       /* finished */
+
 /* declarations the headers do not give */
 void load_any_color();
 s32 effect_18_init();
@@ -182,12 +191,12 @@ void bg160_demo_check(void) {
 
 void demo90_base(void) {
     switch (bgw_ptr->r_no_1) {
-    case 0:
+    case DEMO_WAIT:
         if (Appear_free) {
             bgw_ptr->r_no_1++;
         }
         break;
-    case 1:
+    case DEMO_SCROLL:
         bgw_ptr->xy[1].cal -= bgw_ptr->speed_y * 0xA;
         bgw_ptr->wxy[1].cal -= bgw_ptr->speed_y * 0xA;
         if (bgw_ptr->xy[1].disp.pos <= 0) {
@@ -197,7 +206,7 @@ void demo90_base(void) {
             break;
         }
         break;
-    case 2:
+    case DEMO_APPEAR:
         if (Appear_end != 2) {
             break;
         }
@@ -213,16 +222,17 @@ void demo90_base(void) {
 /* Raise the base layer until its height passes 0xC0. */
 void jijii_win_bg(void) {
     switch (bgw_ptr->r_no_1) {
-    case 0:
+    case JW_RISE:
         if (win_sp_flag == 2) {
             bgw_ptr->xy[1].cal += 0xA0000;
             bgw_ptr->wxy[1].cal += 0xA0000;
             if (bgw_ptr->xy[1].disp.pos > 0xC0) {
-                bgw_ptr->r_no_1 += 1;
+                bgw_ptr->r_no_1++;
                 win_sp_flag = 3;
             }
         }
-    case 1:
+        /* fall through */
+    case JW_DONE:
         break;
     }
 }
@@ -233,14 +243,15 @@ void jijii_win_bg2(void) {
     s16 zuu_work;
     s32 sp_work;
     switch (bg_w.bgw[1].r_no_1) {
-    case 0:
+    case JW_RISE:
         if (win_sp_flag == 2) {
             zuu_work = 0xA;
             sp_work = bgw_ptr->speed_y * zuu_work;
             bgw_ptr->xy[1].cal += sp_work;
             bgw_ptr->wxy[1].cal += sp_work;
         }
-    case 1:
+        /* fall through */
+    case JW_DONE:
         break;
     }
 }

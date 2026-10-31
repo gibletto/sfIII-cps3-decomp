@@ -130,7 +130,6 @@ void Normal_normal_Loser(PLW* wk) {
 
 
 
-
 void Judge_normal_loser(PLW* wk) {
     s16 pat;
     if (bg_w.stage == 8 && bg_w.area == 0) {
@@ -139,7 +138,7 @@ void Judge_normal_loser(PLW* wk) {
     }
     switch (wk->wu.routine_no[3]) {
     case RN3_START:
-        wk->wu.routine_no[3] += 1;
+        wk->wu.routine_no[3]++;
         pat = random_16_com();
         pat &= 3;
         set_char_move_init(&wk->wu, 9, pat + 0x38);
@@ -154,6 +153,7 @@ void Judge_normal_loser(PLW* wk) {
 
 
 
+/* provisional name */
 void lose_stage8_action(PLW* wk) {
     if (wk->wu.routine_no[3] == RN3_START) {
         wk->wu.routine_no[3]++;

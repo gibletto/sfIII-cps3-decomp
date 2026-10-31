@@ -79,7 +79,6 @@ void bg1000(void) {
 
 
 
-/* provisional name */
 void bg1000_init00(void) {
     bgw_ptr->r_no_0++;
     bgw_ptr->old_pos_x = bgw_ptr->xy[0].disp.pos = bgw_ptr->pos_x_work = 0x200;
@@ -113,7 +112,6 @@ void bg1001(void) {
 
 
 
-/* provisional name */
 void bg1001_init00(void) {
     bgw_ptr->r_no_0++;
     bgw_ptr->old_pos_x = bgw_ptr->xy[0].disp.pos = bgw_ptr->pos_x_work = 0;

@@ -29,7 +29,6 @@
 
 
 
-
 void effect_C2_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:

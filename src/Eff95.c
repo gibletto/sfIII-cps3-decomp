@@ -37,9 +37,11 @@ s32 eff95_set_obj();
 void eff95_set_position();
 
 /* Character colours and placement offsets. */
+/* provisional names */
 const s8 eff95_col_tbl_win[13] = { 1, 1, 1, 2, 2, 1, 2, 1, 2, 1, 1, 1, 2 };
 const s8 eff95_col_tbl_lose[13] = { -1, 2, 3, 3, 3, 2, 2, 2, 2, 1, 2, 2, 3 };
 /* One row per fighter: x offset of the picture when the fighter won, and when it lost. */
+/* provisional name */
 const s16 eff95_ofs_tbl[13][2] = {
     { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 32, 0 }, { 0, 0 }, { 0, 0 },
     { 0, 0 }, { 0, 0 }, { 0, 0 }, { 32, 0 }, { 0, 0 }, { 0, 0 },

@@ -132,6 +132,7 @@ const s16 dead_voice_table[16][2] = {
     { 479, 480 },  /* 15 */
 };
 
+/* provisional name */
 const s16 voice_select_table[16][4] = {
     { 484, 481, 488, 480 },  /* Gill */
     { 455, 451, 456, 449 },  /* Alex */

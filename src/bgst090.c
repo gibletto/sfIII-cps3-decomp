@@ -138,6 +138,7 @@ static void bg_base_move_common(void) {
 
 
 
+/* provisional name */
 void bg0903(void) {
     void (*bg0903_jmp[3])() = { bg090_init00, bg0903_init01, bg0903_move };
     bg0903_jmp[bgw_ptr->r_no_0]();
@@ -152,6 +153,7 @@ void bg0903_init01(void) {
 
 
 
+/* provisional name */
 void bg0903_move(void) {
     s16 d;
     if (EXE_flag == 0 && Game_pause == 0) {

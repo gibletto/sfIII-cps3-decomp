@@ -25,7 +25,6 @@
 
 
 
-
 void pl09_extra_attack(PLW* wk) {
     pl09_exatt_table[wk->wu.routine_no[2] - ATTACK_SPECIAL](wk);
 }

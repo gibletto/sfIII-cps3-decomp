@@ -42,6 +42,7 @@ void effect_G9_move(WORK_Other* ewk) {
             ewk->wu.position_z = 33;
         }
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;

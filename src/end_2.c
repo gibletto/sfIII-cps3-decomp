@@ -201,7 +201,7 @@ void end_200_3000(void) {
         Rewrite_End_Message(3);
         break;
     case 1:
-        end_2_timer -= 1;
+        end_2_timer--;
         if (end_2_timer < 0) {
             bgw_ptr->r_no_1++;
             Rewrite_End_Message(4);
@@ -214,6 +214,7 @@ void end_200_3000(void) {
         if (work == 0x200) {
             bgw_ptr->r_no_1++;
         }
+        /* fall through */
     case 3:
         bgw_ptr->xy[0].cal += bgw_ptr->speed_x;
         work = bgw_ptr->xy[0].disp.pos;
@@ -394,6 +395,7 @@ void end_202_0000(void) {
         bgw_ptr->r_no_1++;
         bgw_ptr->abs_x = bgw_ptr->xy[0].disp.pos = 0x200;
         bgw_ptr->abs_y = bgw_ptr->xy[1].disp.pos = 0;
+        /* fall through */
     case 1:
         end_scn_pos_set(2);
         end_bg_pos_hosei(2);

@@ -40,18 +40,18 @@ s32 check_rl_flag(WORK* wk) {
 
 
 void set_rl_waza(PLW* wk) {
-    s16 d;
-    WORK_Other* p;
-    p = (WORK_Other*)wk->wu.target_adrs;
-    d = wk->wu.xyz[0].disp.pos - p->wu.xyz[0].disp.pos;
-    if (d) {
-        if (d > 0) {
+    s16 dx;
+    WORK_Other* em;
+    em = (WORK_Other*)wk->wu.target_adrs;
+    dx = wk->wu.xyz[0].disp.pos - em->wu.xyz[0].disp.pos;
+    if (dx) {
+        if (dx > 0) {
             wk->wu.rl_waza = 0;
         } else {
             wk->wu.rl_waza = 1;
         }
     } else {
-        wk->wu.rl_waza = (p->wu.rl_waza + 1) & 1;
+        wk->wu.rl_waza = (em->wu.rl_waza + 1) & 1;
     }
 }
 

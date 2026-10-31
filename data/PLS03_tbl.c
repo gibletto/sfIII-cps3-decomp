@@ -27,6 +27,7 @@ const s16 shot_refresh[6] = {
     16, 32, 64, 128, 256, 512,
 };
 
+/* provisional name */
 const s16 catch_kos_table[8] = {
     0, 0, 1, 1, 2, 2, 2, 2,
 };

@@ -31,7 +31,6 @@
 
 
 
-
 void effect_H3_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:

@@ -70,8 +70,6 @@
 
 
 
-
-
 s16 WIN_X;
 
 
@@ -217,6 +215,7 @@ s16 Loser_Scene(void) {
 
 
 
+/* provisional name */
 void Lose_4th(void) {
     if (--M_Timer == 0) {
         M_No0++;
@@ -232,6 +231,7 @@ void Lose_4th(void) {
 
 
 
+/* provisional name */
 void Lose_6th(void) {
     if (Check_Scene_Cut(LOSER)) {
         M_Timer = 1;

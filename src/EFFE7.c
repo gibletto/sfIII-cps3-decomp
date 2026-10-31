@@ -35,6 +35,7 @@ void effect_E7_move(WORK_Other* ewk) {
         ewk->wu.cg_att_ix = 0;
         ewk->wu.cg_hit_ix = 0;
         effe7_get_zanzou_data(ewk);
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;

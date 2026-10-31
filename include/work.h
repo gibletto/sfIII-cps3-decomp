@@ -3,9 +3,6 @@
 
 #include "structs.h"
 
-/* element ix of a table row, addressed from the row start */
-#define ROW_ELEM(row, ix) ((&(row)[0])[ix])
-
 extern s32 (*const decode_chcmd[125])();
 extern s32 (*const decode_if_lever[16])();
 extern s32 (*const Passive_AS_tbl[13])(PLW* wk);

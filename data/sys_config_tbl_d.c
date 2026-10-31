@@ -14,6 +14,7 @@
 extern const char str_saving_configuration[];
 extern const char str_IN_EEPROM[];
 
+/* provisional name */
 const char str_saving_configuration[36] = "NOW  SAVING  NEW  CONFIGURATION\n";
 
 const char str_IN_EEPROM[40] = "                         IN  EEPROM...";

@@ -37,6 +37,7 @@ u8 pl;
 
 
 
+/* provisional name */
 void count_cont_reset(void) {
     (*&count_work).hoji_counter = hoji_counter_tbl[Game_setting.Timer_Speed];
     Counter_hi = 99;
@@ -66,8 +67,6 @@ void count_cont_main(void) {
 
 
 
-
-
 void counter_control(void) {
     u16 hi;
     u16 lo;
@@ -75,11 +74,11 @@ void counter_control(void) {
         return;
     }
     if (Counter_low != 0) {
-        Counter_low -= 1;
+        Counter_low--;
         return;
     }
     Counter_low = (*&count_work).hoji_counter;
-    Counter_hi -= 1;
+    Counter_hi--;
     *(s16*)&round_timer = Counter_hi;
     hi = Counter_hi;
     hi = hi / 10;

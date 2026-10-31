@@ -117,7 +117,6 @@ void Turn_Over_On(PLW* wk) {
 
 
 
-
 void Lever_On(wk, LR_Lever, UD_Lever)
 PLW* wk;
 u16 LR_Lever;
@@ -207,6 +206,7 @@ s16 Power_Level;
         if (Check_Exit_DENJIN(wk) != 0) {
             CP_Index[wk->wu.id][1] = 0x63;
         }
+        /* fall through */
     default:
         if (wk->wu.cg_type == 0x40 || wk->wu.routine_no[1] == PLAYER_NORMAL) {
             Reaction_Exit_Sub(wk);
@@ -306,6 +306,7 @@ s16 Option;
         } else {
             CP_Index[wk->wu.id][3] = Option + 1;
         }
+        /* fall through */
     case 1:
     case 2:
         Jump(wk, CP_Index[wk->wu.id][3] - 1);
@@ -381,6 +382,7 @@ s16 Option;
         CP_Index[wk->wu.id][1]++;
         dash_flag_clear(wk->wu.id);
         Timer_00[wk->wu.id] = 120;
+        /* fall through */
     case 1:
         save_time = Standing_Timer[wk->wu.id];
         if (Lie_Flag[wk->wu.id] == 0) {
@@ -446,6 +448,7 @@ s16 Target_Pos;
         CP_Index[wk->wu.id][1]++;
         dash_flag_clear(wk->wu.id);
         Timer_00[wk->wu.id] = 1;
+        /* fall through */
     case 1:
         if (--Timer_00[wk->wu.id] != 0) {
             break;
@@ -489,6 +492,7 @@ s16 unused;
         Timer_00[wk->wu.id] = Time;
         Timer_01[wk->wu.id] = wk->wu.rl_flag;
         Free_Lever[wk->wu.id] = Setup_Guard_Lever(wk, Lever);
+        /* fall through */
     case 1:
         if (Lie_Flag[wk->wu.id] == 0) {
             if (Check_Passive(wk) != 0) {
@@ -538,7 +542,6 @@ s16 Guard_Type;
 
 
 
-
 void Normal_Attack(wk, Reaction, Lever_Data)
 PLW* wk;
 s16 Reaction;
@@ -561,6 +564,7 @@ u16 Lever_Data;
         }
         CP_Index[wk->wu.id][1]++;
         Check_First_Menu(wk);
+        /* fall through */
     case 1:
         if (Check_Passive(wk) != 0) {
             break;
@@ -609,6 +613,7 @@ s16 Time;
         CP_Index[wk->wu.id][1]++;
         Timer_00[wk->wu.id] = Time;
         Check_First_Menu(wk);
+        /* fall through */
     case 1:
         if (Check_Passive(wk) != 0) {
             break;
@@ -668,6 +673,7 @@ u16 Lever_Data;
         }
         CP_Index[wk->wu.id][1]++;
         Check_First_Menu(wk);
+        /* fall through */
     case 1:
         if (Check_Passive(wk) != 0) {
             break;
@@ -735,6 +741,7 @@ u16 Lever_Data;
         dash_flag_clear(wk->wu.id);
         CP_Index[wk->wu.id][1]++;
         Check_First_Menu(wk);
+        /* fall through */
     case 1:
         if (Check_Passive(wk) != 0) {
             break;
@@ -756,7 +763,6 @@ u16 Lever_Data;
         break;
     }
 }
-
 
 
 
@@ -940,8 +946,6 @@ s16 Next_Menu;
         Next_Another_Menu(wk, Next_Action, Next_Menu);
     }
 }
-
-
 
 
 
@@ -1197,6 +1201,7 @@ u16 Lever_Data;
         } else {
             Free_Lever[wk->wu.id] = 0;
         }
+        /* fall through */
     default:
         Lever_Buff[wk->wu.id] = Free_Lever[wk->wu.id];
         em = (WORK*)wk->wu.target_adrs;
@@ -1230,6 +1235,7 @@ s16 Option;
         } else {
             Lever_LR[wk->wu.id] = 0;
         }
+        /* fall through */
     default:
         Lever_Buff[wk->wu.id] = Lever_LR[wk->wu.id];
         if (Check_Wait_Term(wk, Option) != 0) {
@@ -1289,19 +1295,16 @@ s16 Option;
         }
     }
     Lever_Buff[wk->wu.id] = Lever_LR[wk->wu.id];
-    {
-        s32 k = Option;
-        if (!Check_Exit_Guard(wk, k)) {
-            CP_Index[wk->wu.id][0]++;
-            CP_Index[wk->wu.id][1] = 0;
-            CP_Index[wk->wu.id][2] = 0;
-            CP_Index[wk->wu.id][3] = 0;
-            Guard_Flag[wk->wu.id] = 0;
-            Flip_Flag[wk->wu.id] = 0;
-            Limited_Flag[wk->wu.id] = 0;
-            if (!k) {
-                Passive_Flag[wk->wu.id] = 0;
-            }
+    if (!Check_Exit_Guard(wk, Option)) {
+        CP_Index[wk->wu.id][0]++;
+        CP_Index[wk->wu.id][1] = 0;
+        CP_Index[wk->wu.id][2] = 0;
+        CP_Index[wk->wu.id][3] = 0;
+        Guard_Flag[wk->wu.id] = 0;
+        Flip_Flag[wk->wu.id] = 0;
+        Limited_Flag[wk->wu.id] = 0;
+        if (Option == 0) {
+            Passive_Flag[wk->wu.id] = 0;
         }
     }
 }
@@ -1385,6 +1388,7 @@ s16 Next_Menu;
     case 0:
         CP_Index[wk->wu.id][1]++;
         Term_No[wk->wu.id] = TERM_INIT;
+        /* fall through */
     case 1:
         if (Check_Passive(wk) != 0) {
             break;
@@ -1443,6 +1447,7 @@ s16 unused;
     case 0:
         CP_Index[wk->wu.id][1]++;
         Term_No[wk->wu.id] = TERM_INIT;
+        /* fall through */
     case 1:
         if (Check_Passive(wk) != 0) {
             break;
@@ -1467,7 +1472,6 @@ s16 unused;
 
 
 
-
 s32 Check_Term_Sub(PLW* wk, s16 Distance, s16 Range) {
     if (Range == -1) {
         return 1;
@@ -1484,7 +1488,6 @@ s32 Check_Term_Sub(PLW* wk, s16 Distance, s16 Range) {
         return 0;
     }
 }
-
 
 
 
@@ -1697,7 +1700,6 @@ s32 Check_Air_Guard(PLW* wk) {
 
 
 
-
 /* provisional name */
 void Jump_Air_Guard(wk, Lever)
 PLW* wk;
@@ -1713,6 +1715,7 @@ s16 Lever;
         }
         CP_Index[wk->wu.id][1]++;
         Free_Lever[wk->wu.id] = Setup_Guard_Lever(wk, Lever);
+        /* fall through */
     case 1:
         Lever_Buff[wk->wu.id] = Free_Lever[wk->wu.id] | 1;
         if (wk->wu.xyz[1].disp.pos > 0) {
@@ -1756,6 +1759,7 @@ s16 Jump_Dir;
         wk->wu.hf.hit.player = 0;
         hi_jump_flag_clear(wk->wu.id);
         Check_First_Menu(wk);
+        /* fall through */
     case 1:
         if (Check_Passive(wk) != 0) {
             break;
@@ -1820,6 +1824,7 @@ s16 J_Lever_Data;
         wk->wu.hf.hit.player = 0;
         CP_Index[wk->wu.id][1]++;
         Check_First_Menu(wk);
+        /* fall through */
     case 1:
         if (Check_Passive(wk) != 0) {
             break;
@@ -1901,13 +1906,13 @@ s32 Check_SP_Jump_Attack(wk, Lever_Data)
 PLW* wk;
 s16 Lever_Data;
 {
-    u16 xx;
+    u16 lever;
     if (!(Lever_Data & 0x8000)) {
         return Lever_Data;
     }
-    xx = Setup_Guard_Lever(wk, 0);
-    xx |= Lever_Data & 0x7FFF;
-    return xx | 2;
+    lever = Setup_Guard_Lever(wk, 0);
+    lever |= Lever_Data & 0x7FFF;
+    return lever | 2;
 }
 
 
@@ -2252,7 +2257,6 @@ s32 Check_Com_Add_Y_Sub(PLW* wk) {
 
 
 
-
 void Command_Attack(wk, Reaction, Tech_Number, Power_Level, Ex_Shot)
 PLW* wk;
 s16 Reaction;
@@ -2279,6 +2283,7 @@ s16 Ex_Shot;
         } else {
             Free_Lever[wk->wu.id] = 0;
         }
+        /* fall through */
     case 1:
         if (--Combo_Speed[wk->wu.id]) {
             Lever_Buff[wk->wu.id] = Lever_LR[wk->wu.id];
@@ -2293,6 +2298,7 @@ s16 Ex_Shot;
             CP_Index[wk->wu.id][1]++;
             Check_Rapid(wk, Tech_Number);
         }
+        /* fall through */
     case 2:
         if (Check_Passive(wk) != 0) {
             break;
@@ -2354,7 +2360,6 @@ s16 Ex_Shot;
 
 
 
-
 /* Returns Check_Resume_Lever for Ryu or Ken on technique 23, else 0. */
 s32 Hadou_Check(wk, Tech_Number)
 PLW* wk;
@@ -2411,6 +2416,7 @@ s16 Ex_Shot;
         Continue_Menu[wk->wu.id] = 0;
         CP_Index[wk->wu.id][1]++;
         Check_First_Menu(wk);
+        /* fall through */
     case 1:
         if (Check_Passive(wk) != 0) {
             break;
@@ -2420,6 +2426,7 @@ s16 Ex_Shot;
             break;
         }
         CP_Index[wk->wu.id][1]++;
+        /* fall through */
     case 2:
         if (Check_Passive(wk) != 0) {
             break;
@@ -2459,7 +2466,6 @@ s16 Ex_Shot;
         break;
     }
 }
-
 
 
 
@@ -2620,7 +2626,6 @@ u16 Tech_Number;
     }
     return 1;
 }
-
 
 
 
@@ -2950,24 +2955,24 @@ void Jump_Init(wk, Jump_Dir)
 PLW* wk;
 s16 Jump_Dir;
 {
-    u16* a;
-    u16* b;
+    u16* buff;
+    u16* pool;
 
-    a = Lever_Buff;
-    b = Lever_Pool;
+    buff = Lever_Buff;
+    pool = Lever_Pool;
     switch (Jump_Dir) {
     case 0:
         Ck_Distance_LvJ(wk);
-        a[wk->wu.id] = b[wk->wu.id];
+        buff[wk->wu.id] = pool[wk->wu.id];
         break;
     case 2:
-        b[wk->wu.id] = 1;
-        a[wk->wu.id] = 1;
+        pool[wk->wu.id] = 1;
+        buff[wk->wu.id] = 1;
         break;
     default:
         Ck_Distance_LvJ(wk);
-        b[wk->wu.id] ^= 0xC;
-        a[wk->wu.id] = b[wk->wu.id];
+        pool[wk->wu.id] ^= 0xC;
+        buff[wk->wu.id] = pool[wk->wu.id];
         break;
     }
 }
@@ -3047,6 +3052,7 @@ s16 Power_Level;
                 Lever_Pool[wk->wu.id] ^= LEVER_LR;
             }
         }
+        /* fall through */
     case 1:
         if (wk->permited_koa & 2) {
             CP_Index[wk->wu.id][2]++;
@@ -3055,6 +3061,7 @@ s16 Power_Level;
             Timer_00[wk->wu.id]++;
             break;
         }
+        /* fall through */
     default:
         if (++Timer_00[wk->wu.id] < Timer_01[wk->wu.id]) {
             Lever_Buff[wk->wu.id] = Lever_Pool[wk->wu.id];
@@ -3225,7 +3232,6 @@ s16 xx;
     }
     return i;
 }
-
 
 
 
@@ -3944,7 +3950,6 @@ s16 lv;
 
 
 
-
 s32 Check_Flip_Term(PLW* wk) {
     WORK* em = (WORK*)wk->wu.target_adrs;
     if (Check_Flip_Tech(em) == 0) {
@@ -3973,7 +3978,7 @@ s32 Flip_Term_Correct(PLW* wk) {
         xx += 2;
     }
     if (Counter_hi < 0xF) {
-        xx += 1;
+        xx++;
     }
     return xx;
 }
@@ -4026,7 +4031,6 @@ void Next_Be_Flip(PLW* wk) {
         Lever_Buff[wk->wu.id] = Setup_Guard_Lever(wk, 0);
     }
 }
-
 
 
 
@@ -4163,7 +4167,6 @@ void Setup_Shell_Disposal(PLW* wk, WORK_Other* tmw) {
         break;
     }
 }
-
 
 
 
@@ -4466,6 +4469,7 @@ s32 Exit_Term_0007(PLW* wk, WORK* em) {
     case TERM_INIT:
         Term_No[wk->wu.id]++;
         Timer_00[wk->wu.id] = 30;
+        /* fall through */
     default:
         if (Check_Drop_Term(em, 0x28) != 0) {
             if (Area_Number[wk->wu.id] >= 3) {
@@ -4482,7 +4486,6 @@ s32 Exit_Term_0007(PLW* wk, WORK* em) {
     }
     return 0;
 }
-
 
 
 

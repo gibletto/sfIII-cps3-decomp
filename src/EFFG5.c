@@ -37,6 +37,7 @@ s32 effect_G5_move(WORK_Other* ewk) {
         ewk->wu.my_col_code = 0x2020;
         add_pos_dir_064(&ewk->wu, ewk->wu.dir_old * 2);
         set_char_move_init(&ewk->wu, 0, (random_16_com() & 1) + 8);
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;

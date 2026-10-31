@@ -180,6 +180,7 @@ const s16 ryu_movexy_table[66][6] = {
     {      0,      0,     0,       0,    -96,     0 },  /* 65 */
 };
 
+/* provisional name */
 const PARABORA_DATA ryu_parabora_data[21] = {
     /*      x spd  x acc  x mode   y spd  y acc  y mode */
     { { {      0,      0,     1,       0,      0,     0 },  /* buttobi 0: weight 0 */

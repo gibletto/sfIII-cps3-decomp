@@ -43,6 +43,7 @@ void effect_F2_move(WORK_Other* ewk) {
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
+        /* fall through */
     case R0_START:
         if (ewk->wu.old_rno[0] != end_w.r_no_2) {
             ewk->wu.routine_no[0] = R0_KILL;

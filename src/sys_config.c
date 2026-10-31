@@ -74,8 +74,8 @@ void eeprom_config_load(void) {
 /* provisional name */
 void eeprom_config_reset(void) {
     register s8 ix;
-    register s16 k;
-    register s16 j;
+    register s16 unused1;
+    register s16 unused2;
     const u8** table;
     u8* rec;
     u8* ref;
@@ -277,21 +277,21 @@ void eeprom_config_default(void) {
 /* provisional name */
 void eeprom_config_verify(void) {
     register s16 i;
-    u8* a;
-    u8* b;
+    u8* data;
+    u8* backup;
     eeprom_retry = 10;
     while (eeprom_retry > 0) {
         if (eeprom_read(64, (u16*)EEP_ROM_READ, (u16*)eeprom_w)) {
             eeprom_error_halt();
         }
-        a = eeprom_w;
-        b = &eeprom_w[EEP_BACKUP];
+        data = eeprom_w;
+        backup = &eeprom_w[EEP_BACKUP];
         for (i = 0; i < EEP_COPY_SIZE; i++) {
-            if (*a != *b) {
+            if (*data != *backup) {
                 break;
             }
-            a++;
-            b++;
+            data++;
+            backup++;
         }
         if (i == EEP_COPY_SIZE) {
             return;

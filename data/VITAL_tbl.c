@@ -117,6 +117,7 @@ const s16 hoji_counter_tbl[4] = {
     60, 53, 37, 29,
 };
 
+/* provisional name */
 const u16 spgauge_puttbl_0[9] = {
     0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB5, 0xB6, 0xB7, 0xB8,
 };

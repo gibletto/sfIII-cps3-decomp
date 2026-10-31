@@ -38,10 +38,6 @@
 
 
 
-
-
-
-
 s16 rf_b2_flag;
 s16 b2_curr_no;
 

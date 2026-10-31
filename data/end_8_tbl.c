@@ -21,15 +21,18 @@ extern const s16 timer_8_tbl[];
 extern const s16 end_8_pos[][2];
 extern const PANEL end_900_bg0_cell_tbl[];
 
+/* provisional name */
 const s16 end_7_anm_tbl[8] = {
     74, 75, 76, 77, 78, 79, 80, 81,
 };
 
+/* provisional name */
 const PANEL end_800_panel0[8] = {
     { 0x1000, 86 }, { 0x1040, 87 }, { 0x2000, 92 }, { 0x2040, 93 },
     { 0x2080, 96 }, { 0x20C0, 97 }, { 0x3080, 30 }, { 0x30C0, 31 },
 };
 
+/* provisional name */
 const PANEL end_800_panel1[8] = {
     { 0x1000, 94 }, { 0x1040, 95 }, { 0x2000, 90 }, { 0x2040, 91 },
     { 0x2080, 94 }, { 0x20C0, 95 }, { 0x3080, 98 }, { 0x30C0, 99 },

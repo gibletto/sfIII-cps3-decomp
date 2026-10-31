@@ -33,14 +33,17 @@
 #pragma inline(obr_no_disp_check)
 
 
+/* provisional name */
 void sw_dummy_2(void) {}
 
 
+/* provisional name */
 void sw_dummy_1(void) {}
 
 
 void bg_frame_deff_init(void);
 
+/* provisional name */
 void sync_fam_set(s16 num_of_bg) {
     s32 x;
     s32 y;
@@ -54,6 +57,7 @@ void sync_fam_set(s16 num_of_bg) {
 }
 
 
+/* provisional name */
 void sync_fam_set2(s16 num_of_bg) {
     s32 x;
     s32 y;
@@ -137,6 +141,7 @@ void add_x_sub2(WORK_Other* ewk) {
 }
 
 
+/* provisional name */
 void add_x_sub_flip(WORK_Other* ewk) {
     if (ewk->wu.rl_flag) {
         ewk->wu.mvxy.a[0].sp -= ewk->wu.mvxy.d[0].sp;
@@ -190,7 +195,7 @@ void disp_pos_trans_entry5(WORK_Other* ewk) {
 
 void disp_pos_trans_entry_r(WORK_Other* ewk) {
     if (obr_no_disp_check() == 0) {
-        if (range_x_check((WORK*)ewk) != 0) {
+        if (range_x_check(&ewk->wu) != 0) {
             ewk->wu.position_x = ewk->wu.xyz[0].disp.pos & 0x3FF;
             ewk->wu.position_y = ewk->wu.xyz[1].disp.pos & 0x3FF;
             sort_push_request4(&ewk->wu);
@@ -209,7 +214,7 @@ void disp_pos_trans_entry_s(WORK_Other* ewk) {
 
 void disp_pos_trans_entry_rs(WORK_Other* ewk) {
     if (obr_no_disp_check() == 0) {
-        if (range_x_check((WORK*)ewk) != 0) {
+        if (range_x_check(&ewk->wu) != 0) {
             suzi_sync_pos_set(ewk);
             sort_push_request4(&ewk->wu);
         }
@@ -226,9 +231,10 @@ void pl_eff_trans_entry(WORK_Other* ewk) {
 }
 
 
+/* provisional name */
 void pl_eff_trans_entry_r(WORK_Other* ewk) {
     if (obr_no_disp_check() == 0) {
-        if (range_x_check((WORK*)ewk) != 0) {
+        if (range_x_check(&ewk->wu) != 0) {
             ewk->wu.position_x = ewk->wu.xyz[0].disp.pos & 0x3FF;
             ewk->wu.position_y = ewk->wu.xyz[1].disp.pos & 0x3FF;
             sort_push_request(&ewk->wu);
@@ -279,6 +285,7 @@ void eff_hit_flag_clear(void) {
 }
 
 
+/* provisional name */
 s32 complete_victory_check(void) {
     if (!Allow_a_battle_f && Conclusion_Flag == 1 && C_No0 >= C0_FIGHT && Complete_Victory) {
         return 1;
@@ -287,18 +294,20 @@ s32 complete_victory_check(void) {
 }
 
 
+/* provisional name */
 s16 get_winner_player_number(void) {
     return plw[Winner_id].player_number;
 }
 
 
+/* provisional name */
 s8 get_winner_id(void) {
     return Winner_id;
 }
 
 
-u32 range_abs_check(s16 a, s16 b, s16 range)
-{
+/* provisional name */
+u32 range_abs_check(s16 a, s16 b, s16 range) {
     s16 dist;
     dist = a - b;
     if (dist < 0) {
@@ -311,6 +320,7 @@ u32 range_abs_check(s16 a, s16 b, s16 range)
 }
 
 
+/* provisional name */
 s32 either_pl_hissatsu_check(void) {
     if (plw[0].wu.routine_no[1] == PLAYER_ATTACK && plw[0].wu.routine_no[2] >= ATTACK_SPECIAL) {
         return 1;
@@ -330,6 +340,7 @@ s32 compel_dead_check(WORK_Other* ewk) {
 }
 
 
+/* provisional name */
 s32 pl_shot_on_check(pl)
 s16 pl;
 {
@@ -443,6 +454,7 @@ s16 dummy;
 }
 
 
+/* provisional name */
 s32 pl_shot_trg_check(void) {
     u16 sw;
     if (plw[0].wu.operator) {

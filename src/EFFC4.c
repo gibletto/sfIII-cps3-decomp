@@ -33,7 +33,6 @@
 #define R0_KILL         6       /* (default) put the work back */
 
 
-
 void effect_C4_move(WORK_Other* ewk) {
     const s32* spd;
     switch (ewk->wu.routine_no[0]) {

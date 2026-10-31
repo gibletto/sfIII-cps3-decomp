@@ -70,6 +70,7 @@ void end_09000(u16 pl_num) {
             end_900_move();
             end_901_0000();
         }
+        /* fall through */
     case END1_DONE:
         end_scn_pos_set2();
         end_bg_pos_hosei2();
@@ -189,6 +190,7 @@ void end_900_6000(void) {
             bgw_ptr->r_no_1++;
             effect_E6_init(38);
         }
+        /* fall through */
     case 2:
         if (bgw_ptr->xy[0].disp.pos > 0x1A0) {
             bgw_ptr->xy[0].cal += bgw_ptr->speed_x;
@@ -217,6 +219,7 @@ void end_901_0000(void) {
         bgw_ptr->r_no_1++;
         bgw_ptr->abs_x = bgw_ptr->xy[0].disp.pos = 0x200;
         bgw_ptr->abs_y = bgw_ptr->xy[1].disp.pos = 0;
+        /* fall through */
     case 1:
         end_scn_pos_set(1);
         end_bg_pos_hosei(1);

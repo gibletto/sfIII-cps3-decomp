@@ -58,6 +58,7 @@ void effect_G6_move(WORK_Other* ewk) {
         ewk->wu.mvxy.a[1].sp *= 256;
         ewk->wu.disp_flag = ewk->wu.now_koc / 256;
         ewk->wu.now_koc &= 0xFF;
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;

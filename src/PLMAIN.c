@@ -369,6 +369,7 @@ void sag_normal(PLW* wk) {
             if (wk->wu.routine_no[1] == PLAYER_ATTACK) {
                 break;
             }
+            /* fall through */
         default:
             wk->sa->saeff_ok = 0;
             wk->sa->sa_rno = SA_NONE;
@@ -420,6 +421,7 @@ void sag_timer(PLW* wk) {
             if (wk->wu.routine_no[1] == PLAYER_ATTACK) {
                 break;
             }
+            /* fall through */
         default:
             wk->sa->saeff_ok = 0;
             wk->sa->sa_rno = SA_NONE;

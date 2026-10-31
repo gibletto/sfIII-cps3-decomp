@@ -71,6 +71,7 @@ void effect_34_move(WORK_Other* ewk) {
         ewk->wu.routine_no[2] = R2_WAIT;
         ewk->wu.routine_no[3] = R3_WAIT;
         ewk->wu.routine_no[0]++;
+        /* fall through */
     case R0_MOVE:
         if (ewk->wu.dead_f == 1) {
             ewk->wu.routine_no[0]++;

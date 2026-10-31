@@ -91,8 +91,7 @@ void eff85_0100(WORK_Other* ewk) {
 
 
 
-void eff85_0200(WORK_Other* ewk)
-{
+void eff85_0200(WORK_Other* ewk) {
     all_cgps_put_back(&ewk->wu);
     push_effect_work(&ewk->wu);
 }

@@ -97,6 +97,7 @@ void effect_27_move(WORK_Other* ewk) {
         set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         oya = (WORK_Other*)ewk->my_master;
         ewk->wu.old_rno[3] = oya->wu.routine_no[1];
+        /* fall through */
     case R0_MOVE:
         if (compel_dead_check(ewk)) {
             ewk->wu.routine_no[0] = R0_KILL;

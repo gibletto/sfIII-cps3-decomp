@@ -23,8 +23,7 @@ u16 num_font_code;  /* 0206CDC4 */
 u32 palette_base;  /* 0206CDC8 */
 
 
-void tilemap_chunk_copy_16b(s16 *dst, char *src, s32 chunks)
-{
+void tilemap_chunk_copy_16b(s16 *dst, char *src, s32 chunks) {
     register s32 j;
     register s32 i;
     for (i = 0; i < chunks; i++) {
@@ -37,15 +36,13 @@ void tilemap_chunk_copy_16b(s16 *dst, char *src, s32 chunks)
 }
 
 /* provisional name */
-void palette_bank_set(s32 offset)
-{
+void palette_bank_set(s32 offset) {
     palette_base = offset + COLOR_RAM;
     *(volatile u16 *)(SS_REG + 0x24) = (palette_base >> 10) & 0xFF;
 }
 
 /* provisional name */
-void palette_write(s32 offset, const u16 *src, s32 count)
-{
+void palette_write(s32 offset, const u16 *src, s32 count) {
     register s32 i;
     register u16 *dst;
     dst = (u16 *)(offset + (s32)palette_base);
@@ -275,8 +272,10 @@ void tilemap_print_hex_block(u16 x, u16 y, u16 attr, u32 value, u16 digits, u16 
                     case 1:
                         p[0] = ' ';
                         p[1] = attr;
+                        /* fall through */
                     case 2:
                         p += 2;
+                        /* fall through */
                     case 3:
                         break;
                     default:
@@ -332,8 +331,10 @@ void tilemap_print_hex(u16 x, u16 y, u16 attr, u32 value, u16 digits, u16 mode) 
                     case 1:
                         p[0] = ' ';
                         p[1] = attr;
+                        /* fall through */
                     case 2:
                         p += 2;
+                        /* fall through */
                     case 3:
                         break;
                     default:

@@ -237,6 +237,7 @@ void remake_mvxy_PoSB(WORK* wk) {
 
 
 
+/* provisional name */
 void setup_air_paring_mvxy(WORK* wk) {
     switch (((wk->mvxy.a[1].sp < 0) * 2) + (wk->mvxy.a[1].sp > 0)) {
     case 1:
@@ -565,6 +566,7 @@ void cal_dm_vital_gauge_hosei(PLW* wk) {
 
 
 
+/* provisional name */
 s16 get_sa_gauge_len(s16 id) {
     return plw[id].sa->gauge_len;
 }
@@ -722,7 +724,7 @@ s16 asag;
         wk->gauge.s.h += asag;
         wk->gauge.s.l = -1;
         if (wk->gauge.s.h > wk->gauge_len) {
-            wk->store += 1;
+            wk->store++;
             if (wk->store < wk->store_max) {
                 wk->gauge.s.h -= wk->gauge_len;
             } else {
@@ -867,6 +869,7 @@ void setup_lvdir_after_autodir(PLW* wk) {
 
 
 
+/* provisional name */
 s16 gauge_rank_value(s16 v) {
     s16 i;
 
