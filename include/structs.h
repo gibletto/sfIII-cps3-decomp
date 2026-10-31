@@ -1034,42 +1034,6 @@ typedef struct {
     void (*fn[3])();
 } OBJ_JMP_TBL;
 
-typedef struct {
-    u8 Shot[8];
-    u8 Vibration;
-    u8 free[3];
-} _PAD_INFOR;
-
-typedef struct {
-    s8 contents[4][8];
-} _EXTRA_OPTION;
-
-struct _SAVE_W {
-    _PAD_INFOR Pad_Infor[2];
-    u8 Difficulty;
-    s8 Time_Limit;
-    u8 Battle_Number[2];
-    u8 Damage_Level;
-    u8 Handicap;
-    u8 Partner_Type[2];
-    s8 Adjust_X;
-    s8 Adjust_Y;
-    u8 Screen_Size;
-    u8 Screen_Mode;
-    u8 GuardCheck;
-    u8 Auto_Save;
-    u8 AnalogStick;
-    u8 BgmType;
-    u8 SoundMode;
-    u8 BGM_Level;
-    u8 SE_Level;
-    u8 Extra_Option;
-    u8 PL_Color[2][20];
-    _EXTRA_OPTION extra_option;
-    RANK_DATA Ranking[20];
-    u32 sum;
-};
-
 typedef union {
     s32 dy;
     LoHi16 ry;
@@ -1174,112 +1138,6 @@ typedef struct {
 } EXPLEM;
 
 typedef struct {
-    s8 be;
-    u8 c_mode;
-    u16 total;
-    u16* handle;
-    s32 ixNum1st;
-    u8* srcAdrs;
-    u32 srcSize;
-} Palette;
-
-typedef union {
-    u32 b32;
-    u16 b16[2];
-    u8 b8[4];
-} TextureHandle;
-
-typedef struct {
-    s8 be;
-    u8 flags;
-    s16 arCnt;
-    s16 arInit;
-    u16 total;
-    TextureHandle* handle;
-    s32 ixNum1st;
-    u16 textures;
-    u16 accnum;
-    u32* offset;
-    u8* srcAdrs;
-    size_t srcSize;
-} Texture;
-
-typedef struct {
-    Texture* tex;
-    Palette* pal;
-} PPGDataList;
-
-typedef struct {
-    s32 x16;
-    s32 x32;
-    u16 x16_free[1024];
-    u16 x32_free[640];
-} TexturePoolFree;
-
-typedef struct {
-    s32 x16;
-    s32 x32;
-    u16 x16_used[1024];
-    u16 x32_used[640];
-} TexturePoolUsed;
-
-typedef struct {
-    u16 x16_map[4][16];
-    u8 x32_map[10][8];
-} PatternMap;
-
-typedef union {
-    u32 code;
-    struct {
-        u16 group;
-        u16 offset;
-    } parts;
-} PatternCode;
-
-typedef struct {
-    s16 time;
-    s16 state;
-    PatternCode cs;
-} PatternState;
-
-typedef struct {
-    s16 curr_disp;
-    s16 time;
-    PatternCode cg;
-    s16 x16;
-    s16 x32;
-    PatternMap map;
-} PatternInstance;
-
-typedef struct {
-    s16 kazu;
-    PatternInstance* adr[64];
-    PatternInstance patt[64];
-} PatternCollection;
-
-typedef struct {
-    s32 mltnum16;
-    s32 mltnum32;
-    s32 mltnum;
-    s32 mltgidx16;
-    s32 mltgidx32;
-    s32 mltcshtime16;
-    s32 mltcshtime32;
-    PatternState* mltcsh16;
-    PatternState* mltcsh32;
-    u8* mltbuf;
-    Texture tex;
-    PPGDataList texList;
-    u32 attribute;
-    PatternCollection* cpat;
-    TexturePoolFree* tpf;
-    TexturePoolUsed* tpu;
-    u8 id;
-    u8 ext;
-    s16 mode;
-} MultiTexture;
-
-typedef struct {
     s16 hx;
     s16 hy;
     s16 hz;
@@ -1289,7 +1147,7 @@ typedef struct {
     s8 sel_col;
     s8 dspf;
     s8 ichi;
-    s8 mts;
+    s8 kage_no;
     s16 chix;
 } PLEF;
 
@@ -1764,10 +1622,10 @@ typedef struct {
 } SPRITE_LIST;
 
 typedef struct {
-    u32 w0;
-    u32 w1;
-    u32 w2;
-} POLY_LINE;
+    u32 ctrl;
+    u32 dst;
+    u32 src;
+} CHR_DMA;
 
 struct _TASK {
     void (*func_adrs)();
@@ -1943,15 +1801,15 @@ typedef struct {
 } SPR16;
 
 typedef struct {
-    u16 a_lo;
-    u16 a_hi;
-    u16 b_lo;
-    u16 b_hi;
-    u16 c_lo;
-    u16 c_hi;
-    u16 attr;
-    u16 pri;
-} POLYCMD;
+    u16 src_lo;
+    u16 src_hi;
+    u16 dst_lo;
+    u16 dst_hi;
+    u16 len_lo;
+    u16 len_hi;
+    u16 fade_hi;
+    u16 fade_lo;
+} COL_DMA;
 
 typedef struct {
     s16 w0;

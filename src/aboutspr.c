@@ -305,7 +305,7 @@ s8 mode;
         if (cg_slot_tbl[set->slot].addr != 0) {
             return 1;
         }
-        polygon2d_submit_line(set->prep, 0, 0, 3);
+        chr_dma_request(set->prep, 0, 0, 3);
         if ((s16)(handle = simmram_block_alloc_10((set->size >> 5) + 1, 1)) == 0) {
             return 0;
         }
@@ -315,7 +315,7 @@ s8 mode;
         chunk = set->chunk;
         for (i = 0; i < set->count; i++) {
             adr = base + chunk[i].dst * 16;
-            err = polygon2d_submit_line(chunk[i].src, adr, chunk[i].size, mode);
+            err = chr_dma_request(chunk[i].src, adr, chunk[i].size, mode);
             if (err != 0) {
                 cg_slot_tbl[set->slot].addr = cg_slot_tbl[set->slot].handle = 0;
                 simmram_block_free_10(handle);
@@ -425,7 +425,7 @@ s32 trans_char_cells(WORK* work) {
     wk->spr.sprite_flip = wk->cg_flip ^ wk->rl_flag;
     return 1;
     reload:
-    polygon2d_submit_line(set->prep, 0, 0, 3);
+    chr_dma_request(set->prep, 0, 0, 3);
     if ((s16)(blk10 = simmram_block_alloc_10((set->size >> 5) + 1, 1)) == 0) {
         return 0;
     }
@@ -434,7 +434,7 @@ s32 trans_char_cells(WORK* work) {
     chunk = set->chunk;
     for (i = 0; i < set->count; i++) {
         adr = base + chunk[i].dst * 16;
-        err = polygon2d_submit_line(chunk[i].src, adr, chunk[i].size, wk->cgromtype);
+        err = chr_dma_request(chunk[i].src, adr, chunk[i].size, wk->cgromtype);
         if (err != 0) {
             simmram_block_free_10(blk10);
             return 0;

@@ -121,7 +121,7 @@ void Game_Task(void) {
                 }
                 frame_pass_count++;
                 task_ran_flag = 0;
-                poly_bank_flip();
+                dma_queue_flip();
             }
         }
     }
@@ -196,7 +196,7 @@ u32 task_stack_size[3] = {
 };
 s32 task_stack_num = 8;  /* 02000070 */
 u32* isp_vblank = (u32*)&task_stack[9][0];  /* 02000074 */
-u32* isp_sprite_poly = (u32*)&task_stack[10][0];  /* 02000078 */
+u32* isp_dma_end = (u32*)&task_stack[10][0];  /* 02000078 */
 u32* isp_irq_spare = (u32*)&task_stack[11][0];  /* 0200007C */
 /* 02000080 */
 /* stack pointers for two interrupts the game does not take (provisional name) */

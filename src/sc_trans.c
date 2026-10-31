@@ -662,8 +662,8 @@ void player_face(void) {
         x2 = 55;
         y2 = 3;
     }
-    polygon2d_submit_quad(0x027E5000 + (My_char[0] & 0x7F) * 0xC0 + Player_Color[0] * 32, 0x3FC00, 32, 0, 0, 0);
-    polygon2d_submit_quad(0x027E5000 + (My_char[1] & 0x7F) * 0xC0 + Player_Color[1] * 32, 0x3FE00, 32, 0, 0, 0);
+    col_dma_request(0x027E5000 + (My_char[0] & 0x7F) * 0xC0 + Player_Color[0] * 32, 0x3FC00, 32, 0, 0, 0);
+    col_dma_request(0x027E5000 + (My_char[1] & 0x7F) * 0xC0 + Player_Color[1] * 32, 0x3FE00, 32, 0, 0, 0);
     scfont_sqput_rev(x1, y1, 4, 2, 0, 0x100);
     scfont_sqput(x2, y2, 4, 2, 32, 0x104);
 }

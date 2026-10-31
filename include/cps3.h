@@ -34,7 +34,7 @@
 #define CRAM_BANK_REG   (VIDEO_REG + 0x86)  /* CHARACTER RAM bank shown in its 1 MB window */
 #define SIMM_BANK_REG   (VIDEO_REG + 0x88)  /* graphics SIMM bank shown at SIMM_WINDOW */
 #define DMA_STATUS_REG  (VIDEO_REG + 0xC)   /* video DMA status: a bit is set while its transfer runs */
-#define DMA_CTRL_REG    (VIDEO_REG + 0x82)  /* video DMA control */
+#define SPRITE_DMA_REG  (VIDEO_REG + 0x82)  /* sprite list DMA: writing 9 then 8 starts it */
 #define SOUND_KEY_ON    (SOUND_REG + 0x200) /* one bit per voice */
 #define EEP_ROM_WRITE   (EEP_ROM + 0x80)    /* a store to u16 n writes EEPROM word n (eeprom_write) */
 #define EEP_ROM_READ    (EEP_ROM + 0x100)   /* a load from u16 n fetches EEPROM word n (eeprom_read) */

@@ -1493,9 +1493,9 @@ void debug_bg_test_init(void) {
     bg_w.scno = use_scr2[4];
     load_any_color(10);
     gfx = &etc_bg_gfx_tbl[4];
-    polygon2d_submit_line(gfx->prep, 0, 0, 3);
+    chr_dma_request(gfx->prep, 0, 0, 3);
     mode = gfx->mode;
-    polygon2d_submit_line(gfx->src, bg_w.scroll_cg_adr, gfx->size, mode);
+    chr_dma_request(gfx->src, bg_w.scroll_cg_adr, gfx->size, mode);
     if (Game_setting.Screen_Mode) {
         bg_w.pos_offset = 0xF8;
     } else {
@@ -3740,7 +3740,7 @@ void debug_char_init(void) {
 
 /* provisional name */
 void debug_char_color_load(PLW* pl) {
-    polygon2d_submit_quad(dbg_char_color_tbl[pl->player_number], 0, 0x80, 0, 0, 0);
+    col_dma_request(dbg_char_color_tbl[pl->player_number], 0, 0x80, 0, 0, 0);
 }
 
 

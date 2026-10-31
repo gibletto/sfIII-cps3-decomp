@@ -1,9 +1,12 @@
 /*
- * POLY_QUE.C  Polygon transfer queue
+ * POLY_QUE.C  Character DMA and colour DMA queue
  *
- * poly_queue_init / poly_bank_flip set up the double-buffered transfer queue for the video DMA unit,
- * polygon2d_submit_line / _quad queue transfers (sending a request directly when the unit is idle) and
- * sprite_polygon_flush_queue drains the queue.
+ * The video hardware has two DMA units. The character DMA reads a list of requests from CHARACTER RAM and
+ * copies (or decompresses) graphics from the ROM into CHARACTER RAM. The colour DMA copies a block of colours
+ * from the ROM into COLOR RAM, scaling each colour by a fade value on the way.
+ * dma_queue_init / dma_queue_flip set up the double-buffered request queue, chr_dma_request queues a
+ * character transfer, col_dma_request sends a colour transfer (or queues it while a DMA is busy),
+ * col_dma_queue always queues one, and dma_queue_send starts the next waiting transfer.
  */
 
 #include "structs.h"
@@ -15,59 +18,59 @@
 #include "sys_config_3.h"
 #include "cps3.h"
 
-/* video DMA status: the sprite and polygon list transfers are busy */
+/* video DMA status: the character DMA (bit 1) or the colour DMA (bit 2) is busy */
 #define VIDEO_DMA_STATUS    (*(volatile u16*)DMA_STATUS_REG)
 #define VIDEO_DMA_BUSY      6
 
-/* polygon line list address (in CHARACTER RAM, in words) */
-#define POLY_LIST_LO        (*(volatile u16*)(VIDEO_REG + 0x96))
-#define POLY_LIST_HI        (*(volatile u16*)(VIDEO_REG + 0x98))
+/* character DMA request list address (in CHARACTER RAM, in words); bit 6 of the high word starts it */
+#define CHR_DMA_LIST_LO        (*(volatile u16*)(VIDEO_REG + 0x96))
+#define CHR_DMA_LIST_HI        (*(volatile u16*)(VIDEO_REG + 0x98))
 
-/* quad request registers */
-#define POLY_QUAD_A_HI      (*(volatile u16*)(VIDEO_REG + 0xA0))
-#define POLY_QUAD_A_LO      (*(volatile u16*)(VIDEO_REG + 0xA2))
-#define POLY_QUAD_B_HI      (*(volatile u16*)(VIDEO_REG + 0xA4))
-#define POLY_QUAD_B_LO      (*(volatile u16*)(VIDEO_REG + 0xA6))
-#define POLY_QUAD_ATTR      (*(volatile u16*)(VIDEO_REG + 0xA8))
-#define POLY_QUAD_PRI       (*(volatile u16*)(VIDEO_REG + 0xAA))
-#define POLY_QUAD_C_LO      (*(volatile u16*)(VIDEO_REG + 0xAC))
-#define POLY_QUAD_C_HI      (*(volatile u16*)(VIDEO_REG + 0xAE))    /* | POLY_QUAD_GO starts it */
-#define POLY_QUAD_GO        2
+/* colour DMA registers: source (ROM), destination (colour number), fade, length (colours) */
+#define COL_DMA_SRC_HI      (*(volatile u16*)(VIDEO_REG + 0xA0))
+#define COL_DMA_SRC_LO      (*(volatile u16*)(VIDEO_REG + 0xA2))
+#define COL_DMA_DST_HI      (*(volatile u16*)(VIDEO_REG + 0xA4))
+#define COL_DMA_DST_LO      (*(volatile u16*)(VIDEO_REG + 0xA6))
+#define COL_DMA_FADE_HI      (*(volatile u16*)(VIDEO_REG + 0xA8))
+#define COL_DMA_FADE_LO       (*(volatile u16*)(VIDEO_REG + 0xAA))
+#define COL_DMA_LEN_LO      (*(volatile u16*)(VIDEO_REG + 0xAC))
+#define COL_DMA_LEN_HI      (*(volatile u16*)(VIDEO_REG + 0xAE))    /* | COL_DMA_GO starts it */
+#define COL_DMA_GO        2
 
-#define POLY_COORD_MASK     0x1FFFFF
-#define POLY_SOURCE_MASK    0x3FFFFFF
+#define CHR_DMA_FIELD_MASK     0x1FFFFF
+#define CHR_DMA_SRC_MASK    0x3FFFFFF
 
-/* poly_dma_state */
-#define POLY_IDLE           0
-#define POLY_SENDING_LINES  1
-#define POLY_SENDING_QUADS  2
-#define POLY_SENDING_DIRECT 3   /* a quad sent straight to the registers */
+/* dma_state */
+#define DMA_IDLE           0
+#define DMA_SENDING_CHR  1
+#define DMA_SENDING_COL  2
+#define DMA_SENDING_DIRECT 3   /* a colour transfer sent straight to the registers */
 
-/* poly_order_kind[] and sprite_polygon_flush_queue's kind */
-#define POLY_KIND_LINE      1
-#define POLY_KIND_QUAD      2
+/* dma_order_kind[] and dma_queue_send's kind */
+#define DMA_KIND_CHR      1
+#define DMA_KIND_COL      2
 
-s32 poly_dma_state;  /* 0206A120 */
-s16 poly_reserve0;  /* 0206A124 */
-s16 poly_reserve1;  /* 0206A126 */
-POLY_LINE poly_line_buf[2][POLY_LINE_MAX];  /* 0206A128 */
-u32 poly_line_cnt[2];  /* 0206C120 */
-u32 poly_line_rd[2];  /* 0206C128 */
-POLYCMD poly_quad_buf[2][POLY_QUAD_MAX];  /* 0206C130 */
-u32 poly_quad_cnt[2];  /* 0206C530 */
-u32 poly_quad_rd[2];  /* 0206C538 */
-u32 poly_order_pos[2];  /* 0206C540 */
-u16 poly_order_kind[2][POLY_ORDER_MAX];  /* 0206C548 */
-s32 poly_wr_bank;  /* 0206CB1C */
-s32 poly_rd_bank;  /* 0206CB20 */
+s32 dma_state;  /* 0206A120 */
+s16 dma_reserve0;  /* 0206A124 */
+s16 dma_reserve1;  /* 0206A126 */
+CHR_DMA chr_dma_buf[2][CHR_DMA_MAX];  /* 0206A128 */
+u32 chr_dma_cnt[2];  /* 0206C120 */
+u32 chr_dma_rd[2];  /* 0206C128 */
+COL_DMA col_dma_buf[2][COL_DMA_MAX];  /* 0206C130 */
+u32 col_dma_cnt[2];  /* 0206C530 */
+u32 col_dma_rd[2];  /* 0206C538 */
+u32 dma_order_pos[2];  /* 0206C540 */
+u16 dma_order_kind[2][DMA_ORDER_MAX];  /* 0206C548 */
+s32 dma_wr_bank;  /* 0206CB1C */
+s32 dma_rd_bank;  /* 0206CB20 */
 
 
-u32 poly_buf_offset = 0;  /* 02007390 */
-s32 poly_cram_bank = 0;  /* 02007394 */
+u32 chr_dma_list_ofs = 0;  /* 02007390 */
+s32 chr_dma_list_bank = 0;  /* 02007394 */
 
 
 /* provisional name */
-void poly_queue_init(s32 offset) {
+void dma_queue_init(s32 offset) {
     s32 unused[2];
     if (VIDEO_DMA_STATUS & VIDEO_DMA_BUSY) {
         if (VIDEO_DMA_STATUS & 2) {
@@ -78,46 +81,46 @@ void poly_queue_init(s32 offset) {
             }
         }
     }
-    poly_dma_state = POLY_IDLE;
-    poly_reserve0 = 0;
-    poly_reserve1 = 0;
+    dma_state = DMA_IDLE;
+    dma_reserve0 = 0;
+    dma_reserve1 = 0;
     if (offset != -1) {
-        poly_cram_bank = (offset >> 20) & 7;
-        poly_buf_offset = offset;
+        chr_dma_list_bank = (offset >> 20) & 7;
+        chr_dma_list_ofs = offset;
     }
-    poly_wr_bank = 0;
-    poly_rd_bank = 1;
-    poly_line_cnt[0] = 0;
-    poly_line_cnt[1] = 0;
-    poly_quad_cnt[0] = 0;
-    poly_quad_cnt[1] = 0;
-    poly_line_rd[0] = 0;
-    poly_line_rd[1] = 0;
-    poly_quad_rd[0] = 0;
-    poly_quad_rd[1] = 0;
-    poly_order_pos[0] = 0;
-    poly_order_pos[1] = 0;
+    dma_wr_bank = 0;
+    dma_rd_bank = 1;
+    chr_dma_cnt[0] = 0;
+    chr_dma_cnt[1] = 0;
+    col_dma_cnt[0] = 0;
+    col_dma_cnt[1] = 0;
+    chr_dma_rd[0] = 0;
+    chr_dma_rd[1] = 0;
+    col_dma_rd[0] = 0;
+    col_dma_rd[1] = 0;
+    dma_order_pos[0] = 0;
+    dma_order_pos[1] = 0;
     *(volatile u16*)IRQ10_ACK = 0;
 }
 
 
 
 /* provisional name */
-void poly_bank_flip(void) {
+void dma_queue_flip(void) {
     s32 mask;
-    if (poly_line_cnt[poly_wr_bank] + poly_quad_cnt[poly_wr_bank] > 0) {
-        if (poly_line_cnt[(u32)poly_rd_bank] + poly_quad_cnt[(u32)poly_rd_bank] == 0) {
+    if (chr_dma_cnt[dma_wr_bank] + col_dma_cnt[dma_wr_bank] > 0) {
+        if (chr_dma_cnt[(u32)dma_rd_bank] + col_dma_cnt[(u32)dma_rd_bank] == 0) {
             mask = _builtin_get_imask();
             _builtin_set_imask(15);
-            poly_wr_bank++;
-            poly_wr_bank &= 1;
-            poly_rd_bank++;
-            poly_rd_bank &= 1;
-            poly_line_cnt[poly_wr_bank] = 0;
-            poly_quad_cnt[poly_wr_bank] = 0;
-            poly_line_rd[poly_wr_bank] = 0;
-            poly_quad_rd[poly_wr_bank] = 0;
-            poly_order_pos[poly_wr_bank] = 0;
+            dma_wr_bank++;
+            dma_wr_bank &= 1;
+            dma_rd_bank++;
+            dma_rd_bank &= 1;
+            chr_dma_cnt[dma_wr_bank] = 0;
+            col_dma_cnt[dma_wr_bank] = 0;
+            chr_dma_rd[dma_wr_bank] = 0;
+            col_dma_rd[dma_wr_bank] = 0;
+            dma_order_pos[dma_wr_bank] = 0;
             _builtin_set_imask(mask);
         }
     }
@@ -126,74 +129,77 @@ void poly_bank_flip(void) {
 
 
 /* provisional name */
-s32 polygon2d_submit_line(addr, y, x, kind)
-u32 addr;
-u32 y;
-u32 x;
-u8 kind;
+s32 chr_dma_request(src, dst, size, mode)
+u32 src;
+u32 dst;
+u32 size;
+u8 mode;
 {
-    register POLY_LINE* line;
-    if (poly_line_cnt[poly_wr_bank] >= POLY_LINE_MAX) {
+    register CHR_DMA* req;
+    if (chr_dma_cnt[dma_wr_bank] >= CHR_DMA_MAX) {
         return -1;
     }
-    line = &poly_line_buf[poly_wr_bank][poly_line_cnt[poly_wr_bank]];
-    if (kind) {
-        if (kind == 3) {
-            x = 127;
-            y = 0;
+    req = &chr_dma_buf[dma_wr_bank][chr_dma_cnt[dma_wr_bank]];
+    /* mode 0 copies, 1 and 2 decompress 6 and 8 bit graphics, 3 loads the decompression table */
+    if (mode) {
+        if (mode == 3) {
+            size = 127;
+            dst = 0;
         }
-        kind++;
+        mode++;
     }
-    if (kind == 4) {
-        line->w0 = (kind << 21) | (x & POLY_COORD_MASK);
+    if (mode == 4) {
+        req->ctrl = (mode << 21) | (size & CHR_DMA_FIELD_MASK);
     } else {
-        line->w0 = (((x << 1) & POLY_COORD_MASK) | (kind << 21)) + 1;
+        req->ctrl = (((size << 1) & CHR_DMA_FIELD_MASK) | (mode << 21)) + 1;
     }
-    line->w1 = (y >> 3) & POLY_COORD_MASK;
-    line->w2 = addr & POLY_SOURCE_MASK;
-    poly_line_cnt[poly_wr_bank]++;
-    poly_order_kind[poly_wr_bank][poly_order_pos[poly_wr_bank]] = POLY_KIND_LINE;
+    req->dst = (dst >> 3) & CHR_DMA_FIELD_MASK;
+    req->src = src & CHR_DMA_SRC_MASK;
+    chr_dma_cnt[dma_wr_bank]++;
+    dma_order_kind[dma_wr_bank][dma_order_pos[dma_wr_bank]] = DMA_KIND_CHR;
     return 0;
 }
 
 
 
 /* provisional name */
-s32 polygon2d_submit_quad(a, b, c, lo, hi, pri)
-u32 a;
-u32 b;
-u32 c;
-u16 lo;
-u16 hi;
-s16 pri;
+/* fade1..fade3: one fade value per colour channel; bit 6 turns the fade on, bit 5 fades towards white
+   instead of black, bits 0-4 are the level */
+s32 col_dma_request(src, dst, size, fade1, fade2, fade3)
+u32 src;
+u32 dst;
+u32 size;
+u16 fade1;
+u16 fade2;
+s16 fade3;
 {
-    register POLYCMD* cmd;
+    register COL_DMA* cmd;
     s32 unused;
-    if ((VIDEO_DMA_STATUS & VIDEO_DMA_BUSY) || poly_dma_state != POLY_IDLE) {
-        if (poly_quad_cnt[poly_wr_bank] >= POLY_QUAD_MAX) {
+    if ((VIDEO_DMA_STATUS & VIDEO_DMA_BUSY) || dma_state != DMA_IDLE) {
+        if (col_dma_cnt[dma_wr_bank] >= COL_DMA_MAX) {
             return -1;
         }
-        cmd = &poly_quad_buf[poly_wr_bank][poly_quad_cnt[poly_wr_bank]];
-        cmd->a_lo = a >> 1;
-        cmd->a_hi = ((a >> 1) & 0x7FF0000) >> 16;
-        cmd->b_lo = b >> 1;
-        cmd->b_hi = ((b >> 1) & 0x10000) >> 16;
-        cmd->c_lo = c >> 1;
-        cmd->c_hi = ((c >> 1) & 0x10000) >> 16;
-        cmd->attr = (hi << 8 | lo) & 0x7F7F;
-        cmd->pri = pri & 0x7F;
-        poly_quad_cnt[poly_wr_bank]++;
-        poly_order_kind[poly_wr_bank][poly_order_pos[poly_wr_bank]] = POLY_KIND_QUAD;
+        cmd = &col_dma_buf[dma_wr_bank][col_dma_cnt[dma_wr_bank]];
+        cmd->src_lo = src >> 1;
+        cmd->src_hi = ((src >> 1) & 0x7FF0000) >> 16;
+        cmd->dst_lo = dst >> 1;
+        cmd->dst_hi = ((dst >> 1) & 0x10000) >> 16;
+        cmd->len_lo = size >> 1;
+        cmd->len_hi = ((size >> 1) & 0x10000) >> 16;
+        cmd->fade_hi = (fade2 << 8 | fade1) & 0x7F7F;
+        cmd->fade_lo = fade3 & 0x7F;
+        col_dma_cnt[dma_wr_bank]++;
+        dma_order_kind[dma_wr_bank][dma_order_pos[dma_wr_bank]] = DMA_KIND_COL;
     } else {
-        poly_dma_state = POLY_SENDING_DIRECT;
-        POLY_QUAD_A_HI = ((a >> 1) & 0x7FF0000) >> 16;
-        POLY_QUAD_A_LO = a >> 1;
-        POLY_QUAD_B_HI = ((b >> 1) & 0x10000) >> 16;
-        POLY_QUAD_B_LO = b >> 1;
-        POLY_QUAD_ATTR = (hi << 8 | lo) & 0x7F7F;
-        POLY_QUAD_PRI = pri & 0x7F;
-        POLY_QUAD_C_LO = c >> 1;
-        POLY_QUAD_C_HI = ((c >> 1) & 0x10000) >> 16 | POLY_QUAD_GO;
+        dma_state = DMA_SENDING_DIRECT;
+        COL_DMA_SRC_HI = ((src >> 1) & 0x7FF0000) >> 16;
+        COL_DMA_SRC_LO = src >> 1;
+        COL_DMA_DST_HI = ((dst >> 1) & 0x10000) >> 16;
+        COL_DMA_DST_LO = dst >> 1;
+        COL_DMA_FADE_HI = (fade2 << 8 | fade1) & 0x7F7F;
+        COL_DMA_FADE_LO = fade3 & 0x7F;
+        COL_DMA_LEN_LO = size >> 1;
+        COL_DMA_LEN_HI = ((size >> 1) & 0x10000) >> 16 | COL_DMA_GO;
     }
     return 0;
 }
@@ -201,60 +207,60 @@ s16 pri;
 
 
 /* provisional name */
-s32 polygon2d_queue_quad(u32 a, u32 b, u32 c, u16 lo, u16 hi, s16 pri) {
-    register POLYCMD* cmd;
+s32 col_dma_queue(u32 src, u32 dst, u32 size, u16 fade1, u16 fade2, s16 fade3) {
+    register COL_DMA* cmd;
     s32 unused;
-    if (poly_quad_cnt[poly_wr_bank] >= POLY_QUAD_MAX) {
+    if (col_dma_cnt[dma_wr_bank] >= COL_DMA_MAX) {
         return -1;
     }
-    cmd = &poly_quad_buf[poly_wr_bank][poly_quad_cnt[poly_wr_bank]];
-    cmd->a_lo = a >> 1;
-    cmd->a_hi = ((a >> 1) & 0x7FF0000) >> 16;
-    cmd->b_lo = b >> 1;
-    cmd->b_hi = ((b >> 1) & 0x10000) >> 16;
-    cmd->c_lo = c >> 1;
-    cmd->c_hi = ((c >> 1) & 0x10000) >> 16;
-    cmd->attr = (hi << 8 | lo) & 0x7F7F;
-    cmd->pri = pri & 0x7F;
-    poly_quad_cnt[poly_wr_bank]++;
-    poly_order_kind[poly_wr_bank][poly_order_pos[poly_wr_bank]] = POLY_KIND_QUAD;
+    cmd = &col_dma_buf[dma_wr_bank][col_dma_cnt[dma_wr_bank]];
+    cmd->src_lo = src >> 1;
+    cmd->src_hi = ((src >> 1) & 0x7FF0000) >> 16;
+    cmd->dst_lo = dst >> 1;
+    cmd->dst_hi = ((dst >> 1) & 0x10000) >> 16;
+    cmd->len_lo = size >> 1;
+    cmd->len_hi = ((size >> 1) & 0x10000) >> 16;
+    cmd->fade_hi = (fade2 << 8 | fade1) & 0x7F7F;
+    cmd->fade_lo = fade3 & 0x7F;
+    col_dma_cnt[dma_wr_bank]++;
+    dma_order_kind[dma_wr_bank][dma_order_pos[dma_wr_bank]] = DMA_KIND_COL;
     return 0;
 }
 
 /* provisional name */
-void sprite_poly_queue_drain_try(void) {
-    if ((VIDEO_DMA_STATUS & VIDEO_DMA_BUSY) == 0 && poly_dma_state == POLY_IDLE) {
-        if (poly_line_cnt[poly_rd_bank] > 0) {
-            sprite_polygon_flush_queue(POLY_KIND_LINE);
-        } else if (poly_quad_cnt[poly_rd_bank] > 0) {
-            sprite_polygon_flush_queue(POLY_KIND_QUAD);
+void dma_queue_drain_try(void) {
+    if ((VIDEO_DMA_STATUS & VIDEO_DMA_BUSY) == 0 && dma_state == DMA_IDLE) {
+        if (chr_dma_cnt[dma_rd_bank] > 0) {
+            dma_queue_send(DMA_KIND_CHR);
+        } else if (col_dma_cnt[dma_rd_bank] > 0) {
+            dma_queue_send(DMA_KIND_COL);
         }
     }
 }
 
 
 
-/* Wait until the video DMA has finished with the sprite and polygon lists, then
-   send the waiting polygon queue: the line queue if it holds entries, otherwise
-   the quad queue.  A request in state 3 is simply dropped. */
+/* Wait until the video DMA units are idle, then send the next waiting transfer:
+   a character transfer if any is queued, otherwise a colour transfer.  A colour
+   transfer that was sent straight to the registers (state 3) needs nothing more. */
 /* provisional name */
-void sprite_poly_queue_drain_wait(void) {
+void dma_queue_drain_wait(void) {
     while (VIDEO_DMA_STATUS & VIDEO_DMA_BUSY) {
     }
-    switch (poly_dma_state) {
-    case POLY_SENDING_LINES:
-    case POLY_SENDING_QUADS:
-        poly_dma_state = POLY_IDLE;
-        if (poly_line_cnt[poly_rd_bank] > 0) {
-            sprite_polygon_flush_queue(POLY_KIND_LINE);
-        } else if (poly_quad_cnt[poly_rd_bank] > 0) {
-            sprite_polygon_flush_queue(POLY_KIND_QUAD);
+    switch (dma_state) {
+    case DMA_SENDING_CHR:
+    case DMA_SENDING_COL:
+        dma_state = DMA_IDLE;
+        if (chr_dma_cnt[dma_rd_bank] > 0) {
+            dma_queue_send(DMA_KIND_CHR);
+        } else if (col_dma_cnt[dma_rd_bank] > 0) {
+            dma_queue_send(DMA_KIND_COL);
         }
         break;
-    case POLY_SENDING_DIRECT:
-        poly_dma_state = POLY_IDLE;
+    case DMA_SENDING_DIRECT:
+        dma_state = DMA_IDLE;
         /* fall through */
-    case POLY_IDLE:
+    case DMA_IDLE:
     default:
         break;
     }
@@ -263,52 +269,52 @@ void sprite_poly_queue_drain_wait(void) {
 
 
 /* provisional name */
-void sprite_polygon_flush_queue(s32 kind) {
+void dma_queue_send(s32 kind) {
     union {
-        POLY_LINE* line;
-        POLYCMD* quad;
+        CHR_DMA* chr;
+        COL_DMA* col;
     } cmd;
-    POLY_LINE* out;
+    CHR_DMA* out;
     s32 i;
     s32 n;
     s32 unused;
     switch (kind) {
-    case POLY_KIND_LINE:
-        if (poly_line_cnt[poly_rd_bank] > POLY_LINE_MAX) {
-            n = POLY_LINE_MAX;
+    case DMA_KIND_CHR:
+        if (chr_dma_cnt[dma_rd_bank] > CHR_DMA_MAX) {
+            n = CHR_DMA_MAX;
         } else {
-            n = poly_line_cnt[poly_rd_bank];
+            n = chr_dma_cnt[dma_rd_bank];
         }
-        out = (POLY_LINE*)((poly_buf_offset & 0xFFFFF) + CHARACTER_RAM);
-        cram_bank_set(poly_cram_bank);
+        out = (CHR_DMA*)((chr_dma_list_ofs & 0xFFFFF) + CHARACTER_RAM);
+        cram_bank_set(chr_dma_list_bank);
         for (i = 0; i < n; i++) {
-            cmd.line = &poly_line_buf[poly_rd_bank][poly_line_rd[poly_rd_bank] + i];
-            out[i].w0 = cmd.line->w0;
-            out[i].w1 = cmd.line->w1;
-            out[i].w2 = cmd.line->w2;
-            poly_line_cnt[poly_rd_bank]--;
+            cmd.chr = &chr_dma_buf[dma_rd_bank][chr_dma_rd[dma_rd_bank] + i];
+            out[i].ctrl = cmd.chr->ctrl;
+            out[i].dst = cmd.chr->dst;
+            out[i].src = cmd.chr->src;
+            chr_dma_cnt[dma_rd_bank]--;
         }
-        poly_line_rd[poly_rd_bank] += n;
-        out[i].w0 = 0x01000000;
-        out[i].w1 = 0;
-        out[i].w2 = 0;
-        POLY_LIST_LO = ((u32)out - CHARACTER_RAM) >> 2;
-        POLY_LIST_HI = ((((u32)out - CHARACTER_RAM) >> 18) & 0x3F) | 0x40;
+        chr_dma_rd[dma_rd_bank] += n;
+        out[i].ctrl = 0x01000000;
+        out[i].dst = 0;
+        out[i].src = 0;
+        CHR_DMA_LIST_LO = ((u32)out - CHARACTER_RAM) >> 2;
+        CHR_DMA_LIST_HI = ((((u32)out - CHARACTER_RAM) >> 18) & 0x3F) | 0x40;
         cram_bank_restore();
         break;
-    case POLY_KIND_QUAD:
-        cmd.quad = &poly_quad_buf[poly_rd_bank][poly_quad_rd[poly_rd_bank]];
-        poly_dma_state = POLY_SENDING_QUADS;
-        POLY_QUAD_A_HI = cmd.quad->a_hi;
-        POLY_QUAD_A_LO = cmd.quad->a_lo;
-        POLY_QUAD_B_HI = cmd.quad->b_hi;
-        POLY_QUAD_B_LO = cmd.quad->b_lo;
-        POLY_QUAD_ATTR = cmd.quad->attr;
-        POLY_QUAD_PRI = cmd.quad->pri;
-        POLY_QUAD_C_LO = cmd.quad->c_lo;
-        POLY_QUAD_C_HI = cmd.quad->c_hi | POLY_QUAD_GO;
-        poly_quad_cnt[poly_rd_bank]--;
-        poly_quad_rd[poly_rd_bank]++;
+    case DMA_KIND_COL:
+        cmd.col = &col_dma_buf[dma_rd_bank][col_dma_rd[dma_rd_bank]];
+        dma_state = DMA_SENDING_COL;
+        COL_DMA_SRC_HI = cmd.col->src_hi;
+        COL_DMA_SRC_LO = cmd.col->src_lo;
+        COL_DMA_DST_HI = cmd.col->dst_hi;
+        COL_DMA_DST_LO = cmd.col->dst_lo;
+        COL_DMA_FADE_HI = cmd.col->fade_hi;
+        COL_DMA_FADE_LO = cmd.col->fade_lo;
+        COL_DMA_LEN_LO = cmd.col->len_lo;
+        COL_DMA_LEN_HI = cmd.col->len_hi | COL_DMA_GO;
+        col_dma_cnt[dma_rd_bank]--;
+        col_dma_rd[dma_rd_bank]++;
         /* fall through */
     default:
         break;

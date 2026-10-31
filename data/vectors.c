@@ -13,7 +13,7 @@
 
 #define NOT_USED  ((void (*)())0x00000400)   /* the BIOS ROM */
 
-extern void reset_entry(), exc_illegal_instr(), exc_illegal_slot(), exc_cpu_addr_err(), exc_dma_addr_err(), exc_trapa(), sprite_poly_queue_flush(), vblank_frame_dispatch(), irq_spare_ack_intr(), frt_compare_intr(), frt_overflow_intr();
+extern void reset_entry(), exc_illegal_instr(), exc_illegal_slot(), exc_cpu_addr_err(), exc_dma_addr_err(), exc_trapa(), dma_end_intr(), vblank_frame_dispatch(), irq_spare_ack_intr(), frt_compare_intr(), frt_overflow_intr();
 extern u8 boot_stack[4100];
 
 #pragma section VECT
@@ -88,7 +88,7 @@ void (*const vector_table[128])() = {
     NOT_USED,  /* 66 */
     NOT_USED,  /* 67 */
     NOT_USED,  /* 68 */
-    sprite_poly_queue_flush,  /* 69: interrupt level 10-11 */
+    dma_end_intr,  /* 69: interrupt level 10-11 */
     vblank_frame_dispatch,  /* 70: interrupt level 12-13: vblank, once a frame */
     irq_spare_ack_intr,  /* 71: interrupt level 14-15 */
     NOT_USED,  /* 72 */

@@ -3,7 +3,7 @@
 ; The exception traps (_exc_trapa, _exc_illegal_instr, _exc_illegal_slot, _exc_cpu_addr_err,
 ; _exc_dma_addr_err) record a cause code 0-4 in exception_code; exc_save_regs then dumps all CPU and
 ; control registers to exception_regs, switches to the system stack and jumps to cpu_hang_forever.
-; _sprite_poly_queue_flush is the sprite DMA end interrupt: it switches to the interrupt stack, masks interrupts and drains the polygon/sprite queue.
+; _dma_end_intr is the video DMA end interrupt: it switches to the interrupt stack, masks interrupts and starts the next queued character or colour DMA.
 ; _vblank_frame_dispatch is the vertical blank interrupt: it counts frames, updates the screen
 ; window, scroll, zoom and family registers, reads the switches, coins and card dispenser, calls
 ; the optional user hook, builds the sprite display list, runs the opening demo when active and
@@ -18,14 +18,14 @@
           .IMPORT     _sprite_dma_end_wait
           .IMPORT     _coin_chutes_update
           .IMPORT     _cpu_hang_forever
-          .IMPORT     _dma_src_ack_seq
+          .IMPORT     _sprite_dma_start
           .IMPORT     _task_sleep_tick
           .IMPORT     _oh_opening_demo
           .IMPORT     _scroll_layers_finalize_frame
           .IMPORT     _sound_driver_tick
           .IMPORT     _sprite_display_list_build
-          .IMPORT     _sprite_poly_queue_drain_try
-          .IMPORT     _sprite_poly_queue_drain_wait
+          .IMPORT     _dma_queue_drain_try
+          .IMPORT     _dma_queue_drain_wait
           .IMPORT     _coin_in_sound_request
           .IMPORT     _screen_window_regs_update
           .IMPORT     _zoom_regs_update
@@ -44,7 +44,7 @@
           .EXPORT     _exc_cpu_addr_err
           .EXPORT     _exc_illegal_instr
           .EXPORT     _frt_compare_intr
-          .EXPORT     _sprite_poly_queue_flush
+          .EXPORT     _dma_end_intr
           .EXPORT     _vblank_frame_dispatch
           .IMPORT     _vbl_frame_mask_tbl
           .IMPORT     _system_timer
@@ -52,7 +52,7 @@
           .IMPORT     _exception_code
           .IMPORT     _exception_regs
           .IMPORT     _isp_exception
-          .IMPORT     _isp_sprite_poly
+          .IMPORT     _isp_dma_end
           .IMPORT     _isp_vblank
           .IMPORT     _frt_tick_count
           .IMPORT     _coin_out_latch
@@ -183,9 +183,9 @@ p_isp_exception:
           .DATA.L     _isp_exception
 p_cpu_hang_forever:
           .DATA.L     _cpu_hang_forever
-_sprite_poly_queue_flush:
+_dma_end_intr:
           MOV.L       R0,@-R15
-          MOV.L       p_isp_sprite_poly,R0
+          MOV.L       p_isp_dma_end,R0
           MOV.L       @R0,R0
           MOV.L       R15,@-R0
           MOV         R0,R15
@@ -202,7 +202,7 @@ _sprite_poly_queue_flush:
           AND         R3,R0
           OR          #240,R0
           LDC         R0,SR
-          MOV.L       p_sprite_poly_queue_drain_wait,R2
+          MOV.L       p_dma_queue_drain_wait,R2
           JSR         @R2
           NOP
           MOV         #0,R1
@@ -224,10 +224,10 @@ k_sr_imask_clear:
           .DATA.W     H'FF0F
           .RES.W      1         ; fill
           .ALIGN      4
-p_isp_sprite_poly:
-          .DATA.L     _isp_sprite_poly
-p_sprite_poly_queue_drain_wait:
-          .DATA.L     _sprite_poly_queue_drain_wait
+p_isp_dma_end:
+          .DATA.L     _isp_dma_end
+p_dma_queue_drain_wait:
+          .DATA.L     _dma_queue_drain_wait
 k_irq10_ack:
           .DATA.L     IRQ10_ACK
 _vblank_frame_dispatch:
@@ -284,7 +284,7 @@ _vblank_frame_dispatch:
           MOV.W       k_sh2_frch,R3
           MOV.B       R14,@R3
           MOV.W       k_sh2_frcl,R2
-          MOV.L       p_sprite_poly_queue_drain_try,R1
+          MOV.L       p_dma_queue_drain_try,R1
           JSR         @R1
           MOV.B       R14,@R2
           MOV.L       p_Irl_Family,R3
@@ -298,7 +298,7 @@ _vblank_frame_dispatch:
           MOV.L       p_screen_window_regs_update,R3
           JSR         @R3
           MOV.W       R1,@R0
-          MOV.L       p_dma_src_ack_seq,R2
+          MOV.L       p_sprite_dma_start,R2
           JSR         @R2
           NOP
           MOV.L       p_scroll_layers_finalize_frame,R3
@@ -382,8 +382,8 @@ p_system_timer:
           .DATA.L     _system_timer
 p_frt_tick_count:
           .DATA.L     _frt_tick_count
-p_sprite_poly_queue_drain_try:
-          .DATA.L     _sprite_poly_queue_drain_try
+p_dma_queue_drain_try:
+          .DATA.L     _dma_queue_drain_try
 p_Irl_Family:
           .DATA.L     _Irl_Family
 p_coin_out_latch:
@@ -394,8 +394,8 @@ k_io_reg_8:
           .DATA.L     IO_REG+H'8
 p_screen_window_regs_update:
           .DATA.L     _screen_window_regs_update
-p_dma_src_ack_seq:
-          .DATA.L     _dma_src_ack_seq
+p_sprite_dma_start:
+          .DATA.L     _sprite_dma_start
 p_scroll_layers_finalize_frame:
           .DATA.L     _scroll_layers_finalize_frame
 p_zoom_regs_update:

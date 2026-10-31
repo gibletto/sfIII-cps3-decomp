@@ -1,9 +1,9 @@
 /*
- * SYS_CONFIG_3.C  Render list setup and the sprite DMA handshake
+ * SYS_CONFIG_3.C  Render list setup and the sprite list DMA
  *
  * Display management: init_render_lists sets up the sprite pools (SPR_POOL.C), the SIMM RAM free
- * lists (simmram.src), the polygon transfer queue (POLY_QUE.C), the fixed sprite lists (SPR_LIST.C) and the
- * sprite templates; dma_src_ack_seq and sprite_dma_end_wait drive the sprite DMA handshake.
+ * lists (simmram.src), the character and colour DMA queue (POLY_QUE.C), the fixed sprite lists (SPR_LIST.C) and the
+ * sprite templates; sprite_dma_start starts the sprite list DMA and sprite_dma_end_wait waits for it to finish.
  */
 
 #include "structs.h"
@@ -39,8 +39,8 @@ void init_render_lists(void) {
     sprite_pools_init();
     simmram_freelist_init();
     simmram_freelist_init_10();
-    render_list_primary_alloc();
-    poly_queue_init(simmram_slot_to_offset(simmram_block_alloc_10(2, 0)));
+    cram_blank_slot_alloc();
+    dma_queue_init(simmram_slot_to_offset(simmram_block_alloc_10(2, 0)));
     sprite_template_chain_init();
     sprite_list_clear(0);
     sprite_list_clear(1);
@@ -51,7 +51,7 @@ void init_render_lists(void) {
 
 
 /* provisional name */
-void render_list_primary_alloc(void) {
+void cram_blank_slot_alloc(void) {
     u16* p;
     s32 i;
     p = (u16*)(simmram_slot_to_offset(simmram_block_alloc_10(1, 0)) + CHARACTER_RAM);
@@ -96,7 +96,7 @@ void sprite_template_pool_init(void) {
         p += 3;
     }
     *p = 0x8000;
-    dma_src_ack_seq();
+    sprite_dma_start();
     sprite_dma_end_wait();
 }
 
@@ -128,16 +128,16 @@ void sprite_template_chain_init(void) {
 }
 
 /* provisional name */
-void dma_src_ack_seq(void) {
+void sprite_dma_start(void) {
     s32 unused;
-    *(volatile u16 *)DMA_CTRL_REG = 8;
-    *(volatile u16 *)DMA_CTRL_REG = 9;
-    *(volatile u16 *)DMA_CTRL_REG = 8;
-    *(volatile u16 *)DMA_CTRL_REG = 9;
-    *(volatile u16 *)DMA_CTRL_REG = 8;
-    *(volatile u16 *)DMA_CTRL_REG = 9;
-    *(volatile u16 *)DMA_CTRL_REG = 8;
-    *(volatile u16 *)DMA_CTRL_REG = 9;
+    *(volatile u16 *)SPRITE_DMA_REG = 8;
+    *(volatile u16 *)SPRITE_DMA_REG = 9;
+    *(volatile u16 *)SPRITE_DMA_REG = 8;
+    *(volatile u16 *)SPRITE_DMA_REG = 9;
+    *(volatile u16 *)SPRITE_DMA_REG = 8;
+    *(volatile u16 *)SPRITE_DMA_REG = 9;
+    *(volatile u16 *)SPRITE_DMA_REG = 8;
+    *(volatile u16 *)SPRITE_DMA_REG = 9;
 }
 
 /* Called from the vertical blank interrupt: wait until the sprite DMA has
@@ -146,5 +146,5 @@ void dma_src_ack_seq(void) {
 void sprite_dma_end_wait(void) {
     while (*(volatile u16 *)DMA_STATUS_REG & 1) {
     }
-    *(volatile u16 *)DMA_CTRL_REG = 0;
+    *(volatile u16 *)SPRITE_DMA_REG = 0;
 }

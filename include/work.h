@@ -71,7 +71,7 @@ extern const char * reg_name_tbl[16];
 extern u32 task_stack_size[3];
 extern s32 task_stack_num;
 extern u32* isp_vblank;             /* provisional name */
-extern u32* isp_sprite_poly;        /* provisional name */
+extern u32* isp_dma_end;        /* provisional name */
 extern u32* isp_irq_spare;          /* provisional name */
 extern void* isp_unused[2];
 extern u32* isp_exception;          /* provisional name */
@@ -279,8 +279,8 @@ extern u16 sprite_head_y;
 extern u16 sprite_pad_x;
 extern u16 sprite_pad_y;
 extern u32 spr_pool_busy;
-extern u32 poly_buf_offset;
-extern s32 poly_cram_bank;
+extern u32 chr_dma_list_ofs;
+extern s32 chr_dma_list_bank;
 extern FIFO32 task_req_queue;
 extern u8 task_req_buff[716];
 extern s16 test_rno;
@@ -1222,22 +1222,22 @@ extern s16 simm10_used[];
 #define RN3_START       0       /* the first step of a move routine: set up its animation */
 #define RN3_DONE        9       /* a win or lose pose's script has ended */
 
-#define POLY_LINE_MAX   0x155   /* polygon transfer queue entries per bank (poly_que.c) */
-#define POLY_QUAD_MAX   32
-#define POLY_ORDER_MAX  0x175
-extern s32 poly_dma_state;
-extern s16 poly_reserve0;
-extern s16 poly_reserve1;
-extern POLY_LINE poly_line_buf[2][POLY_LINE_MAX];
-extern u32 poly_line_cnt[2];
-extern u32 poly_line_rd[2];
-extern POLYCMD poly_quad_buf[2][POLY_QUAD_MAX];
-extern u32 poly_quad_cnt[2];
-extern u32 poly_quad_rd[2];
-extern u32 poly_order_pos[2];
-extern u16 poly_order_kind[2][POLY_ORDER_MAX];
-extern s32 poly_wr_bank;
-extern s32 poly_rd_bank;
+#define CHR_DMA_MAX   0x155   /* character DMA requests queued per bank (poly_que.c) */
+#define COL_DMA_MAX   32
+#define DMA_ORDER_MAX  0x175
+extern s32 dma_state;
+extern s16 dma_reserve0;
+extern s16 dma_reserve1;
+extern CHR_DMA chr_dma_buf[2][CHR_DMA_MAX];
+extern u32 chr_dma_cnt[2];
+extern u32 chr_dma_rd[2];
+extern COL_DMA col_dma_buf[2][COL_DMA_MAX];
+extern u32 col_dma_cnt[2];
+extern u32 col_dma_rd[2];
+extern u32 dma_order_pos[2];
+extern u16 dma_order_kind[2][DMA_ORDER_MAX];
+extern s32 dma_wr_bank;
+extern s32 dma_rd_bank;
 extern SPRITE_LIST sprite_list_w[4];
 extern u16 num_font_code;
 extern u32 palette_base;

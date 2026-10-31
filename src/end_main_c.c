@@ -284,8 +284,8 @@ void common_end_init00(s16 pl_num) {
     scr_cg_c_no = simmram_block_alloc_10(blocks, 1);
     bg_w.scroll_cg_adr = simmram_slot_to_offset(scr_cg_c_no);
     gfx = &end_bg_gfx_tbl[bg_w.bg_index];
-    polygon2d_submit_line(gfx->prep, 0, 0, 3);
-    polygon2d_submit_line(gfx->src, bg_w.scroll_cg_adr, gfx->size, 1);
+    chr_dma_request(gfx->prep, 0, 0, 3);
+    chr_dma_request(gfx->src, bg_w.scroll_cg_adr, gfx->size, 1);
     if (Game_setting.Screen_Mode) {
         bg_w.pos_offset = 0xF8;
     } else {

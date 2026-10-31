@@ -310,8 +310,8 @@ void effG0_akebono_setup(void) {
     ake_cg_c_no = simmram_block_alloc_10(104, 1);
     bg_w.ake_cg_adr = simmram_slot_to_offset(ake_cg_c_no);
     load_any_color(0x8C);
-    polygon2d_submit_line(0x013554A0, 0, 0, 3);
-    polygon2d_submit_line(0x01355520, bg_w.ake_cg_adr, 0x671F, 1);
+    chr_dma_request(0x013554A0, 0, 0, 3);
+    chr_dma_request(0x01355520, bg_w.ake_cg_adr, 0x671F, 1);
     ake_scrl_w[1].handle = simmram_big_page_alloc_40(1);
     ake_scrl_w[1].adrs = simmram_slot_addr(ake_scrl_w[1].handle);
     bg_w.bgw[0].bg_adrs_c_no = ake_scrl_w[1].handle;

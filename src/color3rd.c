@@ -79,7 +79,7 @@ void load_any_color(ix)
 u8 ix;
 {
     const XFER* p = &any_color_tbl[ix];
-    polygon2d_submit_quad(p->src, p->dst, p->size, 0, 0, 0);
+    col_dma_request(p->src, p->dst, p->size, 0, 0, 0);
 }
 
 
@@ -93,14 +93,14 @@ u8 b;
 {
     const XFER *xfer = &any_color_tbl[(u8)col_no];
 
-    polygon2d_submit_quad(xfer->src, xfer->dst, xfer->size, r + 0x40, g + 0x40, b + 0x40);
+    col_dma_request(xfer->src, xfer->dst, xfer->size, r + 0x40, g + 0x40, b + 0x40);
 }
 
 /* provisional name */
 void load_any_color_attr(u16 col_no, u8 r, u8 g, u8 b) {
     const XFER *xfer = &any_color_tbl[(u8)col_no];
 
-    polygon2d_submit_quad(xfer->src, xfer->dst, xfer->size, r, g, b);
+    col_dma_request(xfer->src, xfer->dst, xfer->size, r, g, b);
 }
 
 /* provisional name */
@@ -112,7 +112,7 @@ u8 b;
 {
     const XFER *xfer = &any_color_tbl[(u8)col_no];
 
-    polygon2d_queue_quad(xfer->src, xfer->dst, xfer->size, r, g, b);
+    col_dma_queue(xfer->src, xfer->dst, xfer->size, r, g, b);
 }
 
 
@@ -140,7 +140,7 @@ s16 c;
     const XFER* p = player_color_tbl[a][b][c];
     s8 i;
     for (i = 0; i < 12; p++, i++) {
-        col_trans_result = polygon2d_submit_quad(p->src, p->dst, p->size, 0, 0, 0);
+        col_trans_result = col_dma_request(p->src, p->dst, p->size, 0, 0, 0);
     }
 }
 
@@ -155,7 +155,7 @@ void load_player_color_fade(s16 a, s16 b, s16 c, u8 d, u8 e, u8 f) {
     const XFER* p = player_color_tbl[a][b][c];
     s8 i;
     for (i = 0; i < 12; i++, p++) {
-        col_trans_result = polygon2d_submit_quad(p->src, p->dst, p->size, d + 64, e + 64, f + 64);
+        col_trans_result = col_dma_request(p->src, p->dst, p->size, d + 64, e + 64, f + 64);
     }
 }
 
@@ -166,6 +166,6 @@ void load_char_eff_color(ix, slot)
 u16 ix;
 u16 slot;
 {
-    col_trans_result = polygon2d_submit_quad(char_eff_color_tbl[ix], slot * 0x400 + 0x5000, 0x400, 0, 0, 0);
+    col_trans_result = col_dma_request(char_eff_color_tbl[ix], slot * 0x400 + 0x5000, 0x400, 0, 0, 0);
 }
 

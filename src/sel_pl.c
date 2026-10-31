@@ -44,14 +44,14 @@
 #include "fighter.h"
 
 /* Sel_Sub_No[1] in PL_Sel_2nd, both playing */
-#define PS2_WAIT        0       /* until one or both have chosen a character */
-#define PS2_PLATES      1       /* move both plates into order */
+#define SEL2_WAIT        0       /* until one or both have chosen a character */
+#define SEL2_PLATES      1       /* move both plates into order */
 
 /* Sel_Sub_No[1] in PL_Sel_3rd */
-#define PS3_START       0       /* both choosing super arts: order the plates, else finish */
-#define PS3_CHALLENGER  1       /* until the challenger's character is chosen */
-#define PS3_BOTH        2       /* until that and the champion's super art are chosen */
-#define PS3_ARTS        3       /* (default) until the challenger's super art is chosen */
+#define SEL3_START       0       /* both choosing super arts: order the plates, else finish */
+#define SEL3_CHALLENGER  1       /* until the challenger's character is chosen */
+#define SEL3_BOTH        2       /* until that and the champion's super art are chosen */
+#define SEL3_ARTS        3       /* (default) until the challenger's super art is chosen */
 
 /* Face_No[1]: the face panel move (Move_Face_BG) */
 #define FACE_MOVE_IDLE  0       /* until a move is requested */
@@ -715,7 +715,7 @@ void PL_Sel_2nd(void) {
                 Order_Dir[3] = 4;
             }
             Sel_Sub_No[0]++;
-            Sel_Sub_No[1] = PS3_START;
+            Sel_Sub_No[1] = SEL3_START;
             Plate_Step[0] = 0;
             Plate_Step[1] = 0;
             Setup_Plates(Select_Status[1] - 1);
@@ -729,7 +729,7 @@ void PL_Sel_2nd(void) {
         break;
     default:
         switch (Sel_Sub_No[1]) {
-        case PS2_WAIT:
+        case SEL2_WAIT:
             if ((Sel_PL_Complete[0] < 0 && Sel_PL_Complete[1] != 0) || (Sel_PL_Complete[1] < 0 && Sel_PL_Complete[0] != 0)) {
                 Order[0] = 3;
                 Order_Timer[0] = 1;
@@ -761,7 +761,7 @@ void PL_Sel_2nd(void) {
                 Sel_Sub_No[1]++;
             }
             break;
-        case PS2_PLATES:
+        case SEL2_PLATES:
             Sel_Plate_Order_Step(Sel_Second_PL);
             Sel_Plate_Order_Step(Sel_First_PL);
             if (Plate_Step[0] == 99 && Plate_Step[1] == 99) {
@@ -862,7 +862,7 @@ s8 PL_id;
 
 void PL_Sel_3rd(void) {
     switch (Sel_Sub_No[1]) {
-    case PS3_START:
+    case SEL3_START:
         if (Select_Status[1] == SEL_BOTH) {
             Order[3] = 4;
             Order[New_Challenger + 1] = 2;
@@ -890,7 +890,7 @@ void PL_Sel_3rd(void) {
             Sel_Sub_No[0] = 4;
         }
         break;
-    case PS3_CHALLENGER:
+    case SEL3_CHALLENGER:
         if (Sel_Arts_Complete[Champion] < 0) {
             Order[Champion + 4] = 3;
             Order_Timer[Champion + 4] = 1;
@@ -917,7 +917,7 @@ void PL_Sel_3rd(void) {
         }
         Setup_Plates(New_Challenger);
         /* fall through */
-    case PS3_BOTH:
+    case SEL3_BOTH:
         if (Sel_Arts_Complete[Champion] < 0) {
             Order[Champion + 4] = 3;
             Order_Timer[Champion + 4] = 1;

@@ -25,7 +25,7 @@
 #include "efff6.h"
 
 void scrn_pos_clear(void);
-s32 polygon2d_submit_line();
+s32 chr_dma_request();
 s32 simmram_block_alloc_10(s32 blocks, s32 kind);
 s32 sprite_list_setup(s16 slot, s16 owner, const s16* data);
 u32 simmram_big_page_alloc_40(s32 kind);
@@ -95,8 +95,8 @@ void opning_init_00000(void) {
     bg_w.scroll_cg_adr = simmram_slot_to_offset(scr_cg_c_no);
     bg_w.scno = 1;
     load_any_color(0x82);
-    polygon2d_submit_line(0x00FB4000, 0, 0, 3);
-    polygon2d_submit_line(0x00FB4080, bg_w.scroll_cg_adr, 0xCD5F, 1);
+    chr_dma_request(0x00FB4000, 0, 0, 3);
+    chr_dma_request(0x00FB4080, bg_w.scroll_cg_adr, 0xCD5F, 1);
     if (Game_setting.Screen_Mode) {
         bg_w.pos_offset = 0xF8;
     } else {
@@ -672,8 +672,8 @@ void op_21_move(void) {
     scr_cg_c_no = simmram_block_alloc_10(0xCE, 1);
     bg_w.scroll_cg_adr = simmram_slot_to_offset(scr_cg_c_no);
     bg_w.scno = 1;
-    polygon2d_submit_line(0x00FB4000, 0, 0, 3);
-    polygon2d_submit_line(0x00FB4080, bg_w.scroll_cg_adr, 0xCD5F, 1);
+    chr_dma_request(0x00FB4000, 0, 0, 3);
+    chr_dma_request(0x00FB4080, bg_w.scroll_cg_adr, 0xCD5F, 1);
     if (Game_setting.Screen_Mode) {
         bg_w.pos_offset = 0xF8;
     } else {

@@ -52,12 +52,12 @@ void effect_03_move(WORK_Other* ewk) {
         } else {
             ewk->wu.my_col_code += plef[ewk->wu.type].color;
         }
-        if (plef[ewk->wu.type].mts) {
+        if (plef[ewk->wu.type].kage_no) {
             ewk->wu.kage_flag = 1;
-            ewk->wu.kage_hx = plef_kage_data[plef[ewk->wu.type].mts][0];
-            ewk->wu.kage_hy = plef_kage_data[plef[ewk->wu.type].mts][1];
-            ewk->wu.kage_prio = plef_kage_data[plef[ewk->wu.type].mts][2];
-            ewk->wu.kage_char = plef_kage_data[plef[ewk->wu.type].mts][3];
+            ewk->wu.kage_hx = plef_kage_data[plef[ewk->wu.type].kage_no][0];
+            ewk->wu.kage_hy = plef_kage_data[plef[ewk->wu.type].kage_no][1];
+            ewk->wu.kage_prio = plef_kage_data[plef[ewk->wu.type].kage_no][2];
+            ewk->wu.kage_char = plef_kage_data[plef[ewk->wu.type].kage_no][3];
         }
         set_char_move_init(&ewk->wu, 0, plef[ewk->wu.type].chix);
         if (plef[ewk->wu.type].ichi) {
