@@ -60,7 +60,7 @@ void effect_16_move(WORK_Other* ewk) {
         break;
     case R0_KILL:
     default:
-        all_cgps_put_back(ewk);
+        all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
         break;
     }
@@ -89,7 +89,7 @@ s32 effect_16_init(s16 type) {
 
 
 /* provisional name */
-/* every type at once; nothing calls it */
+/* Unreferenced: create every type at once. */
 s32 effect_16_all_init(void) {
     if (test_flag) {
         return 0;

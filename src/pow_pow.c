@@ -66,21 +66,21 @@ extern const s8 Pow_Control_Data[8][3];         /* provisional name */
 
 
 void cal_damage_vitality(PLW* as, PLW* ds) {
-    u8 xx = as->wu.att.pow;
-    s16 power = Damage_Data_Ptr[as->player_number][xx].power;
-    s8 col = Damage_Data_Ptr[as->player_number][xx].rate_col;
-    s16 yy = Pow_Control_Data[Round_Level][col];
-    ds->wu.dm_vital = power * yy / 100;
+    u8 att_pow = as->wu.att.pow;
+    s16 power = Damage_Data_Ptr[as->player_number][att_pow].power;
+    s8 col = Damage_Data_Ptr[as->player_number][att_pow].rate_col;
+    s16 rate = Pow_Control_Data[Round_Level][col];
+    ds->wu.dm_vital = power * rate / 100;
 }
 
 
 
 void cal_damage_vitality_eff(WORK_Other* as, PLW* ds) {
-    u8 xx = as->wu.att.pow;
-    s16 power = Damage_Data_Ptr[((PLW*)as)->player_number][xx].power;
-    s8 col = Damage_Data_Ptr[((PLW*)as)->player_number][xx].rate_col;
-    s16 yy = Pow_Control_Data[Round_Level][col];
-    ds->wu.dm_vital = power * yy / 100;
+    u8 att_pow = as->wu.att.pow;
+    s16 power = Damage_Data_Ptr[((PLW*)as)->player_number][att_pow].power;
+    s8 col = Damage_Data_Ptr[((PLW*)as)->player_number][att_pow].rate_col;
+    s16 rate = Pow_Control_Data[Round_Level][col];
+    ds->wu.dm_vital = power * rate / 100;
 }
 
 void Additinal_Score_DM(wk, ix)

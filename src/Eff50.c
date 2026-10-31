@@ -195,7 +195,7 @@ s32 effect_50_init(s16 player) {
         ewk->wu.dir_timer = delay;
         ewk->wu.char_index = 0;
         ewk->wu.dir_step = chars[i];
-        *ewk->wu.char_table = sel_pl_char_table;
+        ewk->wu.char_table[0] = sel_pl_char_table;
         ewk->master_id = i;
         ewk->wu.mvxy.a[0].sp = speed;
         ewk->wu.mvxy.d[0].sp = accel;

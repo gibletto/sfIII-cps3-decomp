@@ -78,6 +78,7 @@ s8 coin_count_4p = 0;
 u8 coin_in_flag = 0;
 u8 coin_out_latch = 0;
 
+/* By coin chute (player 1 to 4): its chute work, switch words, credit count and coin count. */
 COINCHUTE* coin_chute_tbl[4] = {
     &coin_chute1_w,
     &coin_chute2_w,
@@ -194,18 +195,18 @@ void coin_credit_add(s8 n, s8 m) {
 
 /* provisional name */
 void coin_counter_drive(s8 n) {
-    COINCHUTE* p;
-    s8* q;
-    p = coin_chute_tbl[n];
-    q = coin_count_ptr_tbl[n];
-    if (p->lockout) {
-        p->lockout = p->lockout - 1;
-        if (p->lockout == 0x20) {
+    COINCHUTE* chute;
+    s8* count;
+    chute = coin_chute_tbl[n];
+    count = coin_count_ptr_tbl[n];
+    if (chute->lockout) {
+        chute->lockout = chute->lockout - 1;
+        if (chute->lockout == 0x20) {
             coin_out_latch &= coin_counter_bit_tbl[0];
         }
-    } else if (*q != 0) {
-        *q = *q - 1;
-        p->lockout = 0x40;
+    } else if (*count != 0) {
+        *count = *count - 1;
+        chute->lockout = 0x40;
         coin_out_latch |= coin_counter_bit_tbl[1];
     }
 }
@@ -235,6 +236,8 @@ void coin_lock_release(s8 chute) {
 
 
 
+/* Locks out coins at one chute (0 to 3), or at all four for any other value, by clearing its bit in
+   coin_out_latch. */
 /* provisional name */
 void coin_lock_set(chute)
 s8 chute;

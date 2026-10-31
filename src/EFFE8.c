@@ -66,16 +66,16 @@ void effect_E8_move(WORK_Other* ewk) {
         break;
     default:
         if (ewk->wu.old_rno[3]) {
-            all_cgps_put_back(ewk);
+            all_cgps_put_back(&ewk->wu);
         }
-        push_effect_work((WORK*)ewk);
+        push_effect_work(&ewk->wu);
         break;
     }
 }
 
 
 
-/* done_rl in WORK, no metamorphose colour swap */
+/* Keeps done_rl in WORK; there is no metamorphose colour swap. */
 void effe8_zanzou_process(WORK_Other* ewk, PLW* mwk) {
     ewk->wu.position_x = zanzou_table[ewk->master_id][ewk->wu.type].pos_x;
     ewk->wu.position_y = zanzou_table[ewk->master_id][ewk->wu.type].pos_y;

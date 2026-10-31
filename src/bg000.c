@@ -188,32 +188,32 @@ void ake_Family_Set(void) {
 
 void Bg_Family_Set_2(void) {
     s32 i;
-    s32 a, b, x, y;
+    s32 fam_x, fam_y, x, y;
     for (i = 0; i < bg_w.scno; i++) {
         x = bg_w.bgw[i].position_x;
         y = bg_w.bgw[i].position_y;
         y += 12;
         Scrn_Move_Set(i, x, y);
-        a = -x & 0x3FF;
-        b = (0x300 - (y & 0x3FF)) & 0x3FF;
-        Family_Set_W(i + 1, a, b);
+        fam_x = -x & 0x3FF;
+        fam_y = (0x300 - (y & 0x3FF)) & 0x3FF;
+        Family_Set_W(i + 1, fam_x, fam_y);
     }
 }
 
 
 
 /* provisional name */
-/* Bg_Family_Set_2 without the 12-dot drop */
+/* Bg_Family_Set_2 without the 12-dot drop. */
 void Bg_Family_Set_3(void) {
     s32 i;
-    s32 a, b, x, y;
+    s32 fam_x, fam_y, x, y;
     for (i = 0; i < bg_w.scno; i++) {
         x = bg_w.bgw[i].position_x;
         y = bg_w.bgw[i].position_y;
         Scrn_Move_Set(i, x, y);
-        a = -x & 0x3FF;
-        b = (0x300 - (y & 0x3FF)) & 0x3FF;
-        Family_Set_W(i + 1, a, b);
+        fam_x = -x & 0x3FF;
+        fam_y = (0x300 - (y & 0x3FF)) & 0x3FF;
+        Family_Set_W(i + 1, fam_x, fam_y);
     }
 }
 
@@ -518,7 +518,7 @@ s32 zoom_frame_judge(void) {
     PLW* p2;
     s16 left;
     s16 right;
-    s16 work;
+    s16 gap;
     bg_w.frame_flag = 0;
     if (bg_w.bgw[1].wxy[0].disp.pos <= bg_w.bgw[1].l_limit2 ||
         bg_w.bgw[1].wxy[0].disp.pos >= bg_w.bgw[1].r_limit2) {
@@ -534,8 +534,8 @@ s32 zoom_frame_judge(void) {
         left = p2->wu.scr_mv_x;
         right = p1->wu.scr_mv_x;
     }
-    work = right - left;
-    if (work > 368) {
+    gap = right - left;
+    if (gap > 368) {
         return 2;
     }
     return 1;
@@ -618,7 +618,7 @@ zoom_check:
 
 /* provisional name */
 /* An earlier frame judgement on the two players' distance alone. */
-/* called with bg_f_x, which it does not use */
+/* An earlier frame judgement on the two players' distance alone; it is called with bg_f_x, which it does not use. */
 s32 zoom_frame_judge_dist(s16 f) {
     s16 right;
     s32 left;
@@ -653,8 +653,8 @@ s32 zoom_frame_judge_dist(s16 f) {
 
 
 /* provisional name */
-/* the zoom test: zooms the frame one step by the players' distance and shows FRAME UP / FRAME DOWN while
-   test switch bit 8 is held */
+/* The zoom test: zoom the frame one step by the players' distance and show FRAME UP / FRAME DOWN while
+   test switch bit 8 is held. */
 void zoom_width_test(void) {
     s32 f;
     if (Game_setting.Screen_Mode) {
@@ -713,7 +713,7 @@ void zoom_width_test(void) {
 
 
 /* provisional name */
-/* the zoom centre from layer 1's offset: bg_deff_type 0 (none), 1 (right) or 2 (left) */
+/* The zoom centre from layer 1's offset: bg_deff_type 0 (none), 1 (right) or 2 (left). */
 void zoom_center_set(void) {
     s16 d;
     bg_zoom_old_x = bg_w.bgw[1].xy[0].disp.pos;
@@ -822,7 +822,7 @@ s32 get_height_position(void) {
 
 
 /* provisional name */
-/* an empty routine (unreferenced) */
+/* An empty routine (unreferenced). */
 void bg_position_dummy(void) {}
 
 
@@ -1024,7 +1024,7 @@ fill_top:
 
 
 /* provisional name */
-/* fixed line scroll for layer 0 (bgst140) */
+/* Fixed line scroll for layer 0 (bgst140). */
 void suzi_line_fix_set(void) {
     s32* line;
     u16* dst;
@@ -1281,12 +1281,10 @@ void bg_etc_scr_write(s16 n) {
     t = bg_etc_cell_tbl[n][0];
     attr += t->attr;
     for (i = 0; i < bg_w.scno; i++) {
-        j = 0;
-        while (j < etc_bg_cell_cnt_tbl[n][i]) {
+        for (j = 0; j < etc_bg_cell_cnt_tbl[n][i]; j++) {
             t = bg_etc_cell_tbl[n][i];
             t += j;
             bg_cell_write(i, t->ofs, t->cell, etc_bg_cg_src_tbl[n], 0, attr);
-            j++;
         }
     }
 }
@@ -1384,7 +1382,7 @@ s32 dy;
 
 
 
-/* moves the base layer right by d steps (at most max_x), stopping at r_limit2 */
+/* Move the base layer right by d steps (at most max_x), stopping at r_limit2. */
 void x_right_check(s16 d) {
     s32 speed_w;
     bg_w.scr_stop &= 0xFFFC;
@@ -1403,7 +1401,7 @@ void x_right_check(s16 d) {
 
 
 
-/* moves the base layer left by -d steps (at most max_x), stopping at l_limit2 */
+/* Move the base layer left by -d steps (at most max_x), stopping at l_limit2. */
 void x_left_check(s16 d) {
     s32 speed_w;
     bg_w.scr_stop &= 0xFFFC;
@@ -1422,8 +1420,8 @@ void x_left_check(s16 d) {
 
 
 
-/* follows the players: far apart, the layer centres on them; otherwise it scrolls when one comes within
-   68 dots of a screen edge */
+/* Follow the players: far apart, the layer centres on them; otherwise it scrolls when one comes within
+   68 dots of a screen edge. */
 void bg_base_x_move_sub(void) {
     s16 work;
     s16 left;
@@ -1499,7 +1497,7 @@ void bg_base_x_move_check(void) {
 
 
 
-/* turn the players' positions into a camera request and, while the background is chasing, apply it */
+/* Turn the players' positions into a camera request and, while the background is chasing, apply it. */
 void bg_chase_move(void)
 {
     chase_start_check();
@@ -1511,8 +1509,8 @@ void bg_chase_move(void)
 
 
 void chase_start_check(void) {
-    s16 work;
-    s16 work2;
+    s16 ended;
+    s16 now_clear;
     if (zoom_request_flag & 0xF00) {
         if (chase_x != scr_req_x) {
             chase_x = scr_req_x;
@@ -1528,10 +1526,10 @@ void chase_start_check(void) {
             bg_w.old_chase_flag = 1;
         }
     } else {
-        work = zoom_req_flag_old & 0xF00;
-        work2 = ~(zoom_request_flag & 0xF00);
-        work &= work2;
-        if (work) {
+        ended = zoom_req_flag_old & 0xF00;
+        now_clear = ~(zoom_request_flag & 0xF00);
+        ended &= now_clear;
+        if (ended) {
             bg_w.chase_flag |= 2;
             bg_w.chase_flag &= 0xFFFE;
             chase_x = bgw_ptr->xy[0].disp.pos;
@@ -1555,10 +1553,10 @@ void chase_start_check(void) {
             cal_bg_speed_data_y(bgw_ptr->fam_no, chase_time_y, chase_y);
         }
     } else {
-        work = zoom_req_flag_old & 0xF000;
-        work2 = ~(zoom_request_flag & 0xF000);
-        work &= work2;
-        if (work) {
+        ended = zoom_req_flag_old & 0xF000;
+        now_clear = ~(zoom_request_flag & 0xF000);
+        ended &= now_clear;
+        if (ended) {
             bg_w.chase_flag |= 0x20;
             bg_w.chase_flag &= 0xFFEF;
             chase_y = bgw_ptr->xy[1].disp.pos;
@@ -2013,7 +2011,7 @@ s16 prio;
 
 
 /* provisional name */
-/* the CAPCOM logo colour steps on layer 0 */
+/* Step the CAPCOM logo colours on layer 0. */
 s16 capcom_logo_anim(void) {
     s16 ret = 0;
     switch (bg_w.bgw[0].r_no_1) {

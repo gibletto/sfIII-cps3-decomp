@@ -75,7 +75,7 @@ s32 effect_B7_init(s8 pl) {
         ewk->wu.xyz[1].cal = 104 << 16;
         ewk->wu.xyz[0].disp.low = 0;
         ewk->wu.char_index = 7;
-        *ewk->wu.char_table = etc_char_table;
+        ewk->wu.char_table[0] = etc_char_table;
         if (i) {
             ewk->wu.old_rno[0] = name_wk[pl].rank_in * 2 + 1;
             ewk->wu.position_x = ewk->wu.xyz[0].disp.pos = 0x210;

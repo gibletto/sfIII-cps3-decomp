@@ -92,7 +92,7 @@ s16 dl;
     ewk->wu.xyz[0].disp.pos = wk->position_x;
     ewk->wu.xyz[1].disp.pos = wk->position_y;
     ewk->wu.position_z = wk->position_z + 1;
-    *ewk->wu.char_table = plef_char_table;
+    ewk->wu.char_table[0] = plef_char_table;
     return 0;
 }
 

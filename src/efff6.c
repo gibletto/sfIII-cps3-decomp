@@ -26,7 +26,7 @@
 
 
 
-/* advance the opening step counter */
+/* Advance the opening step counter. */
 void effect_F6_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
     case R1_INIT:
@@ -57,7 +57,7 @@ void effect_F6_move(WORK_Other* ewk) {
 
 
 
-/* the counter and effect F7 */
+/* Create the step counter of an opening scene and its six sprites (effect F7) when the scene starts. */
 s32 effect_F6_init(void) {
     WORK_Other* ewk;
     s16 ix;
@@ -65,7 +65,7 @@ s32 effect_F6_init(void) {
         return -1;
     }
     ewk = (WORK_Other*)frw[ix];
-    ewk->wu.id = 0x9C;
+    ewk->wu.id = 156;
     ewk->wu.be_flag = 1;
     ewk->wu.work_id = 0x10;
     ewk->wu.cgromtype = 1;

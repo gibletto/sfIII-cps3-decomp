@@ -245,7 +245,7 @@ s32 effect_77_init(WORK_Other* mwk) {
     ewk->wu.my_col_code = 0x2051;
     ewk->wu.position_x = ewk->wu.xyz[0].disp.pos = 320;
     ewk->wu.position_y = ewk->wu.xyz[1].disp.pos = 52;
-    *ewk->wu.char_table = eff77_char_table;
+    ewk->wu.char_table[0] = eff77_char_table;
     ewk->wu.my_priority = ewk->wu.position_z = 70;
     rno = ewk->wu.routine_no;
     rno[1] = rno[2] = 0;

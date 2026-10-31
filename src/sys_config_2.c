@@ -312,7 +312,7 @@ void config_menu_init(void) {
     cfg_flip_old = Monitor_Flip;
     cfg_demo_sound = Demo_Sound;
     cfg_chute = Chute_Mode;
-    cfg_dispenser = ((s8)Card_Dispenser);
+    cfg_dispenser = (s8)Card_Dispenser;
     cfg_win_point = Win_Point_Com;
     cfg_win_point_vs = Win_Point_Human;
     cfg_extra = Voice_Type;
@@ -487,14 +487,14 @@ void config_top_default(void) {
 
 
 void config_top_save_exit(void) {
-    u16 e;
+    u16 trig;
     s32 i;
     s32 u;
-    s8* s;
-    s8* d;
+    s8* src;
+    s8* dst;
     s32 v;
-    e = ~p1sw_1 & p1sw_0;
-    if (e & BUTTON_LP) {
+    trig = ~p1sw_1 & p1sw_0;
+    if (trig & BUTTON_LP) {
         config_check_changed();
         Free_Play = cfg_coin_special;
         Two_Coin_Start = cfg_free_play;
@@ -509,12 +509,12 @@ void config_top_save_exit(void) {
         Win_Point_Com = cfg_win_point;
         Win_Point_Human = cfg_win_point_vs;
         Voice_Type = cfg_extra;
-        s = (s8*)&game_config_work;
-        d = (s8*)&Game_setting;
+        src = (s8*)&game_config_work;
+        dst = (s8*)&Game_setting;
         for (i = 0; i < EEP_GAME_SIZE; i++) {
-            *d = *s;
-            s++;
-            d++;
+            *dst = *src;
+            src++;
+            dst++;
         }
         coin_chute1_w.per_credit = coin_rate_tbl[Coin_Mode][COIN_RATE_COINS];
         coin_chute1_w.credits = coin_rate_tbl[Coin_Mode][COIN_RATE_CREDITS];
@@ -1379,7 +1379,7 @@ void config_menu_load_settings(void) {
     cfg_flip_old = Monitor_Flip;
     cfg_demo_sound = Demo_Sound;
     cfg_chute = Chute_Mode;
-    cfg_dispenser = ((s8)Card_Dispenser);
+    cfg_dispenser = (s8)Card_Dispenser;
     cfg_win_point = Win_Point_Com;
     cfg_win_point_vs = Win_Point_Human;
     cfg_extra = Voice_Type;

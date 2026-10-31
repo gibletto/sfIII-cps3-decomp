@@ -47,7 +47,7 @@ void stun_mark_put(s8 pl);
 
 
 
-/* colours 18/146, gauge positions by Game_setting.Screen_Mode */
+/* Colours 18 and 146; the gauge positions follow Game_setting.Screen_Mode. */
 void stngauge_cont_init(void) {
     sdat[0].cstn = 0;
     sdat[0].ostn = 0;
@@ -86,7 +86,7 @@ void stngauge_cont_init(void) {
 
 
 
-/* no gauge_stop_flag */
+/* There is no gauge_stop_flag. */
 void stngauge_cont_main(void) {
     if (EXE_flag == 0) {
         stngauge_control(0);
@@ -150,6 +150,8 @@ void stngauge_control(s32 player) {
 
 
 
+/* Draws a player's stun gauge on text row 3, eight points to a cell: full cells up to the stun value cstn, one
+   partly filled cell, then empty cells. */
 void stun_put(pl)
 s8 pl;
 {
@@ -174,7 +176,7 @@ s8 pl;
 
 
 
-/* attributes 4 and 132; the Game_setting.Screen_Mode test has empty arms */
+/* Attributes 4 and 132; the Game_setting.Screen_Mode test has empty arms. */
 void stun_mark_write(s8 pl, s8 kind) {
     const u16* cells;
     s16 attr;
@@ -218,7 +220,7 @@ void stun_mark_write(s8 pl, s8 kind) {
 
 
 
-/* frame by Game_setting.Screen_Mode, attribute 34, no end cell */
+/* Draw the gauge frame by Game_setting.Screen_Mode, in attribute 34 and with no end cell. */
 void stun_gauge_waku_write(s8 pl) {
     s8 i;
     if (Game_setting.Screen_Mode == 0) {

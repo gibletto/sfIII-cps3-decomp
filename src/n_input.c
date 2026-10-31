@@ -448,11 +448,11 @@ void define_name_input(void) {
     if (work & 1) {
         name_ptr->code[0] = 2;
         name_ptr->code[1] = 0;
-        name_ptr->code[2] = 15;
+        name_ptr->code[2] = 15;              /* "CAP" */
     } else {
         name_ptr->code[0] = 2;
         name_ptr->code[1] = 14;
-        name_ptr->code[2] = 12;
+        name_ptr->code[2] = 12;              /* "COM" */
     }
 }
 

@@ -135,7 +135,7 @@ void effect_13_move(WORK_Other* ewk) {
     case R0_KILL:
     default:
         erase_my_shell_ix((WORK*)ewk->my_master, ewk->wu.myself);
-        all_cgps_put_back(ewk);
+        all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
         break;
     }

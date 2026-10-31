@@ -34,7 +34,7 @@
 
 
 
-/* not gated by EXE_flag/Game_pause */
+/* Runs even while EXE_flag or Game_pause is set. */
 void effect_B4_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:

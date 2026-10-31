@@ -321,14 +321,14 @@ s32 Check_Special_Technique(PLW* wk, WORK* em, s16 VS_Technique, u8 Kind_of_Tech
     xx = em->kind_of_waza & 0xF8;
     if (xx == Kind_of_Tech && (em->sp_tech_id == SP_Tech_ID)) {
         if (Option2 == (em->kind_of_waza & 7)) {
-            Last_Attack_Counter[(wk->wu.id)] = Attack_Counter[(wk->wu.id)];
+            Last_Attack_Counter[wk->wu.id] = Attack_Counter[wk->wu.id];
             return 0;
         }
         if (Option == 8) {
-            Counter_Attack[(wk->wu.id)] = 1;
+            Counter_Attack[wk->wu.id] = 1;
         }
         if (Option == 1) {
-            Counter_Attack[(wk->wu.id)] = 1;
+            Counter_Attack[wk->wu.id] = 1;
         }
         VS_Tech[wk->wu.id] = VS_Technique;
         return PASSIVE_X = 1;
@@ -456,7 +456,7 @@ s32 Check_Limited_Attack(PLW* wk, WORK* em, s16 VS_Technique, u8 PL_Status, s8 S
     if ((em->pat_status != PL_Status) || em->kind_of_waza != Status_00) {
         return 0;
     }
-    xx = (em->cg_ix / em->cgd_type);
+    xx = em->cg_ix / em->cgd_type;
     if (xx > Limit_Number) {
         return 0;
     }
@@ -509,7 +509,7 @@ s32 Check_Stand(PLW* wk, WORK* em, s16 VS_Technique) {
 
 
 s32 Setup_Next_Stand_Timer(PLW* wk) {
-    return Standing_Time_Data[wk->player_number][Area_Number[wk->wu.id]][(random_16_com() & 7)];
+    return Standing_Time_Data[wk->player_number][Area_Number[wk->wu.id]][random_16_com() & 7];
 }
 
 
@@ -556,7 +556,7 @@ s32 Check_VS_Squat(PLW* wk, WORK* em, s16 VS_Technique, u8 Status_00, u8 Status_
 
 
 s32 Setup_Next_Squat_Timer(PLW* wk) {
-    return Squat_Time_Data[Setup_Lv10(0)][(random_16_com() & 7)];
+    return Squat_Time_Data[Setup_Lv10(0)][random_16_com() & 7];
 }
 
 
@@ -677,7 +677,7 @@ s32 Check_Blow_Off(PLW* wk, WORK* em, s16 VS_Technique) {
     if (em->xyz[1].disp.pos == 0) {
         return 0;
     }
-    VS_Tech[(wk->wu.id)] = VS_Technique;
+    VS_Tech[wk->wu.id] = VS_Technique;
     return PASSIVE_X = 1;
 }
 

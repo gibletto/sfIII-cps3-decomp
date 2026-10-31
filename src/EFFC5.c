@@ -115,7 +115,8 @@ void effect_C5_move(WORK_Other* ewk) {
 
 
 
-/* the car for player pl */
+/* Set up the car for player pl off-screen on that player's side, aimed at its stop point,
+ * with its effect C6 sprite. */
 /* provisional name */
 s32 effC5_init_sub(s16 pl) {
     WORK_Other* ewk;
@@ -135,7 +136,7 @@ s32 effC5_init_sub(s16 pl) {
     ewk->wu.char_index = 8;
     ewk->wu.my_col_mode = 0x4200;
     ewk->wu.my_priority = ewk->wu.position_z = 57;
-    *ewk->wu.char_table = etc_char_table;
+    ewk->wu.char_table[0] = etc_char_table;
     ewk->wu.my_col_code = plw[pl].wu.my_col_code + 6;
     ewk->wu.sync_suzi = 0;
     ewk->master_id = pl;
@@ -172,7 +173,8 @@ s32 effC5_init_sub(s16 pl) {
 
 
 
-/* the player's car */
+/* Create the car the player arrives in, on the player's side, when the car entrance
+ * (Appear_06000) starts. */
 s32 effect_C5_init(PLW* oya) {
     s16 pl = oya->wu.id ? 1 : 0;
     return effC5_init_sub(pl);

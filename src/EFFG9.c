@@ -79,7 +79,7 @@ s32 effect_G9_init(WORK* wk) {
     ewk = (WORK_Other*)frw[ix];
     ewk->wu.be_flag = 1;
     ewk->wu.type = wk->disp_flag;
-    ewk->wu.id = 0xA9;
+    ewk->wu.id = 169;
     ewk->wu.work_id = 0x10;
     ewk->wu.rl_flag = wk->rl_flag;
     ewk->wu.char_index = wk->direction;
@@ -92,6 +92,6 @@ s32 effect_G9_init(WORK* wk) {
     ewk->wu.blink_timing = wk->blink_timing;
     ewk->wu.xyz[0].disp.pos = wk->xyz[0].disp.pos;
     ewk->wu.xyz[1].disp.pos = wk->xyz[1].disp.pos;
-    *ewk->wu.char_table = plef_char_table;
+    ewk->wu.char_table[0] = plef_char_table;
     return 0;
 }

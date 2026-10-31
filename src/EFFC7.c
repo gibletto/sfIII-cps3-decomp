@@ -105,6 +105,6 @@ s32 effect_C7_init(PLW* wk, u8 data) {
     ewk->master_id = wk->wu.id;
     ewk->master_work_id = wk->wu.work_id;
     ewk->master_player = wk->player_number;
-    *ewk->wu.char_table = ef01_char_table;
+    ewk->wu.char_table[0] = ef01_char_table;
     return 0;
 }

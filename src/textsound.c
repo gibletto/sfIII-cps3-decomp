@@ -249,17 +249,17 @@ void tilemap_print_hex_block(u16 x, u16 y, u16 attr, u32 value, u16 digits, u16 
     register s32 i;
     s32 cells;
     s32 started;
-    u16 d;
+    u16 digit;
     cells = (((num_font_code & 0x7000) >> 12) + 1) * (((num_font_code & 0xE00) >> 9) + 1);
     p = (u16*)((x << 2) + (y << 8) + SS_RAM);
     started = 0;
     mask = 15 << ((digits - 1) * 4);
     for (i = digits; i > 0; i--) {
-        d = (value & mask) >> ((i - 1) * 4);
+        digit = (value & mask) >> ((i - 1) * 4);
         if (i == digits && (mode & 4)) {
-            if (d < 0) {
+            if (digit < 0) {
                 p[0] = '-';
-                d &= 0x7FFF;
+                digit &= 0x7FFF;
             } else {
                 p[0] = '+';
             }
@@ -267,9 +267,9 @@ void tilemap_print_hex_block(u16 x, u16 y, u16 attr, u32 value, u16 digits, u16 
             p += 2;
         }
         if (started == 0) {
-            if (d == 0) {
+            if (digit == 0) {
                 if (i == 1) {
-                    p = tilemap_put_block_next(p, attr, cells * d + num_font_code);
+                    p = tilemap_put_block_next(p, attr, cells * digit + num_font_code);
                 } else {
                     switch (mode & 3) {
                     case 1:
@@ -280,16 +280,16 @@ void tilemap_print_hex_block(u16 x, u16 y, u16 attr, u32 value, u16 digits, u16 
                     case 3:
                         break;
                     default:
-                        p = tilemap_put_block_next(p, attr, cells * d + num_font_code);
+                        p = tilemap_put_block_next(p, attr, cells * digit + num_font_code);
                         break;
                     }
                 }
             } else {
                 started = 1;
-                p = tilemap_put_block_next(p, attr, cells * d + num_font_code);
+                p = tilemap_put_block_next(p, attr, cells * digit + num_font_code);
             }
         } else {
-            p = tilemap_put_block_next(p, attr, cells * d + num_font_code);
+            p = tilemap_put_block_next(p, attr, cells * digit + num_font_code);
         }
         if (p > (u16*)(SS_RAM + 0x3FFF)) {
             p = (u16*)SS_RAM;
@@ -487,7 +487,7 @@ void tilemap_print_string(u16 x, u16 y, u16 attr, const TM_STRING* sc) {
         p += x * 2 + y * 128;
     }
     for (s = (const u8*)sc->str; *s != 0; s++) {
-        if (*s == 10) {
+        if (*s == '\n') {
             sc++;
             p = (u16*)((sc->x << 2) + (sc->y << 8) + SS_RAM);
             if (x + y != 0) {

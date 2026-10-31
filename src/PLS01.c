@@ -340,7 +340,7 @@ s32 check_em_catt(PLW* wk) {
     if ((rlf = (wk->wu.rl_flag + em->wu.rl_flag) & 1) == 0) {
         return 0;
     }
-    if (wk->cp->lever_dir != LVDIR_BACK || wk->cp->sw_new & CMD_LV_UP) {
+    if (wk->cp->lever_dir != LVDIR_BACK || (wk->cp->sw_new & CMD_LV_UP)) {
         return 0;
     }
     xd = wk->wu.xyz[0].disp.pos - em->wu.xyz[0].disp.pos;

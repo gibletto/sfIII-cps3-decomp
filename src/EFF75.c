@@ -42,7 +42,7 @@ s32 effect_75_init(void) {
     ewk->wu.my_col_mode = 0x4200;
     ewk->wu.my_family = 2;
     ewk->wu.my_col_code = 81;
-    *ewk->wu.char_table = eff75_char_table;
+    ewk->wu.char_table[0] = eff75_char_table;
     ewk->wu.xyz[0].disp.pos = ewk->wu.position_x = -384;
     ewk->wu.xyz[1].disp.pos = ewk->wu.position_y = 240;
     ewk->wu.position_z = ewk->wu.my_priority = 86;

@@ -68,7 +68,7 @@ void effect_G7_move(WORK_Other* ewk) {
         disp_pos_trans_entry(ewk);
         break;
     default:
-        all_cgps_put_back(ewk);
+        all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
         break;
     }

@@ -105,8 +105,8 @@ void effect_43_move(register WORK_Other* ewk) {
         }
         break;
     default:
-        all_cgps_put_back(ewk);
-        push_effect_work((WORK*)ewk);
+        all_cgps_put_back(&ewk->wu);
+        push_effect_work(&ewk->wu);
         break;
     }
     ewk->wu.position_x = ewk->wu.xyz[0].disp.pos & 0x3FF;
@@ -117,7 +117,7 @@ void effect_43_move(register WORK_Other* ewk) {
 
 
 /* provisional name */
-/* moves it by speed steps until it reaches its stop point */
+/* Move it by speed steps until it reaches its stop point. */
 void effect_43_slide(ewk, speed)
 WORK_Other* ewk;
 u16 speed;
@@ -134,7 +134,7 @@ u16 speed;
 
 
 
-/* from the left or right side */
+/* Create the object, coming in from the left or right side. */
 s32 effect_43_init(s16 Side, s16 Time) {
     WORK_Other* ewk;
     s16 ix;

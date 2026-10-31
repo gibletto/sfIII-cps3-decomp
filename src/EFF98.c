@@ -129,7 +129,7 @@ s32 effect_98_init(s16 PL_id, s16 Art, s16 Arts_No) {
     ewk->wu.my_col_mode = 0x4200;
     ewk->wu.my_col_code = 0x2040;
     ewk->wu.my_family = 3;
-    *ewk->wu.char_table = sel_pl_char_table;
+    ewk->wu.char_table[0] = sel_pl_char_table;
     ewk->master_id = PL_id;
     ewk->master_player = Art;
     ewk->master_priority = Arts_No;

@@ -108,6 +108,7 @@ void end_500_move(void) {
 
 
 
+/* The background steps of end_500_1000: frames to wait, then the value it keeps in r_limit. */
 const s16 end_5_anm_tbl[4][2] = {
     { 240, 21 }, { 8, 22 }, { 8, 23 }, { 8, 24 },
 };

@@ -805,7 +805,7 @@ void dead_voice_request2(PLW* wk) {
     s16 secd2;
     secd1 = dead_voice_table[wk->player_number][0];
     secd2 = dead_voice_table[wk->player_number][1];
-    if (wk->wu.routine_no[1] == PLAYER_DAMAGE && atsagct[wk->wu.routine_no[2]] & 0x10) {
+    if (wk->wu.routine_no[1] == PLAYER_DAMAGE && (atsagct[wk->wu.routine_no[2]] & 0x10)) {
         sound_effect_request[secd2](wk, secd2);
     } else {
         sound_effect_request[secd1](wk, secd1);
@@ -834,7 +834,7 @@ PLW* ds;
 s8 gddir;
 {
     s32 gc;
-    if ((ds->sa_stop_flag) == 1) {
+    if (ds->sa_stop_flag == 1) {
         if (ds->wu.rl_flag) {
             ds->saishin_lvdir = convert_saishin_lvdir[1][ds->sa_stop_lvdir & 0xC];
         } else {

@@ -36,7 +36,7 @@ extern const u32 eff08_char_table[];   /* provisional name */
 
 
 
-/* follows its master */
+/* Animate while the master (effect 07) shows pattern 2, and start again when the master does. */
 void effect_08_move(WORK_Other* ewk) {
     WORK_Other* oya;
     oya = (WORK_Other*)ewk->my_master;
@@ -68,7 +68,7 @@ void effect_08_move(WORK_Other* ewk) {
 
 
 
-/* one object for the master */
+/* Create the object at (432, 118) that animates with the effect 07 object; made with that object. */
 s32 effect_08_init(WORK_Other* oya) {
     WORK_Other* ewk;
     s16 ix;

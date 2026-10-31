@@ -371,7 +371,7 @@ void voice_process_secondary(SNDVOICE* voice, u8 voice_index, u8 is_bgm) {
     if (!owns_hardware_voice) {
         return;
     }
-    vol_offset = ((u8)bgm_volume_offset);
+    vol_offset = (u8)bgm_volume_offset;
     if (snd_stereo) {
         if (!is_bgm && se_pan_ramp[voice_index].mode != -1) {
             pan = se_pan_ramp[voice_index].current >> 8;

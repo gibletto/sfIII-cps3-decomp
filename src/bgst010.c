@@ -85,6 +85,7 @@ void bg010_layer0_init(void) {
 
 
 
+/* Each stage file has its own copy. */
 static void bg_move_common(void) {
     bg_x_move_check();
     bg_y_move_check();
@@ -101,7 +102,7 @@ void bg010_layer1(void) {
 
 
 /* provisional name */
-/* also the stage graphics, palette and effects */
+/* Also loads the stage graphics, palette and effects. */
 void bg010_layer1_init(void) {
     bgw_ptr->r_no_0++;
     if (bg_w.area == 0) {
@@ -126,6 +127,7 @@ void bg010_layer1_init(void) {
 
 
 
+/* Move the base layer and chase the players; each stage file has its own copy. */
 static void bg_base_move_common(void) {
     bg_base_x_move_check();
     bg_base_y_move_check();
@@ -167,7 +169,7 @@ void bg010_layer2_move(void) {
 
 
 /* provisional name */
-/* the synced layer sets bgw_ptr itself */
+/* The synced layer sets bgw_ptr itself. */
 void bg010_layer4(void) {
     bgw_ptr = &bg_w.bgw[4];
     switch (bgw_ptr->r_no_0) {
@@ -201,7 +203,7 @@ void bg010_layer4(void) {
 
 
 /* provisional name */
-/* the drop-in: each layer comes down to 0 */
+/* The drop-in: each layer comes down to 0. */
 void bg010_demo(void) {
     if (Cut_Cut_Cut()) {
         bgw_ptr->xy[1].cal -= bgw_ptr->speed_y * 4;

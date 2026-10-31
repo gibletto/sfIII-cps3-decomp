@@ -97,7 +97,7 @@ void effect_05_move(WORK_Other* ewk) {
 
 
 
-/* tables by stage and area, char_table set last */
+/* Create the stage objects from the tables for the stage and area; char_table is set last. */
 s32 effect_05_init(void) {
     WORK_Other* ewk;
     s16 ix;

@@ -49,11 +49,11 @@ void eff74_fly_set();
 
 
 
-/* the routine of the bird's type */
+/* Run the routine of the bird's type. */
 void effect_74_move(WORK_Other* ewk) {
     void (*eff74_jp[4])() = { eff74_0000, eff74_1000, eff74_2000, eff74_3000 };
     if (compel_dead_check(ewk)) {
-        all_cgps_put_back(ewk);
+        all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
     } else {
         if (!EXE_flag && !Game_pause) {
@@ -244,7 +244,8 @@ s16 ix;
 
 
 
-/* four birds */
+/* Create the stage's four birds, which fly off when a player comes near, when the stage
+ * background is set up. */
 s32 effect_74_init(void) {
     WORK_Other* ewk;
     s16 ix;

@@ -148,6 +148,7 @@ s8 eeprom_read(s16 n, volatile u16* rom, u16* buf) {
 
 
 
+/* Writes n words from src to the EEPROM at dst; returns 1 when the EEPROM does not come ready. */
 /* provisional name */
 s8 eeprom_write(n, dst, src)
 s16 n;
@@ -193,6 +194,7 @@ s8 eeprom_wait_ready(void) {
     return 1;
 }
 
+/* Shows EEPROM ERROR on a cleared text layer and stops there for good. */
 /* provisional name */
 void eeprom_error_halt(void)
 {

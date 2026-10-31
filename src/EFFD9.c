@@ -74,11 +74,9 @@ void effect_D9_move(WORK_Other* ewk) {
                 }
             }
         }
-        if (ewk->wu.vital_old & 8) {
-            if (mwk->sa->ok != -1) {
-                ewk->wu.routine_no[0] = 3;
-                break;
-            }
+        if ((ewk->wu.vital_old & 8) && mwk->sa->ok != -1) {
+            ewk->wu.routine_no[0] = 3;
+            break;
         }
         if (--ewk->wu.vitality <= 0) {
             ewk->wu.dir_step += 2;

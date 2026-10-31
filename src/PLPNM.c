@@ -31,7 +31,7 @@
 #include "PLNORMAL.h"
 
 /* routine_no[3], Normal_01000 */
-#define N01_RESTART     1       /* set the animation up again */
+#define N01_STAND       1       /* stand; pose 60 while pcon_dp_flag is set */
 
 /* routine_no[3], Normal_02000 */
 #define N02_RUN         1       /* run the animation */
@@ -174,7 +174,7 @@ void Normal_01000(PLW* wk) {
             set_char_move_init((WORK*)wk, 0, 0);
             wk->scr_pos_set_flag = 0;
         }
-    case N01_RESTART:
+    case N01_STAND:
         if (pcon_dp_flag) {
             if (wk->wu.now_koc != 9 || wk->wu.char_index != 60) {
                 exset_char_move_init((WORK*)wk, 9, 60);
@@ -650,7 +650,7 @@ void Normal_31000(PLW* wk) {
         wk->wu.rl_flag = (wk->wu.dm_rl + 1) & 1;
         set_char_move_init((WORK*)wk, 0, wk->wu.routine_no[2] - 7);
         set_hit_stop_hit_quake((WORK*)wk);
-        Flash_MT[(wk->wu.id)] = 2;
+        Flash_MT[wk->wu.id] = 2;
         add_sp_arts_gauge_paring(wk);
         break;
     case N31_RUN:
@@ -677,7 +677,7 @@ void Normal_35000(PLW* wk) {
         }
         remake_mvxy_PoSB((WORK*)wk);
         set_char_move_init((WORK*)wk, 0, 27);
-        Flash_MT[(wk->wu.id)] = 2;
+        Flash_MT[wk->wu.id] = 2;
         break;
     case N35_AIR:
         if (((WORK*)wk->wu.target_adrs)->cg_prio != 2) {
@@ -710,7 +710,7 @@ void Normal_air_paring(PLW* wk) {
         }
         setup_air_paring_mvxy((WORK*)wk);
         set_char_move_init((WORK*)wk, 0, 27);
-        Flash_MT[(wk->wu.id)] = 2;
+        Flash_MT[wk->wu.id] = 2;
         break;
     case N_AIR_PARI_AIR:
         if (((WORK*)wk->wu.target_adrs)->cg_prio != 2) {

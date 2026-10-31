@@ -119,6 +119,7 @@ void bg140_layer0_init(void) {
 
 
 
+/* Each stage file has its own copy. */
 static void bg_move_common(void) {
     bg_x_move_check();
     bg_y_move_check();

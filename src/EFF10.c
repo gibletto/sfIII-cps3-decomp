@@ -76,8 +76,8 @@ void effect_10_move(WORK_Other* ewk) {
         ewk->wu.routine_no[0]++;
         break;
     default:
-        all_cgps_put_back(ewk);
-        push_effect_work((WORK*)ewk);
+        all_cgps_put_back(&ewk->wu);
+        push_effect_work(&ewk->wu);
         break;
     }
 }
@@ -110,7 +110,7 @@ void eff10_run_away(WORK_Other* ewk) {
             } else {
                 ewk->wu.direction = 1;
                 ewk->wu.mvxy.a[0].sp = 0x28000;
-                ewk->wu.mvxy.a[1].sp = 0x4000;
+                ewk->wu.mvxy.a[1].sp = 0x4000;  /* a[1], where the left run sets d[0]: no speed-up this way */
             }
         }
         break;

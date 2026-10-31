@@ -1320,7 +1320,7 @@ s32 check_cg_cancel_data(PLW* wk) {
     if ((wk->wu.cg_cancel & 8) && (check_meoshi_cancel(wk) != 0)) {
         return 1;
     }
-    if ((wk->wu.cg_cancel & 4) && ((wk->cp->sw_now & CMD_SW_SHOT) != ((wk->current_attack))) && (check_nm_attack(wk) != 0)) {
+    if ((wk->wu.cg_cancel & 4) && ((wk->cp->sw_now & CMD_SW_SHOT) != wk->current_attack) && (check_nm_attack(wk) != 0)) {
         return 1;
     }
     if ((wk->wu.cg_cancel & 2) && (check_F_R_dash(wk))) {

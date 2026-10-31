@@ -360,16 +360,16 @@ void common_end_init01(void) {
 
 
 void end_fam_set(s16 i) {
-    BGW* l = &bg_w.bgw[i];
-    s32 a, b, m;
-    a = l->position_x;
-    b = l->position_y;
-    a = -a;
+    BGW* bgw = &bg_w.bgw[i];
+    s32 x, y, m;
+    x = bgw->position_x;
+    y = bgw->position_y;
+    x = -x;
     m = 0x3FF;
-    a &= m;
-    b &= m;
-    b = (0x300 - b) & m;
-    Family_Set_R(i + 1, a, b);
+    x &= m;
+    y &= m;
+    y = (0x300 - y) & m;
+    Family_Set_R(i + 1, x, y);
 }
 
 

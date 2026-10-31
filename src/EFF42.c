@@ -158,7 +158,7 @@ s32 effect_42_init(s16 Type) {
     ewk->wu.position_z = 54;
     ewk->wu.dir_timer = 10;
     ewk->wu.rl_waza = Select_Timer;
-    *ewk->wu.char_table = sel_pl_char_table;
+    ewk->wu.char_table[0] = sel_pl_char_table;
     ewk->wu.char_index = 3;
     ewk->wu.my_mr_flag = 1;
     ewk->wu.my_mr.size.x = 0;

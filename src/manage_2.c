@@ -348,7 +348,7 @@ void Setup_Win_Mark(void) {
 
 
 
-/* nothing calls it */
+/* Nothing calls it. Silences the music; unless the music is off, it fades back in after 150 frames. */
 void Control_Music_Fade(void)
 {
     if (PB_Music_Off) {
@@ -861,7 +861,7 @@ void Game_Manage_8th(void) {
     }
 }
 
-/* nothing calls it */
+/* Nothing calls it. */
 void Restore_Loser_Score(void) {
     if (Play_Type == PLAY_VS_PLAYER) {
         return;
@@ -1100,6 +1100,7 @@ void Game_Manage_10th(void) {
 
 
 
+/* Clears a player's ranking places when the player is not going on to name entry. */
 void Check_Naming(id)
 s16 id;
 {
@@ -1141,7 +1142,7 @@ void Ck_Win_Record(void) {
 void Disp_Win_Record_Sub(PL_id)
 s16 PL_id;
 {
-    s16 xx;
+    s16 digit;
     s16 Wins_Buff;
     switch (Win_Record[PL_id]) {
     case 1:
@@ -1151,9 +1152,9 @@ s16 PL_id;
         tilemap_print_string_attr(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.Screen_Mode], 0, 18, "WINS");
         break;
     }
-    xx = Win_Record[PL_id] / 10;
-    if (xx > 0) {
-        tilemap_print_hex_block(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.Screen_Mode] - 3, 0, 18, (s8)xx, 1, 1);
+    digit = Win_Record[PL_id] / 10;
+    if (digit > 0) {
+        tilemap_print_hex_block(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.Screen_Mode] - 3, 0, 18, (s8)digit, 1, 1);
     }
     Wins_Buff = Win_Record[PL_id] % 10;
     tilemap_print_hex_block(ENTRY_LOSER_X_PAIRS[0][PL_id][Game_setting.Screen_Mode] - 2, 0, 18, (s8)Wins_Buff, 1, 1);
@@ -1212,16 +1213,14 @@ void Disp_Winner(void) {
         effect_89_init(3, (s16)(p->x + DE_X[0]), p->y, (s16)p->w, (s16)p->h);
         effect_89_init(1, (s16)(p->x2 + DE_X[0]), p->y2, 10, 4);
         sound_request(ch + 176);
+    } else if (Round_Operator[Winner_id] != 0) {
+        bcount_mark_trans(5);
+        effect_89_init(1, DE_X[0] + 12, 9, 23, 4);
+        sound_request(155);
     } else {
-        if (Round_Operator[Winner_id] != 0) {
-            bcount_mark_trans(5);
-            effect_89_init(1, DE_X[0] + 12, 9, 23, 4);
-            sound_request(155);
-        } else {
-            bcount_mark_trans(6);
-            effect_89_init(2, DE_X[0] + 12, 9, 24, 4);
-            sound_request(154);
-        }
+        bcount_mark_trans(6);
+        effect_89_init(2, DE_X[0] + 12, 9, 24, 4);
+        sound_request(154);
     }
 }
 
@@ -1245,6 +1244,7 @@ void Update_Level_Control(void) {
 
 
 
+/* Sets Complete_Victory, which ends the round-end waits of Game_Management at once. */
 void complete_victory_pause(void)
 {
     Complete_Victory = 1;
@@ -1272,7 +1272,6 @@ s32 Judge_Next_Disposal(void) {
 
 
 void Check_Perfect(s16 PL_id) {
-
     if (plw[PL_id].wu.vitality == plw[PL_id].wu.vital_new) {
         Perfect_Flag = 1;
         Round_Result |= RESULT_PERFECT;

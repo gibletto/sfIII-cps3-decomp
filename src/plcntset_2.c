@@ -565,7 +565,7 @@ s16 kos;
 
 void settle_check(void) {
 retry:
-    switch ((plw[0].dead_flag) + (plw[1].dead_flag * 2)) {
+    switch (plw[0].dead_flag + plw[1].dead_flag * 2) {
     case 1:
         Winner_id = 1;
         Loser_id = 0;

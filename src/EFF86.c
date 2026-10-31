@@ -22,7 +22,7 @@
 #define R0_MOVE         1       /* follow the master's state */
 #define R0_KILL         2       /* (default) put the work back */
 
-/* pattern 13, then eff86_0000 every frame */
+/* Set pattern 13, then run eff86_0000 every frame. */
 void effect_86_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
@@ -44,7 +44,7 @@ void effect_86_move(WORK_Other* ewk) {
 
 
 
-/* follows the master's routine_no[1] */
+/* Follow the master's routine_no[1]. */
 void eff86_0000(WORK_Other* ewk) {
     WORK* mwk = (WORK*)ewk->my_master;
     if (compel_dead_check(ewk)) {
@@ -69,7 +69,7 @@ void eff86_0000(WORK_Other* ewk) {
 
 
 
-/* one fixed object for the master oya */
+/* Create effect 85's partner object at (549, 92); made with effect 85. */
 s32 effect_86_init(WORK* oya) {
     WORK_Other* ewk;
     s16 ix;

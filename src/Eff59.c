@@ -92,7 +92,7 @@ void effect_59_move(WORK_Other* ewk) {
         }
         break;
     default:
-        all_cgps_put_back(ewk);
+        all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
         return;
     }
@@ -102,7 +102,7 @@ void effect_59_move(WORK_Other* ewk) {
 }
 
 
-/* one letter per name character */
+/* Create one effect 59 letter for each character of the Battle_Country name. */
 s32 effect_59_init(s16 timer) {
     WORK_Other* ewk;
     s16 ix;

@@ -116,7 +116,7 @@ s32 effect_73_init(WORK_Other* oya) {
     ewk->wu.my_priority = 75;
     ewk->wu.position_z = 75;
     ewk->wu.sync_suzi = 0;
-    *ewk->wu.char_table = brz_char_table;
+    ewk->wu.char_table[0] = brz_char_table;
     ewk->wu.xyz[0].disp.pos = 0x1ED;
     ewk->wu.xyz[1].disp.pos = 81;
     suzi_offset_set(&ewk->wu);

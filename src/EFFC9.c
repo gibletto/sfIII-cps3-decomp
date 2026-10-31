@@ -61,7 +61,7 @@ const u32* ag_char_table[7] = {
 };
 
 
-/* case 0 records stage8_base_y, and the stage-8 fall waits for it to change */
+/* Case 0 records stage8_base_y, and the stage-8 fall waits for it to change. */
 void effect_C9_move(WORK_Other* ewk) {
     s16 scrc;
     switch (ewk->wu.routine_no[0]) {
@@ -188,7 +188,7 @@ s32 effect_C9_init(PLW* wk, u8 data) {
 
 
 
-/* compares the round scores (Score[x][2]); a gap above 10000 gives all votes to the winner */
+/* Compare the round scores (Score[x][2]); a gap above 10000 gives all votes to the winner. */
 void setup_EJG_index(void) {
     s16 i;
     u32 gra;

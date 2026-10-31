@@ -218,6 +218,6 @@ s32 effect_53_init(void) {
     ewk->wu.position_x = ewk->wu.xyz[0].disp.pos = 0x290;
     ewk->wu.position_y = ewk->wu.xyz[1].disp.pos = 48;
     ewk->wu.position_z = ewk->wu.my_priority = 67;
-    *ewk->wu.char_table = eff54_char_table;
+    ewk->wu.char_table[0] = eff54_char_table;
     return 0;
 }

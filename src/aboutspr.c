@@ -62,7 +62,7 @@ void init_char_gfx_tables(void) {
 /* provisional name */
 void setup_kage_cells(void) {
     WORK* ewk;
-    WORK* tmp;
+    WORK* handle_wk;
     s16* handles;
     s16 ix;
     s16 i;
@@ -83,8 +83,8 @@ void setup_kage_cells(void) {
         push_effect_work(ewk);
         return;
     }
-    tmp = (WORK*)&frw[ix];
-    handles = &tmp->routine_no[0];
+    handle_wk = (WORK*)&frw[ix];
+    handles = &handle_wk->routine_no[0];
     for (i = 0; i < 29; i++) {
         ewk->cg_number = 0x4020 + i;
         if (!trans_char_cells(ewk)) {
@@ -106,14 +106,14 @@ fail:
     purge_char_gfx(0x4020);
 done:
     push_effect_work(ewk);
-    push_effect_work(tmp);
+    push_effect_work(handle_wk);
 }
 
 
 /* provisional name */
 void setup_seraph_cells(void) {
     WORK* ewk;
-    WORK* tmp;
+    WORK* handle_wk;
     s16* handles;
     s16 ix;
     s16 i;
@@ -134,8 +134,8 @@ void setup_seraph_cells(void) {
         push_effect_work(ewk);
         return;
     }
-    tmp = (WORK*)&frw[ix];
-    handles = &tmp->routine_no[0];
+    handle_wk = (WORK*)&frw[ix];
+    handles = &handle_wk->routine_no[0];
     for (i = 0; i < 32; i++) {
         ewk->cg_number = 0x7718 + i;
         if (!trans_char_cells(ewk)) {
@@ -157,13 +157,13 @@ fail:
     purge_char_gfx(0x7718);
 done:
     push_effect_work(ewk);
-    push_effect_work(tmp);
+    push_effect_work(handle_wk);
 }
 
 
 void setup_GILL_exsa_obj(void) {
     WORK* ewk;
-    WORK* tmp;
+    WORK* handle_wk;
     s16* handles;
     s16 ix;
     s16 i;
@@ -184,8 +184,8 @@ void setup_GILL_exsa_obj(void) {
         push_effect_work(ewk);
         return;
     }
-    tmp = (WORK*)&frw[ix];
-    handles = &tmp->routine_no[0];
+    handle_wk = (WORK*)&frw[ix];
+    handles = &handle_wk->routine_no[0];
     for (i = 32; i < 46; i++) {
         ewk->cg_number = 0x7718 + i;
         if (!trans_char_cells(ewk)) {
@@ -207,14 +207,14 @@ fail:
     purge_char_gfx(0x7738);
 done:
     push_effect_work(ewk);
-    push_effect_work(tmp);
+    push_effect_work(handle_wk);
 }
 
 
 /* provisional name */
 void setup_hit_mark_cells(void) {
     WORK* ewk;
-    WORK* tmp;
+    WORK* handle_wk;
     s16* handles;
     s16 ix;
     s16 i;
@@ -235,8 +235,8 @@ void setup_hit_mark_cells(void) {
         push_effect_work(ewk);
         return;
     }
-    tmp = (WORK*)&frw[ix];
-    handles = &tmp->routine_no[0];
+    handle_wk = (WORK*)&frw[ix];
+    handles = &handle_wk->routine_no[0];
     ewk->rl_flag = 0;
     for (i = 0; i < 215; i++) {
         ewk->cg_number = 0x7748 + i;
@@ -269,7 +269,7 @@ fail:
     purge_char_gfx(0x7748);
 done:
     push_effect_work(ewk);
-    push_effect_work(tmp);
+    push_effect_work(handle_wk);
 }
 
 
@@ -1126,9 +1126,9 @@ s32 sort_push_request8(WORK* wk) {
         return 0;
     }
     ix = wk->cg_number - 0x7748;
-    spr->w0 = ((u16)hitmark_gfx_cells[ix]);
+    spr->w0 = (u16)hitmark_gfx_cells[ix];
     spr->w0 |= wk->my_family << 12;
-    spr->w2 = ((u16)hitmark_gfx_ofs[wk->rl_flag][ix]);
+    spr->w2 = (u16)hitmark_gfx_ofs[wk->rl_flag][ix];
     spr->w4 = wk->position_x;
     spr->w6 = wk->position_y + base_y_pos;
     spr->prio = wk->position_z;

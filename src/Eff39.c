@@ -116,7 +116,7 @@ s32 effect_39_init(s16 PL_id, s16 Wait) {
     ewk->wu.my_priority = 10;
     ewk->wu.position_z = 10;
     ewk->wu.char_index = 1;
-    *ewk->wu.char_table = sel_pl_char_table;
+    ewk->wu.char_table[0] = sel_pl_char_table;
     ewk->master_id = PL_id;
     if (PL_id) {
         ewk->wu.xyz[0].disp.pos = DE_X[5] + 0x3D0;

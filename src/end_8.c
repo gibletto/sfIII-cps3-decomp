@@ -150,7 +150,6 @@ void end_801_0000(void) {
             bgw_ptr->xy[0].cal += bgw_ptr->speed_x;
             break;
         }
-
     }
 }
 

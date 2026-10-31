@@ -226,6 +226,7 @@ void Sel_PL_Cont_4th(void) {}
 
 
 
+/* Sets up the BG layers of the select screen. */
 void Initialize_BG(void)
 {
     Setup_BG_General();
@@ -245,7 +246,7 @@ void Setup_EFF69(void) {
 
 
 
-/* the face plates of one player's grid: player 1's while player 1 is still choosing, else player 2's */
+/* The face plates of one player's grid: player 1's while player 1 is still choosing, else player 2's. */
 void Setup_Face_Sub(void) {
     s16 i;
     s16 j;
@@ -318,7 +319,7 @@ void Sel_PL_2nd(void) {
 
 
 void Sel_PL_3rd(void) {
-    if (Stop_Cursor[ID] != 0 || ((u8)Face_Move) != 0) {
+    if (Stop_Cursor[ID] != 0 || (u8)Face_Move != 0) {
         return;
     }
     if (Demo_Flag == 0) {
@@ -359,7 +360,7 @@ void Sel_PL_4th(void) {
 
 
 void Sel_PL_5th(void) {
-    if (Stop_Cursor[ID] != 0 || ((u8)Face_Move) != 0) {
+    if (Stop_Cursor[ID] != 0 || (u8)Face_Move != 0) {
         return;
     }
     if (Demo_Flag == 0) {
@@ -385,7 +386,7 @@ void Sel_PL_6th(void) {}
 
 
 
-/* the face grid is 2 rows of 5; the lever wraps around in both directions */
+/* The face grid is 2 rows of 5; the lever wraps around in both directions. */
 void Sel_PL_Sub(PL_id, sw)
 s16 PL_id;
 u16 sw;
@@ -517,6 +518,8 @@ u16 sw;
 
 
 
+/* One player's super art select for the frame: up and down move between the three arts, and a button picks
+   one. */
 void Sel_Arts_Sub(PL_id, sw, sw_0)
 s16 PL_id;
 u16 sw;
@@ -832,6 +835,7 @@ s32 Check_First_PL_Decided(void) {
 
 
 
+/* By the super art chosen: the row (0 to 2) each of the three plates takes. */
 const s16 Arts_Y_Data[3][3] = {
     { 0, 1, 2 }, { 2, 0, 1 }, { 1, 2, 0 },
 };
@@ -1016,7 +1020,7 @@ void Basic_Sub_Ex(void) {
 
 
 /* provisional name */
-/* Basic_Sub with layer 0's line scroll redone */
+/* Basic_Sub with layer 0's line scroll redone. */
 void Basic_Sub_Suzi(void) {
     bg_w.bgw[0].old_pos_x = bg_w.bgw[0].xy[0].disp.pos;
     move_effect_work(0);
@@ -1050,7 +1054,7 @@ s32 Y;
 
 
 /* provisional name */
-/* stage 13's layers at the origin, and layer 0's line scroll */
+/* Stage 13's layers at the origin, and layer 0's line scroll. */
 void Setup_BG_General(void) {
     s16 i;
     Zoomf_Init();
@@ -1106,6 +1110,7 @@ void Setup_BG_Layer3(void) {
 
 
 
+/* Cursor y of the three rows, for each player; Setup_Cursor_Y copies them into Cursor_Y_Pos. */
 const s16 Cursor_Y_Data[6] = {
     80, 104, 128, 80, 104, 128,
 };
@@ -1129,8 +1134,8 @@ void Setup_Cursor_Y(void) {
 
 
 /* provisional name */
-/* the next opponent from the player's course, skipping those already beaten; a new course on the
-   first fight, and the course restarts when the player picks another character */
+/* The next opponent from the player's course, skipping those already beaten; a new course on the
+   first fight, and the course restarts when the player picks another character. */
 void Setup_Next_EM(void) {
     Setup_ID();
     paring_counter[COM_id] = 0;
@@ -1170,6 +1175,7 @@ void Setup_Next_EM(void) {
 
 
 
+/* The super art a computer player takes at random (random_16_com() & 7). */
 const u8 Arts_Rnd_Data[8] = {
     0, 0, 0, 1, 1, 1, 2, 2,
 };
@@ -1210,8 +1216,8 @@ void Setup_ID(void) {
 
 
 /* provisional name */
-/* the select screen's second entry, for the next fight: the player's choice stands, the opponent is
-   set up and the exit runs on to the VS screen */
+/* The select screen's second entry, for the next fight: the player's choice stands, the opponent is
+   set up and the exit runs on to the VS screen. */
 s32 Next_CPU(void) {
     void (*Next_CPU_Tbl[4])() = { Next_CPU_1st, Next_CPU_2nd, Next_CPU_3rd, Next_CPU_4th };
     SEL_PL_X = 0;
@@ -1551,17 +1557,20 @@ void Setup_Com_Color(void) {
 
 
 
+/* Taken off Control_Time by continues (Continue_Coin): row 0 before VS_Index 6, row 1 from it. */
 const s16 Correct_Control_Time_Data[2][16] = {
     { 0, 0, 45, 90, 135, 180, 180, 270, 270, 315, 315, 350, 405, 450, 450, 450 },
     { 0, 0, 30, 70, 115, 150, 150, 195, 195, 245, 245, 300, 300, 360, 420, 480 },
 };
 
 
+/* Takes time off the player's select time (SC_Personal_Time, into Control_Time) for the player's continues,
+   more late in the game. */
 void Correct_Control_Time(PL_id)
 s16 PL_id;
 {
-    u8 xx;
-    u8 zz;
+    u8 cont;
+    u8 late;
     if (Play_Type == PLAY_VS_PLAYER) {
         return;
     }
@@ -1569,16 +1578,16 @@ s16 PL_id;
         return;
     }
     if (VS_Index[PL_id] >= 6) {
-        zz = 1;
+        late = 1;
     } else {
-        zz = 0;
+        late = 0;
     }
     if (Continue_Coin[PL_id] >= 16) {
-        xx = 16;
+        cont = 16;
     } else {
-        xx = Continue_Coin[PL_id];
+        cont = Continue_Coin[PL_id];
     }
-    Control_Time = (s16)SC_Personal_Time[PL_id] - Correct_Control_Time_Data[zz][xx];
+    Control_Time = (s16)SC_Personal_Time[PL_id] - Correct_Control_Time_Data[late][cont];
     if (Control_Time < 0) {
         Control_Time = 0;
     }

@@ -54,7 +54,7 @@ void effect_56_move(WORK_Other* ewk) {
 
 
 /* provisional name */
-/* waits old_rno[0] frames */
+/* Wait old_rno[0] frames. */
 void eff56_0000(WORK_Other* ewk) {
     ewk->wu.old_rno[0]--;
     if (ewk->wu.old_rno[0] < 0) {
@@ -66,7 +66,7 @@ void eff56_0000(WORK_Other* ewk) {
 
 
 /* provisional name */
-/* crosses the screen */
+/* Cross the screen. */
 void eff56_1000(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[1]) {
     case R1_INIT:
@@ -100,7 +100,7 @@ void eff56_1000(WORK_Other* ewk) {
 
 
 /* provisional name */
-/* empty */
+/* Empty. */
 void eff56_dummy(void) {
 }
 

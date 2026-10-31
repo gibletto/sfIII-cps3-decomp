@@ -28,7 +28,7 @@ extern const u32 eff07_char_table[];   /* provisional name */
 
 
 
-/* next animation from eff07_char_index_tbl, sort_push_request4 */
+/* Play the object's animations in the order of eff07_char_index_tbl and draw it. */
 void effect_07_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
@@ -58,7 +58,8 @@ void effect_07_move(WORK_Other* ewk) {
 
 
 
-/* one object, starts effect 08 */
+/* Create the stage background object at (463, 77) and its effect 08 object when the stage
+ * background is set up. */
 s32 effect_07_init(void) {
     WORK_Other* ewk;
     s16 ix;

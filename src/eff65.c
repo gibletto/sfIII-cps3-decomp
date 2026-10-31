@@ -120,7 +120,7 @@ draw:
 
 
 /* provisional name */
-/* its pattern's cg_type 1 / 2 moves it down / up by one */
+/* A cg_type of 1 / 2 in its pattern moves it down / up by one. */
 void eff65_char_move(WORK_Other* ewk) {
     char_move(&ewk->wu);
     switch (ewk->wu.cg_type) {

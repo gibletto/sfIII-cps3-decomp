@@ -207,7 +207,7 @@ void eeprom_config_save(void) {
         *(u8*)(p + EEP_MONITOR_FLIP) = Monitor_Flip;
         *(u8*)(p + EEP_LANGUAGE) = Language;
         *(u8*)(p + EEP_FREE_PLAY) = Free_Play_Enable;
-        *(u8*)(p + EEP_CARD_DISPENSER) = ((s8)Card_Dispenser);
+        *(u8*)(p + EEP_CARD_DISPENSER) = (s8)Card_Dispenser;
         *(u8*)(p + EEP_WIN_POINT_COM) = Win_Point_Com;
         *(u8*)(p + EEP_WIN_POINT_HUMAN) = Win_Point_Human;
         *(u8*)(p + EEP_VOICE_TYPE) = Voice_Type;

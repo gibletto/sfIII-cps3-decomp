@@ -74,7 +74,7 @@ s32 effect_B1_init(PLW* wk) {
     ewk->my_master = (u32*)wk;
     ewk->wu.my_col_mode = 0x4200;
     ewk->wu.my_family = 1;
-    *ewk->wu.char_table = etc_char_table;
+    ewk->wu.char_table[0] = etc_char_table;
     ewk->wu.my_col_code = 0x206E;
     ewk->wu.xyz[0].disp.pos = 0x200;
     ewk->wu.xyz[1].disp.pos = 0;

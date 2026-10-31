@@ -30,7 +30,7 @@
 
 
 
-/* case 3 not gated by EXE_flag/Game_pause, drawn only while it runs */
+/* Case 3 runs even while EXE_flag or Game_pause is set and is drawn only while it runs. */
 void effect_C8_move(WORK_Other* ewk) {
     PLW* oya_pl = (PLW*)ewk->my_master;
     s16 work;
@@ -116,7 +116,7 @@ s32 effect_C8_init(PLW* wk) {
     ewk->wu.rl_flag = wk->wu.rl_flag;
     ewk->wu.my_col_mode = 0x4200;
     ewk->wu.my_priority = ewk->wu.position_z = 20;
-    *ewk->wu.char_table = etc_char_table;
+    ewk->wu.char_table[0] = etc_char_table;
     ewk->wu.my_col_code = wk->wu.my_col_code;
     ewk->my_master = (u32*)wk;
     ewk->wu.position_x = ewk->wu.xyz[0].disp.pos = wk->wu.xyz[0].disp.pos;

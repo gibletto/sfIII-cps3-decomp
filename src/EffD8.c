@@ -101,7 +101,7 @@ s32 effect_D8_entry(s16 PL_id, s16 vital) {
     }
     ewk = (WORK_Other*)frw[ix];
     ewk->wu.be_flag = 1;
-    ewk->wu.id = 0x8A;
+    ewk->wu.id = 138;
     ewk->wu.work_id = 0x10;
     ewk->wu.cgromtype = 1;
     ewk->wu.my_col_mode = 0x4200;

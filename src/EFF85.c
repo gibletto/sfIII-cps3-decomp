@@ -50,7 +50,7 @@ void eff85_0000(WORK_Other* ewk) {
 
 
 
-/* the sequence inline */
+/* Run the pattern sequence, one step per routine_no[1]; the last step goes back to R0_INIT. */
 void eff85_0100(WORK_Other* ewk) {
     if (!EXE_flag && !Game_pause) {
         if (compel_dead_check(ewk)) {
@@ -94,12 +94,13 @@ void eff85_0100(WORK_Other* ewk) {
 void eff85_0200(WORK_Other* ewk)
 {
     all_cgps_put_back(&ewk->wu);
-    push_effect_work((WORK*)ewk);
+    push_effect_work(&ewk->wu);
 }
 
 
 
-/* its own object and the effect 86 partner */
+/* Create the stage object at (0x25C, 94) and its effect 86 partner when the stage background is
+ * set up. */
 s32 effect_85_init(void) {
     WORK_Other* ewk;
     s16 ix;

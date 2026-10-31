@@ -55,8 +55,8 @@ void effect_90_move(WORK_Other* ewk) {
             }
             break;
         default:
-            all_cgps_put_back(ewk);
-            push_effect_work((WORK*)ewk);
+            all_cgps_put_back(&ewk->wu);
+            push_effect_work(&ewk->wu);
             break;
         }
     } else {
@@ -76,8 +76,8 @@ void effect_90_move(WORK_Other* ewk) {
             }
             break;
         default:
-            all_cgps_put_back(ewk);
-            push_effect_work((WORK*)ewk);
+            all_cgps_put_back(&ewk->wu);
+            push_effect_work(&ewk->wu);
             break;
         }
     }

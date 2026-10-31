@@ -197,9 +197,8 @@ void Com_Initialize(PLW* wk) {
     for (i = 0; i < 20; i++) {
         (&Resume_Lever[wk->wu.id][0])[i] = 0;
     }
-    j = 0;
-    while (j < 3) {
-        Attack_Count_Buff[wk->wu.id][j++] = -1;
+    for (j = 0; j < 3; j++) {
+        Attack_Count_Buff[wk->wu.id][j] = -1;
     }
 }
 
@@ -981,15 +980,16 @@ void Com_Caught(PLW* wk) {
             Check_Damage(wk);
             break;
         }
-        Lever_Buff[wk->wu.id] = Com_Rapid_Sub(wk, 0x3F0, &CP_No[wk->wu.id][2]);
+        Lever_Buff[wk->wu.id] = Com_Rapid_Sub(wk, BUTTON_SHOTS, &CP_No[wk->wu.id][2]);
         break;
     }
 }
 
 
 
+/* The lever Com_Rapid_Sub adds to the shot, right and left in turn (dir_step). */
 const u16 Rapid_Lever_Data[2] = {
-    8, 4,
+    LEVER_RIGHT, LEVER_LEFT,
 };
 
 /* Stored after Rapid_Lever_Data; nothing in the program refers to it. */
@@ -1048,7 +1048,7 @@ void Com_Catch(PLW* wk) {
             Next_Be_Free(wk);
             break;
         }
-        Lever_Buff[wk->wu.id] = Com_Rapid_Sub(wk, 0x3F0, &CP_No[wk->wu.id][2]);
+        Lever_Buff[wk->wu.id] = Com_Rapid_Sub(wk, BUTTON_SHOTS, &CP_No[wk->wu.id][2]);
         break;
     }
 }
@@ -1261,6 +1261,10 @@ void Setup_Bullet_Counter(PLW* wk) {
 
 
 
+/*
+ * By character, the highest pattern number of the active, passive, projectile (VS shell) and
+ * follow patterns: Pattern_Insurance replaces a Pattern_Index past it with the forced number.
+ */
 const u8 Pattern_Insurance_Data[13][4] = {
     { 56, 131, 10, 3 },  /* Gill */
     { 55, 127, 9, 3 },  /* Alex */

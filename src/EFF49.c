@@ -186,7 +186,7 @@ s32 effect_49_init(s16 Num, s16 Wait) {
     ewk->wu.position_z = 10;
     ewk->wu.dir_timer = Wait;
     ewk->wu.dir_old = Wait;
-    *ewk->wu.char_table = sel_pl_char_table;
+    ewk->wu.char_table[0] = sel_pl_char_table;
     ewk->wu.char_index = 23;
     ewk->wu.my_mr_flag = 1;
     ewk->wu.my_mr.size.x = 127;

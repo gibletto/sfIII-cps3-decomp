@@ -58,7 +58,7 @@ extern const u16 rot_lvr_tbl_l[4];    /* provisional name (06409758): 1, 4, 2, 8
 
 
 /* 02004F20 */
-/* the check routines, indexed by a step's CK_* code (cmd_data.h) */
+/* The check routines, indexed by a step's CK_* code (cmd_data.h). */
 void (*chk_move_jp[CMD_END])() = {
     check_init, /* CK_INIT */
     check_0,    /* CK_LEVER */
@@ -123,7 +123,7 @@ void cmd_data_set(PLW* pl, s16 i) {
 
 
 void cmd_init(PLW* pl) {
-    s16 i2;
+    s16 slot;
     s16 i;
     s16 j;
     s32* ptr;
@@ -136,18 +136,18 @@ void cmd_init(PLW* pl) {
             *ptr++ = 0;
         }
     }
-    i2 = 0;
+    slot = 0;
     do {
-        (&wcp[cmd_id].waza_flag[0])[i2] = 0;
+        (&wcp[cmd_id].waza_flag[0])[slot] = 0;
         j = 0;
         while (j < 4) {
-            (&wcp[cmd_id].waza_r[i2][0])[j] = 0;
+            (&wcp[cmd_id].waza_r[slot][0])[j] = 0;
             j++;
-            (&wcp[cmd_id].waza_r[i2][0])[j] = 0;
+            (&wcp[cmd_id].waza_r[slot][0])[j] = 0;
             j++;
         }
-        i2 = i2 + 1;
-    } while (i2 < CMD_SLOTS);
+        slot = slot + 1;
+    } while (slot < CMD_SLOTS);
     waza_compel_all_init(pl);
 }
 
@@ -474,9 +474,9 @@ void check_5(void) {
 
 
 
-/* a lever rotation (the sw_lever sequence of rot_lvr_tbl_r or rot_lvr_tbl_l, from any starting step);
- * free3 / shot_ok collect the directions met, uni0 indexes the next one, w_int / free1 time each out (reload
- * from free2) */
+/* A lever rotation (the sw_lever sequence of rot_lvr_tbl_r or rot_lvr_tbl_l, from any starting step):
+ * free3 / shot_ok collect the directions met, uni0 indexes the next one, and w_int / free1 time each out
+ * (reloaded from free2). */
 void check_6(void) {
     s16 i;
     if (!waza_ptr->free3) {
@@ -730,13 +730,11 @@ void check_12(void) {
         }
         break;
     case 1:
-        if ((chk_pl->old_lvbt & CMD_LV_MASK) != (chk_pl->new_lvbt & CMD_LV_MASK)) {
-            if (chk_pl->sw_lever == waza_ptr->w_lvr) {
-                waza_ptr->shot_ok++;
-                wcp[cmd_id].waza_flag[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
-                waza_ptr->free3 = wcp[cmd_id].reset[waza_type[cmd_id]] + 8;
-                waza_ptr->w_int = 6;
-            }
+        if ((chk_pl->old_lvbt & CMD_LV_MASK) != (chk_pl->new_lvbt & CMD_LV_MASK) && chk_pl->sw_lever == waza_ptr->w_lvr) {
+            waza_ptr->shot_ok++;
+            wcp[cmd_id].waza_flag[waza_type[cmd_id]] = wcp[cmd_id].reset[waza_type[cmd_id]];
+            waza_ptr->free3 = wcp[cmd_id].reset[waza_type[cmd_id]] + 8;
+            waza_ptr->w_int = 6;
         }
         break;
     case 2:

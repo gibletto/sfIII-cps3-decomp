@@ -108,6 +108,6 @@ s32 effect_G3_init(WORK* wk, u8 data) {
     ewk2 = (WORK_Other*)wk;
     ewk->wu.target_adrs = ewk2->my_master;
     ewk->wu.rl_flag = data;
-    *ewk->wu.char_table = effD4_char_table;
+    ewk->wu.char_table[0] = effD4_char_table;
     return 0;
 }

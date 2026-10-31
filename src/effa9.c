@@ -36,7 +36,7 @@ void effB8_conn_set();   /* provisional name */
 
 
 
-/* the select-screen plate marker */
+/* The select-screen plate marker. */
 void effect_A9_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
@@ -62,7 +62,7 @@ void effect_A9_move(WORK_Other* ewk) {
 
 
 
-/* (player, slot) */
+/* Create the select-screen plate marker for a player and slot. */
 s32 effect_A9_init(s8 PL_id, s16 slot) {
     WORK_Other* ewk;
     s16 ix;

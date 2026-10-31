@@ -149,7 +149,7 @@ void bg1102_init00(void) {
 
 
 /* provisional name */
-/* zooms the frame in to bg_f_x 64, then Zoomf_Init */
+/* Zoom the frame in to bg_f_x 64, then call Zoomf_Init. */
 void bg1102_zoom_in(void) {
     if (C_No1 > 3 || Allow_a_battle_f) {
         if (Game_setting.Screen_Mode == 0) {

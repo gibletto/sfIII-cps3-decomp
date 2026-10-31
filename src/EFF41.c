@@ -98,7 +98,7 @@ s32 effect_41_init(PLW* wk, u8 data) {
         ewk->my_master = (u32*)wk;
         ewk->master_work_id = wk->wu.work_id;
         ewk->master_id = wk->wu.id;
-        *ewk->wu.char_table = plef_char_table;
+        ewk->wu.char_table[0] = plef_char_table;
         return 0;
     }
 }

@@ -81,6 +81,8 @@ void sc_chr_load(u16 rows) {
 
 
 
+/* Copies w * h font characters, stored one after another from character chr, into a w x h block of the text
+   character RAM at pos. */
 void sc_chr_block_trans(chr, pos, w, h)
 u16 chr;
 u16 pos;
@@ -119,6 +121,8 @@ u16 h;
 
 
 
+/* Copies a w x h block of font characters from character chr into a w x h block of the text character RAM at
+   pos; the font and the character RAM are both 16 characters to the row. */
 void sc_chr_sheet_trans(chr, pos, w, h)
 u16 chr;
 u16 pos;
@@ -160,6 +164,7 @@ u16 h;
 
 
 
+/* Puts a w x h block of cells from the 16-wide font sheet, starting at code, on the text layer at x, y. */
 void scfont_sqput(x, y, w, h, attr, code)
 s16 x;
 s16 y;
@@ -180,13 +185,15 @@ s16 code;
 
 
 
+/* As scfont_sqput, mirrored: the columns run right to left and the attribute gets 0x80. */
 void scfont_sqput_rev(x, y, w, h, attr, code)
 s16 x;
 s16 y;
 u16 w;
 u16 h;
 s16 attr;
-s16 code; {
+s16 code;
+{
     u16 i;
     u16 j;
     for (j = 0; j < h; j++) {
@@ -198,6 +205,7 @@ s16 code; {
 
 
 
+/* Puts w x h cells on the text layer at x, y, numbered on one after another from code. */
 void scfont_lnput(x, y, w, h, attr, code)
 s16 x;
 s16 y;
@@ -221,6 +229,7 @@ s16 code;
 
 
 
+/* As scfont_lnput, mirrored: the columns run right to left and the attribute gets 0x80. */
 void scfont_lnput_rev(x, y, w, h, attr, code)
 s16 x;
 s16 y;
@@ -257,6 +266,7 @@ void scfont_fill(s16 x, s16 y, u16 w, u16 h, s16 attr, s16 code) {
 
 
 
+/* Fills n characters of the text character RAM, from character pos, with the blank character. */
 void sc_chr_clear(pos, n)
 u16 pos;
 u16 n;
@@ -493,6 +503,7 @@ void stun_mark_put(s8 pl) {
 
 
 
+/* Copies the six font characters of max mark n into player pl's area of the text character RAM. */
 void max_mark_chr_trans(pl, n)
 s8 pl;
 s16 n;
@@ -504,6 +515,7 @@ s16 n;
 
 
 
+/* Clears the text-layer cells from x0, y0 to x1, y1 inclusive to blanks with attribute 0. */
 void tilemap_clear_rect(x0, y0, x1, y1)
 u32 x0;
 u32 y0;
@@ -641,6 +653,7 @@ void player_face(void) {
 
 
 
+/* Puts the SF3 logo, a block of font cells, on the text layer below row y. */
 u32 SF3_logo(s16 y) {
     scfont_sqput(DE_X[3] + 19, y + 12, 10, 2, 22, 214);
 }
@@ -701,16 +714,16 @@ s16 combo_pts_set(s8 PL, u32 pts) {
     s16 digit[4];
     s16 i;
     s16 first;
-    s32 xx;
+    s32 div;
     u16 x;
     s16 y;
     s16 y2;
     s16 x2;
-    xx = 100000;
+    div = 100000;
     first = -1;
-    for (i = 3; i >= 0; i--, xx = xx / 10) {
-        digit[i] = number / xx;
-        number -= digit[i] * xx;
+    for (i = 3; i >= 0; i--, div = div / 10) {
+        digit[i] = number / div;
+        number -= digit[i] * div;
         if (first < 0) {
             if (digit[i] != 0) {
                 first = i;

@@ -166,7 +166,7 @@ s32 effect_E2_init(PLW* wk, const s16* data, u8 ff) {
     ewk->wu.my_col_mode = 0x2020;   /* the second store stands; my_col_code is left alone */
     ewk->wu.my_family = 2;
     ewk->wu.my_mr_flag = 0;
-    *ewk->wu.char_table = plef_char_table;
+    ewk->wu.char_table[0] = plef_char_table;
     bxt = wk->wu.h_bod->body_dm[data[0]];
     ewk->wu.old_pos[0] = bxt[0] + (bxt[1] >> 1) + data[1];
     ewk->wu.old_pos[1] = bxt[2] + (bxt[3] >> 1) + data[2];

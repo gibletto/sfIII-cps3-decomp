@@ -78,7 +78,7 @@ void effect_06_move(WORK_Other* ewk) {
 
 
 
-/* tables by stage and area */
+/* Create the stage objects from the tables for the stage and area. */
 s32 effect_06_init(void) {
     WORK_Other* ewk;
     s16 ix;

@@ -129,7 +129,7 @@ void card_win_check(s16 vs_mode)
 
 
 /* provisional name */
-/* text attribute 20 */
+/* The card dispenser message, in text attribute 20. */
 void card_msg_disp(void) {
     if (!Card_Dispenser) {
         return;

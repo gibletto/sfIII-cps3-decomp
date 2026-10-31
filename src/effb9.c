@@ -77,7 +77,7 @@ void effect_B9_move(WORK_Other* ewk) {
         break;
     case 5:
     case 99:
-        all_cgps_put_back(ewk);
+        all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
         break;
     default:
@@ -110,7 +110,7 @@ s32 effect_B9_init(WORK_Other* oya) {
     ewk->wu.position_x = ewk->wu.xyz[0].disp.pos = bg_w.bgw[1].pos_x_work + 70;
     ewk->wu.scr_mv_x = bg_w.bgw[1].pos_x_work + 70;
     ewk->wu.xyz[0].disp.low = 0;
-    *ewk->wu.char_table = etc_char_table;
+    ewk->wu.char_table[0] = etc_char_table;
     ewk->wu.char_index = effb9_round_char_tbl[Round_num];
     ewk->wu.position_x &= 0x3FF;
     ewk->wu.hit_stop = 4;

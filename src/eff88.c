@@ -66,8 +66,8 @@ void effect_88_move(WORK_Other* ewk) {
         disp_pos_trans_entry_rs(ewk);
         break;
     default:
-        all_cgps_put_back(ewk);
-        push_effect_work((WORK*)ewk);
+        all_cgps_put_back(&ewk->wu);
+        push_effect_work(&ewk->wu);
         break;
     }
 }
@@ -77,34 +77,34 @@ void effect_88_move(WORK_Other* ewk) {
 s32 effect_88_init(s16 type) {
     s16 n;
     s16 i;
-    s16 s;
-    const s16* t;
-    WORK_Other* o;
+    s16 ix;
+    const s16* data;
+    WORK_Other* ewk;
     n = eff88_loop_tbl[type][bg_w.compel_flag];
     if (n != 0) {
-        t = scr_obj_data88[type][bg_w.compel_flag];
+        data = scr_obj_data88[type][bg_w.compel_flag];
         for (i = 0; i < n; i++) {
-            if ((s = pull_effect_work(4)) == -1) {
+            if ((ix = pull_effect_work(4)) == -1) {
                 return -1;
             }
-            o = (WORK_Other*)frw[s];
-            o->wu.be_flag = 1;
-            o->wu.id = 88;
-            o->wu.work_id = 16;
-            o->wu.cgromtype = 1;
-            o->wu.rl_flag = 0;
-            o->wu.my_col_mode = 0x4200;
-            o->wu.dead_f = *t++;
-            o->wu.my_family = *t++;
-            o->wu.my_col_code = *t++;
-            o->wu.xyz[0].disp.pos = *t++;
-            o->wu.xyz[1].disp.pos = *t++;
-            o->wu.my_priority = o->wu.position_z = *t++;
-            o->wu.char_index = *t++;
-            o->wu.hit_stop = *t++;
-            o->wu.sync_suzi = *t++;
-            o->wu.char_table[0] = char_add[bg_w.stage][bg_w.area];
-            suzi_offset_set(&o->wu);
+            ewk = (WORK_Other*)frw[ix];
+            ewk->wu.be_flag = 1;
+            ewk->wu.id = 88;
+            ewk->wu.work_id = 16;
+            ewk->wu.cgromtype = 1;
+            ewk->wu.rl_flag = 0;
+            ewk->wu.my_col_mode = 0x4200;
+            ewk->wu.dead_f = *data++;
+            ewk->wu.my_family = *data++;
+            ewk->wu.my_col_code = *data++;
+            ewk->wu.xyz[0].disp.pos = *data++;
+            ewk->wu.xyz[1].disp.pos = *data++;
+            ewk->wu.my_priority = ewk->wu.position_z = *data++;
+            ewk->wu.char_index = *data++;
+            ewk->wu.hit_stop = *data++;
+            ewk->wu.sync_suzi = *data++;
+            ewk->wu.char_table[0] = char_add[bg_w.stage][bg_w.area];
+            suzi_offset_set(&ewk->wu);
         }
         return 0;
     }

@@ -89,6 +89,7 @@ void bg0200_init00(void) {
 
 
 
+/* Each stage file has its own copy. */
 static void bg_move_common(void) {
     bg_x_move_check();
     bg_y_move_check();
@@ -142,6 +143,7 @@ void bg0201_init00(void) {
 
 
 
+/* Move the base layer and chase the players; each stage file has its own copy. */
 static void bg_base_move_common(void) {
     bg_base_x_move_check();
     bg_base_y_move_check();
@@ -191,7 +193,7 @@ void bg020_layer(s16 n) {
 
 
 /* provisional name */
-/* the first area's layers scroll up into place: faster while the cut button is held */
+/* The first area's layers scroll up into place, faster while the cut button is held. */
 void bg0200_demo(void) {
     if (Cut_Cut_Cut()) {
         bgw_ptr->xy[1].cal -= bgw_ptr->speed_y * 6;

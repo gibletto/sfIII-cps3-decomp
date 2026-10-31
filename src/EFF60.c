@@ -57,7 +57,7 @@ void effect_60_move(WORK_Other* ewk) {
         break;
     case R0_KILL:
     default:
-        all_cgps_put_back(ewk);
+        all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
         break;
     }

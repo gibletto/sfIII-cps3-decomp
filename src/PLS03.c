@@ -197,6 +197,8 @@ s32 execute_super_arts(PLW* wk) {
 
 
 
+/* Start the special move whose command has been entered, on the ground or in the air; 1 when one
+ * starts. */
 s32 check_special_attack(PLW* wk) {
     s16 i;
     s16 j;
@@ -307,7 +309,7 @@ s32 check_special_attack(PLW* wk) {
 
 
 
-/* leap attacks: waza 14 and 15 by command */
+/* Start the leap attack (waza 14 or 15) whose command has been entered; 1 when one starts. */
 s32 check_leap_attack(PLW* wk) {
     s16 i;
     s16 j;
@@ -561,7 +563,7 @@ s32 check_lever_up_attack(PLW* wk) {
 
 
 
-/* always returns 0 */
+/* Always returns 0. */
 s32 check_catch_attack(PLW* wk) {
     return 0;
 }
@@ -734,7 +736,7 @@ s16 cmd_ex;
 
 
 
-/* the nearest of two body boxes and the push box */
+/* Returns the nearest of the opponent's two body boxes and push box. */
 s32 get_em_body_range(WORK* wk) {
     WORK* em = (WORK*)wk->target_adrs;
     s16 r1;
@@ -817,7 +819,7 @@ u16 sw;
 
 
 
-/* the attack for button strength sw (shot_refresh) */
+/* Returns the attack for button strength sw (shot_refresh). */
 s16 shot_data_refresh(s16 sw) {
     return shot_refresh[sw];
 }
@@ -888,7 +890,7 @@ s32 check_meoshi_cancel(PLW* wk) {
 
 s32 check_renda_cancel(PLW* wk) {
     wk->permited_koa |= 0x20;
-    if (wk->wu.pat_status == renda_status_table[(wk->cp->sw_new & 3)]) {
+    if (wk->wu.pat_status == renda_status_table[wk->cp->sw_new & 3]) {
         if ((wk->cp->sw_now & CMD_SW_SHOT) == wk->current_attack) {
             setup_comm_back((WORK*)wk);
             wk->wu.cg_ix = wk->wu.cg_eftype * wk->wu.cgd_type - (wk->wu.cgd_type * 2);

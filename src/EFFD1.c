@@ -33,7 +33,7 @@ void effect_D1_move(WORK_Other* ewk) {
     case R0_INIT:
         ewk->wu.routine_no[0]++;
         ewk->wu.disp_flag = 1;
-        set_char_move_init(&ewk->wu, 0, (s16)(ewk->wu.char_index));
+        set_char_move_init(&ewk->wu, 0, ewk->wu.char_index);
         fall_data_set(ewk);
         pl_eff_trans_entry(ewk);
         break;
@@ -107,7 +107,8 @@ void fall_data_set(WORK_Other* ewk) {
 }
 
 
-/* the falling object for its parent */
+/* Create the object that drops from 138 dots above its parent, started by the parent's move data
+ * through effinitjptbl (which ignores the result: there is no final return). */
 s32 effect_D1_init(WORK_Other* oya, s32 _p1) {
     WORK_Other* ewk;
     s16 ix;
@@ -133,7 +134,7 @@ s32 effect_D1_init(WORK_Other* oya, s32 _p1) {
     } else {
         ewk->wu.my_col_code = 6;
     }
-    *ewk->wu.char_table = etc_char_table;
+    ewk->wu.char_table[0] = etc_char_table;
     ewk->wu.xyz[1].disp.pos = oya->wu.xyz[1].disp.pos + 138;
     ewk->wu.xyz[0].disp.pos = oya->wu.xyz[0].disp.pos;
 }

@@ -170,7 +170,7 @@ s32 effect_78_init(WORK_Other* pwk) {
     ewk->wu.my_family = 2;
     ewk->wu.my_col_mode = 0x4200;
     ewk->wu.my_col_code = 0x2051;
-    *ewk->wu.char_table = eff78_char_table;
+    ewk->wu.char_table[0] = eff78_char_table;
     ewk->wu.xyz[0].disp.pos = 512;
     ewk->wu.xyz[1].disp.pos = 51;
     suzi_offset_set(&ewk->wu);

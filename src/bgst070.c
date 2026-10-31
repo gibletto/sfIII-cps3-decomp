@@ -138,7 +138,7 @@ void bg0701_move(void) {
 
 
 
-/* layer 2 runs in the first area only */
+/* Layer 2 runs in the first area only. */
 void bg0702(void) {
     void (*bg0702_jmp[2])() = { bg0702_init00, bg0702_move };
     if (bg_w.area) {
@@ -167,7 +167,7 @@ void bg0702_move(void) {
 
 
 /* provisional name */
-/* two 8x16 cells of the stage's scroll graphics into layer 1's map; the second by area */
+/* Put two 8x16 cells of the stage's scroll graphics into layer 1's map; the second by area. */
 void bg0701_cell_set(void) {
     u16 code;
     u32 base;

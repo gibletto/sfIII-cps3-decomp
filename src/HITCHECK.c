@@ -860,19 +860,19 @@ void dm_status_copy(WORK* as, WORK* ds) {
 
 
 void add_combo_work(PLW* as, PLW* ds) {
-    s16* r;
-    s16* c;
+    s16* hit_cnt;
+    s16* kind_cnt;
     if (ds->kezurijini_flag) {
         return;
     }
     ds->kizetsu_kow = ds->cb->new_dm = as->wu.kind_of_waza;
-    c = &ds->cb->kind_of[0][0][0];
-    r = calc_hit[ds->wu.id];
-    c[as->wu.kind_of_waza]++;
-    r[(as->wu.kind_of_waza & 0x78) / 8]++;
+    kind_cnt = &ds->cb->kind_of[0][0][0];
+    hit_cnt = calc_hit[ds->wu.id];
+    kind_cnt[as->wu.kind_of_waza]++;
+    hit_cnt[(as->wu.kind_of_waza & 0x78) / 8]++;
     ds->cb->total++;
-    c = &ds->rp->kind_of[0][0][0];
-    c[as->wu.kind_of_waza]++;
+    kind_cnt = &ds->rp->kind_of[0][0][0];
+    kind_cnt[as->wu.kind_of_waza]++;
     ds->rp->total++;
 }
 
@@ -888,7 +888,7 @@ void cal_combo_waribiki(PLW* as, PLW* ds) {
     if (ds->rp->total == 0) {
         return;
     }
-    koatt = exchange_koa[(as->wu.kind_of_waza) >> 1];
+    koatt = exchange_koa[as->wu.kind_of_waza >> 1];
     tbl.ixl = 0;
     for (i = 0; i < 10; i++) {
         for (j = 0; j < 4; j++) {
@@ -932,7 +932,7 @@ void cal_combo_waribiki2(PLW* ds) {
     if (num <= 0) {
         num = 1;
     }
-    ds->wu.dm_piyo = (ds->wu.dm_piyo * num) / 32;
+    ds->wu.dm_piyo = ds->wu.dm_piyo * num / 32;
     if (ds->wu.dm_piyo == 0) {
         ds->wu.dm_piyo = 1;
     }
@@ -1303,6 +1303,11 @@ void clear_hit_queue(void) {
 }
 
 
+/*
+ * The damage reaction ix (32 and up) as hit by an attack of attribute atr: 1 flame, 2 thunder,
+ * 3 freeze. Gill turned one way (rl_flag set) swaps flame and freeze, and the attack takes the
+ * swapped attribute.
+ */
 s32 change_damage_attribute(as, atr, ix)
 PLW* as;
 u16 atr;

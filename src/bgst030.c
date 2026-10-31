@@ -78,6 +78,7 @@ void bg0301_init00(void) {
 
 
 
+/* Each stage file has its own copy. */
 static void bg_move_common(void) {
     bg_x_move_check();
     bg_y_move_check();
@@ -129,7 +130,7 @@ void bg0302_init00(void) {
 
 
 /* provisional name */
-/* base layer move and its line scroll */
+/* Move the base layer and its line scroll. */
 void bg0302_move(void) {
     bg_base_x_move_check();
     bg_base_y_move_check();
@@ -140,7 +141,7 @@ void bg0302_move(void) {
 
 
 /* provisional name */
-/* layer 2 */
+/* Layer 2's routine, one step per r_no_0. */
 void bg0303(void) {
     void (*bg0303_jmp[3])() = { bg0303_init00, bg030_appear, bg0303_move };
     bg0303_jmp[bgw_ptr->r_no_0]();
@@ -173,7 +174,7 @@ void bg0303_move(void) {
 
 
 /* provisional name */
-/* the first area's layers scroll up into place: twice as fast while the cut button is held */
+/* The first area's layers scroll up into place, twice as fast while the cut button is held. */
 void bg030_appear(void) {
     if (Cut_Cut_Cut()) {
         bgw_ptr->xy[1].cal -= bgw_ptr->speed_y * 4;

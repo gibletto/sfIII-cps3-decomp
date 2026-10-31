@@ -32,7 +32,7 @@
 
 
 
-/* animate the breakable stage object */
+/* Animate the breakable stage object: whole until it is hit, then broken. */
 void effect_23_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
@@ -85,7 +85,8 @@ void effect_23_move(WORK_Other* ewk) {
 
 
 
-/* the object and its parts */
+/* Create the breakable stage object and its parts (effects 21, 22 and 24) when the stage
+ * background is set up. */
 s32 effect_23_init(void) {
     WORK_Other* ewk;
     s16 ix;
@@ -115,7 +116,7 @@ s32 effect_23_init(void) {
 
 
 
-/* (no caller): three broken pieces of effect 23 */
+/* Create three broken pieces of effect 23 that fly off; nothing calls it. */
 /* provisional name */
 s32 effect_23_parts_init(void) {
     WORK_Other* ewk;

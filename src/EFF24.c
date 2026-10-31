@@ -26,7 +26,7 @@
 
 
 
-/* animate the part of the breakable object */
+/* Show the part whole until the object is hit, then broken. */
 void effect_24_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
@@ -65,7 +65,8 @@ void effect_24_move(WORK_Other* ewk) {
 
 
 
-/* one work, for its master */
+/* Create the part of the breakable stage object (effect 23) that shows it broken once it is
+ * hit; made with that object. */
 s32 effect_24_init(WORK_Other* oya) {
     WORK_Other* ewk;
     s16 ix;

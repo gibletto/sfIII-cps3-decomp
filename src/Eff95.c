@@ -47,7 +47,7 @@ const s16 eff95_ofs_tbl[13][2] = {
 
 
 
-/* an object drifting in x (speed held only while win_slide_flag) */
+/* An object drifting in x; its speed is kept only while win_slide_flag is set. */
 void effect_95_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:

@@ -94,6 +94,7 @@ void bg000_layer1_init(void) {
 
 
 
+/* Move the base layer and chase the players; each stage file has its own copy. */
 static void bg_base_move_common(void) {
     bg_base_x_move_check();
     bg_base_y_move_check();
@@ -131,6 +132,7 @@ void bg000_layer0_init(void) {
 
 
 
+/* Each stage file has its own copy. */
 static void bg_move_common(void) {
     bg_x_move_check();
     bg_y_move_check();
@@ -175,7 +177,7 @@ void bg000_layer4(void) {
 
 
 /* provisional name */
-/* the drop-in: wait bg_demo_cnt frames, then zoom out and come down; three shot presses end it at once */
+/* The drop-in: wait bg_demo_cnt frames, then zoom out and come down; three shot presses end it at once. */
 void bg000_demo(void) {
     switch (bgw_ptr->r_no_1) {
     case 0:

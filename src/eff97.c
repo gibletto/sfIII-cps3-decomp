@@ -34,7 +34,7 @@
 
 
 
-/* not gated by EXE_flag/Game_pause, case 3 draws only while moving */
+/* Runs even while EXE_flag or Game_pause is set; in case 3 it is drawn only while it moves. */
 void effect_97_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
@@ -110,7 +110,7 @@ s32 effect_97_init(PLW* oya) {
     ewk->wu.my_priority = ewk->wu.position_z = oya->wu.my_priority;
     ewk->wu.sync_suzi = 0;
     ewk->wu.xyz[1].disp.pos = 40;
-    *ewk->wu.char_table = etc_char_table;
+    ewk->wu.char_table[0] = etc_char_table;
     if (oya->wu.id) {
         ewk->wu.rl_flag = 1;
         ewk->wu.xyz[0].disp.pos = oya->wu.xyz[0].disp.pos + 104;

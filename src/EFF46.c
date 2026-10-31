@@ -75,8 +75,8 @@ void effect_46_move(WORK_Other* ewk) {
         ewk->wu.routine_no[0]++;
         break;
     default:
-        all_cgps_put_back(ewk);
-        push_effect_work((WORK*)ewk);
+        all_cgps_put_back(&ewk->wu);
+        push_effect_work(&ewk->wu);
         break;
     }
 }
@@ -100,7 +100,7 @@ s32 effect_46_init(WORK* wk) {
     ewk->wu.my_col_code = wk->my_col_code;
     ewk->wu.my_family = 2;
     ewk->wu.position_z = wk->position_z - 1;
-    *ewk->wu.char_table = etc2_char_table;
+    ewk->wu.char_table[0] = etc2_char_table;
     ewk->wu.char_index = 0;
     ewk->wu.sync_suzi = 0;
     if (wk->rl_flag) {

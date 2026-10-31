@@ -192,6 +192,7 @@ void eff26_03(WORK_Other* ewk) {
             set_char_move_init(&ewk->wu, 0, ewk->wu.old_rno[1]);
             goto case_3;
         }
+        /* falls through: the piece stands until its parent moves on */
     case R1_STAND:
         if (ewk->wu.hit_stop) {
             char_move(&ewk->wu);
@@ -217,6 +218,7 @@ void eff26_03(WORK_Other* ewk) {
             break;
         }
         ewk->wu.disp_flag = 1;
+        /* falls through: the arm is shown and checks its target this frame */
     case R1_TARGET:
         if (eff_hit_check(ewk, ewk->wu.old_rno[4])) {
             if (ewk->wu.old_rno[2] & 1) {

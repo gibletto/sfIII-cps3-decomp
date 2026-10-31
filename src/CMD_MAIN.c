@@ -282,9 +282,6 @@ void debug_main_dispatch(void) {
 
 
 /* provisional name */
-/* provisional name */
-/* provisional name */
-/* provisional name */
 void debug_object_look_dispatch(void) {
     void (*Look_Tbl[2])() = { debug_object_look_init, debug_object_look_run };
     dbg_pl = plw;
@@ -1344,41 +1341,39 @@ void debug_char_preview_init(void) {
 
 /* provisional name */
 static void debug_rgb_editor_navigate(u16 sw) {
-    {
-        if (dbg_p2sw_0 & BUTTON_LP) {
-            Debug_RGB[0]--;
-            if (sw & 0x10) {
-                Debug_RGB[0] -= 3;
-            }
+    if (dbg_p2sw_0 & BUTTON_LP) {
+        Debug_RGB[0]--;
+        if (sw & BUTTON_LP) {
+            Debug_RGB[0] -= 3;
         }
-        if (dbg_p2sw_0 & BUTTON_MP) {
-            Debug_RGB[1]--;
-            if (sw & 0x20) {
-                Debug_RGB[1] -= 3;
-            }
+    }
+    if (dbg_p2sw_0 & BUTTON_MP) {
+        Debug_RGB[1]--;
+        if (sw & BUTTON_MP) {
+            Debug_RGB[1] -= 3;
         }
-        if (dbg_p2sw_0 & BUTTON_HP) {
-            Debug_RGB[2]--;
-            if (sw & 0x40) {
-                Debug_RGB[2] -= 3;
-            }
+    }
+    if (dbg_p2sw_0 & BUTTON_HP) {
+        Debug_RGB[2]--;
+        if (sw & BUTTON_HP) {
+            Debug_RGB[2] -= 3;
         }
     }
     if (dbg_p2sw_0 & BUTTON_LK) {
         Debug_RGB[0]++;
-        if (sw & 0x80) {
+        if (sw & BUTTON_LK) {
             Debug_RGB[0] += 3;
         }
     }
     if (dbg_p2sw_0 & BUTTON_MK) {
         Debug_RGB[1]++;
-        if (sw & 0x100) {
+        if (sw & BUTTON_MK) {
             Debug_RGB[1] += 3;
         }
     }
     if (dbg_p2sw_0 & BUTTON_HK) {
         Debug_RGB[2]++;
-        if (sw & 0x200) {
+        if (sw & BUTTON_HK) {
             Debug_RGB[2] += 3;
         }
     }
@@ -1417,25 +1412,25 @@ void debug_char_preview_run(void) {
     u16 shown;
     u16 code;
     debug_position_by_pad();
-    if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, 1, 0)) {
+    if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, LEVER_UP, 0)) {
         dbg_pl->wu.cg_number -= 1;
         if (dbg_pl->wu.cg_number > 0x7827) {
             dbg_pl->wu.cg_number = 0x7827;
         }
     }
-    if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, 2, 1)) {
+    if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, LEVER_DOWN, 1)) {
         dbg_pl->wu.cg_number += 1;
         if (dbg_pl->wu.cg_number > 0x7827) {
             dbg_pl->wu.cg_number = 0;
         }
     }
-    if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, 4, 2)) {
+    if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, LEVER_LEFT, 2)) {
         dbg_pl->wu.cg_number -= 0x80;
         if (dbg_pl->wu.cg_number > 0x7827) {
             dbg_pl->wu.cg_number = 0x7827;
         }
     }
-    if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, 8, 3)) {
+    if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, LEVER_RIGHT, 3)) {
         dbg_pl->wu.cg_number += 0x80;
         if (dbg_pl->wu.cg_number > 0x7827) {
             dbg_pl->wu.cg_number = 0;
@@ -1480,7 +1475,6 @@ void debug_char_preview_run(void) {
 }
 
 
-/* provisional name */
 /* provisional names: the sixth debug tool, a BG viewer for etc BG 4 */
 void debug_bg_test_dispatch(void) {
     void (*Test_Tbl[2])() = { debug_bg_test_init, debug_bg_test_run };
@@ -1627,8 +1621,6 @@ void debug_bg_test_run(void) {
 
 
 /* provisional name */
-/* provisional name */
-/* provisional name */
 /* The first loop writes slot 0 eight times. */
 void debug_char_slot_init(id)
 s16 id;
@@ -1690,13 +1682,13 @@ s32 debug_slot_all_select(u16 sw)
         return 0;
     }
     moved = 0;
-    if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, 1, 0)) {
+    if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, LEVER_UP, 0)) {
         dbg_slot->sel[0]--;
         if (dbg_slot->sel[0] < 1) {
             dbg_slot->sel[0] = dbg_slot->sel0_max;
         }
         moved = 1;
-    } else if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, 2, 1)) {
+    } else if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, LEVER_DOWN, 1)) {
         dbg_slot->sel[0]++;
         moved = 1;
         if (dbg_slot->sel[0] > dbg_slot->sel0_max) {
@@ -1725,13 +1717,13 @@ s32 debug_slot_all_select(u16 sw)
 
 /* provisional name */
 s32 debug_slot_motion_select(void) {
-    if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, 8, 3)) {
+    if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, LEVER_RIGHT, 3)) {
         dbg_slot->sel[1]++;
         if (dbg_slot->sel[1] > dbg_slot->sel1_max) {
             dbg_slot->sel[1] = 1;
         }
         return 2;
-    } else if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, 4, 2)) {
+    } else if (debug_lever_repeat(dbg_p1sw_0, dbg_p1sw_1, LEVER_LEFT, 2)) {
         dbg_slot->sel[1]--;
         if (dbg_slot->sel[1] < 1) {
             dbg_slot->sel[1] = dbg_slot->sel1_max;
@@ -1767,7 +1759,7 @@ s32 debug_check_rec_step(void) {
 
 /* provisional name: command 5 on button 2 */
 s32 debug_check_step_z(u16 sw) {
-    if (sw & 0x20) {
+    if (sw & BUTTON_MP) {
         return 5;
     }
     return 0;
@@ -1776,7 +1768,7 @@ s32 debug_check_step_z(u16 sw) {
 
 /* provisional name: command 7 (restart recorded frame) on button 2 */
 s32 debug_check_rec_frame(u16 sw) {
-    if (Debug_Rec_Count != 0 && (sw & 0x20) != 0) {
+    if (Debug_Rec_Count != 0 && (sw & BUTTON_MP) != 0) {
         return 7;
     }
     return 0;
@@ -1785,7 +1777,7 @@ s32 debug_check_rec_frame(u16 sw) {
 
 /* provisional name */
 s32 debug_flip_cycle(u16 sw) {
-    if (sw & 0x80) {
+    if (sw & BUTTON_LK) {
         dbg_pl->wu.cg_flip++;
         dbg_pl->wu.cg_flip &= 3;
         Debug_Flip_Mask[dbg_pl->wu.id]++;
@@ -1798,7 +1790,7 @@ s32 debug_flip_cycle(u16 sw) {
 
 /* provisional name */
 s32 debug_priority_swap(u16 sw) {
-    if (sw & 0x40) {
+    if (sw & BUTTON_HP) {
         if (plw[0].wu.my_priority == 50) {
             plw[0].wu.my_priority = 51;
             plw[1].wu.my_priority = 50;
@@ -1826,7 +1818,7 @@ s32 debug_priority_swap(u16 sw) {
 /* provisional name */
 void debug_move_record_start(u16 sw) {
     s16 n;
-    if (sw & 0x100) {
+    if (sw & BUTTON_MK) {
         if (Debug_Rec_Count != 0) {
             dbg_rec_menu = 15;
         } else {
@@ -1848,7 +1840,7 @@ void debug_move_record_start(u16 sw) {
 
 /* provisional name */
 void debug_pl_id_input(u16 sw) {
-    if (sw & 0x40) {
+    if (sw & BUTTON_HP) {
         Debug_PL_id ^= 1;
     }
 }
@@ -1856,7 +1848,7 @@ void debug_pl_id_input(u16 sw) {
 
 /* provisional name */
 s32 debug_record_sw_check(u16 sw) {
-    if (sw & 0x80) {
+    if (sw & BUTTON_LK) {
         return 8;
     }
     return 0;
@@ -1865,10 +1857,10 @@ s32 debug_record_sw_check(u16 sw) {
 
 /* provisional name */
 void debug_record_frame_adjust(u16 sw) {
-    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 0x100, 19)) {
+    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, BUTTON_MK, 19)) {
         dbg_snap_ptr->cg_ctr++;
     }
-    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 0x200, 20)) {
+    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, BUTTON_HK, 20)) {
         dbg_snap_ptr->cg_ctr--;
         if (dbg_snap_ptr->cg_ctr < 0) {
             dbg_snap_ptr->cg_ctr = 0;
@@ -1921,11 +1913,11 @@ void debug_move_record_menu(void)
 
 /* provisional name */
 void debug_playback_mode_cycle(u16 sw) {
-    if ((sw & 0x200) != 0) {
+    if ((sw & BUTTON_HK) != 0) {
         if (Debug_Rec_Count != 0) {
             dbg_rec_exist = 1;
             dbg_save_mode++;
-            if (2 < dbg_save_mode) {
+            if (dbg_save_mode > 2) {
                 dbg_save_mode = 0;
             }
         }
@@ -1944,16 +1936,16 @@ void debug_position_by_pad(void) {
             debug_bg_position_reset();
         }
     }
-    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 1, 4)) {
+    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_UP, 4)) {
         dbg_pl->wu.xyz[1].disp.pos++;
     }
-    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 2, 5)) {
+    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_DOWN, 5)) {
         dbg_pl->wu.xyz[1].disp.pos--;
     }
-    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 4, 6)) {
+    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_LEFT, 6)) {
         dbg_pl->wu.xyz[0].disp.pos--;
     }
-    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 8, 7)) {
+    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_RIGHT, 7)) {
         dbg_pl->wu.xyz[0].disp.pos++;
     }
 }
@@ -2122,35 +2114,35 @@ void debug_hit_box_edit(void) {
         dbg_edit_box = box;
         if (!Debug_Box_Edit) {
             if (pad & BUTTON_LP) {
-                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 1, 4)) {
+                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_UP, 4)) {
                     box[3] = box[3] + 1;
                 }
-                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 2, 5)) {
+                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_DOWN, 5)) {
                     box[3]--;
                     if (box[3] < 0) {
                         box[3] = 0;
                     }
                 }
-                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 8, 7)) {
+                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_RIGHT, 7)) {
                     box[1]++;
                 }
-                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 4, 6)) {
+                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_LEFT, 6)) {
                     box[1]--;
                     if (box[1] < 0) {
                         box[1] = 0;
                     }
                 }
             } else {
-                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 1, 4)) {
+                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_UP, 4)) {
                     box[2]++;
                 }
-                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 2, 5)) {
+                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_DOWN, 5)) {
                     box[2]--;
                 }
-                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 4, 6)) {
+                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_LEFT, 6)) {
                     box[0] = box[0] - 1;
                 }
-                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 8, 7)) {
+                if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, LEVER_RIGHT, 7)) {
                     box[0]++;
                 }
             }
@@ -2298,17 +2290,17 @@ void debug_hit_box_copy(void) {
     }
     if (sw & BUTTON_LK) {
         if (Debug_Box_Edit) {
-        dbg_copy_done = 1;
-        dbg_copy_pat = dbg_slot->sel[2];
-        dbg_copy_char = dbg_pl->wu.char_index;
-        debug_set_body_box(dbg_slot->sel[2]);
-        debug_memcpy_u16((u16*)dbg_copy_buf.h_bod, (u16*)dbg_look_buf.h_bod, 20);
-        debug_set_attack_box(dbg_slot->sel[2]);
-        debug_memcpy_u16((u16*)dbg_copy_buf.h_att, (u16*)dbg_look_buf.h_att, 12);
-        debug_set_caught_box(dbg_slot->sel[2]);
-        debug_memcpy_u16((u16*)dbg_copy_buf.h_cau, (u16*)dbg_look_buf.h_cau, 4);
-        debug_set_hosei_box(dbg_slot->sel[2]);
-        debug_memcpy_u16((u16*)dbg_copy_buf.h_hos, (u16*)dbg_look_buf.h_hos, 4);
+            dbg_copy_done = 1;
+            dbg_copy_pat = dbg_slot->sel[2];
+            dbg_copy_char = dbg_pl->wu.char_index;
+            debug_set_body_box(dbg_slot->sel[2]);
+            debug_memcpy_u16((u16*)dbg_copy_buf.h_bod, (u16*)dbg_look_buf.h_bod, 20);
+            debug_set_attack_box(dbg_slot->sel[2]);
+            debug_memcpy_u16((u16*)dbg_copy_buf.h_att, (u16*)dbg_look_buf.h_att, 12);
+            debug_set_caught_box(dbg_slot->sel[2]);
+            debug_memcpy_u16((u16*)dbg_copy_buf.h_cau, (u16*)dbg_look_buf.h_cau, 4);
+            debug_set_hosei_box(dbg_slot->sel[2]);
+            debug_memcpy_u16((u16*)dbg_copy_buf.h_hos, (u16*)dbg_look_buf.h_hos, 4);
         }
     }
 }
@@ -2399,7 +2391,7 @@ void debug_edit_common_input(void)
 
 /* provisional name */
 void debug_kakusyuku_mode_cycle(u16 sw) {
-    if (sw & 0x200) {
+    if (sw & BUTTON_HK) {
         dbg_kakusyuku_mode++;
         dbg_kakusyuku_mode &= 3;
         switch (dbg_kakusyuku_mode) {
@@ -2439,7 +2431,7 @@ void debug_kakusyuku_mode_cycle(u16 sw) {
 
 /* provisional name */
 void debug_screen_zoom_by_pad(void) {
-    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 64, 16)) {
+    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, BUTTON_HP, 16)) {
         dbg_zoom_x--;
         dbg_zoom_y--;
         if (dbg_zoom_x > 0) {
@@ -2449,7 +2441,7 @@ void debug_screen_zoom_by_pad(void) {
             dbg_zoom_y = 0;
         }
     }
-    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 0x200, 19)) {
+    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, BUTTON_HK, 19)) {
         dbg_zoom_x++;
         dbg_zoom_y++;
         if (dbg_zoom_x < 38) {
@@ -2464,23 +2456,23 @@ void debug_screen_zoom_by_pad(void) {
 
 /* provisional name */
 void debug_char_scale_by_pad(void) {
-    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 16, 14)) {
+    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, BUTTON_LP, 14)) {
         if (dbg_pl->wu.my_mr.size.x != 0) {
             dbg_pl->wu.my_mr.size.x--;
         }
     }
-    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 32, 15)) {
+    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, BUTTON_MP, 15)) {
         if (dbg_pl->wu.my_mr.size.y != 0) {
             dbg_pl->wu.my_mr.size.y--;
         }
     }
-    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 128, 17)) {
+    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, BUTTON_LK, 17)) {
         dbg_pl->wu.my_mr.size.x++;
         if (dbg_pl->wu.my_mr.size.x > 127) {
             dbg_pl->wu.my_mr.size.x = 127;
         }
     }
-    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, 0x100, 18)) {
+    if (debug_lever_repeat(dbg_p2sw_0, dbg_p2sw_1, BUTTON_MK, 18)) {
         dbg_pl->wu.my_mr.size.y++;
         if (dbg_pl->wu.my_mr.size.y > 127) {
             dbg_pl->wu.my_mr.size.y = 127;
@@ -2508,7 +2500,7 @@ void debug_kakusyuku_input(void) {
 
 /* provisional name */
 void debug_dec_disp_input(u16 sw) {
-    if (sw & 0x1000) {
+    if (sw & BUTTON_START) {
         Debug_Dec_Disp ^= 1;
     }
 }
@@ -2601,25 +2593,25 @@ void debug_cg_number_browse(void) {
     debug_position_by_pad();
     debug_flip_cycle(~dbg_p1sw_1 & dbg_p1sw_0);
     if (dbg_p1sw_0 & BUTTON_START) {
-        if (debug_lever_repeat_fast(dbg_p1sw_0, dbg_p1sw_1, 1, 0)) {
+        if (debug_lever_repeat_fast(dbg_p1sw_0, dbg_p1sw_1, LEVER_UP, 0)) {
             dbg_pl->wu.cg_number--;
             if (dbg_pl->wu.cg_number > 0x7827) {
                 dbg_pl->wu.cg_number = 0x7827;
             }
         }
-        if (debug_lever_repeat_fast(dbg_p1sw_0, dbg_p1sw_1, 2, 1)) {
+        if (debug_lever_repeat_fast(dbg_p1sw_0, dbg_p1sw_1, LEVER_DOWN, 1)) {
             dbg_pl->wu.cg_number++;
             if (dbg_pl->wu.cg_number > 0x7827) {
                 dbg_pl->wu.cg_number = 0;
             }
         }
-        if (debug_lever_repeat_fast(dbg_p1sw_0, dbg_p1sw_1, 4, 2)) {
+        if (debug_lever_repeat_fast(dbg_p1sw_0, dbg_p1sw_1, LEVER_LEFT, 2)) {
             dbg_pl->wu.cg_number -= 0x80;
             if (dbg_pl->wu.cg_number > 0x7827) {
                 dbg_pl->wu.cg_number = 0x7827;
             }
         }
-        if (debug_lever_repeat_fast(dbg_p1sw_0, dbg_p1sw_1, 8, 3)) {
+        if (debug_lever_repeat_fast(dbg_p1sw_0, dbg_p1sw_1, LEVER_RIGHT, 3)) {
             dbg_pl->wu.cg_number += 0x80;
             if (dbg_pl->wu.cg_number > 0x7827) {
                 dbg_pl->wu.cg_number = 0;
@@ -2805,7 +2797,6 @@ void debug_catch_judgment_input(void) {
 
 
 /* provisional name */
-/* provisional name */
 s32 debug_lever_repeat(sw, old, mask, ix)
 u16 sw;
 u16 old;
@@ -2814,7 +2805,7 @@ s16 ix;
 {
     if (sw & mask) {
         if (Debug_Menu_No == 4) {
-            if (sw & 0x10) {
+            if (sw & BUTTON_LP) {
                 return 1;
             }
         }
@@ -2855,7 +2846,7 @@ u16 mask;
 s16 ix;
 {
     if (sw & mask) {
-        if (sw & 0x10) {
+        if (sw & BUTTON_LP) {
             return 1;
         }
         Debug_Rep_Timer[ix]++;
@@ -3029,7 +3020,6 @@ void debug_char_disp_once(WORK* wk) {
 
 
 /* provisional name */
-/* provisional name */
 void debug_pattern_edit_init_counts(void) {
     const u32** pat;
     ((DBG_SLOT*)&dbg_slot_w[0])->sel[0] = 1;
@@ -3113,45 +3103,45 @@ void debug_pattern_count(void) {
 /* provisional name */
 void debug_pattern_entry_copy_dual(s16 n, u16* q, s16 box) {
     u16* src;
-    u16* a;
-    u16* b;
+    u16* look;
+    u16* edit;
     s16 i;
     const HIT_IX* ix;
     src = (u16*)&dbg_pl->wu.hit_ix_table[box];
-    a = (u16*)((u8*)dbg_look_buf.hit_ix + n * 8);
-    b = (u16*)((u8*)dbg_edit_buf.hit_ix + n * 8);
+    look = (u16*)((u8*)dbg_look_buf.hit_ix + n * 8);
+    edit = (u16*)((u8*)dbg_edit_buf.hit_ix + n * 8);
     for (i = 0; i < 4; i++) {
-        *a++ = *src;
-        *b++ = *src++;
+        *look++ = *src;
+        *edit++ = *src++;
     }
     ix = &dbg_pl->wu.hit_ix_table[box];
     src = (u16*)&dbg_pl->wu.body_adrs[ix->boix];
-    a = (u16*)(dbg_look_buf.body_adrs + n * 40);
-    b = (u16*)(dbg_edit_buf.body_adrs + n * 40);
+    look = (u16*)(dbg_look_buf.body_adrs + n * 40);
+    edit = (u16*)(dbg_edit_buf.body_adrs + n * 40);
     for (i = 0; i < 20; i++) {
-        *a++ = *src;
-        *b++ = *src++;
+        *look++ = *src;
+        *edit++ = *src++;
     }
     src = (u16*)&dbg_pl->wu.attack_adrs[ix->atix];
-    a = (u16*)(dbg_look_buf.attack_adrs + n * 24);
-    b = (u16*)(dbg_edit_buf.attack_adrs + n * 24);
+    look = (u16*)(dbg_look_buf.attack_adrs + n * 24);
+    edit = (u16*)(dbg_edit_buf.attack_adrs + n * 24);
     for (i = 0; i < 12; i++) {
-        *a++ = *src;
-        *b++ = *src++;
+        *look++ = *src;
+        *edit++ = *src++;
     }
     src = (u16*)&dbg_pl->wu.caught_adrs[ix->cuix];
-    a = (u16*)(dbg_look_buf.caught_adrs + n * 8);
-    b = (u16*)(dbg_edit_buf.caught_adrs + n * 8);
+    look = (u16*)(dbg_look_buf.caught_adrs + n * 8);
+    edit = (u16*)(dbg_edit_buf.caught_adrs + n * 8);
     for (i = 0; i < 4; i++) {
-        *a++ = *src;
-        *b++ = *src++;
+        *look++ = *src;
+        *edit++ = *src++;
     }
     src = (u16*)&dbg_pl->wu.hosei_adrs[ix->hoix];
-    a = (u16*)(dbg_look_buf.hosei_adrs + n * 8);
-    b = (u16*)(dbg_edit_buf.hosei_adrs + n * 8);
+    look = (u16*)(dbg_look_buf.hosei_adrs + n * 8);
+    edit = (u16*)(dbg_edit_buf.hosei_adrs + n * 8);
     for (i = 0; i < 4; i++) {
-        *a++ = *src;
-        *b++ = *src++;
+        *look++ = *src;
+        *edit++ = *src++;
     }
 }
 
@@ -3316,8 +3306,8 @@ s32 debug_hex4_to_bcd(s16 x) {
     s16 i;
     s32 n;
     s16 div = 100;
-    s32 a;
-    s32 b;
+    s32 bcd;
+    s32 tens;
     for (i = 0; i < 3; i++) {
         n = 0;
         while (1) {
@@ -3331,13 +3321,13 @@ s32 debug_hex4_to_bcd(s16 x) {
         x = x + div;
         div /= 10;
     }
-    a = digit[0] << 8;
-    a &= 0xF00;
-    b = digit[1] << 4;
-    b &= 0xF0;
-    a |= b;
-    a |= digit[2];
-    return (s16)a;
+    bcd = digit[0] << 8;
+    bcd &= 0xF00;
+    tens = digit[1] << 4;
+    tens &= 0xF0;
+    bcd |= tens;
+    bcd |= digit[2];
+    return (s16)bcd;
 }
 
 
@@ -3724,7 +3714,6 @@ void debug_draw_record_info(void) {
 }
 
 
-/* provisional name */
 /* provisional name */
 void debug_char_init(void) {
     s16 x;
@@ -4297,7 +4286,4 @@ void debug_move_snapshot_frame(SNAPSHOT* rec, WORK* wk, s16 priority) {
 }
 
 
-/* provisional name */
-/* provisional name */
-/* provisional name */
 /* provisional name */

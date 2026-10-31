@@ -18,6 +18,7 @@
 #include "ta_sub.h"
 #include "aboutspr.h"
 #include "EFF71.h"
+#include "fighter.h"
 
 /* routine_no[0], type 0 */
 #define R0_WATCH        0       /* watch the fighters */
@@ -51,7 +52,7 @@ void eff71_1000_2000(WORK_Other* ewk);
 
 
 
-/* the routine of the type */
+/* Run the routine of the object's type. */
 void effect_71_move(WORK_Other* ewk) {
     void (*eff71_jp[2])() = { eff71_0000, eff71_1000 };
     if (!EXE_flag && !Game_pause) {
@@ -258,7 +259,8 @@ void eff71_1000_2000(WORK_Other* ewk) {
 
 
 
-/* placed and typed by the two characters */
+/* Create the stage object that watches the fighters, placed and typed by the two characters,
+ * when the stage background is set up. */
 s32 effect_71_init(void) {
     WORK_Other* ewk;
     s16 ix;
@@ -285,8 +287,7 @@ s32 effect_71_init(void) {
     pl1 = plw[1].player_number;
     ewk->wu.old_rno[0] = eff71_char_tbl[pl0];
     ewk->wu.old_rno[1] = eff71_char_tbl[pl1];
-    if (pl0 == 9 || pl1 == 9 || pl0 == 7 || pl1 == 7 || pl0 == 8 || pl1 == 8) {
-
+    if (pl0 == PL_ORO || pl1 == PL_ORO || pl0 == PL_IBUKI || pl1 == PL_IBUKI || pl0 == PL_ELENA || pl1 == PL_ELENA) {
         ewk->wu.type = 0;
         ewk->wu.xyz[0].disp.pos = 608;
         ewk->wu.xyz[1].disp.pos = 53;

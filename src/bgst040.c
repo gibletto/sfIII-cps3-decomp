@@ -146,7 +146,7 @@ void bg0403_move(void) {
 
 
 /* provisional name */
-/* past 0x90 to either side the base layer's map gets the far columns, and back again on return */
+/* Past 0x90 to either side the base layer's map gets the far columns, and back again on return. */
 void bg0402_cell_set(void) {
     switch (bg_w.bgw[1].rewrite_flag) {
     case 0:

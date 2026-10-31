@@ -87,6 +87,6 @@ s32 effect_G4_init(WORK* wk, u8 data) {
     ewk->wu.xyz[0].disp.pos = wk->position_x;
     ewk->wu.xyz[1].disp.pos = wk->position_y;
     ewk->wu.xyz[2].disp.pos = wk->position_z;
-    *ewk->wu.char_table = plef_char_table;
+    ewk->wu.char_table[0] = plef_char_table;
     return 0;
 }

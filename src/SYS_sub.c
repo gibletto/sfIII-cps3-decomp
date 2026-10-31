@@ -52,7 +52,7 @@
 
 
 
-/* provisional name */
+/* Clears the text layer and runs System_all_clear, then waits a frame. */
 /* provisional name */
 void Scr_all_clear_Wait(void)
 {
@@ -61,6 +61,7 @@ void Scr_all_clear_Wait(void)
     task_sleep(1);
 }
 
+/* Runs System_all_clear, then waits a frame. */
 /* provisional name */
 void System_all_clear_Wait(void)
 {
@@ -68,6 +69,7 @@ void System_all_clear_Wait(void)
     task_sleep(1);
 }
 
+/* Clears text page 0 and runs System_all_clear_Ex, then waits a frame. */
 /* provisional name */
 void System_all_clear_Ex_Wait(void)
 {
@@ -76,6 +78,8 @@ void System_all_clear_Ex_Wait(void)
     task_sleep(1);
 }
 
+/* Clears the render lists, character graphics tables, scroll layer state and all effect work, then reloads the
+   common character graphics and cells. */
 /* provisional name */
 void System_all_clear(void)
 {
@@ -91,6 +95,7 @@ void System_all_clear(void)
 
 
 
+/* As System_all_clear, but clears only effect lists 2 to 7. */
 /* provisional name */
 void System_all_clear_Ex(void) {
     s16 i;
@@ -106,6 +111,7 @@ void System_all_clear_Ex(void) {
     setup_hit_mark_cells();
 }
 
+/* Runs the palette fade for a frame (fade_cont_main). */
 /* provisional name */
 void Fade_Cont(void)
 {
@@ -179,26 +185,26 @@ u8 wipe_mode;
 
 /* One step of the wipe that covers the screen, drawn in Wipe_Mode; 1 when the wipe is complete. */
 s32 Switch_Screen(void) {
-    switch (((s8)Wipe_Mode)) {
+    switch ((s8)Wipe_Mode) {
     case 0:
-        wipe_pattern_set(((s8)Wipe_Kind), Wipe_Count, 0);
-        if (++Wipe_Count < ((s8)Wipe_Limit)) {
+        wipe_pattern_set((s8)Wipe_Kind, Wipe_Count, 0);
+        if (++Wipe_Count < (s8)Wipe_Limit) {
             return 0;
         }
         Exec_Wipe = 0;
         Stop_Combo = 0;
         return 1;
     case 1:
-        wipe_pattern_or_cols(((s8)Wipe_Kind), Wipe_Count);
-        if (++Wipe_Count < ((s8)Wipe_Limit)) {
+        wipe_pattern_or_cols((s8)Wipe_Kind, Wipe_Count);
+        if (++Wipe_Count < (s8)Wipe_Limit) {
             return 0;
         }
         Exec_Wipe = 0;
         Stop_Combo = 0;
         return 1;
     case 2:
-        wipe_pattern_and_low(((s8)Wipe_Kind), Wipe_Count);
-        if (++Wipe_Count < ((s8)Wipe_Limit)) {
+        wipe_pattern_and_low((s8)Wipe_Kind, Wipe_Count);
+        if (++Wipe_Count < (s8)Wipe_Limit) {
             return 0;
         }
         Exec_Wipe = 0;
@@ -206,8 +212,8 @@ s32 Switch_Screen(void) {
         return 1;
     case 3:
     case 4:
-        wipe_pattern_or_cols(((s8)Wipe_Kind), Wipe_Count);
-        if (++Wipe_Count < ((s8)Wipe_Limit)) {
+        wipe_pattern_or_cols((s8)Wipe_Kind, Wipe_Count);
+        if (++Wipe_Count < (s8)Wipe_Limit) {
             return 0;
         }
         Exec_Wipe = 0;
@@ -221,25 +227,25 @@ s32 Switch_Screen(void) {
 
 /* One step of the wipe that uncovers the screen again; 1 when the wipe is complete. */
 s32 Switch_Screen_Revival(void) {
-    switch (((s8)Wipe_Mode)) {
+    switch ((s8)Wipe_Mode) {
     case 0:
-        wipe_pattern_set(((s8)Wipe_Kind), Wipe_Count, 1);
-        if (++Wipe_Count < ((s8)Wipe_Limit)) {
+        wipe_pattern_set((s8)Wipe_Kind, Wipe_Count, 1);
+        if (++Wipe_Count < (s8)Wipe_Limit) {
             return 0;
         }
         Exec_Wipe = 0;
         return 1;
     case 1:
-        wipe_pattern_restore_cols(((s8)Wipe_Kind), Wipe_Count);
-        if (++Wipe_Count < ((s8)Wipe_Limit)) {
+        wipe_pattern_restore_cols((s8)Wipe_Kind, Wipe_Count);
+        if (++Wipe_Count < (s8)Wipe_Limit) {
             return 0;
         }
         Exec_Wipe = 0;
         return 1;
     case 3:
     case 4:
-        wipe_pattern_restore_cols(((s8)Wipe_Kind), Wipe_Count);
-        if (++Wipe_Count < ((s8)Wipe_Limit)) {
+        wipe_pattern_restore_cols((s8)Wipe_Kind, Wipe_Count);
+        if (++Wipe_Count < (s8)Wipe_Limit) {
             return 0;
         }
         Exec_Wipe = 0;
@@ -328,7 +334,7 @@ void challenger_banner_clear(void) {
 
 
 void Setup_Play_Type(void) {
-    if (Operator_Status[0] & 0x7F && Operator_Status[1] & 0x7F) {
+    if ((Operator_Status[0] & 0x7F) && (Operator_Status[1] & 0x7F)) {
         Play_Type = PLAY_VS_PLAYER;
     } else {
         Play_Type = PLAY_VS_CPU;
@@ -360,6 +366,8 @@ s16 PL_id;
 
 
 
+/* After PL_id's entry goes into ranking table dir_step at or above the partner's place, moves the partner's
+   place down one (off the table past the last place). */
 void Check_Partners_Rank(dir_step, PL_id)
 s16 dir_step;
 s16 PL_id;
@@ -465,15 +473,15 @@ int Setup_Target_PL(void)
 void Disp_Digit8x16(u32 value, s16 x, s16 y) {
     s16 i;
     s16 j;
-    s32 xx;
+    s32 div;
     s16 First_Digit;
     s16 Digit[8];
     if (value == 0) {
         score8x16_put(x, y, 24, 0);
     }
-    for (i = 7, xx = 10000000, First_Digit = -1; i > 0; i--, xx = xx / 10) {
-        Digit[i] = value / xx;
-        value -= xx * Digit[i];
+    for (i = 7, div = 10000000, First_Digit = -1; i > 0; i--, div = div / 10) {
+        Digit[i] = value / div;
+        value -= div * Digit[i];
         if (First_Digit < 0) {
             if (Digit[i]) {
                 First_Digit = i;
@@ -496,15 +504,15 @@ s16 y;
 {
     s16 i;
     s16 j;
-    s32 xx;
+    s32 div;
     s16 First_Digit;
     s16 Digit[8];
     if (value == 0) {
         score16x24_put(x, y, 14, 0);
     }
-    for (i = 7, xx = 10000000, First_Digit = -1; i > 0; i--, xx = xx / 10) {
-        Digit[i] = value / xx;
-        value -= xx * Digit[i];
+    for (i = 7, div = 10000000, First_Digit = -1; i > 0; i--, div = div / 10) {
+        Digit[i] = value / div;
+        value -= div * Digit[i];
         if (First_Digit < 0) {
             if (Digit[i]) {
                 First_Digit = i;

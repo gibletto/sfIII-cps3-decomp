@@ -91,7 +91,6 @@ void set_char_move_init();
 void set_char_move_init2();
 
 void win_player(PLW* wk) {
-
     void (*win_jp_tbl[7])(PLW*) = { Win_00000, Win_01000, Win_02000, Win_03000, Win_04000, Win_05000, Win_06000 };
     win_jp_tbl[winner_type_tbl[wk->player_number]](wk);
 }
@@ -106,7 +105,7 @@ void Win_00000(PLW* wk) {
 }
 
 void Win_01000(PLW* wk) {
-    s16 work;
+    s16 pose;
     bg_stop = 1;
     if (win_special_check(wk)) {
         return;
@@ -124,9 +123,9 @@ void Win_01000(PLW* wk) {
             } else {
             }
         }
-        work = win_select(wk, 7);
-        set_char_move_init(&wk->wu, 9, work + 32);
-        if (work == 4) {
+        pose = win_select(wk, 7);
+        set_char_move_init(&wk->wu, 9, pose + 32);
+        if (pose == 4) {
             win_rno[0] = OW_JUMP;
         }
         break;
@@ -266,7 +265,7 @@ void Win_02000(PLW* wk) {
 }
 
 void Win_03000(PLW* wk) {
-    s16 work;
+    s16 pose;
     bg_stop = 1;
     if (win_special_check(wk)) {
         return;
@@ -275,11 +274,11 @@ void Win_03000(PLW* wk) {
     case RN3_START:
         wk->wu.routine_no[3]++;
         a_rno = win_rno[0] = win_rno[1] = 0;
-        work = win_select(wk, 3);
+        pose = win_select(wk, 3);
         if ((Round_num >= Game_setting.Battle_Number * 2) || (PL_Wins[wk->wu.id] >= Game_setting.Battle_Number + 1)) {
-            set_char_move_init(&wk->wu, 9, Win_3001_tbl[work]);
+            set_char_move_init(&wk->wu, 9, Win_3001_tbl[pose]);
         } else {
-            set_char_move_init(&wk->wu, 9, Win_3000_tbl[work]);
+            set_char_move_init(&wk->wu, 9, Win_3000_tbl[pose]);
         }
         break;
     default:
@@ -289,7 +288,7 @@ void Win_03000(PLW* wk) {
 }
 
 void Win_04000(PLW* wk) {
-    s16 work;
+    s16 voice;
     bg_stop = 1;
     if (win_special_check(wk)) {
         return;
@@ -304,9 +303,9 @@ void Win_04000(PLW* wk) {
         }
         exset_char_move_init(&wk->wu, 9, 32);
         if (Demo_Sound != 0 || Demo_Flag != 0) {
-            work = win_select(wk, 3);
-            work = Check_Voice_SE(Win_4000_voice_tbl[work]);
-            sound_request_pan(work, 64, 64, 0, 2);
+            voice = win_select(wk, 3);
+            voice = Check_Voice_SE(Win_4000_voice_tbl[voice]);
+            sound_request_pan(voice, 64, 64, 0, 2);
         }
         break;
     default:
@@ -317,7 +316,7 @@ void Win_04000(PLW* wk) {
 }
 
 void Normal_normal_Winner(PLW* wk) {
-    s16 work;
+    s16 pose;
     bg_stop = 1;
     if (bg_w.stage == 8 && bg_w.area == 0 && Game_setting.Battle_Number > 0) {
         win_stage8_action(wk);
@@ -326,8 +325,8 @@ void Normal_normal_Winner(PLW* wk) {
     switch (wk->wu.routine_no[3]) {
     case RN3_START:
         wk->wu.routine_no[3]++;
-        work = win_select(wk, 7);
-        set_char_move_init(&wk->wu, 9, work + 32);
+        pose = win_select(wk, 7);
+        set_char_move_init(&wk->wu, 9, pose + 32);
         break;
     case POSE_RUN:
     case RN3_DONE:
@@ -337,7 +336,7 @@ void Normal_normal_Winner(PLW* wk) {
 }
 
 void Judge_normal_winner(PLW* wk) {
-    s16 work;
+    s16 pose;
     bg_stop = 1;
     if (bg_w.stage == 8 && bg_w.area == 0 && Game_setting.Battle_Number > 0) {
         win_stage8_action(wk);
@@ -347,8 +346,8 @@ void Judge_normal_winner(PLW* wk) {
     case RN3_START:
         a_rno = win_rno[0] = win_rno[1] = 0;
         wk->wu.routine_no[3]++;
-        work = win_select(wk, 3);
-        set_char_move_init(&wk->wu, 9, work + 52);
+        pose = win_select(wk, 3);
+        set_char_move_init(&wk->wu, 9, pose + 52);
         break;
     case POSE_RUN:
     case RN3_DONE:
@@ -370,7 +369,7 @@ s32 win_special_check(PLW* wk) {
 }
 
 void Win_05000(PLW* wk) {
-    s16 work;
+    s16 pose;
     if (win_special_check(wk)) {
         return;
     }
@@ -392,8 +391,8 @@ void Win_05000(PLW* wk) {
             win_rno[0] = 0;
             break;
         }
-        work = win_select(wk, 3);
-        set_char_move_init(&wk->wu, 9, work + 32);
+        pose = win_select(wk, 3);
+        set_char_move_init(&wk->wu, 9, pose + 32);
         win_rno[0] = 1;
         break;
     default:
@@ -420,7 +419,7 @@ void Win_05000(PLW* wk) {
 }
 
 void Win_06000(PLW* wk) {
-    s16 work;
+    s16 pose;
     bg_stop = 1;
     if (win_special_check(wk)) {
         return;
@@ -430,11 +429,11 @@ void Win_06000(PLW* wk) {
         a_rno = win_rno[0] = win_rno[1] = 0;
         wk->wu.routine_no[3]++;
         if ((Round_num >= Game_setting.Battle_Number * 2) || (PL_Wins[wk->wu.id] >= Game_setting.Battle_Number + 1)) {
-            work = win_select(wk, 3);
-            set_char_move_init(&wk->wu, 9, work + 36);
+            pose = win_select(wk, 3);
+            set_char_move_init(&wk->wu, 9, pose + 36);
         } else {
-            work = win_select(wk, 3);
-            set_char_move_init(&wk->wu, 9, work + 32);
+            pose = win_select(wk, 3);
+            set_char_move_init(&wk->wu, 9, pose + 32);
         }
         break;
     default:

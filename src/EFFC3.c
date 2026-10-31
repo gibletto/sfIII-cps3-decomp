@@ -121,6 +121,6 @@ s32 effect_C3_init(u8 type) {
     ewk->wu.char_index = 0;
     ewk->wu.xyz[0].disp.low = 0;
     ewk->wu.xyz[1].disp.low = 0;
-    *ewk->wu.char_table = eff45_char_table;
+    ewk->wu.char_table[0] = eff45_char_table;
     return 0;
 }

@@ -27,7 +27,7 @@
 
 
 
-/* colour 138 + Player_Color * 4, pattern 21 for player 2 when player_number is 0 */
+/* Colour 138 + Player_Color * 4; pattern 21 for player 2 when player_number is 0. */
 void effect_37_move(WORK_Other* ewk) {
     WORK* mwk = (WORK*)ewk->my_master;
     s16 ix;

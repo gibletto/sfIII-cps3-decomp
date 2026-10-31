@@ -62,7 +62,7 @@ void effect_92_move(WORK_Other* ewk) {
             return;
         } else {
             win_mark_new[ewk->master_id] = 1;
-            push_effect_work((WORK*)ewk);
+            push_effect_work(&ewk->wu);
             break;
         }
     }

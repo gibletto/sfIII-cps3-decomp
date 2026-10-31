@@ -406,13 +406,11 @@ s32 comm_roa(WORK* wk, CHAR_CMD* ctc) {
 }
 
 u32 comm_end(WORK* wk, CHAR_CMD* ctc) {
-
     wk->cg_ix = (ctc->pat - 2) * wk->cgd_type;
     return 1;
 }
 
 u32 comm_jmp(WORK* wk, CHAR_CMD* ctc) {
-
     setup_comm_back(wk);
     set_char_move_init2(wk, ctc->koc, ctc->ix, ctc->pat, 0);
     return 0;
@@ -747,6 +745,7 @@ s32 comm_psxy(WORK* wk, CHAR_CMD* ctc) {
     case 2:
         wk->xyz[0].disp.pos = ctc->ix;
         wk->xyz[1].disp.pos = ctc->pat;
+        /* falls through: 2 places the opponent as well */
     default:
         emwk = (WORK*)wk->target_adrs;
         emwk->xyz[0].disp.pos = ctc->ix;
@@ -766,6 +765,7 @@ s32 comm_ps_x(WORK* wk, CHAR_CMD* ctc) {
         break;
     case 2:
         wk->xyz[0].disp.pos = ctc->ix;
+        /* falls through: 2 places the opponent as well */
     default:
         emwk = (WORK*)wk->target_adrs;
         emwk->xyz[0].disp.pos = ctc->ix;
@@ -783,6 +783,7 @@ s32 comm_ps_y(WORK* wk, CHAR_CMD* ctc) {
         break;
     case 2:
         wk->xyz[1].disp.pos = ctc->pat;
+        /* falls through: 2 places the opponent as well */
     default:
         wk = (WORK*)wk->target_adrs;
         wk->xyz[1].disp.pos = ctc->pat;
@@ -811,6 +812,7 @@ s32 comm_paxy(WORK* wk, CHAR_CMD* ctc) {
             wk->xyz[0].cal -= ctc->ix << 8;
         }
         wk->xyz[1].cal += ctc->pat << 8;
+        /* falls through: 2 moves the opponent as well */
     default:
         emwk = (WORK*)wk->target_adrs;
         if (emwk->rl_flag) {
@@ -842,6 +844,7 @@ s32 comm_pa_x(WORK* wk, CHAR_CMD* ctc) {
         } else {
             wk->xyz[0].cal -= ctc->ix << 8;
         }
+        /* falls through: 2 moves the opponent as well */
     default:
         emwk = (WORK*)wk->target_adrs;
         if (emwk->rl_flag) {
@@ -864,6 +867,7 @@ s32 comm_pa_y(WORK* wk, CHAR_CMD* ctc) {
         break;
     case 2:
         wk->xyz[1].cal += ctc->pat << 8;
+        /* falls through: 2 moves the opponent as well */
     default:
         emwk = (WORK*)wk->target_adrs;
         emwk->xyz[1].cal += ctc->pat << 8;
@@ -960,7 +964,6 @@ s32 comm_quax(WORK* wk, CHAR_CMD* ctc) {
 }
 
 s32 comm_quay(WORK* wk, CHAR_CMD* ctc) {
-
     bg_w.quake_y_index = ctc->koc;
     return 1;
 }
@@ -1161,6 +1164,7 @@ s32 comm_schx(WORK* wk, CHAR_CMD* ctc) {
         break;
     case 2:
         wk->mvxy.a[0].sp = (wk->mvxy.a[0].sp * ctc->ix) / ctc->pat;
+        /* falls through: 2 scales the acceleration as well */
     case 1:
         wk->mvxy.d[0].sp = (wk->mvxy.d[0].sp * ctc->ix) / ctc->pat;
     default:
@@ -1178,6 +1182,7 @@ s32 comm_schy(WORK* wk, CHAR_CMD* ctc) {
         break;
     case 2:
         wk->mvxy.a[1].sp = (wk->mvxy.a[1].sp * ctc->ix) / ctc->pat;
+        /* falls through: 2 scales the acceleration as well */
     case 1:
         wk->mvxy.d[1].sp = (wk->mvxy.d[1].sp * ctc->ix) / ctc->pat;
     default:
@@ -1480,6 +1485,7 @@ s32 comm_imgs(PLW* wk, CHAR_CMD* ctc) {
                 wk->image_setup_flag = 1;
                 wk->image_data_index = ctc->ix;
             }
+            /* falls through: sets the opponent's image as well */
         case 1:
             if (tk->image_setup_flag) {
                 break;
@@ -1502,6 +1508,7 @@ s32 comm_imgc(PLW* wk, CHAR_CMD* ctc) {
         break;
     default:
         wk->image_setup_flag = 0;
+        /* falls through: clears the opponent's image as well */
     case 1:
         tk->image_setup_flag = 0;
         break;
@@ -1529,6 +1536,7 @@ s32 comm_rvxy(WORK* wk, CHAR_CMD* ctc) {
             wk->xyz[0].cal = emwk->xyz[0].cal - (ctc->ix << 8);
         }
         wk->xyz[1].cal = emwk->xyz[1].cal + (ctc->pat << 8);
+        /* falls through: 2 places the opponent as well */
     default:
         if (wk->rl_flag) {
             emwk->xyz[0].cal = wk->xyz[0].cal + (ctc->ix << 8);
@@ -1559,6 +1567,7 @@ s32 comm_rv_x(WORK* wk, CHAR_CMD* ctc) {
         } else {
             wk->xyz[0].cal = emwk->xyz[0].cal - (ctc->ix << 8);
         }
+        /* falls through: 2 places the opponent as well */
     default:
         if (wk->rl_flag) {
             emwk->xyz[0].cal = wk->xyz[0].cal + (ctc->ix << 8);
@@ -1580,6 +1589,7 @@ s32 comm_rv_y(WORK* wk, CHAR_CMD* ctc) {
         break;
     case 2:
         wk->xyz[1].cal = emwk->xyz[1].cal + (ctc->pat << 8);
+        /* falls through: 2 places the opponent as well */
     default:
         emwk->xyz[1].cal = wk->xyz[1].cal + (ctc->pat << 8);
         break;
@@ -1655,7 +1665,6 @@ u32 comm_exbgs(WORK* wk, CHAR_CMD* ctc) {
 }
 
 u32 comm_exbgc(WORK* wk) {
-
     another_bg[wk->id] = 0;
     return 1;
 }
@@ -1782,6 +1791,7 @@ void check_cgd_patdat(WORK* wk) {
         if (wk->cg_status & 0x80) {
             wk->pat_status = wk->cg_status & 0x7F;
         }
+        /* falls through: a 6-word frame carries the 4-word fields as well */
     case 4:
         if (wk->cg_att_ix) {
             set_new_attnum(wk);
@@ -1834,7 +1844,7 @@ void set_new_attnum(WORK* wk) {
             ((PLW*)wk)->caution_flag = 1;
         }
     }
-    wk->att = *(wk->att_ix_table + wk->cg_att_ix);
+    wk->att = wk->att_ix_table[wk->cg_att_ix];
     wk->zu_flag = wk->att.reaction & 1;
     wk->at_attribute = wk->att.reaction & 0xE;
     wk->at_attribute >>= 1;

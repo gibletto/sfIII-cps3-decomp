@@ -143,7 +143,7 @@ void effect_H7_move(WORK_Other* ewk) {
         break;
     case 2:
     default:
-        all_cgps_put_back(ewk);
+        all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
         break;
     }
@@ -258,7 +258,7 @@ void effect_H8_move(WORK_Other* ewk) {
         break;
     case 2:
     default:
-        all_cgps_put_back(ewk);
+        all_cgps_put_back(&ewk->wu);
         push_effect_work(&ewk->wu);
         break;
     }

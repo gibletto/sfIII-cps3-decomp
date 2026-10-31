@@ -82,7 +82,7 @@ s32 effect_47_init(void) {
         ewk->wu.cgromtype = 1;
         ewk->wu.rl_flag = 0;
         ewk->wu.my_col_mode = 0x4200;
-        *ewk->wu.char_table = stg00_char_table;
+        ewk->wu.char_table[0] = stg00_char_table;
         ewk->wu.type = i;
         ewk->wu.my_family = 2;
         ewk->wu.my_col_code = *data++;

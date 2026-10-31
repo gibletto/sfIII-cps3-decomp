@@ -37,7 +37,7 @@
 
 
 
-/* retire the timer when Exit_No is set */
+/* Retire the timer when Exit_No is set. */
 void effect_A5_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_WAIT:

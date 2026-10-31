@@ -37,7 +37,7 @@ extern const s16 effF7_pos_tbl[23][6][2];
 
 
 
-/* one of six opening sprites */
+/* Move one of the six opening sprites for the counter's current step. */
 void effect_F7_move(WORK_Other* ewk) {
     void (*effF7_jp[6])(WORK_Other*) = { effF7_0000, effF7_0001, effF7_0002, effF7_0002, effF7_0003, effF7_0003 };
     switch (ewk->wu.routine_no[2]) {
@@ -305,7 +305,8 @@ void effF7_0003(WORK_Other* ewk) {
 
 
 
-/* six sprites under the master oya */
+/* Create the six opening sprites that move with the steps of their effect F6 counter; made with
+ * the counter. */
 s32 effect_F7_init(WORK_Other* oya) {
     WORK_Other* ewk;
     s16 ix;

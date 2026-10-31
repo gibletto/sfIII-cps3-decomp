@@ -78,7 +78,7 @@ s16 opening_demo_tick(void) {
 
 
 
-/* the setup: scroll graphics and palette, layer 0, five maps in eff_bg_adrs */
+/* The setup: scroll graphics and palette, layer 0, and five maps in eff_bg_adrs. */
 void opning_init_00000(void) {
     s16 i;
     BG_ADRS* p;
@@ -136,7 +136,7 @@ void opning_init_00000(void) {
 
 
 
-/* draws the five maps, then waits 8 frames with the music started */
+/* Draw the five maps, then wait 8 frames with the music started. */
 void opning_init_01000(void) {
     s16 i;
     s16 j;
@@ -176,7 +176,7 @@ void opning_init_01000(void) {
 
 
 
-/* the first scene: ten priority steps of map 0, then the frame zooms in until the scene's time runs out */
+/* The first scene: ten priority steps of map 0, then the frame zooms in until the scene's time runs out. */
 void op_02_move(void) {
     const OP_PRIO* p;
     switch (op_w.r_no_1) {
@@ -228,7 +228,7 @@ void op_02_move(void) {
 
 
 
-/* steps 4 and 6: one scene row while the frame zooms in */
+/* Steps 4 and 6: one scene row while the frame zooms in. */
 void op_04_move(void) {
     switch (op_w.r_no_1) {
     case 0:
@@ -266,7 +266,7 @@ void op_04_move(void) {
 
 
 
-/* steps 3, 5 and 7: the scene rows fade from one to the next until free_work, then effect 36 */
+/* Steps 3, 5 and 7: the scene rows fade from one to the next until free_work, then effect 36. */
 void op_03_move(void) {
     switch (op_w.r_no_1) {
     case 0:
@@ -440,7 +440,7 @@ void op_11_move(void) {
 
 
 
-/* (no step refers to it) */
+/* No step refers to it. */
 void op_fade_46(void) {
     switch (op_w.r_no_1) {
     case 0:
@@ -468,7 +468,7 @@ void op_fade_46(void) {
 
 
 
-/* (no step refers to it) */
+/* No step refers to it. */
 void op_fade_45(void) {
     switch (op_w.r_no_1) {
     case 0:
@@ -549,7 +549,7 @@ void op_13_move(void) {
 
 
 
-/* steps 15 and 19: fade 47; in step 15 scene row 5 and effect E1 */
+/* Steps 15 and 19: fade 47; step 15 also sets scene row 5 and effect E1. */
 void op_15_move(void) {
     switch (op_w.r_no_1) {
     case 0:
@@ -605,7 +605,7 @@ void op_17_move(void) {
 
 
 
-/* steps 14 and 18: fade 48; in step 18 the title map, its effects and the last scene row */
+/* Steps 14 and 18: fade 48; step 18 also sets the title map, its effects and the last scene row. */
 void op_14_move(void) {
     switch (op_w.r_no_1) {
     case 0:
@@ -641,7 +641,7 @@ void op_14_move(void) {
 
 
 
-/* the title: copyright, 180 frames, then op_end_flag */
+/* The title: the copyright, 180 frames, then op_end_flag. */
 void op_20_move(void) {
     switch (op_w.r_no_1) {
     case 0:
@@ -663,7 +663,7 @@ void op_20_move(void) {
 
 
 
-/* the title screen set up directly (op_end_flag already set) */
+/* The title screen, set up directly (op_end_flag is already set). */
 void op_21_move(void) {
     Zoomf_Init();
     bg_vbl_trans_flag = 0;

@@ -92,7 +92,7 @@ s32 effect_38_init(s16 PL_id, s16 Wait) {
     ewk->wu.xyz[1].disp.pos = 16;
     ewk->wu.position_z = 76;
     ewk->wu.char_index = 2;
-    *ewk->wu.char_table = sel_pl_char_table;
+    ewk->wu.char_table[0] = sel_pl_char_table;
     ewk->master_id = PL_id;
     if (plw[PL_id].wu.operator == 0 && EM_id == PL_GILL) {
         ewk->wu.dir_step = 0;

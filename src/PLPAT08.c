@@ -47,7 +47,7 @@ void Att_PL08_HEALING(PLW* wk) {
     case HEALING_RUN:
         char_move(&wk->wu);
         if (wk->wu.cmwk[0]) {
-            cpsw = (wk->cp->sw_now & CMD_SW_SHOT);
+            cpsw = wk->cp->sw_now & CMD_SW_SHOT;
             cpsw >>= 4;
             if (pl08_hcs_tbl[cpsw & 7] || pl08_hcs_tbl[(cpsw & 0x38) >> 3]) {
                 wk->wu.cmwk[0] = 0;

@@ -98,7 +98,7 @@ s32 effect_E4_init(s16 PL_id, s16 Art, s16 Arts_No) {
     ewk->wu.cgromtype = 1;
     ewk->wu.my_col_mode = 0x4200;
     ewk->wu.my_family = 3;
-    *ewk->wu.char_table = sel_pl_char_table;
+    ewk->wu.char_table[0] = sel_pl_char_table;
     ewk->wu.char_index = 10;
     ewk->master_id = PL_id;
     ewk->wu.vital_new = Art;

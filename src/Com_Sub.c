@@ -125,7 +125,7 @@ u16 UD_Lever;
 {
     CP_Index[wk->wu.id][0]++;
     Disposal_Again[wk->wu.id] = 1;
-    if ((LR_Lever == 0) || (LR_Lever == 1)) {
+    if (LR_Lever == 0 || LR_Lever == 1) {
         Lever_LR[wk->wu.id] = Setup_Guard_Lever(wk, LR_Lever);
     } else {
         Lever_LR[wk->wu.id] = 0;
@@ -192,7 +192,7 @@ s16 Power_Level;
     switch (CP_Index[wk->wu.id][1]) {
     case 0:
         Lever_Buff[wk->wu.id] = Lever_LR[wk->wu.id];
-        if ((wk->wu.now_koc == 8) && (wk->wu.char_index == 13)) {
+        if (wk->wu.now_koc == 8 && wk->wu.char_index == 13) {
             xx = wk->wu.cg_ix / wk->wu.cgd_type;
             if (xx >= Power_Level) {
                 CP_Index[wk->wu.id][1] = 0x63;
@@ -208,7 +208,7 @@ s16 Power_Level;
             CP_Index[wk->wu.id][1] = 0x63;
         }
     default:
-        if ((wk->wu.cg_type == 0x40) || (wk->wu.routine_no[1] == PLAYER_NORMAL)) {
+        if (wk->wu.cg_type == 0x40 || wk->wu.routine_no[1] == PLAYER_NORMAL) {
             Reaction_Exit_Sub(wk);
         } else {
             Stock_Hit_Flag[wk->wu.id] = wk->wu.hf.hit.player;
@@ -235,13 +235,13 @@ s32 Check_Exit_DENJIN(PLW* wk) {
     }
     em = (WORK*)wk->wu.target_adrs;
     xx = 0;
-    if ((em->xyz[0].disp.pos) == (em->old_pos[0])) {
+    if (em->xyz[0].disp.pos == em->old_pos[0]) {
     } else if (Check_Attack_Direction(wk, em) != 0) {
         xx = -1;
     } else {
         xx = 1;
     }
-    if ((DENJIN_Term[wk->wu.id] & 1) && (em->xyz[0].disp.pos != 0)) {
+    if ((DENJIN_Term[wk->wu.id] & 1) && em->xyz[0].disp.pos != 0) {
         if (CP_Index[wk->wu.id][2] == 0) {
             CP_Index[wk->wu.id][2]++;
             CP_Index[wk->wu.id][3] = Area_Number[wk->wu.id];
@@ -260,7 +260,7 @@ s32 Check_Exit_DENJIN(PLW* wk) {
             }
             break;
         default:
-            if ((em->mvxy.a[1].real.h > 0) && (xx == -1)) {
+            if (em->mvxy.a[1].real.h > 0 && xx == -1) {
                 return 1;
             }
             if (em->mvxy.a[1].real.h < 0) {
@@ -274,13 +274,13 @@ s32 Check_Exit_DENJIN(PLW* wk) {
     if (xx == 0) {
         return 0;
     }
-    if ((DENJIN_Term[wk->wu.id] & 2) && (xx == 1)) {
+    if ((DENJIN_Term[wk->wu.id] & 2) && xx == 1) {
         return 1;
     }
-    if ((DENJIN_Term[wk->wu.id] & 4) && (xx == -1)) {
+    if ((DENJIN_Term[wk->wu.id] & 4) && xx == -1) {
         return 1;
     }
-    if ((DENJIN_Term[wk->wu.id] & 0x20) && (Lie_Flag[wk->wu.id] == 0)) {
+    if ((DENJIN_Term[wk->wu.id] & 0x20) && Lie_Flag[wk->wu.id] == 0) {
         return 1;
     }
     return 0;
@@ -301,12 +301,10 @@ s16 Option;
             } else {
                 Setup_KA_Walk(wk);
             }
+        } else if (Option == 1) {
+            Setup_KA_Jump(wk);
         } else {
-            if (Option == 1) {
-                Setup_KA_Jump(wk);
-            } else {
-                CP_Index[wk->wu.id][3] = Option + 1;
-            }
+            CP_Index[wk->wu.id][3] = Option + 1;
         }
     case 1:
     case 2:
@@ -361,7 +359,7 @@ s16 Next_Menu;
         }
     } else {
         Move_Value = wk->wu.xyz[0].disp.pos + Move_Value;
-        if (((bg_w.bgw[1].r_limit2) + (bg_w.pos_offset)) < (Move_Value)) {
+        if ((bg_w.bgw[1].r_limit2 + bg_w.pos_offset) < Move_Value) {
             Next_Another_Menu(wk, Next_Action, Next_Menu);
         } else {
             CP_Index[wk->wu.id][0]++;
@@ -377,24 +375,23 @@ PLW* wk;
 s16 Target_Pos;
 s16 Option;
 {
-    s16 xx;
+    s16 save_time;
     switch (CP_Index[wk->wu.id][1]) {
     case 0:
         CP_Index[wk->wu.id][1]++;
         dash_flag_clear(wk->wu.id);
         Timer_00[wk->wu.id] = 120;
     case 1:
-        xx = Standing_Timer[wk->wu.id];
+        save_time = Standing_Timer[wk->wu.id];
         if (Lie_Flag[wk->wu.id] == 0) {
             if (Check_Passive(wk) != 0) {
                 break;
             }
         }
-        Standing_Timer[wk->wu.id] = xx;
+        Standing_Timer[wk->wu.id] = save_time;
         if (--Timer_00[wk->wu.id] == 0) {
             Next_Be_Free(wk);
-        }
-        else if (Check_Arrival(wk, Target_Pos, Option) != 0) {
+        } else if (Check_Arrival(wk, Target_Pos, Option) != 0) {
             Disposal_Again[wk->wu.id] = 1;
             CP_Index[wk->wu.id][0]++;
             CP_Index[wk->wu.id][1] = 0;
@@ -509,7 +506,7 @@ s16 unused;
                 Passive_Flag[wk->wu.id] = 0;
             }
         } else {
-            if ((Timer_01[wk->wu.id] != (s16)wk->wu.rl_flag) || (wk->micchaku_flag != 0) || (wk->hos_em_flag != 0)) {
+            if ((Timer_01[wk->wu.id] != (s16)wk->wu.rl_flag) || wk->micchaku_flag != 0 || wk->hos_em_flag != 0) {
                 Next_Be_Free(wk);
             }
             Lever_Buff[wk->wu.id] = Free_Lever[wk->wu.id];
@@ -660,7 +657,7 @@ PLW* wk;
 s16 Reaction;
 u16 Lever_Data;
 {
-    u16 xx;
+    u16 lever;
     switch (CP_Index[wk->wu.id][1]) {
     case 0:
         if (Check_Passive(wk) != 0) {
@@ -676,9 +673,9 @@ u16 Lever_Data;
             break;
         }
         if (--Combo_Speed[wk->wu.id] == 0) {
-            xx = Check_Squat(wk);
-            Lever_Buff[wk->wu.id] = Lever_Data | xx;
-            Lever_LR[wk->wu.id] = xx;
+            lever = Check_Squat(wk);
+            Lever_Buff[wk->wu.id] = Lever_Data | lever;
+            Lever_LR[wk->wu.id] = lever;
             Lever_Buff[wk->wu.id] |= Small_Jump_Measure(wk);
             CP_Index[wk->wu.id][1]++;
         } else {
@@ -706,7 +703,7 @@ s32 Check_Target_Pat_Status(WORK* wk) {
 
 
 s32 Check_Start_Normal_Attack(PLW* wk, u16 Lever_Data) {
-    if ((wk->wu.routine_no[1] != PLAYER_ATTACK) || (wk->wu.cg_type == 0x40)) {
+    if (wk->wu.routine_no[1] != PLAYER_ATTACK || wk->wu.cg_type == 0x40) {
         return 0;
     }
     if (wk->wu.cg_cancel & 4) {
@@ -746,7 +743,7 @@ u16 Lever_Data;
             break;
         }
         xx = Setup_Guard_Lever(wk, Lever);
-        Lever_Buff[wk->wu.id] = (Lever_Data | xx);
+        Lever_Buff[wk->wu.id] = Lever_Data | xx;
         CP_Index[wk->wu.id][1]++;
         break;
     default:
@@ -785,7 +782,7 @@ u16 Lever_Data;
 {
     u16 dir;
     u16 idx;
-    if ((wk->wu.routine_no[1] != PLAYER_ATTACK) || (wk->wu.cg_type == 0x40)) {
+    if (wk->wu.routine_no[1] != PLAYER_ATTACK || wk->wu.cg_type == 0x40) {
         return 0;
     }
     if (wk->wu.cg_cancel & 4) {
@@ -821,7 +818,7 @@ u16 SA2;
 u16 Term_No;
 {
     s16 xx[3];
-    if (((Passive_Flag[wk->wu.id]) == 0) && (Check_Passive(wk) != 0)) {
+    if (Passive_Flag[wk->wu.id] == 0 && Check_Passive(wk) != 0) {
         return;
     }
     xx[0] = SA0;
@@ -832,7 +829,7 @@ u16 Term_No;
         CP_Index[wk->wu.id][0]++;
     } else if (plw[wk->wu.id].sa->ok) {
         Disposal_Again[wk->wu.id] = 1;
-        if ((Term_No != -1) || (Term_No != 0)) {
+        if (Term_No != -1 || Term_No != 0) {
             switch (My_char[wk->wu.id]) {
             case PL_RYU:
                 if (SA_Range_Check(wk, 1, Term_No) != 0) {
@@ -997,19 +994,19 @@ s16 Menu_02;
 s16 Menu_03;
 s16 Rnd_Type;
 {
-    s16 xx[4];
-    s16 zz;
-    zz = Com_Rnd_Select_Data[Rnd_Type][random_16_com()];
-    xx[0] = Menu_00;
-    xx[1] = Menu_01;
-    xx[2] = Menu_02;
-    xx[3] = Menu_03;
+    s16 menu[4];
+    s16 sel;
+    sel = Com_Rnd_Select_Data[Rnd_Type][random_16_com()];
+    menu[0] = Menu_00;
+    menu[1] = Menu_01;
+    menu[2] = Menu_02;
+    menu[3] = Menu_03;
     Lever_Buff[wk->wu.id] = Lever_LR[wk->wu.id];
-    if (xx[zz] == 0xFF) {
+    if (menu[sel] == 0xFF) {
         Next_End(wk);
     } else {
         Disposal_Again[wk->wu.id] = 1;
-        Next_Another_Menu(wk, Next_Action, xx[zz]);
+        Next_Another_Menu(wk, Next_Action, menu[sel]);
     }
 }
 
@@ -1203,7 +1200,7 @@ u16 Lever_Data;
     default:
         Lever_Buff[wk->wu.id] = Free_Lever[wk->wu.id];
         em = (WORK*)wk->wu.target_adrs;
-        if ((Check_Blow_Off(wk, em, 0) == 0) || (Lie_Flag[wk->wu.id] != 0)) {
+        if (Check_Blow_Off(wk, em, 0) == 0 || Lie_Flag[wk->wu.id] != 0) {
             CP_Index[wk->wu.id][0]++;
             CP_Index[wk->wu.id][1] = 0;
             CP_Index[wk->wu.id][2] = 0;
@@ -1529,7 +1526,7 @@ s16 Jump_Dir;
         if (Check_Passive(wk) != 0) {
             break;
         }
-        if ((wk->wu.routine_no[1] != PLAYER_ATTACK) || (wk->wu.cg_type == 0x40)) {
+        if (wk->wu.routine_no[1] != PLAYER_ATTACK || wk->wu.cg_type == 0x40) {
             CP_Index[wk->wu.id][1]++;
             hi_jump_flag_clear(wk->wu.id);
             Check_First_Menu(wk);
@@ -1636,7 +1633,7 @@ s16 Jump_Dir;
 
 
 s32 Check_Start_Hi_Jump(PLW* wk) {
-    if ((wk->wu.routine_no[1] != PLAYER_ATTACK) || (wk->wu.cg_type == 0x40)) {
+    if (wk->wu.routine_no[1] != PLAYER_ATTACK || wk->wu.cg_type == 0x40) {
         return 0;
     }
     if (wk->wu.cg_cancel & 4) {
@@ -1678,14 +1675,14 @@ s32 Air_Guard_Lever(PLW* wk) {
 
 
 
-/* decides the air guard when the jump starts */
+/* Decide the air guard when the jump starts. */
 s32 Check_Air_Guard(PLW* wk) {
     Free_Lever[wk->wu.id] = 0;
     if (Lever_LR) {
         return;
     }
     Lv = Setup_Lv10(0);
-    if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
+    if (Demo_Flag == 0 && Weak_PL == wk->wu.id) {
         Lv = 2;
     }
     Rnd = random_16_com();
@@ -1750,7 +1747,7 @@ s16 Jump_Dir;
         if (Check_Passive(wk) != 0) {
             break;
         }
-        if ((wk->wu.routine_no[1] == PLAYER_ATTACK) && (wk->wu.cg_type != 0x40)) {
+        if (wk->wu.routine_no[1] == PLAYER_ATTACK && wk->wu.cg_type != 0x40) {
             break;
         }
         CP_Index[wk->wu.id][1]++;
@@ -1776,8 +1773,7 @@ s16 Jump_Dir;
     case 2:
         if (wk->wu.xyz[1].disp.pos > 0) {
             CP_Index[wk->wu.id][1]++;
-        }
-        else {
+        } else {
             Lever_Buff[wk->wu.id] = Lever_Pool[wk->wu.id];
         }
         break;
@@ -1816,7 +1812,7 @@ s16 J_Lever_Data;
     switch (CP_Index[wk->wu.id][1]) {
     case 0:
         Setup_Lever_LR(wk, wk->wu.id, Reaction & 0xF000);
-        if ((wk->wu.routine_no[1] == PLAYER_ATTACK) && (wk->wu.cg_type != 0x40)) {
+        if (wk->wu.routine_no[1] == PLAYER_ATTACK && wk->wu.cg_type != 0x40) {
             break;
         }
         hi_jump_flag_clear(wk->wu.id);
@@ -1918,11 +1914,11 @@ s16 Lever_Data;
 
 s32 Check_VS_Air_Attack(PLW* wk, s16 Range_JX, s16 Range_JY, s16 J_Lever_Data) {
     WORK* em;
-    if ((Range_JX == -1) && (Range_JY == -1)) {
+    if (Range_JX == -1 && Range_JY == -1) {
         return 0;
     }
     em = (WORK*)wk->wu.target_adrs;
-    if ((em->pat_status != 14) && (em->pat_status != 20) && (em->pat_status != 26) && (em->xyz[1].disp.pos <= 0)) {
+    if (em->pat_status != 14 && em->pat_status != 20 && em->pat_status != 26 && em->xyz[1].disp.pos <= 0) {
         return 0;
     }
     if (Check_Term_Sub(wk, PL_Distance[wk->wu.id], Range_JX) == 0) {
@@ -2013,8 +2009,7 @@ s16 Jump_Dir;
     case 3:
         if (wk->wu.xyz[1].disp.pos > 0) {
             CP_Index[wk->wu.id][1]++;
-        }
-        else {
+        } else {
             Lever_Buff[wk->wu.id] = Lever_Pool[wk->wu.id] | 1;
         }
         break;
@@ -2121,8 +2116,7 @@ u16 J_Lever_Data;
     case 3:
         if (wk->wu.xyz[1].disp.pos > 0) {
             CP_Index[wk->wu.id][1]++;
-        }
-        else {
+        } else {
             Lever_Buff[wk->wu.id] = Lever_Pool[wk->wu.id] | 1;
         }
         break;
@@ -2336,7 +2330,7 @@ s16 Ex_Shot;
         if (plw[wk->wu.id].tsukami_f) {
             break;
         }
-        if (((wk->wu.cg_type) == 0x40) || (wk->wu.routine_no[1] == PLAYER_NORMAL)) {
+        if (wk->wu.cg_type == 0x40 || wk->wu.routine_no[1] == PLAYER_NORMAL) {
             Reaction_Exit_Sub(wk);
         } else {
             Lever_Buff[wk->wu.id] = Free_Lever[wk->wu.id];
@@ -2346,7 +2340,7 @@ s16 Ex_Shot;
         }
         break;
     case 4:
-        if (((wk->wu.cg_type) == 0x40) || (wk->running_f == 0)) {
+        if (wk->wu.cg_type == 0x40 || wk->running_f == 0) {
             Reaction_Exit_Sub(wk);
         }
         break;
@@ -2361,12 +2355,12 @@ s16 Ex_Shot;
 
 
 
-/* tests Ryu and Ken directly */
+/* Returns Check_Resume_Lever for Ryu or Ken on technique 23, else 0. */
 s32 Hadou_Check(wk, Tech_Number)
 PLW* wk;
 u16 Tech_Number;
 {
-    if ((wk->player_number != PL_KEN) && (wk->player_number != PL_RYU)) {
+    if (wk->player_number != PL_KEN && wk->player_number != PL_RYU) {
         return 0;
     }
     if (Tech_Number != 23) {
@@ -2381,9 +2375,9 @@ s32 Check_Resume_Lever(PLW* wk) {
     u16 Target_Lever;
     s16 xx;
     if (wk->wu.rl_waza) {
-        Target_Lever = 8;
+        Target_Lever = LEVER_RIGHT;
     } else {
-        Target_Lever = 4;
+        Target_Lever = LEVER_LEFT;
     }
     for (xx = 0; xx <= 10; xx++) {
         if (Target_Lever == Resume_Lever[wk->wu.id][xx]) {
@@ -2452,7 +2446,7 @@ s16 Ex_Shot;
     default:
         Lever_Buff[wk->wu.id] = Lever_LR[wk->wu.id];
         Stock_Hit_Flag[wk->wu.id] = wk->wu.hf.hit.player;
-        if ((wk->wu.cg_type == 0x40) || (wk->wu.routine_no[1] == PLAYER_NORMAL)) {
+        if (wk->wu.cg_type == 0x40 || wk->wu.routine_no[1] == PLAYER_NORMAL) {
             Reaction_Exit_Sub(wk);
         } else {
             Rapid_Sub(wk);
@@ -2476,7 +2470,7 @@ void Check_Rapid(PLW* wk, u16 Tech_Number) {
         Rapid_No[wk->wu.id][0] = Rapid_SA_Data[Setup_Lv08(0)][random_32_com() & 7];
         Rapid_No[wk->wu.id][1] = RAPID1_INIT;
         Setup_Rapid_End_Term(wk, Tech_Number);
-        Rapid_Index[wk->wu.id] = 0x3F0;
+        Rapid_Index[wk->wu.id] = BUTTON_SHOTS;
     }
 }
 
@@ -2607,10 +2601,10 @@ u16 Tech_Number;
     if (wk->wu.routine_no[1] == PLAYER_CATCH) {
         return 1;
     }
-    if ((wk->wu.routine_no[1] != PLAYER_ATTACK) || (wk->wu.cg_type == 0x40)) {
+    if (wk->wu.routine_no[1] != PLAYER_ATTACK || wk->wu.cg_type == 0x40) {
         return 0;
     }
-    if ((Tech_Number == 0) || (Tech_Number == 1)) {
+    if (Tech_Number == 0 || Tech_Number == 1) {
         if (wk->wu.cg_cancel & 3) {
             return 0;
         }
@@ -2648,7 +2642,7 @@ u16 JLD;
             break;
         }
         Lever_Buff[wk->wu.id] = Lever_LR[wk->wu.id];
-        if ((wk->wu.routine_no[1] != PLAYER_ATTACK) || (wk->wu.cg_type == 0x40)) {
+        if (wk->wu.routine_no[1] != PLAYER_ATTACK || wk->wu.cg_type == 0x40) {
             Continue_Menu[wk->wu.id] = 0;
             CP_Index[wk->wu.id][1]++;
             Tech_Address[wk->wu.id] = player_cmd[wk->player_number][Tech_Number & 0xFF];
@@ -2832,7 +2826,7 @@ s32 Check_Landed(wk, Reaction)
 PLW* wk;
 s16 Reaction;
 {
-    if ((wk->wu.old_pos[1] != 0) && (wk->wu.xyz[1].disp.pos == 0)) {
+    if (wk->wu.old_pos[1] != 0 && wk->wu.xyz[1].disp.pos == 0) {
         Lever_Buff[wk->wu.id] = 0;
         if (Continue_Menu[wk->wu.id]) {
             Next_End(wk);
@@ -2847,7 +2841,7 @@ s16 Reaction;
             return 1;
         }
     }
-    if ((wk->wu.old_pos[1] == 0) && (wk->wu.xyz[1].disp.pos == 0) && (wk->wu.routine_no[1] != PLAYER_ATTACK)) {
+    if (wk->wu.old_pos[1] == 0 && wk->wu.xyz[1].disp.pos == 0 && wk->wu.routine_no[1] != PLAYER_ATTACK) {
         Lever_Buff[wk->wu.id] = 0;
         if (Continue_Menu[wk->wu.id]) {
             Next_End(wk);
@@ -2874,9 +2868,9 @@ u16 Tech_Number;
     WORK_Other* tmw;
     WORK* em;
     s16 i;
-    s16 xx;
-    s16 zz;
-    if ((Tech_Number != 0) && (Tech_Number != 1)) {
+    s16 dist;
+    s16 side;
+    if (Tech_Number != 0 && Tech_Number != 1) {
         return 0;
     }
     em = (WORK*)wk->wu.target_adrs;
@@ -2887,16 +2881,16 @@ u16 Tech_Number;
         if (tmw->wu.routine_no[1] == SHELL_VANISH) {
             continue;
         }
-        xx = wk->wu.xyz[0].disp.pos - tmw->wu.xyz[0].disp.pos;
-        zz = Setup_Front_or_Back(wk, xx);
+        dist = wk->wu.xyz[0].disp.pos - tmw->wu.xyz[0].disp.pos;
+        side = Setup_Front_or_Back(wk, dist);
         if (Tech_Number == 0) {
-            if (zz != 1) {
+            if (side != 1) {
                 if (Check_Hit_Shell(wk, tmw, Tech_Number) != 0) {
                     return 1;
                 }
             }
         } else {
-            if (zz != 0) {
+            if (side != 0) {
                 if (Check_Hit_Shell(wk, tmw, Tech_Number) != 0) {
                     return 1;
                 }
@@ -3006,7 +3000,7 @@ u16 Tech_Number;
         }
         Tech_Index[wk->wu.id] = 7;
         Lever_Buff[wk->wu.id] |= Tech_Address[wk->wu.id][Power_Level & 0xF];
-        if ((My_char[wk->wu.id] == PL_RYU) && ((Tech_Number) == 0x8011) && (Power_Level != 8)) {
+        if (My_char[wk->wu.id] == PL_RYU && Tech_Number == 0x8011 && Power_Level != 8) {
             CP_Index[wk->wu.id][0]++;
             Lever_LR[wk->wu.id] = Lever_Buff[wk->wu.id] & BUTTON_SHOTS;
             if (Power_Level == 0xA) {
@@ -3029,7 +3023,7 @@ s16 Power_Level;
 {
     Lever_Buff[wk->wu.id] = Rolling_Lv_Data[0][CP_Index[wk->wu.id][2]];
     CP_Index[wk->wu.id][2]++;
-    if ((Rolling_Lv_Data[0][CP_Index[wk->wu.id][2]]) == 0xFFFF) {
+    if (Rolling_Lv_Data[0][CP_Index[wk->wu.id][2]] == 0xFFFF) {
         Lever_Buff[wk->wu.id] |= Rolling_Lv_Data[1][(Power_Level & 0xF) - 8];
         return 1;
     }
@@ -3117,23 +3111,21 @@ PLW* wk;
 u16 lever;
 s16 time;
 {
-    if (wk->wu.rl_waza) {
-        if (lever & 0xC) {
-            lever ^= 0xC;
-        }
+    if (wk->wu.rl_waza && (lever & LEVER_LR)) {
+        lever ^= LEVER_LR;
     }
     switch (lever) {
-    case 2:
+    case LEVER_DOWN:
         if (time <= Lever_Store[wk->wu.id][0]) {
             return 1;
         }
         break;
-    case 8:
+    case LEVER_RIGHT:
         if (time <= Lever_Store[wk->wu.id][1]) {
             return 1;
         }
         break;
-    case 4:
+    case LEVER_LEFT:
         if (time <= Lever_Store[wk->wu.id][2]) {
             return 1;
         }
@@ -3144,30 +3136,30 @@ s16 time;
 
 
 s32 Select_Combo_Speed(PLW* wk) {
-    s8 xx;
-    s8 zz;
-    xx = (u8)random_32_com();
+    s8 rnd;
+    s8 speed;
+    rnd = (u8)random_32_com();
     Lv = Setup_Lv18(8);
     Lv += CC_Value[0];
-    if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
+    if (Demo_Flag == 0 && Weak_PL == wk->wu.id) {
         Lv = 2;
     }
-    return zz = Combo_Speed_Unit_Data[wk->player_number][Lv][xx];
+    return speed = Combo_Speed_Unit_Data[wk->player_number][Lv][rnd];
 }
 
 
 
 s32 Select_Reflection_Time(PLW* wk) {
     s8 Lv;
-    s8 xx;
-    s8 zz;
-    xx = random_32_com();
+    s8 rnd;
+    s8 speed;
+    rnd = random_32_com();
     Lv = Setup_Lv18(Game_setting.Difficulty);
     Lv += CC_Value[0];
-    if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
+    if (Demo_Flag == 0 && Weak_PL == wk->wu.id) {
         Lv = 2;
     }
-    return zz = Reflection_Speed_Unit_Data[wk->player_number][Lv][xx];
+    return speed = Reflection_Speed_Unit_Data[wk->player_number][Lv][rnd];
 }
 
 
@@ -3239,7 +3231,7 @@ s16 xx;
 
 s32 Setup_LP_Data(PLW* wk) {
     Lv = Setup_Lv08(0);
-    if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
+    if (Demo_Flag == 0 && Weak_PL == wk->wu.id) {
         Lv = 2;
     }
     return LOOK_POSITION_Data[Lv][random_32_com()];
@@ -3249,7 +3241,7 @@ s32 Setup_LP_Data(PLW* wk) {
 
 s32 Setup_WT_Data(PLW* wk) {
     Lv = Setup_Lv04(0);
-    if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
+    if (Demo_Flag == 0 && Weak_PL == wk->wu.id) {
         Lv = 2;
     }
     return Wait_Time_Data[Lv][random_16_com() & 7];
@@ -3260,7 +3252,7 @@ s32 Setup_WT_Data(PLW* wk) {
 void Ck_Distance(PLW* wk) {
     PL_Distance[wk->wu.id] = ((WORK*)wk->wu.target_adrs)->xyz[0].disp.pos - wk->wu.xyz[0].disp.pos;
     if (PL_Distance[wk->wu.id] < 0) {
-        PL_Distance[wk->wu.id] = PL_Distance[wk->wu.id] * -1;
+        PL_Distance[wk->wu.id] = -PL_Distance[wk->wu.id];
     }
 }
 
@@ -3307,7 +3299,7 @@ void Ck_Distance_Lv(PLW* wk) {
         Lever_Buff[wk->wu.id] = LEVER_RIGHT;
     } else {
         Lever_Buff[wk->wu.id] = LEVER_LEFT;
-        PL_Distance[wk->wu.id] = PL_Distance[wk->wu.id] * -1;
+        PL_Distance[wk->wu.id] = -PL_Distance[wk->wu.id];
     }
 }
 
@@ -3316,10 +3308,10 @@ void Ck_Distance_Lv(PLW* wk) {
 void Ck_Distance_LvJ(PLW* wk) {
     PL_Distance[wk->wu.id] = ((WORK*)wk->wu.target_adrs)->xyz[0].disp.pos - wk->wu.xyz[0].disp.pos;
     if (PL_Distance[wk->wu.id] > 0) {
-        Lever_Pool[wk->wu.id] = (LEVER_UP | LEVER_RIGHT);
+        Lever_Pool[wk->wu.id] = LEVER_UP | LEVER_RIGHT;
     } else {
-        Lever_Pool[wk->wu.id] = (LEVER_UP | LEVER_LEFT);
-        PL_Distance[wk->wu.id] = PL_Distance[wk->wu.id] * -1;
+        Lever_Pool[wk->wu.id] = LEVER_UP | LEVER_LEFT;
+        PL_Distance[wk->wu.id] = -PL_Distance[wk->wu.id];
     }
 }
 
@@ -3361,7 +3353,7 @@ s16 Power_Level;
     case 9:
         if (Stock_Hit_Flag[wk->wu.id]) {
             Reaction_Exit_Sub(wk);
-        } else if ((wk->wu.routine_no[1] != PLAYER_ATTACK) || (wk->wu.cg_type == 0x40)) {
+        } else if (wk->wu.routine_no[1] != PLAYER_ATTACK || wk->wu.cg_type == 0x40) {
             Next_End(wk);
         }
         break;
@@ -3387,7 +3379,7 @@ s16 Power_Level;
         }
         if (Stock_Hit_Flag[wk->wu.id]) {
             Reaction_Exit_Sub(wk);
-        } else if ((wk->wu.routine_no[1] != PLAYER_ATTACK) || (wk->wu.cg_type == 0x40)) {
+        } else if (wk->wu.routine_no[1] != PLAYER_ATTACK || wk->wu.cg_type == 0x40) {
             Next_End(wk);
         }
         break;
@@ -3405,7 +3397,7 @@ s16 Power_Level;
         }
         if (Stock_Hit_Flag[wk->wu.id]) {
             Reaction_Exit_Sub(wk);
-        } else if ((wk->wu.routine_no[1] != PLAYER_ATTACK) || (wk->wu.cg_type == 0x40)) {
+        } else if (wk->wu.routine_no[1] != PLAYER_ATTACK || wk->wu.cg_type == 0x40) {
             Setup_Follow(wk, Reaction & 0xFFF);
         }
         break;
@@ -3424,9 +3416,9 @@ s16 Power_Level;
             }
         }
         Last_Eftype[wk->wu.id] = -1;
-        if ((wk->wu.routine_no[1] != PLAYER_ATTACK) || (wk->wu.cg_type == 0x40)) {
+        if (wk->wu.routine_no[1] != PLAYER_ATTACK || wk->wu.cg_type == 0x40) {
             if (Stock_Hit_Flag[wk->wu.id]) {
-                if ((CP_No[wk->wu.id][0] == COM_PASSIVE) && (Pattern_Index[wk->wu.id] == 0)) {
+                if (CP_No[wk->wu.id][0] == COM_PASSIVE && Pattern_Index[wk->wu.id] == 0) {
                     CP_No[wk->wu.id][0] = Return_CP_No[wk->wu.id];
                     CP_Index[wk->wu.id][0] = Return_CP_Index[wk->wu.id];
                     CP_Index[wk->wu.id][1] = 0;
@@ -3448,7 +3440,7 @@ s16 Power_Level;
         if (plw[wk->wu.id].tsukami_f) {
             break;
         }
-        if (Stock_Hit_Flag[wk->wu.id] || (wk->wu.routine_no[1] != PLAYER_ATTACK) || (wk->wu.cg_type == 0x40)) {
+        if (Stock_Hit_Flag[wk->wu.id] || wk->wu.routine_no[1] != PLAYER_ATTACK || wk->wu.cg_type == 0x40) {
             Reaction_Exit_Sub(wk);
         }
         break;
@@ -3472,7 +3464,7 @@ s16 Power_Level;
         Last_Eftype[wk->wu.id] = wk->wu.cg_eftype;
         lever = wk->wu.cg_eftype & 0xF;
         lever = Meoshi_Lever_Data[lever];
-        if ((lever == 0x8000) || (lever == 0x8001)) {
+        if (lever == 0x8000 || lever == 0x8001) {
             lever = Setup_Guard_Lever(wk, lever);
         }
         idx = (wk->wu.cg_eftype & 0x70) >> 4;
@@ -3569,13 +3561,13 @@ void Check_First_Menu(PLW* wk) {
 void Select_Active(PLW* wk) {
     s16 pl_id;
     Lv = Setup_Lv08(0);
-    if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
+    if (Demo_Flag == 0 && Weak_PL == wk->wu.id) {
         Lv = 2;
     }
     Rnd = (u8)random_32_ex_com();
     if (Check_SA_Active(wk, &pl_id) != 0) {
         Lv = Setup_Lv04(0);
-        if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
+        if (Demo_Flag == 0 && Weak_PL == wk->wu.id) {
             Lv = 2;
         }
         switch (Area_Number[wk->wu.id]) {
@@ -3707,7 +3699,7 @@ s32 Select_Passive(PLW* wk) {
     Last_Attack_Counter[wk->wu.id] = Attack_Counter[wk->wu.id];
     Standing_Timer[wk->wu.id] = 0;
     Devide_Level(VS_Tech[wk->wu.id] >> 0xC);
-    if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
+    if (Demo_Flag == 0 && Weak_PL == wk->wu.id) {
         Lv = 1;
     }
     VS_Tech[wk->wu.id] &= 0xFFF;
@@ -3763,7 +3755,7 @@ s32 Select_Passive(PLW* wk) {
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
     Timer_00[wk->wu.id] = Select_Reflection_Time(wk);
-    if ((VS_Tech[wk->wu.id] == 0x19) || (Timer_00[wk->wu.id] == 0)) {
+    if (VS_Tech[wk->wu.id] == 0x19 || Timer_00[wk->wu.id] == 0) {
         CP_No[wk->wu.id][0] = COM_PASSIVE;
         CP_Index[wk->wu.id][0] = 0;
         CP_Index[wk->wu.id][1] = 0;
@@ -3811,7 +3803,7 @@ s16 PL_id;
     if (plw[wk->wu.id].sa->ok) {
         return Rnd | 8;
     }
-    if ((plw[PL_id].wu.vital_new <= 48) || (plw[PL_id ^ 1].wu.vital_new <= 48)) {
+    if (plw[PL_id].wu.vital_new <= 48 || plw[PL_id ^ 1].wu.vital_new <= 48) {
         return Rnd | 8;
     }
     return Rnd;
@@ -3821,7 +3813,7 @@ s16 PL_id;
 
 s32 Check_Passive(PLW* wk) {
     WORK* em;
-    if ((Counter_Attack[wk->wu.id] != 0) || (Pierce_Menu[wk->wu.id])) {
+    if (Counter_Attack[wk->wu.id] != 0 || Pierce_Menu[wk->wu.id]) {
         return 0;
     }
     em = (WORK*)wk->wu.target_adrs;
@@ -3840,7 +3832,7 @@ s32 Check_Passive(PLW* wk) {
     if (Check_Shell(wk) != 0) {
         return 1;
     }
-    if ((Passive_Flag[wk->wu.id]) || (Flip_Flag[wk->wu.id])) {
+    if (Passive_Flag[wk->wu.id] || Flip_Flag[wk->wu.id]) {
         return Check_Guard(wk);
     }
     if (Check_Lie(wk) == 1) {
@@ -3858,7 +3850,7 @@ s32 Check_Passive(PLW* wk) {
     if (Check_Guard(wk) != 0) {
         return 1;
     }
-    if ((Passive_Flag[wk->wu.id]) || (Flip_Flag[wk->wu.id])) {
+    if (Passive_Flag[wk->wu.id] || Flip_Flag[wk->wu.id]) {
         return 0;
     }
     Passive_Mode = 0;
@@ -3900,7 +3892,7 @@ s32 Ck_Guard_Passive_Term(PLW* wk) {
 
 s32 Check_Guard(PLW* wk) {
     WORK* em;
-    s16 xx;
+    s16 range;
     em = (WORK*)wk->wu.target_adrs;
     if (Attack_Flag[wk->wu.id] == 0) {
         return 0;
@@ -3908,13 +3900,13 @@ s32 Check_Guard(PLW* wk) {
     if (Guard_Counter[wk->wu.id] == Attack_Counter[wk->wu.id]) {
         return 0;
     }
-    xx = Hit_Range_Data[em->hit_range];
-    xx += Com_Width_Data[wk->wu.id];
-    if (PL_Distance[wk->wu.id] > xx) {
+    range = Hit_Range_Data[em->hit_range];
+    range += Com_Width_Data[wk->wu.id];
+    if (PL_Distance[wk->wu.id] > range) {
         return 0;
     }
     Lv = Setup_Lv10(0);
-    if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
+    if (Demo_Flag == 0 && Weak_PL == wk->wu.id) {
         Lv = 2;
     }
     Lv = Correct_Lv_Gill(wk, Lv);
@@ -3959,12 +3951,12 @@ s32 Check_Flip_Term(PLW* wk) {
         return 0;
     }
     Lv = Setup_Lv08(0);
-    if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
+    if (Demo_Flag == 0 && Weak_PL == wk->wu.id) {
         Lv = 2;
     }
     Rnd = random_32_com();
     Rnd -= Flip_Term_Correct(wk);
-    if (Rnd >= (Flip_Data[wk->player_number][Lv])) {
+    if (Rnd >= Flip_Data[wk->player_number][Lv]) {
         return 0;
     }
     return 1;
@@ -3977,7 +3969,7 @@ s32 Flip_Term_Correct(PLW* wk) {
     if (plw[wk->wu.id].wu.vital_new <= 48) {
         xx++;
     }
-    if ((PL_Wins[wk->wu.id]) < (PL_Wins[wk->wu.id ^ 1])) {
+    if (PL_Wins[wk->wu.id] < PL_Wins[wk->wu.id ^ 1]) {
         xx += 2;
     }
     if (Counter_hi < 0xF) {
@@ -4028,7 +4020,7 @@ void Next_Be_Flip(PLW* wk) {
     CP_No[wk->wu.id][2] = 0;
     CP_No[wk->wu.id][3] = 0;
     Timer_00[wk->wu.id] = 9;
-    if ((em->pat_status == 33) || (em->pat_status == 32)) {
+    if (em->pat_status == 33 || em->pat_status == 32) {
         Lever_Buff[wk->wu.id] = LEVER_DOWN;
     } else {
         Lever_Buff[wk->wu.id] = Setup_Guard_Lever(wk, 0);
@@ -4094,10 +4086,10 @@ s32 Check_Shell(PLW* wk) {
 
 
 s32 Check_Ignore_Shell(WORK_Other* tmw) {
-    if ((tmw->wu.type >= 0x24) && (tmw->wu.type <= 0x27)) {
+    if (tmw->wu.type >= 0x24 && tmw->wu.type <= 0x27) {
         return 1;
     }
-    if ((tmw->wu.type >= 0xD) && (tmw->wu.type <= 0xF)) {
+    if (tmw->wu.type >= 0xD && tmw->wu.type <= 0xF) {
         return 1;
     }
     return 0;
@@ -4106,21 +4098,21 @@ s32 Check_Ignore_Shell(WORK_Other* tmw) {
 
 
 s32 Compute_Hit_Time(PLW* wk, WORK_Other* tmw) {
-    s32 lx1;
-    s16 x2;
-    lx1 = wk->wu.xyz[0].cal - tmw->wu.xyz[0].cal;
-    x2 = lx1 / tmw->wu.mvxy.a[0].sp;
-    if (x2 < 0) {
-        return (s16)(x2 * -1);
+    s32 dist;
+    s16 time;
+    dist = wk->wu.xyz[0].cal - tmw->wu.xyz[0].cal;
+    time = dist / tmw->wu.mvxy.a[0].sp;
+    if (time < 0) {
+        return (s16)(time * -1);
     }
-    return x2;
+    return time;
 }
 
 
 
 s32 Decide_Shell_Guard(PLW* wk, WORK_Other* tmw) {
     Lv = Setup_Lv10(0);
-    if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
+    if (Demo_Flag == 0 && Weak_PL == wk->wu.id) {
         Lv = 2;
     }
     Rnd = random_32_com();
@@ -4197,7 +4189,7 @@ u16 dir_step;
         return 0;
     }
     Lv = Setup_Lv08(0);
-    if ((Demo_Flag == 0) && (Weak_PL == wk->wu.id)) {
+    if (Demo_Flag == 0 && Weak_PL == wk->wu.id) {
         Lv = 2;
     }
     Rnd = random_16_com();
@@ -4275,8 +4267,7 @@ s16 Lever;
     } else {
         if (Lever & 0x1000) {
             Lever_LR[PL_id] = LEVER_UP;
-        }
-        else if (Lever & 0x2000) {
+        } else if (Lever & 0x2000) {
             Lever_LR[PL_id] |= LEVER_DOWN;
         }
         if (Lever & 0x4000) {
@@ -4583,7 +4574,7 @@ s32 ETC_Term_0002(PLW* wk, WORK* em) {
 
 
 s32 ETC_Term_0003(PLW* wk, WORK* em) {
-    if ((em->pat_status != 32) && (em->pat_status != 33) && (em->pat_status != 2)) {
+    if (em->pat_status != 32 && em->pat_status != 33 && em->pat_status != 2) {
         return 1;
     }
     return 0;

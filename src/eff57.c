@@ -86,7 +86,7 @@ s32 effect_57_init(s16 char_ix, s16 x, s16 y, s16 timer, s16 step, s16 z) {
     ewk->wu.my_family = 1;
     ewk->wu.position_z = z;
     ewk->wu.dir_timer = timer;
-    *ewk->wu.char_table = sel_pl_char_table;
+    ewk->wu.char_table[0] = sel_pl_char_table;
     ewk->wu.char_index = char_ix;
     ewk->wu.dir_step = step;
     ewk->wu.xyz[0].disp.pos = x;

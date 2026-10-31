@@ -43,8 +43,8 @@ void effect_H3_move(WORK_Other* ewk) {
         disp_pos_trans_entry(ewk);
         break;
     default:
-        all_cgps_put_back(ewk);
-        push_effect_work((WORK*)ewk);
+        all_cgps_put_back(&ewk->wu);
+        push_effect_work(&ewk->wu);
         break;
     }
 }

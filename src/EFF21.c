@@ -34,7 +34,7 @@ extern const u32 eff21_char_table[];   /* provisional name */
 
 
 
-/* animate the breakable parts */
+/* Animate a part: hold until the object is hit, then fly off the screen. */
 void effect_21_move(WORK_Other* ewk) {
     if (compel_dead_check(ewk) != 0) {
         ewk->wu.routine_no[0] = R0_KILL;
@@ -86,7 +86,8 @@ void effect_21_move(WORK_Other* ewk) {
 
 
 
-/* three works, for its master */
+/* Create the three parts that fly off when the breakable stage object (effect 23) is hit;
+ * made with that object. */
 s32 effect_21_init(WORK_Other* oya) {
     WORK_Other* ewk;
     s16 ix;

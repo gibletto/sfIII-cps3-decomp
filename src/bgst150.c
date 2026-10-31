@@ -92,6 +92,7 @@ void bg150_layer0_init(void) {
 
 
 
+/* Each stage file has its own copy. */
 static void bg_move_common(void) {
     bg_x_move_check();
     bg_y_move_check();
@@ -150,6 +151,7 @@ void bg150_layer1_init(void) {
 
 
 
+/* Move the base layer and chase the players; each stage file has its own copy. */
 static void bg_base_move_common(void) {
     bg_base_x_move_check();
     bg_base_y_move_check();

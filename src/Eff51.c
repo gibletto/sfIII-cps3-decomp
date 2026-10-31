@@ -134,7 +134,7 @@ s32 effect_51_init(s16 step, s16 x, s16 y, s16 timer, s16 dir_old, s16 col_ofs, 
     ewk->wu.position_z = 10;
     ewk->wu.dir_timer = timer + 120;
     ewk->wu.dir_old = dir_old;
-    *ewk->wu.char_table = sel_pl_char_table;
+    ewk->wu.char_table[0] = sel_pl_char_table;
     ewk->wu.char_index = 26;
     ewk->wu.my_mr_flag = 1;
     ewk->wu.my_mr.size.x = 127;

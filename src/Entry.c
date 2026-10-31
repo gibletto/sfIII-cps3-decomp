@@ -314,6 +314,8 @@ void kill_tasks_by_func(void (*func)()) {
 
 
 
+/* Stops every other task whose priority is at most prio (mode 0), at least prio (mode 2) or equal to it (any
+   other mode). */
 /* provisional name */
 void kill_tasks_by_priority(prio, mode)
 s32 prio;

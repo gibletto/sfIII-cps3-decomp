@@ -47,7 +47,7 @@ void count_cont_reset(void) {
 
 
 
-/* The round timer: counts down unless a stop flag is set; it does not flash in the last seconds */
+/* The round timer: it counts down unless a stop flag is set, and does not flash in the last seconds. */
 void count_cont_main(void) {
     if (Break_Into) {
         return;

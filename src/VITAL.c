@@ -29,6 +29,7 @@ VITAL_BAR vit_bar[2];
 
 
 
+/* Cell columns of the 1P and 2P bars in Screen_Mode 0, then in the other screen mode. */
 const u16* vital_npos_tbl[4] = {
     vital_npos_0,
     vital_npos_1,
@@ -38,6 +39,7 @@ const u16* vital_npos_tbl[4] = {
 
 
 
+/* Cell attributes by bar colour: the 1P bar, the 2P bar, and vital_parts_allwrite with pl 0. */
 const u16* vital_attr_tbl[3] = {
     vital_attr_0,
     vital_attr_1,

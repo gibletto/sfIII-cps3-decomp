@@ -512,7 +512,7 @@ s32 effect_94_init(s16 PL_id, s16 sw) {
     ewk->wu.kage_hx = -2;
     ewk->wu.kage_char = 9;
     ewk->wu.kage_prio = ewk->wu.my_priority + 1;
-    *ewk->wu.char_table = etc2_char_table;
+    ewk->wu.char_table[0] = etc2_char_table;
     if (bg_w.stage != 1) {
         y = 46;
     } else {

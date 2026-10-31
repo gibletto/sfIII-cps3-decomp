@@ -25,7 +25,7 @@
 #define R0_LEAVE        3       /* fly off the top */
 #define R0_KILL         4       /* (default) put the work back */
 
-/* flies the rows of eff54_move_tbl */
+/* Fly the object through the rows of eff54_move_tbl, then free it once it is off the top. */
 void effect_54_move(WORK_Other* ewk) {
     const s32* p;
     switch (ewk->wu.routine_no[0]) {
@@ -92,7 +92,7 @@ void effect_54_move(WORK_Other* ewk) {
 
 
 
-/* one object over the parent's x */
+/* Create the object that flies the course of eff54_move_tbl, starting 21 dots right of its parent. */
 s32 effect_54_init(WORK_Other* oya) {
     WORK_Other* ewk;
     s16 ix;

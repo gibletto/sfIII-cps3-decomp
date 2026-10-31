@@ -36,7 +36,7 @@
 
 
 
-/* no directional pattern, explem2 rows of 16 */
+/* No directional pattern; explem2 has rows of 16. */
 void effect_A7_move(WORK_Other* ewk) {
     const HMDT* tad;
     const EXPLEM* edt;
@@ -44,7 +44,7 @@ void effect_A7_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_INIT:
         ewk->wu.routine_no[0]++;
-        *ewk->wu.char_table = ef01_char_table;
+        ewk->wu.char_table[0] = ef01_char_table;
         tad = &hmdt[ewk->wu.kohm];
         if (tad->hits == 0) {
             if (tad->se) {

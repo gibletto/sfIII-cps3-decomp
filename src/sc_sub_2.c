@@ -132,6 +132,8 @@ void fade_cont_init(void) {
     }
 }
 
+/* Runs the palette fade for a frame: each layer that is due re-sends its palette groups one brightness step
+   on, and once every layer is done Fade_Flag clears after fade_end_timer. */
 s32 fade_cont_main(void)
 {
     u16 j;

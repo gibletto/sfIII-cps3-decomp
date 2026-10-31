@@ -151,6 +151,10 @@ extern const s16 super_arts_dageki_00[];
 extern const s16 super_arts_dageki_01[];
 extern const s16 super_arts_dageki_02[];
 
+/*
+ * Stun time lists by attack kind: normal, special-move and super art strikes and throws. Each
+ * is indexed by strength ((kind_of_waza & 7) / 2, the last two sharing a list), then at random.
+ */
 const s16* kizetsu_timer_table_0[4] = {
     tsuujyou_dageki_00, tsuujyou_dageki_01, tsuujyou_dageki_02, tsuujyou_dageki_02,
 };
@@ -169,6 +173,8 @@ const s16* kizetsu_timer_table_4[4] = {
 const s16* kizetsu_timer_table_5[4] = {
     super_arts_nage_00, super_arts_nage_01, super_arts_nage_02, super_arts_nage_02,
 };
+
+/* The stun time list by attack kind (kind_of_waza / 8). */
 /* 02000B94 */
 const s16** kizetsu_timer_table[8] = {
     kizetsu_timer_table_0,
@@ -211,7 +217,7 @@ void Player_damage(PLW* wk) {
     if (wk->atemi_flag == 9) {
         wk->atemi_flag = 0;
     } else {
-        plpdm_lv_00[(wk->wu.routine_no[2])](wk);
+        plpdm_lv_00[wk->wu.routine_no[2]](wk);
     }
     set_hit_stop_hit_quake(&wk->wu);
 }

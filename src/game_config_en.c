@@ -263,7 +263,6 @@ void game_config_timer_item_en(void) {
 
 
 /* provisional name */
-/* provisional name */
 void game_config_1p_round_item_en(void) {
     Config_Move_en = 0;
     if (game_config_lever_repeat_en(4, 2)) {

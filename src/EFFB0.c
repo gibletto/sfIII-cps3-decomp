@@ -60,7 +60,7 @@ void end_ake_cell_put(s16 map, s32 ofs, s32 cell, u32 src);
 
 
 
-/* run the ending scene sequence */
+/* Run the ending scene sequence. */
 void effect_B0_move(WORK_Other* ewk) {
     switch (ewk->wu.routine_no[0]) {
     case R0_SCENE1:
@@ -257,7 +257,7 @@ s32 effB0_2000(WORK_Other* ewk) {
 
 
 
-/* the ending scene controller */
+/* Create the ending scene controller. */
 s32 effect_B0_init(void) {
     WORK_Other* ewk;
     s16 ix;
@@ -325,7 +325,7 @@ s32 effect_B0_init(void) {
 
 
 
-/* into a BG's map, with the scroll character base */
+/* Put a cell into a BG's map, with the scroll character base. */
 void end_ake_cell_put(s16 map, s32 ofs, s32 cell, u32 src) {
     u16* s;
     s32 x;

@@ -101,7 +101,7 @@ s32 effect_G8_init(void) {
         ewk->wu.work_id = 16;
         ewk->wu.cgromtype = 1;
         ewk->wu.my_col_mode = 0x4200;
-        *ewk->wu.char_table = effH3_char_table;
+        ewk->wu.char_table[0] = effH3_char_table;
         ewk->wu.my_family = 2;
         ewk->wu.my_col_code = 32;
         ewk->wu.old_rno[4] = 14;
@@ -120,15 +120,18 @@ s32 effect_G8_init(void) {
 
 
 
+/* One row per group of four birds: x, y, priority, pattern, height timer. */
 const s16 effg8_data_tbl[16][5] = {
     { 720, 180, 82, 9, 74 }, { 736, 184, 82, 9, 74 }, { 832, 184, 82, 9, 72 }, { 896, 168, 82, 8, 72 },
     { 712, 164, 80, 8, 68 }, { 768, 160, 80, 8, 68 }, { 816, 160, 80, 8, 64 }, { 896, 144, 80, 8, 64 },
     { 304, 128, 78, 7, 60 }, { 272, 136, 78, 7, 60 }, { 240, 128, 78, 7, 56 }, { 208, 128, 78, 7, 56 },
     { 312, 80, 76, 7, 52 }, { 256, 80, 76, 6, 52 }, { 224, 80, 76, 6, 48 }, { 160, 80, 76, 6, 48 },
 };
+/* By group: x speed, x acceleration. */
 const s32 effg8_speed_tbl[4][2] = {
     { -0x80000, 0xA00 }, { -0x60000, 0x600 }, { 0x60000, -0x100 }, { 0x80000, -0x100 },
 };
+/* By speed step (dir_step), group (type) and bird (old_rno[6]): the effg8_pos_tbl entry to re-enter at. */
 const s8 effg8_pos_ix_tbl[4][4][4] = {
     { { 0, 1, 2, 3 }, { 0, 1, 2, 3 }, { 4, 5, 6, 7 }, { 4, 5, 6, 7 } },
     { { 0, 1, 2, 3 }, { 0, 1, 2, 3 }, { 4, 5, 6, 7 }, { 4, 5, 6, 7 } },

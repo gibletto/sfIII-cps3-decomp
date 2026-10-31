@@ -49,7 +49,7 @@ void eff55_2000(WORK_Other* ewk);
 
 
 
-/* the routine of the bird's state */
+/* Run the routine of the bird's state. */
 void effect_55_move(WORK_Other* ewk) {
     void (*eff55_jp[3])() = { eff55_0000, eff55_1000, eff55_2000 };
     if (!EXE_flag && !Game_pause) {
@@ -201,7 +201,7 @@ void eff55_2000(WORK_Other* ewk) {
 
 
 
-/* (bird at (672, 114), brz_char_table) */
+/* Create the bird at (672, 114) with brz_char_table. */
 s32 effect_55_init(void) {
     WORK_Other* ewk;
     s16 ix;

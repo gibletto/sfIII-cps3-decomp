@@ -134,7 +134,7 @@ void bg1001_init00(void) {
 
 
 /* provisional name */
-/* the base layer move, with the map animation the test switch starts */
+/* Move the base layer, with the map animation the test switch starts. */
 void bg1001_move(void) {
     const s32* p;
     s16 sw;
