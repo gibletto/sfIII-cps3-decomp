@@ -99,14 +99,14 @@ s32 effect_B0_init(void);
 void Setup_Next_EM(void);
 void Init_EM_Course(void);
 s32 Sel_Arts_Sub_Check();
-void Sel_Plate_Order_Step();
+void Sel_Plate_Order_Step(s16 pl);
 s32 Check_First_PL_Decided(void);
 void Setup_Yun_Yang_Face();
 void Yun_Yang_Face_Other();
 void Yun_Yang_Select();
 extern u8 Straight_Lose_Count;
 
-s16 Select_Player(void) {
+s32 Select_Player(void) {
     SEL_PL_X = 0;
     if (Break_Into) {
         return 0;

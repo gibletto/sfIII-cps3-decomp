@@ -145,6 +145,7 @@ s16 gauge_rank_value(s16 v);
 void Restore_Loser_Score(void);
 s16 Next_VS_Index(void);
 s32 Bonus_Cut_All(void);
+s32 Check_Bonus_Skip(void);
 void Bonus_Count_Effect(s16 n);
 void Stock_Loser_Char(void);
 extern u8 Straight_Win_Count;  /* provisional name */

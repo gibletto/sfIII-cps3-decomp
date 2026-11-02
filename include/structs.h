@@ -703,6 +703,13 @@ typedef struct {
     s32 ofs;
 } SUZI_CALC;
 
+/* per-line positions of a line-scrolled plane: 16.16 fixed point (fix[n]), and as halfwords the whole part
+   (half[2 * n]) and the fraction (half[2 * n + 1]) of line n */
+typedef union {
+    s32 fix[1024];
+    u16 half[2048];
+} SUZI_LINE_BUF;
+
 typedef union {
     s32 pl;
     LoHi16 ps;

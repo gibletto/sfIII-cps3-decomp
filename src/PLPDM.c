@@ -188,7 +188,7 @@ const s16** kizetsu_timer_table[8] = {
 };
 
 
-static void damage_atemi_setup(PLW* wk, PLW* ek);
+void damage_atemi_setup(PLW* wk, PLW* ek);
 
 #pragma inline(check_dmpat_to_dmpat)
 
@@ -1300,7 +1300,7 @@ void get_damage_reaction_data(PLW* wk) {
 
 
 
-static void damage_atemi_setup(PLW* wk, PLW* ek) {
+void damage_atemi_setup(PLW* wk, PLW* ek) {
     wk->wu.routine_no[1] = wk->wu.cmmd.koc;
     wk->wu.routine_no[2] = wk->wu.cmmd.ix;
     wk->wu.routine_no[3] = wk->wu.cmmd.pat;

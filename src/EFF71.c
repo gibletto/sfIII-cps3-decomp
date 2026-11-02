@@ -204,7 +204,10 @@ static s32 eff71_check(WORK_Other* ewk) {
 
 
 /* provisional name */
-static s32 eff71_near_check(WORK_Other* ewk, s16 dx) {
+static s32 eff71_near_check(ewk, dx)
+WORK_Other* ewk;
+s16 dx;
+{
     if (ewk->wu.dir_old == 3) {
         if (dx < 0) {
             dx = -dx;

@@ -83,7 +83,7 @@ void debug_draw_object_info(void);
 void debug_draw_att_data(void);
 void debug_draw_cm_data(void);
 void debug_draw_position_delta(void);
-s32 debug_hex4_to_bcd();
+s32 debug_hex4_to_bcd(s16 x);
 void debug_catch_judgment_dispatch(void);
 void debug_catch_judgment_input(void);
 void debug_hit_judgment_dispatch(void);

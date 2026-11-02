@@ -20,16 +20,11 @@
 
 extern const u16 scroll_enable_bit_tbl[][2];
 extern const TM_STRING iotest_input_scr[];
-extern const s16 iotest_1p_sw_x[];
-extern const s16 iotest_1p_sw_y[];
-extern const s16 iotest_2p_sw_x[];
-extern const s16 iotest_2p_sw_y[];
-extern const s16 iotest_sys_sw_x[];
-extern const s16 iotest_sys_sw_y[];
-extern const s16 iotest_1p_diag_x[];
-extern const s16 iotest_1p_diag_y[];
-extern const s16 iotest_2p_diag_x[];
-extern const s16 iotest_2p_diag_y[];
+extern const s16 iotest_1p_sw_xy[];
+extern const s16 iotest_2p_sw_xy[];
+extern const s16 iotest_sys_sw_xy[];
+extern const s16 iotest_1p_diag_xy[];
+extern const s16 iotest_2p_diag_xy[];
 extern const u16 iotest_sw_bit_tbl[];
 extern const u16 iotest_diag_bit_tbl[];
 extern const u32 iotest_sys_bit_tbl[];
@@ -192,46 +187,31 @@ const TM_STRING iotest_input_scr[9] = {
     { 13, 27, 2, iotest_input_exit_str },
 };
 
-const s16 iotest_1p_sw_x[1] = {
-    16,
+/* x, y pairs: each mark's column, then its row */
+const s16 iotest_1p_sw_xy[24] = {
+    16, 11, 16, 13, 15, 12, 17, 12, 15, 15, 16, 15, 17, 15, 15, 16,
+    16, 16, 17, 16, 17, 8, 17, 9,
 };
 
-const s16 iotest_1p_sw_y[23] = {
-    11, 16, 13, 15, 12, 17, 12, 15, 15, 16, 15, 17, 15, 15, 16, 16,
-    16, 17, 16, 17, 8, 17, 9,
+/* x, y pairs: each mark's column, then its row */
+const s16 iotest_2p_sw_xy[24] = {
+    36, 11, 36, 13, 35, 12, 37, 12, 35, 15, 36, 15, 37, 15, 35, 16,
+    36, 16, 37, 16, 37, 8, 37, 9,
 };
 
-const s16 iotest_2p_sw_x[1] = {
-    36,
+/* x, y pairs: each mark's column, then its row */
+const s16 iotest_sys_sw_xy[6] = {
+    17, 4, 17, 5, 17, 5,
 };
 
-const s16 iotest_2p_sw_y[23] = {
-    11, 36, 13, 35, 12, 37, 12, 35, 15, 36, 15, 37, 15, 35, 16, 36,
-    16, 37, 16, 37, 8, 37, 9,
+/* x, y pairs: each mark's column, then its row */
+const s16 iotest_1p_diag_xy[8] = {
+    17, 11, 15, 11, 17, 13, 15, 13,
 };
 
-const s16 iotest_sys_sw_x[1] = {
-    17,
-};
-
-const s16 iotest_sys_sw_y[5] = {
-    4, 17, 5, 17, 5,
-};
-
-const s16 iotest_1p_diag_x[1] = {
-    17,
-};
-
-const s16 iotest_1p_diag_y[7] = {
-    11, 15, 11, 17, 13, 15, 13,
-};
-
-const s16 iotest_2p_diag_x[1] = {
-    37,
-};
-
-const s16 iotest_2p_diag_y[7] = {
-    11, 35, 11, 37, 13, 35, 13,
+/* x, y pairs: each mark's column, then its row */
+const s16 iotest_2p_diag_xy[8] = {
+    37, 11, 35, 11, 37, 13, 35, 13,
 };
 
 const u16 iotest_sw_bit_tbl[12] = {

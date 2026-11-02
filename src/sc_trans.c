@@ -678,7 +678,9 @@ u32 SF3_logo(s16 y) {
 
 
 /* provisional name */
-void break_into_banner_trans(s16 kind) {
+void break_into_banner_trans(kind)
+s16 kind;
+{
     switch (kind) {
     case 0:
         sc_chr_clear(320, 192);

@@ -42,11 +42,17 @@ void effA0_count_move(WORK_Other* ewk, s32 side) {
     }
 }
 
-void effA0_set_x(WORK_Other* ewk, s16 side) {
+void effA0_set_x(ewk, side)
+WORK_Other* ewk;
+s16 side;
+{
     ewk->wu.xyz[0].disp.pos = bg_w.bgw[ewk->wu.dir_timer - 1].xy[0].disp.pos + effA0_count[side] * 32;
 }
 
-void effA0_set_y(WORK_Other* ewk, s16 side) {
+void effA0_set_y(ewk, side)
+WORK_Other* ewk;
+s16 side;
+{
     if (side == 2) {
         ewk->wu.xyz[1].disp.pos = bg_w.bgw[ewk->wu.dir_timer - 1].xy[1].disp.pos + 128;
     } else {

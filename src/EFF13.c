@@ -18,6 +18,7 @@
 #include "romdata.h"
 #include "extern.h"
 #include "PLS02.h"
+#include "CALDIR.h"
 #include "CHARMOVE.h"
 #include "charmove_2.h"
 #include "aboutspr.h"

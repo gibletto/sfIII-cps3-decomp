@@ -727,7 +727,7 @@ BG_DEFF_TBL bg_deff_tbl[18][4] = {
 s16 stage8_base_y;  /* 0201C258, provisional name */
 BGW* bgw_ptr;  /* 0201C25C */
 SUZI_CALC suzi_calc_w[2];  /* 0201C260 */
-u16 suzi_line_buf[2048];  /* 0201C270 */
+SUZI_LINE_BUF suzi_line_buf;  /* 0201C270 */
 MVXY bg_mvxy;  /* 0201D270 */
 s16 bg_stop;  /* 0201D288 */
 s16 base_y_pos;  /* 0201D28A */

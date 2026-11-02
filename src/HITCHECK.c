@@ -1389,7 +1389,9 @@ s32 check_trunk_damage(s16 ix) {
 }
 
 
-s32 check_ttk_damage_request(s16 pat) {
+s32 check_ttk_damage_request(pat)
+s16 pat;
+{
     pat -= 32;
     return ttk_damage_req_tbl[pat];
 }

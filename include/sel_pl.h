@@ -33,7 +33,7 @@ void Sel_PL_Cont_3rd(void);
 void Sel_PL_Cont_4th(void);
 void Sel_PL_Control(void);
 void Sel_PL_Sub();
-s16 Select_Player(void);
+s32 Select_Player(void);
 void Setup_EFF69(void);
 void Setup_ID(void);
 void Setup_Select_Status(void);
